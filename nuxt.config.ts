@@ -1,15 +1,15 @@
 import { NuxtConfig } from '@nuxt/types'
 
 const sanityConfig = {
-  projectId: 'qy73powj',
+  projectId: 'fdic53fd',
 }
 
 const config: NuxtConfig & { sanity: typeof sanityConfig } = {
   modules: ['@nuxtjs/sanity', '@nuxtjs/device'],
   sanity: sanityConfig,
-  app: {
-    pageTransition: { name: 'page', mode: 'out-in' },
-  },
+  // app: {
+  //   pageTransition: { name: 'page', mode: 'out-in' },
+  // },
   css: ['@/assets/scss/main/index.scss'],
   vite: {
     css: {
@@ -20,6 +20,12 @@ const config: NuxtConfig & { sanity: typeof sanityConfig } = {
       },
     },
   },
+  components: [
+    '~/components/nav',
+    '~/components/utils',
+    '~/components/projects',
+    '~/components/pages',
+  ],
 }
 
 export default config
