@@ -1,3 +1,4 @@
+// Screen breakpoints
 $viewport-320: 321px;
 $viewport-375: 375px;
 $viewport-480: 481px;
@@ -6,3 +7,31 @@ $viewport-1024: 1025px;
 $viewport-1200: 1201px;
 $viewport-1400: 1401px;
 $viewport-1600: 1601px;
+
+// Colors
+$black: #000000;
+$dark-dark-grey: #232323;
+$dark-grey: #3f3f3f;
+$medium-grey: #727272;
+$light-grey: #b8b8b8;
+$text-color: #d9d9d9;
+$white: #ffffff;
+
+// Font families
+$metro-sans: 'Metro Sans', Arial, sans-serif;
+$the-future: 'The Future', Arial, sans-serif;
+
+// Font weights
+$extra-light: 200;
+$light: 300;
+
+// Font sizes
+$main-text-size: 5.2rem;
+$secondary-text-size: 4rem;
+$list-text-size: 2.6rem;
+$paragraph-text-size: 2.4rem;
+$default-text-size: 2rem;
+
+// Line heights
+$main-text-lh: 1;
+$secondary-text-lh: 1;

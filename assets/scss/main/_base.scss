@@ -1,20 +1,9 @@
+@import './../resources/variables';
+
 body {
-  font-size: 1.6rem;
-  font-family: 'Metro Sans', Arial, sans-serif;
-}
-
-h1 {
-    font-size: 2.4rem;
-}
-
-h2 {
-    font-size: 2rem;
-}
-
-a {
-    color: blue;
-
-    &:hover {
-        text-decoration: underline;
-    }
+  font-size: $default-text-size;
+  font-family: $the-future;
+  background-color: $black;
+  color: $white;
+  overflow-x: hidden;
 }
