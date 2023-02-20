@@ -1,15 +1,252 @@
-<script setup></script>
+<script setup>
+const sanity = useSanity()
+const route = useRoute()
+
+const GET_SINGLE_PROJECT = groq`*[_type == "projects" && slug.current == "${route.params.slug}"][0]
+  {
+    ...,
+    relatedProjects[] -> {
+      title,
+      slug,
+      releaseDate,
+      mainImage,
+      mainVideo,
+      categories[] -> {
+        title,
+        slug
+      }
+    }
+  }
+`
+let project = await useAsyncData('projects', () =>
+  sanity.fetch(GET_SINGLE_PROJECT)
+)
+project = project.data._rawValue
+
+const serializers = {
+  // types: {
+  //   image: SanityImage,
+  // },
+  marks: {
+    // You can also just pass a string for a custom serializer if it's an HTML element
+    internalLink: 'a',
+  },
+}
+</script>
 
 <template>
-  <div class="projects-slug">
+  <div class="project-page">
     <Head>
-      <Title>Project Title</Title>
+      <Title>{{ project.title }}</Title>
       <Meta name="description" content="Project description" />
     </Head>
-    <h1>Project Title</h1>
-    <p>Description</p>
-    <NuxtLink to="/">Go back</NuxtLink>
+    <section class="hero">
+      <SanityImage
+        class="hero__thumbnail"
+        v-if="!project.mainVideo"
+        :asset-id="project.mainImage.asset._ref"
+        auto="format"
+        :q="75"
+      />
+      <video class="hero__video" v-if="project.mainVideo" src=""></video>
+      <h1 class="hero__title">{{ project.title }}</h1>
+    </section>
+    <section class="content">
+      <GridContainer>
+        <div class="content__claim">
+          {{ project.claim }}
+        </div>
+        <div class="content__details">
+          <span class="content__date">{{
+            project.releaseDate.slice(0, 4)
+          }}</span>
+          <span class="content__type">Audio visual installation</span>
+        </div>
+        <div class="content__description">
+          <SanityContent
+            :blocks="project.description"
+            :serializers="serializers"
+          />
+        </div>
+      </GridContainer>
+    </section>
+    <section class="gallery">
+      <GridContainer>
+        <h2 class="gallery__title">Gallery</h2>
+        <ul class="gallery__wrapper">
+          <li
+            class="item"
+            v-if="project.gallery.medias"
+            v-for="(item, index) in project.gallery.medias"
+            :key="index"
+          >
+            <div class="item__image">
+              <SanityImage :asset-id="item.asset._ref" auto="format" />
+            </div>
+            <div class="item__video"></div>
+          </li>
+        </ul>
+      </GridContainer>
+    </section>
+    <section class="credits">
+      <GridContainer>
+        <header class="credits__header">
+          <div>{{ project.title }}</div>
+          <span>1024 architecture</span>
+        </header>
+        <ul class="credits__wrapper">
+          <li class="item">
+            <h3 class="item__label">Label</h3>
+            <p class="item__text">
+              Exhibited at Philharmonie de Paris in 2019.
+            </p>
+          </li>
+          <li class="item">
+            <h3 class="item__label">Label</h3>
+            <p class="item__text">
+              Exhibited at Philharmonie de Paris in 2019.
+            </p>
+          </li>
+          <li class="item">
+            <h3 class="item__label">Label</h3>
+            <p class="item__text">
+              Exhibited at Philharmonie de Paris in 2019.
+            </p>
+          </li>
+          <li class="item">
+            <h3 class="item__label">Label</h3>
+            <p class="item__text">
+              Exhibited at Philharmonie de Paris in 2019.
+            </p>
+          </li>
+        </ul>
+      </GridContainer>
+    </section>
+    <section class="related-projects">
+      <GridContainer>
+        <h2 class="related-projects__title">Related projects</h2>
+      </GridContainer>
+      <ProjectsList :projects="project.relatedProjects" />
+    </section>
   </div>
 </template>
 
-<style lang="scss"></style>
+<style lang="scss">
+.project-page {
+  .hero {
+    height: 100vh;
+    position: relative;
+
+    &__thumbnail,
+    &__video {
+      height: 100%;
+      object-fit: cover;
+    }
+
+    &__title {
+      font-size: $main-text-size;
+      position: absolute;
+      bottom: 1.5rem;
+      left: 2rem;
+    }
+  }
+
+  .content {
+    &__claim {
+      font-size: $main-text-size;
+      margin-top: 6rem;
+    }
+
+    &__claim,
+    &__description {
+      grid-column: 2 / span 5;
+    }
+
+    &__details {
+      grid-column: 1 / -1;
+      margin-top: 6rem;
+    }
+
+    &__type {
+      margin-left: 1rem;
+      text-decoration: underline;
+    }
+
+    &__description {
+      margin-top: 6rem;
+
+      p {
+        margin-top: 4rem;
+      }
+    }
+  }
+
+  .gallery {
+    margin-top: 6rem;
+
+    &__title {
+      font-size: $main-text-size;
+      grid-column: 1 / -1;
+    }
+
+    &__wrapper {
+      grid-column: 1 / -1;
+      @include grid(12, 1fr, 1, 0);
+
+      .item {
+        grid-column: 3 / span 8;
+
+        &:not(:first-child) {
+          margin-top: 12rem;
+        }
+
+        &__image {
+          // ...
+        }
+      }
+    }
+  }
+
+  .credits {
+    margin-top: 9rem;
+    padding-bottom: 9rem;
+
+    &__header {
+      grid-column: 2 / -1;
+    }
+
+    &__wrapper {
+      grid-column: 3 / span 9;
+      @include grid(9, 1fr, 1, 3);
+      margin-top: 6rem;
+
+      .item {
+        grid-column: auto / span 3;
+        @include grid(3, 1fr, 1, 0);
+
+        &__label {
+          color: $medium-grey;
+          grid-column: 1 / span 2;
+        }
+
+        &__text {
+          grid-column: 1 / span 2;
+        }
+      }
+    }
+  }
+
+  .related-projects {
+    margin-top: 6rem;
+
+    .ProjectsList {
+      margin-top: 6rem;
+    }
+
+    &__title {
+      grid-column: 1 / -1;
+      font-size: $main-text-size;
+    }
+  }
+}
+</style>
