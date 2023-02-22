@@ -1,5 +1,5 @@
 <template>
-  <button class="GoBackButton" @click="goBack()">Go back</button>
+  <button class="GoBackButton" @click="goBack()">Back</button>
 </template>
 
 <script setup>
@@ -12,9 +12,9 @@ function goBack() {
 
 <style lang="scss">
 .GoBackButton {
-  background-color: $white;
-  color: $black;
-  padding: 1rem;
   cursor: pointer;
+  text-decoration: underline;
+  text-decoration-thickness: from-font;
+  text-underline-offset: 0.5rem;
 }
 </style>

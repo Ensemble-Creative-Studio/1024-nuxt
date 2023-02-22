@@ -7,14 +7,20 @@ const props = defineProps({
 <template>
   <ul class="ProjectsGrid">
     <li class="item" v-for="item in projects">
-      <div class="item__thumbnail">
-        <SanityImage
-          v-if="item.mainImage"
-          :asset-id="item.mainImage.asset._ref"
-          auto="format"
-        />
-      </div>
-      <h3 class="item__title">{{ item.title }}</h3>
+      <NuxtLink
+        class="item__link"
+        :to="{ name: 'blog-slug', params: { slug: item.slug.current } }"
+        :key="item._id"
+      >
+        <div class="item__thumbnail">
+          <SanityImage
+            v-if="item.mainImage"
+            :asset-id="item.mainImage.asset._ref"
+            auto="format"
+          />
+        </div>
+        <h3 class="item__title">{{ item.title }}</h3>
+      </NuxtLink>
     </li>
   </ul>
 </template>

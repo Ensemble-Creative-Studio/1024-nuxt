@@ -8,18 +8,28 @@ const props = defineProps({
 <template>
   <ul class="ProjectsList">
     <li class="item" v-for="item in projects">
-      <div class="item__container">
-        <div class="item__date">{{ item.releaseDate.slice(0, 4) }}</div>
-        <h3 class="item__title">{{ item.title }}</h3>
-        <ul class="item__categories">
-          <li class="item__category" v-for="category in item.categories">
-            {{ category.title }}
-          </li>
-        </ul>
-        <div class="item__thumbnail">
-          <SanityImage v-if="item.mainImage" :asset-id="item.mainImage.asset._ref" auto="format" />
+      <NuxtLink
+        class="item__link"
+        :to="{ name: 'blog-slug', params: { slug: item.slug.current } }"
+        :key="item._id"
+      >
+        <div class="item__container">
+          <div class="item__date">{{ item.releaseDate.slice(0, 4) }}</div>
+          <h3 class="item__title">{{ item.title }}</h3>
+          <ul class="item__categories">
+            <li class="item__category" v-for="category in item.categories">
+              {{ category.title }}
+            </li>
+          </ul>
+          <div class="item__thumbnail">
+            <SanityImage
+              v-if="item.mainImage"
+              :asset-id="item.mainImage.asset._ref"
+              auto="format"
+            />
+          </div>
         </div>
-      </div>
+      </NuxtLink>
     </li>
   </ul>
 </template>

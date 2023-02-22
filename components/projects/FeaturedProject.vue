@@ -4,7 +4,6 @@ const props = defineProps({
 })
 
 const $projectVideo = ref(null)
-const isMenuOpen = ref(false)
 </script>
 
 <template>
