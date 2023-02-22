@@ -7,9 +7,9 @@ const sanityConfig = {
 const config: NuxtConfig & { sanity: typeof sanityConfig } = {
   modules: ['@nuxtjs/sanity', '@nuxtjs/device'],
   sanity: sanityConfig,
-  // app: {
-  //   pageTransition: { name: 'page', mode: 'out-in' },
-  // },
+  app: {
+    pageTransition: { name: 'page', mode: 'out-in' },
+  },
   css: ['@/assets/scss/main/index.scss'],
   vite: {
     css: {
@@ -24,6 +24,7 @@ const config: NuxtConfig & { sanity: typeof sanityConfig } = {
     '~/components/nav',
     '~/components/utils',
     '~/components/projects',
+    '~/components/blog',
     '~/components/pages',
   ],
 }
