@@ -1,13 +1,9 @@
 <script setup>
 const query = groq`*[_type == "home"][0]
   {
-    baseline,
+    ...,
     featuredProjects[] -> {
-      title,
-      slug,
-      releaseDate,
-      mainImage,
-      mainVideo,
+      ...,
       categories[] -> {
         title,
         slug
@@ -16,9 +12,7 @@ const query = groq`*[_type == "home"][0]
   }
 `
 const sanity = useSanity()
-const { data } = await useAsyncData('home', () =>
-  sanity.fetch(query)
-)
+const { data } = await useAsyncData('home', () => sanity.fetch(query))
 const home = data._rawValue
 </script>
 

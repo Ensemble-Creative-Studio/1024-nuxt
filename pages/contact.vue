@@ -8,10 +8,10 @@
 <template>
   <div class="contact">
     <Head>
-      <Title>1024 Architecture | About</Title>
+      <Title>1024 | Contact</Title>
       <Meta name="description" content="Contact page description" />
     </Head>
   </div>
 </template>
 
-<style lang="scss"></style>
+<style lang="scss" scoped></style>

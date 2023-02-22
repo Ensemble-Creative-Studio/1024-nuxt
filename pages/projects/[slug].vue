@@ -18,10 +18,10 @@ const GET_SINGLE_PROJECT = groq`*[_type == "projects" && slug.current == "${rout
     }
   }
 `
-let project = await useAsyncData('projects', () =>
+const { data } = await useAsyncData('projects', () =>
   sanity.fetch(GET_SINGLE_PROJECT)
 )
-project = project.data._rawValue
+const project = data._rawValue
 
 const serializers = {
   // types: {
@@ -32,6 +32,9 @@ const serializers = {
     internalLink: 'a',
   },
 }
+
+// Show anchors
+const showAnchors = ref(false)
 </script>
 
 <template>
@@ -95,28 +98,10 @@ const serializers = {
           <span>1024 architecture</span>
         </header>
         <ul class="credits__wrapper">
-          <li class="item">
-            <h3 class="item__label">Label</h3>
+          <li class="item" v-for="item in project.credits.list">
+            <h3 class="item__label">{{ item.role }}</h3>
             <p class="item__text">
-              Exhibited at Philharmonie de Paris in 2019.
-            </p>
-          </li>
-          <li class="item">
-            <h3 class="item__label">Label</h3>
-            <p class="item__text">
-              Exhibited at Philharmonie de Paris in 2019.
-            </p>
-          </li>
-          <li class="item">
-            <h3 class="item__label">Label</h3>
-            <p class="item__text">
-              Exhibited at Philharmonie de Paris in 2019.
-            </p>
-          </li>
-          <li class="item">
-            <h3 class="item__label">Label</h3>
-            <p class="item__text">
-              Exhibited at Philharmonie de Paris in 2019.
+              {{ item.text }}
             </p>
           </li>
         </ul>
@@ -128,6 +113,22 @@ const serializers = {
       </GridContainer>
       <ProjectsList :projects="project.relatedProjects" />
     </section>
+    <BottomAnchors>
+      <ul class="BottomAnchors__list" ref="$anchors">
+        <li class="BottomAnchors__item">
+          <button ref="$top">Top</button>
+        </li>
+        <li class="BottomAnchors__item">
+          <button ref="$description">Description</button>
+        </li>
+        <li class="BottomAnchors__item">
+          <button ref="$gallery">Gallery</button>
+        </li>
+        <li class="BottomAnchors__item">
+          <button ref="$credits">Credits</button>
+        </li>
+      </ul>
+    </BottomAnchors>
   </div>
 </template>
 
@@ -145,6 +146,7 @@ const serializers = {
 
     &__title {
       font-size: $main-text-size;
+      font-weight: $extra-light;
       position: absolute;
       bottom: 1.5rem;
       left: 2rem;
@@ -154,6 +156,7 @@ const serializers = {
   .content {
     &__claim {
       font-size: $main-text-size;
+      font-weight: $extra-light;
       margin-top: 6rem;
     }
 
@@ -199,10 +202,6 @@ const serializers = {
         &:not(:first-child) {
           margin-top: 12rem;
         }
-
-        &__image {
-          // ...
-        }
       }
     }
   }
@@ -223,7 +222,7 @@ const serializers = {
       .item {
         grid-column: auto / span 3;
         @include grid(3, 1fr, 1, 0);
-
+        
         &__label {
           color: $medium-grey;
           grid-column: 1 / span 2;
@@ -239,13 +238,13 @@ const serializers = {
   .related-projects {
     margin-top: 6rem;
 
-    .ProjectsList {
-      margin-top: 6rem;
-    }
-
     &__title {
       grid-column: 1 / -1;
       font-size: $main-text-size;
+    }
+
+    .ProjectsList {
+      margin-top: 6rem;
     }
   }
 }

@@ -1,0 +1,77 @@
+<script setup>
+const sanity = useSanity()
+const route = useRoute()
+
+const GET_SINGLE_PROJECT = groq`*[_type == "blog" && slug.current == "${route.params.slug}"][0]`
+const { data } = await useAsyncData('blog', () =>
+  sanity.fetch(GET_SINGLE_PROJECT)
+)
+const article = data._rawValue
+
+const serializers = {
+  marks: {
+    internalLink: 'a',
+  },
+}
+</script>
+
+<template>
+  <div class="article-page">
+    <Head>
+      <Title>{{ article.title }}</Title>
+      <Meta name="description" content="Project description" />
+    </Head>
+    <main class="main">
+      <GridContainer>
+        <section class="infos">
+          <GoBackButton />
+          <div class="infos__meta">
+            <h1 class="infos__title">{{ article.title }}</h1>
+            <p class="infos__excerpt">{{ article.excerpt }}</p>
+          </div>
+        </section>
+        <section class="content">
+          <VideoPlayer v-if="article.mainVideo" :id="article.mainVideo" />
+          <div class="content__gallery" v-for="media in article.gallery.medias">
+            <SanityImage :asset-id="media.asset._ref" auto="format" :q="75" />
+          </div>
+        </section>
+      </GridContainer>
+    </main>
+  </div>
+</template>
+
+<style lang="scss">
+.article-page {
+  .main {
+    position: relative;
+    margin-top: 12rem;
+
+    .infos {
+      grid-column: 1 / span 3;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: space-between;
+      height: calc(100vh - 12rem);
+      position: sticky;
+      padding-bottom: 2rem;
+      top: 12rem;
+
+      &__title {
+        text-decoration: underline;
+        text-decoration-thickness: from-font;
+        text-underline-offset: 0.5rem;
+      }
+
+      &__excerpt {
+        margin-top: 1rem;
+      }
+    }
+
+    .content {
+      grid-column: 4 / -1;
+    }
+  }
+}
+</style>

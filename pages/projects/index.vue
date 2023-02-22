@@ -4,16 +4,13 @@ const sanity = useSanity()
 
 const GET_PROJECTS = groq`*[_type == "projects"] | order(_createdAt desc)
   {
-    title,
-    slug,
-    _createdAt,
-    video,
-    mainImage,
-    mainVideo,
-    releaseDate,
+    ...,
+    categories[] -> {
+      title,
+      slug
+    },
     "categoriesTitles": categories[]->title, // Refactor this later not to use a join
-    "videoUrl": video.asset->url, //
-    gallery
+    "videoUrl": video.asset->url,
   }
 `
 let projects = await useAsyncData('projects', () => sanity.fetch(GET_PROJECTS))
@@ -253,11 +250,11 @@ function setListMode() {
 
   .ProjectsGrid {
     margin-top: 30rem;
-    margin-bottom: 7rem;
+    padding-bottom: 7rem;
   }
   .ProjectsList {
     margin-top: 30rem;
-    margin-bottom: 5rem;
+    padding-bottom: 5rem;
   }
 
   .container {
@@ -303,7 +300,6 @@ function setListMode() {
 
       .all__label,
       .category__label {
-        border-bottom: 0.1rem solid $black;
         transition: border-bottom 0.3s ease-in-out;
       }
 
@@ -312,7 +308,9 @@ function setListMode() {
 
         .all__label,
         .category__label {
-          border-bottom: 0.1rem solid $white;
+          text-decoration: underline;
+          text-decoration-thickness: from-font;
+          text-underline-offset: 0.5rem;
         }
       }
 
