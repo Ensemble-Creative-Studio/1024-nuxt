@@ -216,9 +216,6 @@ const about = data._rawValue
           margin-top: 1rem;
         }
 
-        &__name {
-        }
-
         &__roles {
           color: $medium-grey;
         }
