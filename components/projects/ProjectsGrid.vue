@@ -39,6 +39,10 @@ const props = defineProps({
 
   &--three-items {
     grid-template-columns: repeat(3, 1fr);
+
+    @include viewport-375 {
+      grid-template-columns: repeat(4, 1fr);
+    }
   }
 
   .item {
@@ -53,7 +57,7 @@ const props = defineProps({
         object-fit: cover;
         height: 100%;
         filter: grayscale(100%);
-        transition: .25s ease-in-out;
+        transition: 0.25s ease-in-out;
       }
     }
 

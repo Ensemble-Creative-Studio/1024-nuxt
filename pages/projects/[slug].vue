@@ -24,10 +24,6 @@ const { data } = await useAsyncData(`projects/${route.params.slug}`, () =>
 const project = data._rawValue
 
 const $galleryMedia = ref([])
-
-onMounted(() => {
-  console.log($galleryMedia.value)
-})
 </script>
 
 <template>
@@ -80,7 +76,7 @@ onMounted(() => {
               v-for="(item, index) in project?.gallery"
               :key="index"
             >
-              <ul v-if="item._type === 'galleryMedia'">
+              <ul class="item__inner" v-if="item._type === 'galleryMedia'">
                 <li v-for="image in item.images" ref="$galleryMedia">
                   <div class="item__image">
                     <SanityImage :asset-id="image.asset._ref" auto="format" />
@@ -139,6 +135,8 @@ onMounted(() => {
 
 <style lang="scss">
 .project-page {
+  position: relative;
+
   .hero {
     height: 100vh;
     position: relative;
@@ -159,27 +157,45 @@ onMounted(() => {
     &__title {
       font-size: $main-text-size;
       font-weight: $extra-light;
-      position: absolute;
+      position: fixed;
       bottom: 1.5rem;
       left: 2rem;
+
+      @include viewport-375 {
+        font-size: $mobile-main-text-size;
+        left: 1rem;
+        bottom: 6rem;
+      }
     }
   }
 
   .main {
     background-color: $black;
     padding-bottom: 5rem;
+    z-index: 10;
+    position: relative;
   }
 
   .content {
     &__claim {
+      grid-column: 2 / span 5;
       font-size: $main-text-size;
       font-weight: $extra-light;
       margin-top: 6rem;
+
+      @include viewport-375 {
+        font-size: $mobile-main-text-size;
+        grid-column: 1 / -1;
+      }
     }
 
-    &__claim,
     &__description {
       grid-column: 2 / span 5;
+
+      @include viewport-375 {
+        grid-column: 2 / -1;
+        font-size: $mobile-paragraph-text-size;
+      }
     }
 
     &__details {
@@ -215,6 +231,10 @@ onMounted(() => {
     &__title {
       font-size: $main-text-size;
       grid-column: 1 / -1;
+
+      @include viewport-375 {
+        font-size: $mobile-secondary-text-size;
+      }
     }
 
     &__counter {
@@ -234,6 +254,14 @@ onMounted(() => {
         &:not(:first-child) {
           margin-top: 12rem;
         }
+
+        &__inner {
+          li {
+            &:not(:first-child) {
+              margin-top: 12rem;
+            }
+          }
+        }
       }
     }
   }
@@ -242,8 +270,16 @@ onMounted(() => {
     margin-top: 9rem;
     padding-bottom: 9rem;
 
+    @include viewport-375 {
+      font-size: $mobile-secondary-text-size;
+    }
+
     &__header {
       grid-column: 2 / -1;
+
+      @include viewport-375 {
+        grid-column: 1 / -1;
+      }
     }
 
     &__wrapper {
@@ -251,17 +287,34 @@ onMounted(() => {
       @include grid(9, 1fr, 1, 3);
       margin-top: 6rem;
 
+      @include viewport-375 {
+        grid-column: 1 / -1;
+        @include grid(12, 1fr, 1, 0);
+      }
+
       .item {
         grid-column: auto / span 3;
         @include grid(3, 1fr, 1, 0);
 
+        @include viewport-375 {
+          grid-column: 1 / -1;
+        }
+
         &__label {
           color: $medium-grey;
           grid-column: 1 / span 2;
+
+          @include viewport-375 {
+            grid-column: 1 / span 2;
+          }
         }
 
         &__text {
           grid-column: 1 / span 2;
+
+          @include viewport-375 {
+            grid-column: 1 / span 2;
+          }
         }
       }
     }
@@ -273,6 +326,10 @@ onMounted(() => {
     &__title {
       grid-column: 1 / -1;
       font-size: $main-text-size;
+
+      @include viewport-375 {
+        font-size: $mobile-secondary-text-size;
+      }
     }
 
     .ProjectsList {

@@ -128,11 +128,13 @@ function toggleFilters() {
       :categories="categories"
       ref="$projectsGrid"
     />
-    <div class="mobile-bar" @click="toggleFilters()">
-      <button class="mobile-bar__filters">{{ showMobileFilters ? 'Close' : 'Filter' }}</button>
+    <div class="mobile-bar">
+      <button class="mobile-bar__filters" @click="toggleFilters()">
+        {{ showMobileFilters ? 'Close' : 'Filter' }}
+      </button>
       <div class="mobile-bar__display-mode">
-        <button class="mobile-bar__grid">Grid</button>
-        <button class="mobile-bar__list">List</button>
+        <button class="mobile-bar__grid" @click="setGridMode(4)">Grid</button>
+        <button class="mobile-bar__list" @click="setListMode()">List</button>
       </div>
     </div>
     <div :class="[showMobileFilters ? 'container--active' : '', 'container']">
@@ -220,6 +222,10 @@ function toggleFilters() {
   .ProjectsList {
     margin-top: 30rem;
     padding-bottom: 5rem;
+
+    @include viewport-375 {
+      margin-top: 15rem;
+    }
   }
 
   .container {
@@ -238,6 +244,7 @@ function toggleFilters() {
     border-top: 0.1rem solid $dark-grey;
 
     @include viewport-375 {
+      font-size: 1.6rem;
       height: auto;
       background-color: $black;
       justify-content: flex-start;
@@ -265,6 +272,16 @@ function toggleFilters() {
     align-items: center;
     padding: 1rem;
     display: none;
+
+    &__filters {
+      color: $medium-grey;
+    }
+
+    &__display-mode {
+      button:not(:first-child) {
+        margin-left: 2rem;
+      }
+    }
 
     @include viewport-375 {
       display: flex;
