@@ -1,5 +1,4 @@
 <script setup>
-// fetch single article from sanity
 const sanity = useSanity()
 const route = useRoute()
 

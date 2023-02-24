@@ -31,7 +31,7 @@ const about = data._rawValue
     </section>
     <section class="slider">
       <Swiper :slides-per-view="2.5" :space-between="10" :grab-cursor="true">
-        <SwiperSlide v-for="item in about.gallery">
+        <SwiperSlide v-for="item in about.gallery.medias">
           <SanityImage
             :asset-id="item.asset._ref"
             auto="format"
