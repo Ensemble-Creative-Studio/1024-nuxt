@@ -5,6 +5,8 @@ import 'swiper/css'
 const props = defineProps({
   blog: [Object],
 })
+
+const { isMobile } = useDevice();
 </script>
 
 <template>
@@ -16,7 +18,11 @@ const props = defineProps({
         :key="item._id"
       >
         <div class="item__container">
-          <VideoPlayer v-if="item.mainVideo" :id="item.mainVideo" />
+          <VideoPlayer
+            v-if="item.mainVideo"
+            :vimeoId="item.mainVideoUrl"
+            :quality="isMobile ? 'sd' : 'hd'"
+          />
           <Swiper
             :slides-per-view="1"
             :space-between="10"
@@ -53,6 +59,10 @@ const props = defineProps({
 
   .item {
     grid-column: 3 / span 8;
+
+    // &__link {
+    //   pointer-events: none;
+    // }
 
     &:not(:first-child) {
       margin-top: 12rem;

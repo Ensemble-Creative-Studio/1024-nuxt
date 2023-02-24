@@ -7,46 +7,41 @@ import { parseTime } from '@/utils/string'
 import { closest } from '@/utils/dom'
 
 const props = defineProps({
-  id: String,
+  vimeoId: String,
 })
+
+const $video = ref(null)
+
+onMounted(() => {
+  console.log($video.value)
+})
+
+function setVideo($event) {
+  console.log($video.value)
+  console.log($event);
+}
 </script>
 
 <template>
   <div class="VideoPlayer">
-    <img src="" alt="" />
-    <video class="video" ref="$video" nocontrols preload="auto" playsinline>
+    <video
+      class="video"
+      ref="$video"
+      autoplay
+      muted
+      controls
+      @loadedmetadata="setVideo($event)"
+    >
       <source
-        :src="'https://player.vimeo.com/video/' + props.id"
-        data-res="240"
+        :src="props.vimeoId"
         type="video/mp4"
       />
-      <!-- <source
-        :src="'/api/video/' + id"
-        data-res="360"
-        type="video/mp4"
-      />
-      <source
-        :src="'/api/video/' + id"
-        data-res="540"
-        type="video/mp4"
-      />
-      <source
-        :src="'/api/video/' + id"
-        data-res="720"
-        type="video/mp4"
-      />
-      <source
-        :src="'/api/video/' + id"
-        data-res="1080"
-        type="video/mp4"
-      /> -->
     </video>
   </div>
 </template>
 
 <style lang="scss">
 .VideoPlayer {
-  border: 0.1rem solid $white;
   position: relative;
   aspect-ratio: 110 / 62;
 

@@ -29,6 +29,8 @@ const serializers = {
     internalLink: 'a',
   },
 }
+
+const { isMobile } = useDevice()
 </script>
 
 <template>
@@ -47,7 +49,12 @@ const serializers = {
           </div>
         </section>
         <section class="content">
-          <VideoPlayer v-if="article.mainVideo" :id="article.mainVideo" />
+          <VideoPlayer
+            class="video"
+            v-if="article.mainVideo"
+            :vimeoId="article.mainVideoUrl"
+            :quality="isMobile ? 'sd' : 'hd'"
+          />
           <div class="content__gallery" v-if="article?.gallery?.medias">
             <SanityImage
               class="image"
@@ -95,7 +102,7 @@ const serializers = {
       grid-column: 4 / -1;
 
       &__gallery {
-        .image {
+        &:nth-child(n) {
           &:not(:first-child) {
             margin-top: 12rem;
           }
