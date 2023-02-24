@@ -31,10 +31,10 @@ function toggleNav() {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 10rem;
+  // height: 10rem;
   padding: 2rem;
   width: 100%;
-  z-index: 30;
+  z-index: 40;
 
   .SiteLogo {
     svg {

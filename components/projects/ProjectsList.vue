@@ -10,13 +10,13 @@ const props = defineProps({
     <li class="item" v-for="item in projects">
       <NuxtLink
         class="item__link"
-        :to="{ name: 'blog-slug', params: { slug: item.slug.current } }"
+        :to="{ name: 'projects-slug', params: { slug: item.slug.current } }"
         :key="item._id"
       >
         <div class="item__container">
           <div class="item__date">{{ item.releaseDate.slice(0, 4) }}</div>
-          <h3 class="item__title">{{ item.title }}</h3>
-          <ul class="item__categories">
+          <h3 class="item__title" v-if="item.title">{{ item.title }}</h3>
+          <ul class="item__categories" v-if="item.categories">
             <li class="item__category" v-for="category in item.categories">
               {{ category.title }}
             </li>
@@ -61,19 +61,16 @@ const props = defineProps({
 
     &__date {
       grid-column: 1 / span 1;
-      padding: 6rem 0;
     }
 
     &__title {
       grid-column: 2 / span 2;
-      padding: 6rem 0;
     }
 
     &__categories {
       grid-column: 4 / span 4;
       display: flex;
       color: $medium-grey;
-      padding: 6rem 0;
     }
 
     &__category {
@@ -86,6 +83,8 @@ const props = defineProps({
 
     &__thumbnail {
       grid-column: 11 / -1;
+      max-width: 21rem;
+      margin-left: auto;
       padding: 1.5rem 0;
 
       img {

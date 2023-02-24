@@ -14,8 +14,33 @@ const props = defineProps({
 <template>
   <div class="VideoPlayer">
     <img src="" alt="" />
-    <video src=""></video>
-    <div class="controls">Controls for video {{ id }}</div>
+    <video class="video" ref="$video" nocontrols preload="auto" playsinline>
+      <source
+        :src="'https://player.vimeo.com/video/' + props.id"
+        data-res="240"
+        type="video/mp4"
+      />
+      <!-- <source
+        :src="'/api/video/' + id"
+        data-res="360"
+        type="video/mp4"
+      />
+      <source
+        :src="'/api/video/' + id"
+        data-res="540"
+        type="video/mp4"
+      />
+      <source
+        :src="'/api/video/' + id"
+        data-res="720"
+        type="video/mp4"
+      />
+      <source
+        :src="'/api/video/' + id"
+        data-res="1080"
+        type="video/mp4"
+      /> -->
+    </video>
   </div>
 </template>
 

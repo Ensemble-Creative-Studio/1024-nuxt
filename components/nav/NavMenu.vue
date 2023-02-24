@@ -77,7 +77,7 @@ function closeMenu() {
   height: 100%;
   background-color: $black;
   padding: 9rem 1rem 5rem 1rem;
-  z-index: 20;
+  z-index: 30;
   margin: 0 auto;
   display: flex;
   flex-direction: column;

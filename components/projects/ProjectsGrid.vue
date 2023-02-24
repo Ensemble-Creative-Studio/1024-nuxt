@@ -9,7 +9,7 @@ const props = defineProps({
     <li class="item" v-for="item in projects">
       <NuxtLink
         class="item__link"
-        :to="{ name: 'blog-slug', params: { slug: item.slug.current } }"
+        :to="{ name: 'projects-slug', params: { slug: item.slug.current } }"
         :key="item._id"
       >
         <div class="item__thumbnail">
@@ -48,7 +48,13 @@ const props = defineProps({
       img {
         object-fit: cover;
         height: 100%;
+        filter: grayscale(100%);
+        transition: .25s ease-in-out;
       }
+    }
+
+    &:hover img {
+      filter: grayscale(0);
     }
 
     &__title {
