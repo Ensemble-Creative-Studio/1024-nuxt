@@ -32,6 +32,10 @@ const props = defineProps({
   column-gap: 1rem;
   row-gap: 2rem;
   padding: 0 1.5rem;
+  
+  @include viewport-375 {
+    padding: 0 1rem;
+  }
 
   // .item.animated {
   //   transition: all 0.5s ease-in-out;
