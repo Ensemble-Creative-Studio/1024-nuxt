@@ -18,7 +18,7 @@ const GET_SINGLE_PROJECT = groq`*[_type == "projects" && slug.current == "${rout
     }
   }
 `
-const { data } = await useAsyncData('projects', () =>
+const { data } = await useAsyncData(`projects/${route.params.slug}`, () =>
   sanity.fetch(GET_SINGLE_PROJECT)
 )
 const project = data._rawValue
