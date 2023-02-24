@@ -22,19 +22,6 @@ const { data } = await useAsyncData('projects', () =>
   sanity.fetch(GET_SINGLE_PROJECT)
 )
 const project = data._rawValue
-
-const serializers = {
-  // types: {
-  //   image: SanityImage,
-  // },
-  marks: {
-    // You can also just pass a string for a custom serializer if it's an HTML element
-    internalLink: 'a',
-  },
-}
-
-// Show anchors
-const showAnchors = ref(false)
 </script>
 
 <template>
@@ -54,81 +41,83 @@ const showAnchors = ref(false)
       <video class="hero__video" v-if="project.mainVideo" src=""></video>
       <h1 class="hero__title">{{ project.title }}</h1>
     </section>
-    <section class="content">
-      <GridContainer>
-        <div class="content__claim">
-          {{ project.claim }}
-        </div>
-        <div class="content__details">
-          <span class="content__date">{{
-            project.releaseDate.slice(0, 4)
-          }}</span>
-          <span class="content__type">Audio visual installation</span>
-        </div>
-        <div class="content__description">
-          <SanityContent
-            :blocks="project.description"
-            :serializers="serializers"
-          />
-        </div>
-      </GridContainer>
-    </section>
-    <section class="gallery">
-      <GridContainer>
-        <h2 class="gallery__title">Gallery</h2>
-        <ul class="gallery__wrapper">
-          <li
-            class="item"
-            v-if="project.gallery.medias"
-            v-for="(item, index) in project.gallery.medias"
-            :key="index"
-          >
-            <div class="item__image">
-              <SanityImage :asset-id="item.asset._ref" auto="format" />
-            </div>
-            <div class="item__video"></div>
+    <main class="main">
+      <section class="content">
+        <GridContainer>
+          <div class="content__claim">
+            {{ project.claim }}
+          </div>
+          <div class="content__details">
+            <span class="content__date">{{
+              project.releaseDate.slice(0, 4)
+            }}</span>
+            <span class="content__type">Audio visual installation</span>
+          </div>
+          <div class="content__description">
+            <SanityContent
+              :blocks="project.description"
+              :serializers="serializers"
+            />
+          </div>
+        </GridContainer>
+      </section>
+      <section class="gallery">
+        <GridContainer>
+          <h2 class="gallery__title">Gallery</h2>
+          <ul class="gallery__wrapper">
+            <li
+              class="item"
+              v-if="project?.gallery?.medias"
+              v-for="(item, index) in project?.gallery?.medias"
+              :key="index"
+            >
+              <div class="item__image">
+                <SanityImage :asset-id="item.asset._ref" auto="format" />
+              </div>
+              <div class="item__video"></div>
+            </li>
+          </ul>
+        </GridContainer>
+      </section>
+      <section class="credits">
+        <GridContainer>
+          <header class="credits__header">
+            <div>{{ project.title }}</div>
+            <span>1024 architecture</span>
+          </header>
+          <ul class="credits__wrapper">
+            <li class="item" v-for="item in project?.credits?.list">
+              <h3 class="item__label">{{ item.role }}</h3>
+              <p class="item__text">
+                {{ item.text }}
+              </p>
+            </li>
+          </ul>
+        </GridContainer>
+      </section>
+      <section class="related-projects" v-if="project.relatedProjects">
+        <GridContainer>
+          <h2 class="related-projects__title">Related projects</h2>
+        </GridContainer>
+        <ProjectsList :projects="project.relatedProjects" />
+      </section>
+      <BottomAnchors>
+        <ul class="BottomAnchors__list">
+          <li class="BottomAnchors__item">
+            <button ref="$top">Top</button>
+          </li>
+          <li class="BottomAnchors__item">
+            <button ref="$description">Description</button>
+          </li>
+          <li class="BottomAnchors__item">
+            <button ref="$gallery">Gallery</button>
+          </li>
+          <li class="BottomAnchors__item">
+            <button ref="$credits">Credits</button>
           </li>
         </ul>
-      </GridContainer>
-    </section>
-    <section class="credits">
-      <GridContainer>
-        <header class="credits__header">
-          <div>{{ project.title }}</div>
-          <span>1024 architecture</span>
-        </header>
-        <ul class="credits__wrapper">
-          <li class="item" v-for="item in project.credits.list">
-            <h3 class="item__label">{{ item.role }}</h3>
-            <p class="item__text">
-              {{ item.text }}
-            </p>
-          </li>
-        </ul>
-      </GridContainer>
-    </section>
-    <section class="related-projects">
-      <GridContainer>
-        <h2 class="related-projects__title">Related projects</h2>
-      </GridContainer>
-      <ProjectsList :projects="project.relatedProjects" />
-    </section>
-    <BottomAnchors>
-      <ul class="BottomAnchors__list" ref="$anchors">
-        <li class="BottomAnchors__item">
-          <button ref="$top">Top</button>
-        </li>
-        <li class="BottomAnchors__item">
-          <button ref="$description">Description</button>
-        </li>
-        <li class="BottomAnchors__item">
-          <button ref="$gallery">Gallery</button>
-        </li>
-        <li class="BottomAnchors__item">
-          <button ref="$credits">Credits</button>
-        </li>
-      </ul>
-    </BottomAnchors>
+      </BottomAnchors>
+    </main>
   </div>
 </template>
 
@@ -137,10 +126,17 @@ const showAnchors = ref(false)
   .hero {
     height: 100vh;
     position: relative;
+    background-color: transparent;
 
     &__thumbnail,
     &__video {
       height: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      z-index: -1;
       object-fit: cover;
     }
 
@@ -151,6 +147,11 @@ const showAnchors = ref(false)
       bottom: 1.5rem;
       left: 2rem;
     }
+  }
+
+  .main {
+    background-color: $black;
+    padding-bottom: 5rem;
   }
 
   .content {
@@ -195,6 +196,7 @@ const showAnchors = ref(false)
     &__wrapper {
       grid-column: 1 / -1;
       @include grid(12, 1fr, 1, 0);
+      margin-top: 6rem;
 
       .item {
         grid-column: 3 / span 8;
@@ -222,7 +224,7 @@ const showAnchors = ref(false)
       .item {
         grid-column: auto / span 3;
         @include grid(3, 1fr, 1, 0);
-        
+
         &__label {
           color: $medium-grey;
           grid-column: 1 / span 2;

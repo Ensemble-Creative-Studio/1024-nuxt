@@ -1,10 +1,27 @@
 <script setup>
+// fetch single article from sanity
 const sanity = useSanity()
 const route = useRoute()
 
-const GET_SINGLE_PROJECT = groq`*[_type == "blog" && slug.current == "${route.params.slug}"][0]`
+const GET_SINGLE_ARTICLE = groq`*[_type == "blog" && slug.current == "${route.params.slug}"][0]
+  {
+    ...,
+    relatedProjects[] -> {
+      title,
+      slug,
+      releaseDate,
+      mainImage,
+      mainVideo,
+      categories[] -> {
+        title,
+        slug
+      }
+    }
+  }
+`
+
 const { data } = await useAsyncData('blog', () =>
-  sanity.fetch(GET_SINGLE_PROJECT)
+  sanity.fetch(GET_SINGLE_ARTICLE)
 )
 const article = data._rawValue
 
@@ -32,8 +49,14 @@ const serializers = {
         </section>
         <section class="content">
           <VideoPlayer v-if="article.mainVideo" :id="article.mainVideo" />
-          <div class="content__gallery" v-for="media in article.gallery.medias">
-            <SanityImage :asset-id="media.asset._ref" auto="format" :q="75" />
+          <div class="content__gallery" v-if="article?.gallery?.medias">
+            <SanityImage
+              class="image"
+              v-for="media in article?.gallery?.medias"
+              :asset-id="media.asset._ref"
+              auto="format"
+              :q="75"
+            />
           </div>
         </section>
       </GridContainer>
@@ -71,6 +94,18 @@ const serializers = {
 
     .content {
       grid-column: 4 / -1;
+
+      &__gallery {
+        .image {
+          &:not(:first-child) {
+            margin-top: 12rem;
+          }
+
+          &:last-child {
+            padding-bottom: 12rem;
+          }
+        }
+      }
     }
   }
 }
