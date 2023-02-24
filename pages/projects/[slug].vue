@@ -53,7 +53,7 @@ const $galleryMedia = ref([])
             <span class="content__date">{{
               project.releaseDate.slice(0, 4)
             }}</span>
-            <span class="content__type">Audio visual installation</span>
+            <span class="content__type">{{ project.field }}</span>
           </div>
           <div class="content__description">
             <SanityContent
@@ -71,7 +71,10 @@ const $galleryMedia = ref([])
           </div>
           <ul class="gallery__wrapper">
             <li
-              class="item"
+              :class="[
+                item._type === 'galleryMedia' ? 'item--media' : 'item--text',
+                'item',
+              ]"
               v-if="project?.gallery"
               v-for="(item, index) in project?.gallery"
               :key="index"
@@ -230,10 +233,11 @@ const $galleryMedia = ref([])
 
     &__title {
       font-size: $main-text-size;
+      font-weight: $extra-light;
       grid-column: 1 / -1;
 
       @include viewport-375 {
-        font-size: $mobile-secondary-text-size;
+        font-size: $mobile-main-text-size;
       }
     }
 
@@ -241,6 +245,11 @@ const $galleryMedia = ref([])
       margin-left: 1rem;
       font-size: 2.6rem;
       color: $medium-grey;
+
+      @include viewport-375 {
+        transform: scale(0.7);
+        transform-origin: top left;
+      }
     }
 
     &__wrapper {
@@ -249,7 +258,22 @@ const $galleryMedia = ref([])
       margin-top: 6rem;
 
       .item {
-        grid-column: 3 / span 8;
+        &--media {
+          grid-column: 3 / span 8;
+
+          @include viewport-375 {
+            grid-column: 1 / -1;
+          }
+        }
+
+        &--text {
+          grid-column: 2 / span 6;
+
+          @include viewport-375 {
+            font-size: $mobile-paragraph-text-size;
+            grid-column: 2 / -1;
+          }
+        }
 
         &:not(:first-child) {
           margin-top: 12rem;
@@ -288,7 +312,7 @@ const $galleryMedia = ref([])
       margin-top: 6rem;
 
       @include viewport-375 {
-        grid-column: 1 / -1;
+        grid-column: 2 / span 10;
         @include grid(12, 1fr, 1, 0);
       }
 
@@ -298,6 +322,10 @@ const $galleryMedia = ref([])
 
         @include viewport-375 {
           grid-column: 1 / -1;
+
+          &:not(:first-child) {
+            margin-top: 3rem;
+          }
         }
 
         &__label {
@@ -305,7 +333,7 @@ const $galleryMedia = ref([])
           grid-column: 1 / span 2;
 
           @include viewport-375 {
-            grid-column: 1 / span 2;
+            grid-column: 1 / -1;
           }
         }
 
@@ -313,7 +341,7 @@ const $galleryMedia = ref([])
           grid-column: 1 / span 2;
 
           @include viewport-375 {
-            grid-column: 1 / span 2;
+            grid-column: 1 / -1;
           }
         }
       }
@@ -326,9 +354,10 @@ const $galleryMedia = ref([])
     &__title {
       grid-column: 1 / -1;
       font-size: $main-text-size;
+      font-weight: $extra-light;
 
       @include viewport-375 {
-        font-size: $mobile-secondary-text-size;
+        font-size: $mobile-main-text-size;
       }
     }
 

@@ -49,6 +49,8 @@ const $projectVideo = ref(null)
 
     @include viewport-375 {
       font-size: $mobile-main-text-size;
+      left: 1rem;
+      bottom: 1rem;
     }
   }
 

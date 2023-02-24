@@ -55,5 +55,9 @@ const home = data._rawValue
       }
     }
   }
+
+  .FeaturedProjects {
+    margin-top: 12rem;
+  }
 }
 </style>

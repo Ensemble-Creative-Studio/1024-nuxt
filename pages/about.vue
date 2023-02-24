@@ -14,6 +14,8 @@ const about = data._rawValue
 // const onSlideChange = () => {
 //   console.log('slide change')
 // }
+
+const { isMobile } = useDevice();
 </script>
 
 <template>
@@ -30,7 +32,7 @@ const about = data._rawValue
       </GridContainer>
     </section>
     <section class="slider">
-      <Swiper :slides-per-view="2.5" :space-between="10" :grab-cursor="true">
+      <Swiper :slides-per-view="isMobile ? 1.1 : 2.5" :space-between="10" :grab-cursor="true">
         <SwiperSlide v-for="item in about.gallery.medias">
           <SanityImage
             :asset-id="item.asset._ref"
@@ -155,16 +157,29 @@ const about = data._rawValue
   height: 100vh;
   padding-top: 26rem;
 
+  @include viewport-375 {
+    padding-top: 15rem;
+  }
+
   .hero {
     .title {
+      grid-column: 2 / span 5;
       font-size: $secondary-text-size;
       font-weight: $extra-light;
-      grid-column: 2 / span 5;
+
+      @include viewport-375 {
+        grid-column: 1 / -1;
+        font-size: $mobile-secondary-text-size;
+      }
     }
   }
 
   .slider {
     margin-top: 12rem;
+
+    @include viewport-375 {
+      margin-top: 6rem;
+    }
 
     .swiper {
       padding: 0 2rem;
@@ -174,8 +189,17 @@ const about = data._rawValue
   .description {
     margin-top: 12rem;
 
+    @include viewport-375 {
+      margin-top: 6rem;
+    }
+
     p {
       grid-column: 2 / span 5;
+
+      @include viewport-375 {
+        grid-column: 2 / -1;
+        font-size: $mobile-paragraph-text-size;
+      }
     }
   }
 
@@ -184,16 +208,50 @@ const about = data._rawValue
     font-size: 12rem;
     font-weight: $extra-light;
 
+    @include viewport-375 {
+      font-size: 4.6rem;
+      margin-top: 6rem;
+    }
+
     span {
       white-space: nowrap;
+    }
+  }
+
+  .marquee {
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .marquee span {
+    display: inline-block;
+    animation: marquee 60s linear infinite;
+  }
+
+  @keyframes marquee {
+    0% {
+      transform: translate3d(100%, 0, 0);
+    }
+    100% {
+      transform: translate3d(-100%, 0, 0);
     }
   }
 
   .history {
     margin-top: 12rem;
 
+    @include viewport-375 {
+      margin-top: 6rem;
+    }
+
     p {
       grid-column: 2 / span 5;
+
+      @include viewport-375 {
+        grid-column: 2 / -1;
+        font-size: $mobile-paragraph-text-size;
+      }
     }
   }
 
@@ -201,12 +259,24 @@ const about = data._rawValue
     margin-top: 12rem;
     font-weight: $extra-light;
 
+    @include viewport-375 {
+      margin-top: 6rem;
+    }
+
     &__wrapper {
       @include grid(12, 1fr, 1, 2);
       padding: 0 2rem;
 
+      @include viewport-375 {
+        row-gap: 6rem;
+      }
+
       .item {
         grid-column: auto / span 4;
+
+        @include viewport-375 {
+          grid-column: 1 / -1;
+        }
 
         &__image {
           aspect-ratio: 1 / 1;
@@ -228,8 +298,17 @@ const about = data._rawValue
     font-size: $secondary-text-size;
     font-weight: $extra-light;
 
+    @include viewport-375 {
+      margin-top: 6rem;
+    }
+
     p {
       grid-column: 2 / span 5;
+
+      @include viewport-375 {
+        grid-column: 1 / -1;
+        font-size: $mobile-secondary-text-size;
+      }
     }
   }
 
@@ -239,40 +318,84 @@ const about = data._rawValue
     margin-top: 12rem;
     font-weight: $extra-light;
 
+    @include viewport-375 {
+      margin-top: 6rem;
+      font-weight: $light;
+    }
+
     &__title {
-      font-size: $secondary-text-size;
       grid-column: 2 / -1;
+      font-size: $secondary-text-size;
+      font-weight: $extra-light;
+
+      @include viewport-375 {
+        grid-column: 1 / -1;
+        font-size: $mobile-secondary-text-size;
+      }
     }
 
     &__list {
       margin-top: 6rem;
 
+      @include viewport-375 {
+        margin-top: 2rem;
+      }
+
       .item {
         border-top: 0.1rem solid $dark-grey;
         font-size: $list-text-size;
+
+        @include viewport-375 {
+          font-size: $mobile-list-text-size;
+          border-top: none;
+        }
+
+        &:not(:first-child) {
+          margin-top: 1.5rem
+        }
 
         &__container {
           @include grid(12, 1fr, 1, 0);
           padding: 0 2rem;
           align-items: center;
           position: relative;
+
+          @include viewport-375 {
+            padding: 0 1rem;
+          }
         }
 
         &__date {
           grid-column: 2 / span 1;
           color: $medium-grey;
           padding: 3rem 0;
+
+          @include viewport-375 {
+            grid-column: 1 / span 2;
+            padding: 0;
+          }
         }
 
         &__title {
           grid-column: 3 / span 4;
           padding: 3rem 0;
+
+          @include viewport-375 {
+            grid-column: 3 / -1;
+            padding: 0;
+          }
         }
 
         &__localization {
           grid-column: 7 / -1;
           color: $medium-grey;
           padding: 3rem 0;
+
+          @include viewport-375 {
+            padding: 0;
+            grid-row: 2;
+            grid-column: 3 / -1;
+          }
         }
       }
     }
@@ -280,6 +403,10 @@ const about = data._rawValue
 
   .festivals {
     padding-bottom: 5rem;
+
+    @include viewport-375 {
+      padding-bottom: 6.5rem;
+    }
   }
 }
 </style>

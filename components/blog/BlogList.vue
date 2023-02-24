@@ -6,7 +6,7 @@ const props = defineProps({
   blog: [Object],
 })
 
-const { isMobile } = useDevice();
+const { isMobile } = useDevice()
 </script>
 
 <template>
@@ -38,7 +38,6 @@ const { isMobile } = useDevice();
               />
             </SwiperSlide>
           </Swiper>
-          <div class="item__content"></div>
           <div class="item__meta">
             <h3 class="item__title">{{ item.title }}</h3>
             <p class="item__excerpt">
@@ -57,12 +56,17 @@ const { isMobile } = useDevice();
   padding: 0 2rem;
   margin-top: 12rem;
 
+  @include viewport-375 {
+    padding: 0 1rem;
+    margin-top: 15rem;
+  }
+
   .item {
     grid-column: 3 / span 8;
 
-    // &__link {
-    //   pointer-events: none;
-    // }
+    @include viewport-375 {
+      grid-column: 1 / -1;
+    }
 
     &:not(:first-child) {
       margin-top: 12rem;
@@ -92,6 +96,10 @@ const { isMobile } = useDevice();
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
+
+      @include viewport-375 {
+        @include grid(12, 1fr, 1, 0);
+      }
     }
 
     &__title {
@@ -99,11 +107,21 @@ const { isMobile } = useDevice();
       text-decoration: underline;
       text-decoration-thickness: from-font;
       text-underline-offset: 0.5rem;
+
+      @include viewport-375 {
+        grid-column: 1 / -1;
+      }
     }
 
     &__excerpt {
       flex: 1;
       margin-left: 1rem;
+
+      @include viewport-375 {
+        margin-left: 0;
+        margin-top: 2rem;
+        grid-column: 2 / span 10;
+      }
     }
   }
 }

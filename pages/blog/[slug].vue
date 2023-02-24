@@ -87,28 +87,61 @@ const { isMobile } = useDevice()
       padding-bottom: 2rem;
       top: 12rem;
 
+      @include viewport-375 {
+        grid-column: 1 / -1;
+        position: relative;
+        top: 0;
+        height: auto;
+        padding-bottom: 0;
+      }
+
+      &__meta {
+        @include viewport-375 {
+          @include grid(12, 1fr, 1, 0);
+        }
+      }
+
       &__title {
         text-decoration: underline;
         text-decoration-thickness: from-font;
         text-underline-offset: 0.5rem;
+
+        @include viewport-375 {
+          grid-column: 1 / -1;
+        }
       }
 
       &__excerpt {
         margin-top: 1rem;
+
+        @include viewport-375 {
+          margin-top: 2rem;
+          grid-column: 2 / span 10;
+        }
       }
     }
 
     .content {
       grid-column: 4 / -1;
 
+      @include viewport-375 {
+        grid-column: 1 / -1;
+      }
+
       &__gallery {
-        &:nth-child(n) {
+        .image {
+          &:first-child {
+            @include viewport-375 {
+              margin-top: 6rem;
+            }
+          } 
+
           &:not(:first-child) {
             margin-top: 12rem;
-          }
 
-          &:last-child {
-            padding-bottom: 12rem;
+            @include viewport-375 {
+              margin-top: 6rem;
+            }
           }
         }
       }

@@ -50,21 +50,32 @@ const blog = data._rawValue
     padding-bottom: 12rem;
     font-size: $list-text-size;
 
+    @include viewport-375 {
+      margin-top: 9rem;
+      padding-bottom: 4rem;
+      font-size: $mobile-list-text-size;
+    }
+
     &__container {
       grid-column: 3 / span 8;
       display: flex;
       align-items: center;
+
+      @include viewport-375 {
+        grid-column: 1 / -1;
+        display: block;
+      }
     }
 
     &__separator {
       margin: 0 2rem;
     }
 
-    &__previous {
-    }
+    // &__previous {
+    // }
 
-    &__next {
-    }
+    // &__next {
+    // }
 
     &__button {
       text-decoration: underline;
@@ -75,6 +86,10 @@ const blog = data._rawValue
     &__pages {
       display: flex;
       align-items: center;
+
+      @include viewport-375 {
+        margin-top: 2rem;
+      }
 
       li {
         &:not(:first-child) {

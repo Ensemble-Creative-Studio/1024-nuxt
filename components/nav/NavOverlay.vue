@@ -10,5 +10,7 @@
   width: 100%;
   height: 100%;
   z-index: 20;
+  mix-blend-mode: difference;
+  background-color: $white;
 }
 </style>
