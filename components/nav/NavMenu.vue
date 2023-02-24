@@ -39,13 +39,28 @@ function closeMenu() {
       </ul>
       <ul class="annex">
         <li class="annex__item">
-          <NuxtLink class="annex__link" to="/">Press</NuxtLink>
+          <a
+            class="annex__link"
+            :href="navMenu.externalLinks.press"
+            target="blank"
+            >Press</a
+          >
         </li>
         <li class="annex__item">
-          <NuxtLink class="annex__link" to="/">Jobs / Internships</NuxtLink>
+          <a
+            class="annex__link"
+            :href="navMenu.externalLinks.jobs"
+            target="blank"
+            >Jobs / Internships</a
+          >
         </li>
         <li class="annex__item">
-          <NuxtLink class="annex__link" to="/">Requests</NuxtLink>
+          <a
+            class="annex__link"
+            :href="navMenu.externalLinks.requests"
+            target="blank"
+            >Requests</a
+          >
         </li>
       </ul>
       <ul class="social-media">
@@ -87,18 +102,39 @@ function closeMenu() {
   transition-property: opacity transform;
   visibility: hidden;
 
+  @include viewport-375 {
+    transform: translate(0%, -100%);
+    width: 100%;
+    padding: 9rem 1rem 2rem 1rem;
+  }
+
   &--active {
     transform: translateX(0%);
     visibility: visible;
+
+    @include viewport-375 {
+      transform: translate(0%, 0%);
+    }
   }
 
   &__main {
     margin: 0 20rem;
     font-size: $main-text-size;
+
+    @include viewport-375 {
+      margin: auto;
+      width: 100%;
+      font-size: $mobile-main-text-size;
+    }
   }
 
   &__secondary {
     margin: 0 20rem;
+
+    @include viewport-375 {
+      margin: auto;
+      width: 100%;
+    }
 
     .address {
       margin-left: 3rem;
@@ -125,6 +161,12 @@ function closeMenu() {
       align-items: center;
       margin-top: 3rem;
       justify-content: center;
+
+      @include viewport-375 {
+        align-items: flex-start;
+        justify-content: flex-start;
+        margin-left: 3rem;
+      }
 
       &__item {
         &:not(:first-child) {

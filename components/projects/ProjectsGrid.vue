@@ -33,15 +33,19 @@ const props = defineProps({
   row-gap: 2rem;
   padding: 0 1.5rem;
 
-  .item.animated {
-    transition: all 0.5s ease-in-out;
-  }
+  // .item.animated {
+  //   transition: all 0.5s ease-in-out;
+  // }
 
   &--three-items {
     grid-template-columns: repeat(3, 1fr);
   }
 
   .item {
+    @include viewport-375 {
+      grid-column: auto / span 2;
+    }
+
     &__thumbnail {
       aspect-ratio: 1 / 1;
 

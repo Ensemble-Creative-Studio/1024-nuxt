@@ -37,12 +37,22 @@ const home = data._rawValue
 .index {
   .hero {
     height: 100vh;
-    padding-top: 26rem;
+    padding-top: 30rem;
+
+    @include viewport-375 {
+      height: auto;
+      padding-top: 15rem; //
+    }
 
     .title {
       grid-column: 2 / span 8;
       font-size: $main-text-size;
       font-weight: $extra-light;
+
+      @include viewport-375 {
+        grid-column: 1 / span 10;
+        font-size: $mobile-secondary-text-size;
+      }
     }
   }
 }

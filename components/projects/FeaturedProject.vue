@@ -36,12 +36,20 @@ const $projectVideo = ref(null)
   position: relative;
   margin-top: -2rem;
 
+  @include viewport-375 {
+    margin-top: 0;
+  }
+
   &__title {
     font-size: $main-text-size;
     font-weight: $extra-light;
     position: absolute;
     bottom: calc(1.5rem + 2rem);
     left: 2rem;
+
+    @include viewport-375 {
+      font-size: $mobile-main-text-size;
+    }
   }
 
   &__thumbnail,

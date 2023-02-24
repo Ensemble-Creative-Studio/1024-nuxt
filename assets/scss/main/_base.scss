@@ -1,4 +1,9 @@
+@import './../resources/mixins';
 @import './../resources/variables';
+
+html {
+  overflow-x: hidden; // Experimental
+}
 
 body {
   font-size: $default-text-size;
@@ -8,6 +13,10 @@ body {
   background-color: $black;
   color: $white;
   overflow-x: hidden;
+
+  @include viewport-375 {
+    font-size: $mobile-default-text-size;
+  }
 }
 
 ::selection {

@@ -9,5 +9,9 @@
   @include grid(12, 1fr, 1, 0);
   width: 100%;
   padding: 0 2rem;
+
+  @include viewport-375 {
+    padding: 0 1rem;
+  }
 }
 </style>

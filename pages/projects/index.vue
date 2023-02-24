@@ -1,5 +1,4 @@
 <script setup>
-// Fetch data
 const sanity = useSanity()
 
 const GET_PROJECTS = groq`*[_type == "projects"] | order(_createdAt desc)
@@ -27,59 +26,8 @@ let categories = await useAsyncData('categories', () =>
 )
 categories = categories.data._rawValue
 
-// Order
-const $order = ref(null)
-const $name = ref(null)
-const $date = ref(null)
-const currentOrder = ref('date')
-
-const projectTitles = ref([])
-const projectDates = ref([])
-
-function orderByDate() {
-  currentOrder.value = 'date'
-}
-
-function orderByName() {
-  currentOrder.value = 'name'
-}
-
-function testDate(a, b) {
-  if (a.releaseDate.slice(0, 4) < b.releaseDate.slice(0, 4)) {
-    return -1
-  }
-  if (a.releaseDate.slice(0, 4) > b.releaseDate.slice(0, 4)) {
-    return 1
-  }
-  return 0
-}
-
-function testName(a, b) {
-  if (a.title < b.title) {
-    return -1
-  }
-  if (a.title > b.title) {
-    return 1
-  }
-  return 0
-}
-
-// console.log(projectTitles._rawValue)
-// console.log(projectDates._rawValue)
-
-const orderedProjects = computed(() => {
-  // Return projects ordered by name
-  if (currentOrder.value === 'name') {
-    console.log('Filter by name')
-    return projects.sort(testName)
-  }
-
-  // Else, return projects ordered by date
-  if (currentOrder.value === 'date') {
-    console.log('Filter by date')
-    return projects.sort(testDate)
-  }
-})
+// Ordering by date or name
+// ...
 
 // Filters
 const tags = ref([])
@@ -153,6 +101,12 @@ function setListMode() {
   }
 }
 
+const showMobileFilters = ref(false)
+
+function toggleFilters() {
+  showMobileFilters.value = !showMobileFilters.value
+}
+
 // Final computed
 // ...
 </script>
@@ -174,7 +128,14 @@ function setListMode() {
       :categories="categories"
       ref="$projectsGrid"
     />
-    <div class="container">
+    <div class="mobile-bar" @click="toggleFilters()">
+      <button class="mobile-bar__filters">{{ showMobileFilters ? 'Close' : 'Filter' }}</button>
+      <div class="mobile-bar__display-mode">
+        <button class="mobile-bar__grid">Grid</button>
+        <button class="mobile-bar__list">List</button>
+      </div>
+    </div>
+    <div :class="[showMobileFilters ? 'container--active' : '', 'container']">
       <ul class="order" ref="$order">
         <li>
           <button ref="$date" @click="orderByDate()">Date</button>
@@ -251,6 +212,10 @@ function setListMode() {
   .ProjectsGrid {
     margin-top: 30rem;
     padding-bottom: 7rem;
+
+    @include viewport-375 {
+      margin-top: 15rem;
+    }
   }
   .ProjectsList {
     margin-top: 30rem;
@@ -271,11 +236,50 @@ function setListMode() {
     color: $medium-grey;
     width: 100%;
     border-top: 0.1rem solid $dark-grey;
+
+    @include viewport-375 {
+      height: auto;
+      background-color: $black;
+      justify-content: flex-start;
+      align-items: flex-start;
+      padding: 3rem 1rem;
+      transform: translateY(calc(100% - 41px));
+      transition: 0.6s ease-in-out;
+      transition-property: opacity transform;
+
+      &--active {
+        transform: translateY(-4rem);
+      }
+    }
+  }
+
+  .mobile-bar {
+    height: 4rem;
+    z-index: 40;
+    background-color: $black;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    display: none;
+
+    @include viewport-375 {
+      display: flex;
+    }
   }
 
   .order {
     display: flex;
     align-items: center;
+
+    @include viewport-375 {
+      display: block;
+      order: 2;
+      flex: 1;
+    }
 
     & > li {
       button {
@@ -284,6 +288,11 @@ function setListMode() {
 
       &:not(:first-child) {
         margin-left: 2rem;
+
+        @include viewport-375 {
+          margin-left: 0;
+          margin-top: 2rem;
+        }
       }
     }
   }
@@ -292,11 +301,28 @@ function setListMode() {
     display: flex;
     align-items: center;
 
+    @include viewport-375 {
+      display: block;
+      flex: 1;
+    }
+
+    > li {
+      &:not(:first-child) {
+        @include viewport-375 {
+          margin: 2rem 0;
+        }
+      }
+    }
+
     .all,
     .category {
       cursor: pointer;
       transition: color 0.3s ease-in-out;
       margin-left: 2rem;
+
+      @include viewport-375 {
+        margin-left: 0;
+      }
 
       .all__label,
       .category__label {
@@ -327,6 +353,10 @@ function setListMode() {
   .display-mode {
     display: flex;
     align-items: center;
+
+    @include viewport-375 {
+      display: none;
+    }
 
     & > li {
       cursor: pointer;

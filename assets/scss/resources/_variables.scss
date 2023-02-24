@@ -1,13 +1,3 @@
-// Screen breakpoints
-$viewport-320: 321px;
-$viewport-375: 375px;
-$viewport-480: 481px;
-$viewport-768: 769px;
-$viewport-1024: 1025px;
-$viewport-1200: 1201px;
-$viewport-1400: 1401px;
-$viewport-1600: 1601px;
-
 // Colors
 $black: #000000;
 $dark-dark-grey: #232323;
@@ -31,6 +21,18 @@ $secondary-text-size: 4rem;
 $list-text-size: 2.6rem;
 $paragraph-text-size: 2.4rem;
 $default-text-size: 2rem;
+
+// $tablet-main-text-size: 4.8rem;
+// $tablet-secondary-text-size: 3.6rem;
+// $tablet-list-text-size: 2.4rem;
+// $tablet-paragraph-text-size: 2.2rem;
+// $tablet-default-text-size: 1.8rem;
+
+$mobile-main-text-size: 3.6rem;
+$mobile-secondary-text-size: 2.6rem;
+$mobile-list-text-size: 1.6rem;
+$mobile-paragraph-text-size: 1.6rem;
+$mobile-default-text-size: 1.6rem;
 
 // Line heights
 $main-text-lh: 1;
