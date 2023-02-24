@@ -22,6 +22,12 @@ const { data } = await useAsyncData(`projects/${route.params.slug}`, () =>
   sanity.fetch(GET_SINGLE_PROJECT)
 )
 const project = data._rawValue
+
+const $galleryMedia = ref([])
+
+onMounted(() => {
+  console.log($galleryMedia.value)
+})
 </script>
 
 <template>
@@ -63,17 +69,27 @@ const project = data._rawValue
       </section>
       <section class="gallery">
         <GridContainer>
-          <h2 class="gallery__title">Gallery</h2>
+          <div class="gallery__title-container">
+            <h2 class="gallery__title">Gallery</h2>
+            <span class="gallery__counter">{{ $galleryMedia.length }}</span>
+          </div>
           <ul class="gallery__wrapper">
             <li
               class="item"
-              v-if="project?.gallery?.medias"
-              v-for="(item, index) in project?.gallery?.medias"
+              v-if="project?.gallery"
+              v-for="(item, index) in project?.gallery"
               :key="index"
             >
-              <div class="item__image">
-                <SanityImage :asset-id="item.asset._ref" auto="format" />
-              </div>
+              <ul v-if="item._type === 'galleryMedia'">
+                <li v-for="image in item.images" ref="$galleryMedia">
+                  <div class="item__image">
+                    <SanityImage :asset-id="image.asset._ref" auto="format" />
+                  </div>
+                </li>
+              </ul>
+              <p class="item__text" v-if="item._type === 'galleryText'">
+                {{ item.text }}
+              </p>
               <div class="item__video"></div>
             </li>
           </ul>
@@ -180,17 +196,31 @@ const project = data._rawValue
       margin-top: 6rem;
 
       p {
-        margin-top: 4rem;
+        &:not(:first-child) {
+          margin-top: 4rem;
+        }
       }
     }
   }
 
   .gallery {
-    margin-top: 6rem;
+    margin-top: 12rem;
+
+    &__title-container {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: flex-start;
+    }
 
     &__title {
       font-size: $main-text-size;
       grid-column: 1 / -1;
+    }
+
+    &__counter {
+      margin-left: 1rem;
+      font-size: 2.6rem;
+      color: $medium-grey;
     }
 
     &__wrapper {
