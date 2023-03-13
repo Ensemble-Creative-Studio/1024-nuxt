@@ -90,6 +90,7 @@ function closeMenu() {
   top: 0;
   right: 0;
   height: 100%;
+  width: 55.7rem; // WIP
   background-color: $black;
   padding: 9rem 1rem 5rem 1rem;
   z-index: 30;
@@ -118,7 +119,7 @@ function closeMenu() {
   }
 
   &__main {
-    margin: 0 20rem;
+    // margin: 0;
     font-size: $main-text-size;
 
     @include viewport-375 {
@@ -129,7 +130,7 @@ function closeMenu() {
   }
 
   &__secondary {
-    margin: 0 20rem;
+    // margin: 0 20rem;
 
     @include viewport-375 {
       margin: auto;
