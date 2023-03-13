@@ -1,4 +1,7 @@
 <script setup>
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import ScrollToPlugin from 'gsap/ScrollToPlugin'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import 'swiper/css'
 
@@ -8,6 +11,8 @@ const sanity = useSanity()
 const { data } = await useAsyncData('about', () => sanity.fetch(query))
 const about = data._rawValue
 
+const { isMobile } = useDevice()
+
 // const onSwiper = (swiper) => {
 //   console.log(swiper)
 // }
@@ -15,16 +20,72 @@ const about = data._rawValue
 //   console.log('slide change')
 // }
 
-const { isMobile } = useDevice();
+const $hero = ref()
+const $anchors = ref()
+
+const $about = ref()
+const $tl = ref()
+const $ctx = ref()
+
+function scrollToSection(e) {
+
+}
+
+onMounted(() => {
+  $ctx.value = gsap.context((self) => {
+    const title = self.selector('.hero .title')
+    $tl.value = gsap.to(title, {
+      y: 0,
+      delay: 1,
+      duration: 1,
+      autoAlpha: 1,
+      ease: 'power3.out',
+    })
+
+    setTimeout(() => {
+      ScrollTrigger.create({
+        start: '50%',
+        trigger: $hero.value,
+        onEnter: () => {
+          gsap.to($anchors.value.$el, {
+            y: 0,
+            duration: 0.5,
+          })
+        },
+        onLeaveBack: () => {
+          gsap.to($anchors.value.$el, {
+            y: 50,
+            duration: 0.5,
+          })
+        },
+      })
+    }, 1000)
+  }, $about.value)
+})
+
+onBeforeUnmount(() => {
+  gsap.to($anchors.value.$el, {
+    y: 50,
+    duration: 0.5,
+  })
+
+  ScrollTrigger.getAll().forEach((trigger) => {
+    trigger.kill()
+  })
+})
+
+onUnmounted(() => {
+  $ctx.value.revert()
+})
 </script>
 
 <template>
-  <div class="about">
+  <div class="about" ref="$about">
     <Head>
       <Title>1024 | About</Title>
       <Meta name="description" content="About page description" />
     </Head>
-    <section class="hero">
+    <section class="hero" ref="$hero">
       <GridContainer>
         <h1 class="title">
           {{ about.introduction }}
@@ -32,7 +93,11 @@ const { isMobile } = useDevice();
       </GridContainer>
     </section>
     <section class="slider">
-      <Swiper :slides-per-view="isMobile ? 1.1 : 2.5" :space-between="10" :grab-cursor="true">
+      <Swiper
+        :slides-per-view="isMobile ? 1.1 : 2.5"
+        :space-between="10"
+        :grab-cursor="true"
+      >
         <SwiperSlide v-for="item in about.gallery.medias">
           <SanityImage
             :asset-id="item.asset._ref"
@@ -43,7 +108,7 @@ const { isMobile } = useDevice();
         </SwiperSlide>
       </Swiper>
     </section>
-    <section class="description">
+    <section class="description" ref="$description">
       <GridContainer>
         <p>{{ about.description }}</p>
       </GridContainer>
@@ -85,7 +150,7 @@ const { isMobile } = useDevice();
         </p>
       </GridContainer>
     </section>
-    <section class="exhibitions">
+    <section class="exhibitions" ref="$exhibitions">
       <GridContainer>
         <h2 class="exhibitions__title">Exhibitions</h2>
       </GridContainer>
@@ -101,7 +166,7 @@ const { isMobile } = useDevice();
         </li>
       </ul>
     </section>
-    <section class="awards">
+    <section class="awards" ref="$awards">
       <GridContainer>
         <h2 class="awards__title">Awards</h2>
       </GridContainer>
@@ -117,7 +182,7 @@ const { isMobile } = useDevice();
         </li>
       </ul>
     </section>
-    <section class="festivals">
+    <section class="festivals" ref="$festivals">
       <GridContainer>
         <h2 class="festivals__title">Festivals</h2>
       </GridContainer>
@@ -133,19 +198,23 @@ const { isMobile } = useDevice();
         </li>
       </ul>
     </section>
-    <BottomAnchors>
-      <ul class="BottomAnchors__list" ref="$anchors">
+    <BottomAnchors ref="$anchors">
+      <ul class="BottomAnchors__list">
         <li class="BottomAnchors__item">
-          <button ref="$about">About</button>
+          <button @click="scrollToSection($description.value)">About</button>
         </li>
         <li class="BottomAnchors__item">
-          <button ref="$awards">Awards</button>
+          <button @click="scrollToSection($awards.value)">Awards</button>
         </li>
         <li class="BottomAnchors__item">
-          <button ref="$exhibitions">Exhibitions</button>
+          <button @click="scrollToSection($exhibitions.value)">
+            Exhibitions
+          </button>
         </li>
         <li class="BottomAnchors__item">
-          <button ref="$festivals">Festivals</button>
+          <button @click="scrollToSection()">
+            Festivals
+          </button>
         </li>
       </ul>
     </BottomAnchors>
@@ -154,7 +223,6 @@ const { isMobile } = useDevice();
 
 <style lang="scss" scoped>
 .about {
-  height: 100vh;
   padding-top: 26rem;
 
   @include viewport-375 {
@@ -166,6 +234,8 @@ const { isMobile } = useDevice();
       grid-column: 2 / span 5;
       font-size: $secondary-text-size;
       font-weight: $extra-light;
+      opacity: 0;
+      transform: translateY(10rem);
 
       @include viewport-375 {
         grid-column: 1 / -1;
@@ -226,16 +296,6 @@ const { isMobile } = useDevice();
 
   .marquee span {
     display: inline-block;
-    animation: marquee 60s linear infinite;
-  }
-
-  @keyframes marquee {
-    0% {
-      transform: translate3d(100%, 0, 0);
-    }
-    100% {
-      transform: translate3d(-100%, 0, 0);
-    }
   }
 
   .history {
@@ -351,7 +411,7 @@ const { isMobile } = useDevice();
         }
 
         &:not(:first-child) {
-          margin-top: 1.5rem
+          margin-top: 1.5rem;
         }
 
         &__container {

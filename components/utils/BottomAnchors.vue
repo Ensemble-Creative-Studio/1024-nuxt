@@ -1,43 +1,5 @@
-<script setup>
-// import gsap from 'gsap'
-// import { ScrollTrigger } from 'gsap/ScrollTrigger'
-
-const $anchors = ref(null)
-
-// onMounted(() => {
-//   gsap.registerPlugin(ScrollTrigger)
-
-//   ScrollTrigger.create({
-//     markers: true,
-//     trigger: $anchors.value,
-//     start: '50% 50%',
-//     onEnter: () => {
-//       gsap.to($anchors.value, {
-//         y: 0,
-//         duration: 0.5,
-//       })
-//     },
-//     onLeaveBack: () => {
-//       gsap.to($anchors.value, {
-//         y: 50,
-//         duration: 0.5,
-//       })
-//     },
-//   })
-// })
-
-// onBeforeUnmount(() => {
-//   gsap.to($anchors.value, {
-//     y: 50,
-//     duration: 0.5,
-//   })
-
-//   console.log('make the anchors translate y again')
-// })
-</script>
-
 <template>
-  <div class="BottomAnchors" ref="$anchors">
+  <div class="BottomAnchors">
     <slot />
   </div>
 </template>
@@ -57,13 +19,22 @@ const $anchors = ref(null)
   color: $medium-grey;
   width: 100%;
   border-top: 0.1rem solid $dark-grey;
-  // transform: translateY(5rem);
+  transform: translateY(5rem);
 
   .BottomAnchors__list {
     display: flex;
     align-items: center;
 
     .BottomAnchors__item {
+      button {
+        transition: color 0.3s ease-in-out;
+
+        &:hover {
+          color: $white;
+          cursor: pointer;
+        }
+      }
+
       &:not(:first-child) {
         margin-left: 2rem;
       }

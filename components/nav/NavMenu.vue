@@ -1,4 +1,6 @@
 <script setup>
+import gsap from 'gsap'
+
 const props = defineProps({
   navMenu: Object,
 })
@@ -8,6 +10,24 @@ const isNavActive = useState('isNavActive')
 function closeMenu() {
   isNavActive.value = false
 }
+
+onMounted(() => {
+  if (isNavActive.value) {
+    gsap.to('.NavMenu', {
+      duration: 1,
+      x: '0%',
+      visibility: 'visible',
+      ease: 'power3.out',
+    })
+    gsap.to('.NavMenu__main, .NavMenu__secondary', {
+      duration: 1,
+      delay: -0.05,
+      x: '0%',
+      visibility: 'visible',
+      ease: 'power3.out',
+    })
+  }
+})
 </script>
 
 <template>
@@ -43,24 +63,24 @@ function closeMenu() {
             class="annex__link"
             :href="navMenu.externalLinks.press"
             target="blank"
-            >Press</a
-          >
+            >Press
+          </a>
         </li>
         <li class="annex__item">
           <a
             class="annex__link"
             :href="navMenu.externalLinks.jobs"
             target="blank"
-            >Jobs / Internships</a
-          >
+            >Jobs / Internships
+          </a>
         </li>
         <li class="annex__item">
           <a
             class="annex__link"
             :href="navMenu.externalLinks.requests"
             target="blank"
-            >Requests</a
-          >
+            >Requests
+          </a>
         </li>
       </ul>
       <ul class="social-media">
@@ -90,18 +110,15 @@ function closeMenu() {
   top: 0;
   right: 0;
   height: 100%;
-  width: 55.7rem; // WIP
+  width: 55rem; // WIP
   background-color: $black;
-  padding: 9rem 1rem 5rem 1rem;
+  padding: 9rem 2rem 5rem 2rem;
   z-index: 30;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   transform: translateX(100%);
-  transition: 0.6s ease-in-out;
-  transition-property: opacity transform;
-  visibility: hidden;
 
   @include viewport-375 {
     transform: translate(0%, -100%);
@@ -109,18 +126,9 @@ function closeMenu() {
     padding: 9rem 1rem 2rem 1rem;
   }
 
-  &--active {
-    transform: translateX(0%);
-    visibility: visible;
-
-    @include viewport-375 {
-      transform: translate(0%, 0%);
-    }
-  }
-
   &__main {
-    // margin: 0;
     font-size: $main-text-size;
+    transform: translateX(120%);
 
     @include viewport-375 {
       margin: auto;
@@ -130,7 +138,7 @@ function closeMenu() {
   }
 
   &__secondary {
-    // margin: 0 20rem;
+    transform: translateX(120%);
 
     @include viewport-375 {
       margin: auto;

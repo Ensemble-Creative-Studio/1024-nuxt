@@ -1,4 +1,7 @@
 <script setup>
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
 const sanity = useSanity()
 const route = useRoute()
 
@@ -23,16 +26,60 @@ const { data } = await useAsyncData(`projects/${route.params.slug}`, () =>
 )
 const project = data._rawValue
 
+const $hero = ref()
 const $galleryMedia = ref([])
+const $anchors = ref()
+
+const $projectPage = ref()
+const $tl = ref()
+const $ctx = ref()
+
+onMounted(() => {
+  $ctx.value = gsap.context((self) => {
+    setTimeout(() => {
+      ScrollTrigger.create({
+        start: '50%',
+        trigger: $hero.value,
+        onEnter: () => {
+          gsap.to($anchors.value.$el, {
+            y: 0,
+            duration: 0.5,
+          })
+        },
+        onLeaveBack: () => {
+          gsap.to($anchors.value.$el, {
+            y: 50,
+            duration: 0.5,
+          })
+        },
+      })
+    }, 1000)
+  }, $projectPage.value)
+})
+
+onBeforeUnmount(() => {
+  gsap.to($anchors.value.$el, {
+    y: 50,
+    duration: 0.5,
+  })
+
+  ScrollTrigger.getAll().forEach((trigger) => {
+    trigger.kill()
+  })
+})
+
+onUnmounted(() => {
+  $ctx.value.revert()
+})
 </script>
 
 <template>
-  <div class="project-page">
+  <div class="project-page" ref="$projectPage">
     <Head>
       <Title>{{ project.title }}</Title>
       <Meta name="description" content="Project description" />
     </Head>
-    <section class="hero">
+    <section class="hero" ref="$hero">
       <SanityImage
         class="hero__thumbnail"
         v-if="!project.mainVideo"
@@ -56,10 +103,7 @@ const $galleryMedia = ref([])
             <span class="content__type">{{ project.field }}</span>
           </div>
           <div class="content__description">
-            <SanityContent
-              :blocks="project.description"
-              :serializers="serializers"
-            />
+            <SanityContent :blocks="project.description" />
           </div>
         </GridContainer>
       </section>
@@ -116,7 +160,7 @@ const $galleryMedia = ref([])
         </GridContainer>
         <ProjectsList :projects="project.relatedProjects" />
       </section>
-      <BottomAnchors>
+      <BottomAnchors ref="$anchors">
         <ul class="BottomAnchors__list">
           <li class="BottomAnchors__item">
             <button ref="$top">Top</button>

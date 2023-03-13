@@ -14,10 +14,15 @@ const props = defineProps({
         :key="item._id"
       >
         <div class="item__container">
-          <div class="item__date">{{ item.releaseDate.slice(0, 4) }}</div>
+          <div class="item__date" v-if="item.releaseDate">
+            {{ item.releaseDate.slice(0, 4) }}
+          </div>
           <div class="item__meta">
             <h3 class="item__title" v-if="item.title">{{ item.title }}</h3>
-            <ul class="item__categories item__categories--mobile" v-if="item.categories">
+            <ul
+              class="item__categories item__categories--mobile"
+              v-if="item.categories"
+            >
               <li class="item__category" v-for="category in item.categories">
                 {{ category.title }}
               </li>

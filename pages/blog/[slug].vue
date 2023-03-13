@@ -24,11 +24,11 @@ const { data } = await useAsyncData(`blog/${route.params.slug}`, () =>
 )
 const article = data._rawValue
 
-const serializers = {
-  marks: {
-    internalLink: 'a',
-  },
-}
+// const serializers = {
+//   marks: {
+//     internalLink: 'a',
+//   },
+// }
 
 const { isMobile } = useDevice()
 </script>
@@ -49,12 +49,13 @@ const { isMobile } = useDevice()
           </div>
         </section>
         <section class="content">
-          <VideoPlayer
+          <!-- <VideoPlayer
             class="video"
             v-if="article.mainVideo"
             :vimeoId="article.mainVideoUrl"
             :quality="isMobile ? 'sd' : 'hd'"
-          />
+          /> -->
+          <NewVideoPlayer vimeoId="791896320" />
           <div class="content__gallery" v-if="article?.gallery?.medias">
             <SanityImage
               class="image"
@@ -134,7 +135,7 @@ const { isMobile } = useDevice()
             @include viewport-375 {
               margin-top: 6rem;
             }
-          } 
+          }
 
           &:not(:first-child) {
             margin-top: 12rem;

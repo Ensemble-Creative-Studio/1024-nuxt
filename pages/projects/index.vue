@@ -1,4 +1,6 @@
 <script setup>
+import gsap from 'gsap'
+
 const sanity = useSanity()
 
 const GET_PROJECTS = groq`*[_type == "projects"] | order(_createdAt desc)
@@ -109,10 +111,44 @@ function toggleFilters() {
 
 // Final computed
 // ...
+
+// Animations
+const $projects = ref()
+const $tl = ref()
+const $ctx = ref()
+
+onMounted(() => {
+  $ctx.value = gsap.context((self) => {
+    const project = self.selector('.ProjectsGrid .item')
+    $tl.value = gsap.to(project, {
+      y: 0,
+      delay: 1,
+      duration: 1,
+      autoAlpha: 1,
+      ease: 'power3.out',
+      stagger: 0.1,
+    })
+  }, $projects.value)
+})
+
+onBeforeUnmount(() => {
+  console.log($projectsGrid.value.$el)
+
+  gsap.to($projectsGrid.value.$el, {
+    delay: 0,
+    duration: 2,
+    rotate: 100,
+    ease: 'power3.out',
+  })
+})
+
+onUnmounted(() => {
+  $ctx.value.revert()
+})
 </script>
 
 <template>
-  <div class="projects">
+  <div class="projects" ref="$projects">
     <Head>
       <Title>1024 | Work</Title>
       <Meta name="description" content="1024 architecture website" />

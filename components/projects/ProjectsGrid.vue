@@ -32,6 +32,7 @@ const props = defineProps({
   column-gap: 1rem;
   row-gap: 2rem;
   padding: 0 1.5rem;
+  overflow: hidden;
   
   @include viewport-375 {
     padding: 0 1rem;
@@ -50,6 +51,9 @@ const props = defineProps({
   }
 
   .item {
+    opacity: 0;
+    transform: translateY(5rem);
+
     @include viewport-375 {
       grid-column: auto / span 2;
     }
