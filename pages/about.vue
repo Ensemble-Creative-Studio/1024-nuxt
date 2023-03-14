@@ -28,7 +28,7 @@ const $tl = ref()
 const $ctx = ref()
 
 function scrollToSection(e) {
-
+  
 }
 
 onMounted(() => {
@@ -329,6 +329,7 @@ onUnmounted(() => {
 
       @include viewport-375 {
         row-gap: 6rem;
+        padding: 0 1rem;
       }
 
       .item {

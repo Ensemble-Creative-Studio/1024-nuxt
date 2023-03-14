@@ -31,7 +31,6 @@ const $galleryMedia = ref([])
 const $anchors = ref()
 
 const $projectPage = ref()
-const $tl = ref()
 const $ctx = ref()
 
 onMounted(() => {

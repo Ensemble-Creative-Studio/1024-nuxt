@@ -85,12 +85,18 @@ function setGridMode(value) {
   gridModeCols.value = value
 
   const cl = $projectsGrid.value.$el.classList
-  cl.toggle('ProjectsGrid--three-items')
 
-  const items = document.querySelectorAll('.ProjectsGrid .item') // Maybe use refs instead?
-  items.forEach((item) => {
-    item.classList.toggle('animated') // Useless for now
-  })
+  if (value === 3) {
+    if (cl.contains('ProjectsGrid--four-items')) {
+      cl.remove('ProjectsGrid--four-items')
+    }
+    cl.add('ProjectsGrid--three-items')
+  } else {
+    if (cl.contains('ProjectsGrid--three-items')) {
+      cl.remove('ProjectsGrid--three-items')
+    }
+    cl.add('ProjectsGrid--four-items')
+  }
 }
 
 function setListMode() {
@@ -132,8 +138,6 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
-  console.log($projectsGrid.value.$el)
-
   gsap.to($projectsGrid.value.$el, {
     delay: 0,
     duration: 2,
@@ -204,14 +208,22 @@ onUnmounted(() => {
       <ul class="display-mode">
         <li
           :class="[
-            displayMode === 'grid' ? 'display-mode__grid--active' : '',
+            displayMode === 'grid' && 'display-mode__grid--active',
             'display-mode__grid',
           ]"
           @click="setGridMode(4)"
         >
           Grid
         </li>
-        <li class="display-mode__four-grid" @click="setGridMode(4)">
+        <li
+          :class="[
+            displayMode === 'grid' &&
+              gridModeCols === 4 &&
+              'display-mode__four-grid--active',
+            'display-mode__four-grid',
+          ]"
+          @click="setGridMode(4)"
+        >
           <FourItemsGridIcon
             :color="
               displayMode === 'grid' && gridModeCols === 4
@@ -220,7 +232,15 @@ onUnmounted(() => {
             "
           />
         </li>
-        <li class="display-mode__three-grid" @click="setGridMode(3)">
+        <li
+          :class="[
+            displayMode === 'grid' &&
+              gridModeCols === 3 &&
+              'display-mode__three-grid--active',
+            'display-mode__three-grid',
+          ]"
+          @click="setGridMode(3)"
+        >
           <ThreeItemsGridIcon
             :color="
               displayMode === 'grid' && gridModeCols === 3
@@ -231,7 +251,7 @@ onUnmounted(() => {
         </li>
         <li
           :class="[
-            displayMode === 'list' ? 'display-mode__list--active' : '',
+            displayMode === 'list' && 'display-mode__list--active',
             'display-mode__list',
           ]"
           @click="setListMode()"
@@ -422,6 +442,10 @@ onUnmounted(() => {
     &__four-grid,
     &__three-grid {
       line-height: 0;
+
+      &--active {
+        pointer-events: none;
+      }
     }
 
     &__list,
@@ -433,6 +457,7 @@ onUnmounted(() => {
       &--active {
         color: $white;
         border-bottom: 0.1rem solid $white;
+        pointer-events: none;
       }
     }
   }
