@@ -24,7 +24,10 @@ watch(
 <template>
   <div class="layout">
     <SiteHeader />
-    <NavMenu v-if="isNavActive" :isNavActive="isNavActive" :navMenu="navMenu" />
+    <NavMenu
+      :isNavActive="isNavActive"
+      :navMenu="navMenu"
+    />
     <Transition>
       <NavOverlay v-if="isNavActive" @click.native="closeMenu()" />
     </Transition>
