@@ -5,10 +5,19 @@ const sanityConfig = {
 }
 
 const config: NuxtConfig & { sanity: typeof sanityConfig } = {
-  modules: ['@nuxtjs/sanity', '@nuxtjs/device'],
+  modules: ['@nuxtjs/sanity', '@nuxtjs/device', '@nuxt-alt/proxy'],
   sanity: sanityConfig,
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },
+  },
+  proxy: {
+    proxies: {
+      '/api': {
+        target: 'https://player.vimeo.com/video/',
+        changeOrigin: true,
+        rewrite: (path: any) => path.replace(/^\/api/, ''),
+      },
+    },
   },
   css: ['@/assets/scss/main/index.scss'],
   vite: {
