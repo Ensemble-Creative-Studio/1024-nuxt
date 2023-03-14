@@ -78,5 +78,5 @@ $viewport-1600: 1601px;
   grid-template-columns: repeat($columns, $occupation);
   column-gap: #{$cg}rem;
   row-gap: #{$rg}rem;
-  align-self: flex-start;
+  align-items: flex-start;
 }

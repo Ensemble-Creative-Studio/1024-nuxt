@@ -1,10 +1,6 @@
 @import './../resources/mixins';
 @import './../resources/variables';
 
-html {
-  overflow-x: hidden; // Experimental
-}
-
 body {
   font-size: $default-text-size;
   font-family: $the-future;
