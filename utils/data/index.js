@@ -1,1 +1,0 @@
-export { getRandomObjectProperty } from './getRandomObjectProperty'

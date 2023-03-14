@@ -1,9 +1,0 @@
-/**
- * Convert a radians value into degrees
- * 
- * @param {number} radians
- * @return {number} degrees
- */
-export function toDegrees (radians) {
-    return radians * 180 / Math.PI
-}
