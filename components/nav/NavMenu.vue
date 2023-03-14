@@ -11,28 +11,18 @@ function closeMenu() {
   isNavActive.value = false
 }
 
-onMounted(() => {
-  if (isNavActive.value) {
-    gsap.to('.NavMenu', {
-      duration: 1,
-      x: '0%',
-      visibility: 'visible',
-      ease: 'power3.out',
-    })
-    gsap.to('.NavMenu__main, .NavMenu__secondary', {
-      duration: 1,
-      delay: -0.05,
-      x: '0%',
-      visibility: 'visible',
-      ease: 'power3.out',
-    })
+watch(isNavActive, (value) => {
+  if (value) {
+    //
+  } else {
+    //
   }
 })
 </script>
 
 <template>
-  <nav :class="[isNavActive ? 'NavMenu--active' : '', 'NavMenu']">
-    <div class="NavMenu__main">
+  <nav :class="[isNavActive && 'NavMenu--active', 'NavMenu']">
+    <div :class="[isNavActive && 'NavMenu__main--active', 'NavMenu__main']">
       <ul class="nav">
         <li class="nav__item">
           <NuxtLink class="main__link" to="/projects" @click="closeMenu()">
@@ -51,7 +41,12 @@ onMounted(() => {
         </li>
       </ul>
     </div>
-    <div class="NavMenu__secondary">
+    <div
+      :class="[
+        isNavActive && 'NavMenu__secondary--active',
+        'NavMenu__secondary',
+      ]"
+    >
       <ul class="address">
         <li class="address__item">{{ navMenu.address.label }}</li>
         <li class="address__item">{{ navMenu.address.streetNo }}</li>
@@ -105,6 +100,8 @@ onMounted(() => {
 </template>
 
 <style lang="scss">
+$ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
 .NavMenu {
   position: fixed;
   top: 0;
@@ -119,6 +116,11 @@ onMounted(() => {
   flex-direction: column;
   justify-content: space-between;
   transform: translateX(100%);
+  transition: transform 1.5s $ease-out;
+
+  &--active {
+    transform: translateX(0%);
+  }
 
   @include viewport-375 {
     transform: translate(0%, -100%);
@@ -128,7 +130,12 @@ onMounted(() => {
 
   &__main {
     font-size: $main-text-size;
-    transform: translateX(120%);
+    transform: translateX(100%);
+    transition: transform 1.5s $ease-out;
+
+    &--active {
+      transform: translateX(0%);
+    }
 
     @include viewport-375 {
       margin: auto;
@@ -138,7 +145,12 @@ onMounted(() => {
   }
 
   &__secondary {
-    transform: translateX(120%);
+    transform: translateX(100%);
+    transition: transform 1.5s $ease-out;
+
+    &--active {
+      transform: translateX(0%);
+    }
 
     @include viewport-375 {
       margin: auto;

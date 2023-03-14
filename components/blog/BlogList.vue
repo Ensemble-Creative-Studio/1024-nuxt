@@ -12,40 +12,41 @@ const { isMobile } = useDevice()
 <template>
   <ul class="BlogList">
     <li class="item" v-for="item in blog">
-      <NuxtLink
-        class="item__link"
-        :to="{ name: 'blog-slug', params: { slug: item.slug.current } }"
-        :key="item._id"
-      >
-        <div class="item__container">
-          <VideoPlayer
-            v-if="item.mainVideo"
-            :vimeoId="item.mainVideoUrl"
-            :quality="isMobile ? 'sd' : 'hd'"
-          />
-          <Swiper
-            :slides-per-view="1"
-            :space-between="10"
-            :grab-cursor="true"
-            v-else-if="item.gallery"
-          >
-            <SwiperSlide v-for="media in item.gallery.medias">
-              <SanityImage
-                :asset-id="media.asset._ref"
-                auto="format"
-                :q="75"
-                :key="media._id"
-              />
-            </SwiperSlide>
-          </Swiper>
+      <div class="item__container">
+        <VideoPlayer
+          v-if="item.mainVideo"
+          :vimeoUrl="item.mainVideoUrl"
+          :quality="isMobile ? 'sd' : 'hd'"
+        />
+        <!-- <NewVideoPlayer v-if="item.mainVideo" vimeoId="791896320" /> -->
+        <Swiper
+          :slides-per-view="1"
+          :space-between="10"
+          :grab-cursor="true"
+          v-else-if="item.gallery"
+        >
+          <SwiperSlide v-for="media in item.gallery.medias">
+            <SanityImage
+              :asset-id="media.asset._ref"
+              auto="format"
+              :q="75"
+              :key="media._id"
+            />
+          </SwiperSlide>
+        </Swiper>
+        <NuxtLink
+          class="item__link"
+          :to="{ name: 'blog-slug', params: { slug: item.slug.current } }"
+          :key="item._id"
+        >
           <div class="item__meta">
             <h3 class="item__title">{{ item.title }}</h3>
             <p class="item__excerpt">
               {{ item.excerpt }}
             </p>
           </div>
-        </div>
-      </NuxtLink>
+        </NuxtLink>
+      </div>
     </li>
   </ul>
 </template>
