@@ -1,0 +1,25 @@
+<script setup>
+const props = defineProps({
+  color: String,
+})
+</script>
+
+<template>
+  <svg
+    width="17"
+    height="18"
+    viewBox="0 0 17 18"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <rect y="0.5" width="3" height="3" rx="1.5" :fill="color" />
+    <rect x="7" y="0.5" width="3" height="3" rx="1.5" :fill="color" />
+    <rect x="14" y="0.5" width="3" height="3" rx="1.5" :fill="color" />
+    <rect y="7.5" width="3" height="3" rx="1.5" :fill="color" />
+    <rect x="7" y="7.5" width="3" height="3" rx="1.5" :fill="color" />
+    <rect x="14" y="7.5" width="3" height="3" rx="1.5" :fill="color" />
+    <rect y="14.5" width="3" height="3" rx="1.5" :fill="color" />
+    <rect x="7" y="14.5" width="3" height="3" rx="1.5" :fill="color" />
+    <rect x="14" y="14.5" width="3" height="3" rx="1.5" :fill="color" />
+  </svg>
+</template>
