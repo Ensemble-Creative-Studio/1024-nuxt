@@ -3,6 +3,7 @@ const props = defineProps({
   projects: [Object],
   categories: [Object],
   order: String,
+  displayMode: String,
 })
 </script>
 

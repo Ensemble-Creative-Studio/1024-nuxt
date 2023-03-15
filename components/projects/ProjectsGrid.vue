@@ -4,6 +4,8 @@ import gsap from 'gsap'
 const props = defineProps({
   projects: [Object],
   order: String,
+  displayMode: String,
+  gridModeCols: Number,
 })
 
 // Animations
@@ -36,7 +38,15 @@ const $ctx = ref()
 </script>
 
 <template>
-  <ul class="ProjectsGrid" ref="$projects">
+  <ul
+    :class="[
+      gridModeCols === 3
+        ? 'ProjectsGrid--three-items'
+        : 'ProjectsGrid--four-items',
+      'ProjectsGrid',
+    ]"
+    ref="$projects"
+  >
     <template v-for="item in projects">
       <li class="item">
         <NuxtLink

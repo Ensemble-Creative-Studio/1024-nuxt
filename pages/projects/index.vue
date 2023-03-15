@@ -13,7 +13,9 @@ const GET_PROJECTS = groq`*[_type == "projects"]
   }
 `
 let projects = await useAsyncData('projects', () => sanity.fetch(GET_PROJECTS))
-projects = projects.data._rawValue
+projects = projects.data.value.filter((project) => {
+  return project.releaseDate && project.categories
+})
 
 const GET_CATEGORIES = groq`*[_type == "categories"]
   {
@@ -24,7 +26,12 @@ const GET_CATEGORIES = groq`*[_type == "categories"]
 let categories = await useAsyncData('categories', () =>
   sanity.fetch(GET_CATEGORIES)
 )
-categories = categories.data._rawValue
+categories = categories.data.value
+categories.forEach((category) => {
+  category.projectsInside = category.projectsInside.filter((project) => {
+    return project.releaseDate && project.categories
+  })
+})
 
 // Filters
 const tags = ref([])
@@ -76,36 +83,16 @@ const filteredProjects = computed(() => {
 const displayMode = ref('grid')
 const gridModeCols = ref(4)
 const $projectsGrid = ref(null)
+const $projectsList = ref(null)
 
 function setGridMode(value) {
   displayMode.value = 'grid'
   gridModeCols.value = value
-
-  if ($projectsGrid.value) {
-    const cl = $projectsGrid.value.$el.classList
-
-    if (value === 3) {
-      if (cl.contains('ProjectsGrid--four-items')) {
-        cl.remove('ProjectsGrid--four-items')
-      }
-      cl.add('ProjectsGrid--three-items')
-    } else {
-      if (cl.contains('ProjectsGrid--three-items')) {
-        cl.remove('ProjectsGrid--three-items')
-      }
-      cl.add('ProjectsGrid--four-items')
-    }
-  }
 }
 
 function setListMode() {
   displayMode.value = 'list'
   gridModeCols.value = 4
-
-  const cl = $projectsGrid.value.$el.classList
-  if (cl.contains('ProjectsGrid--three-items')) {
-    cl.remove('ProjectsGrid--three-items')
-  }
 }
 
 const showMobileFilters = ref(false)
@@ -127,9 +114,6 @@ function setOrder(value) {
 
 const finalProjects = computed(() => {
   let filteredByTagsProjects = filteredProjects.value
-  filteredByTagsProjects = filteredByTagsProjects.filter(
-    (project) => project.releaseDate && project.categoriesTitles?.length > 0
-  )
   if (order.value === 'byName') {
     filteredByTagsProjects = filteredByTagsProjects.sort((a, b) =>
       a.title.localeCompare(b.title)
@@ -139,8 +123,6 @@ const finalProjects = computed(() => {
       (a, b) => parseInt(b.releaseDate) - parseInt(a.releaseDate)
     )
   }
-
-  console.log(filteredByTagsProjects)
 
   return filteredByTagsProjects
 })
@@ -156,14 +138,18 @@ const finalProjects = computed(() => {
       v-if="displayMode === 'list'"
       :projects="finalProjects"
       :categories="categories"
+      :displayMode="displayMode"
       :order="order"
+      ref="$projectsList"
     />
     <ProjectsGrid
       v-if="displayMode === 'grid'"
       :projects="finalProjects"
       :categories="categories"
-      ref="$projectsGrid"
+      :displayMode="displayMode"
+      :gridModeCols="gridModeCols"
       :order="order"
+      ref="$projectsGrid"
     />
     <div class="mobile-bar">
       <button class="mobile-bar__filters" @click="toggleFilters()">
