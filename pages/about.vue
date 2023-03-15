@@ -1,24 +1,15 @@
 <script setup>
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import ScrollToPlugin from 'gsap/ScrollToPlugin'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import 'swiper/css'
 
-const query = groq`*[_type == "about"][0]`
+const { isMobile } = useDevice()
 
+const query = groq`*[_type == "about"][0]`
 const sanity = useSanity()
 const { data } = await useAsyncData('about', () => sanity.fetch(query))
 const about = data._rawValue
-
-const { isMobile } = useDevice()
-
-// const onSwiper = (swiper) => {
-//   console.log(swiper)
-// }
-// const onSlideChange = () => {
-//   console.log('slide change')
-// }
 
 const $hero = ref()
 const $anchors = ref()
@@ -27,8 +18,22 @@ const $about = ref()
 const $tl = ref()
 const $ctx = ref()
 
-function scrollToSection(e) {
-  
+const $description = ref()
+const $festivals = ref()
+const $exhibitions = ref()
+const $awards = ref()
+
+function scrollToSection(section) {
+  const offset = isMobile ? 50 : 50
+
+  gsap.to(window, {
+    scrollTo: {
+      y: section.offsetTop - offset,
+      autoKill: false,
+    },
+    duration: 1.5,
+    ease: 'power3.out',
+  })
 }
 
 onMounted(() => {
@@ -201,20 +206,16 @@ onUnmounted(() => {
     <BottomAnchors ref="$anchors">
       <ul class="BottomAnchors__list">
         <li class="BottomAnchors__item">
-          <button @click="scrollToSection($description.value)">About</button>
+          <button @click="scrollToSection($description)">About</button>
         </li>
         <li class="BottomAnchors__item">
-          <button @click="scrollToSection($awards.value)">Awards</button>
+          <button @click="scrollToSection($awards)">Awards</button>
         </li>
         <li class="BottomAnchors__item">
-          <button @click="scrollToSection($exhibitions.value)">
-            Exhibitions
-          </button>
+          <button @click="scrollToSection($exhibitions)">Exhibitions</button>
         </li>
         <li class="BottomAnchors__item">
-          <button @click="scrollToSection()">
-            Festivals
-          </button>
+          <button @click="scrollToSection($festivals)">Festivals</button>
         </li>
       </ul>
     </BottomAnchors>

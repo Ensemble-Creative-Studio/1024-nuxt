@@ -1,9 +1,7 @@
 <script setup>
-import gsap from 'gsap'
-
 const sanity = useSanity()
 
-const GET_PROJECTS = groq`*[_type == "projects"] | order(_createdAt desc)
+const GET_PROJECTS = groq`*[_type == "projects"]
   {
     ...,
     categories[] -> {
@@ -27,9 +25,6 @@ let categories = await useAsyncData('categories', () =>
   sanity.fetch(GET_CATEGORIES)
 )
 categories = categories.data._rawValue
-
-// Ordering by date or name
-// ...
 
 // Filters
 const tags = ref([])
@@ -71,7 +66,9 @@ const filteredProjects = computed(() => {
     function isTagged(element) {
       return tags.value.includes(element)
     }
-    return projects.filter((project) => project.categoriesTitles.some(isTagged))
+    return projects.filter((project) =>
+      project.categoriesTitles?.some(isTagged)
+    )
   }
 })
 
@@ -84,18 +81,20 @@ function setGridMode(value) {
   displayMode.value = 'grid'
   gridModeCols.value = value
 
-  const cl = $projectsGrid.value.$el.classList
+  if ($projectsGrid.value) {
+    const cl = $projectsGrid.value.$el.classList
 
-  if (value === 3) {
-    if (cl.contains('ProjectsGrid--four-items')) {
-      cl.remove('ProjectsGrid--four-items')
+    if (value === 3) {
+      if (cl.contains('ProjectsGrid--four-items')) {
+        cl.remove('ProjectsGrid--four-items')
+      }
+      cl.add('ProjectsGrid--three-items')
+    } else {
+      if (cl.contains('ProjectsGrid--three-items')) {
+        cl.remove('ProjectsGrid--three-items')
+      }
+      cl.add('ProjectsGrid--four-items')
     }
-    cl.add('ProjectsGrid--three-items')
-  } else {
-    if (cl.contains('ProjectsGrid--three-items')) {
-      cl.remove('ProjectsGrid--three-items')
-    }
-    cl.add('ProjectsGrid--four-items')
   }
 }
 
@@ -115,58 +114,56 @@ function toggleFilters() {
   showMobileFilters.value = !showMobileFilters.value
 }
 
-// Final computed
-// ...
+// Sorting
+const order = ref('byDate')
 
-// Animations
-const $projects = ref()
-const $tl = ref()
-const $ctx = ref()
+function setOrder(value) {
+  if (value === 'date') {
+    order.value = 'byDate'
+  } else {
+    order.value = 'byName'
+  }
+}
 
-onMounted(() => {
-  $ctx.value = gsap.context((self) => {
-    const project = self.selector('.ProjectsGrid .item')
-    $tl.value = gsap.to(project, {
-      y: 0,
-      delay: 1,
-      duration: 1,
-      autoAlpha: 1,
-      ease: 'power3.out',
-      stagger: 0.1,
-    })
-  }, $projects.value)
-})
+const finalProjects = computed(() => {
+  let filteredByTagsProjects = filteredProjects.value
+  filteredByTagsProjects = filteredByTagsProjects.filter(
+    (project) => project.releaseDate && project.categoriesTitles?.length > 0
+  )
+  if (order.value === 'byName') {
+    filteredByTagsProjects = filteredByTagsProjects.sort((a, b) =>
+      a.title.localeCompare(b.title)
+    )
+  } else {
+    filteredByTagsProjects = filteredByTagsProjects.sort(
+      (a, b) => parseInt(b.releaseDate) - parseInt(a.releaseDate)
+    )
+  }
 
-onBeforeUnmount(() => {
-  gsap.to($projectsGrid.value.$el, {
-    delay: 0,
-    duration: 2,
-    rotate: 100,
-    ease: 'power3.out',
-  })
-})
+  console.log(filteredByTagsProjects)
 
-onUnmounted(() => {
-  $ctx.value.revert()
+  return filteredByTagsProjects
 })
 </script>
 
 <template>
-  <div class="projects" ref="$projects">
+  <div class="projects">
     <Head>
       <Title>1024 | Work</Title>
       <Meta name="description" content="1024 architecture website" />
     </Head>
     <ProjectsList
       v-if="displayMode === 'list'"
-      :projects="filteredProjects"
+      :projects="finalProjects"
       :categories="categories"
+      :order="order"
     />
     <ProjectsGrid
-      v-show="displayMode === 'grid'"
-      :projects="filteredProjects"
+      v-if="displayMode === 'grid'"
+      :projects="finalProjects"
       :categories="categories"
       ref="$projectsGrid"
+      :order="order"
     />
     <div class="mobile-bar">
       <button class="mobile-bar__filters" @click="toggleFilters()">
@@ -179,19 +176,16 @@ onUnmounted(() => {
     </div>
     <div :class="[showMobileFilters ? 'container--active' : '', 'container']">
       <ul class="order" ref="$order">
-        <li>
-          <button ref="$date" @click="orderByDate()">Date</button>
+        <li :class="[order === 'byDate' && 'order-date--active', 'order-date']">
+          <button ref="$date" @click="setOrder('date')">Date</button>
         </li>
-        <li>
-          <button ref="$name" @click="orderByName()">Name</button>
+        <li :class="[order === 'byName' && 'order-name--active', 'order-name']">
+          <button ref="$name" @click="setOrder('name')">Name</button>
         </li>
       </ul>
       <ul class="filters">
         <li class="filters__all">
-          <button
-            @click="toggleAll()"
-            :class="[all === true ? 'toggled' : '', 'all']"
-          >
+          <button @click="toggleAll()" :class="[all ? 'toggled' : '', 'all']">
             <span class="all__label">All&nbsp;</span>
             <span class="all__length">{{ projects.length }}</span>
           </button>
@@ -318,7 +312,7 @@ onUnmounted(() => {
 
   .mobile-bar {
     height: 4rem;
-    z-index: 40;
+    z-index: 20;
     background-color: $black;
     position: fixed;
     bottom: 0;
@@ -352,6 +346,22 @@ onUnmounted(() => {
       display: block;
       order: 2;
       flex: 1;
+    }
+
+    &-name,
+    &-date {
+      transition: 0.3s ease-in-out;
+      transition-property: text-decoration, color;
+
+      &--active {
+        color: $white;
+
+        button {
+          text-decoration: underline;
+          text-decoration-thickness: from-font;
+          text-underline-offset: 0.5rem;
+        }
+      }
     }
 
     & > li {
@@ -390,7 +400,6 @@ onUnmounted(() => {
     .all,
     .category {
       cursor: pointer;
-      transition: color 0.3s ease-in-out;
       margin-left: 2rem;
 
       @include viewport-375 {
@@ -399,7 +408,8 @@ onUnmounted(() => {
 
       .all__label,
       .category__label {
-        transition: border-bottom 0.3s ease-in-out;
+        transition: 0.3s ease-in-out;
+        transition-property: text-decoration, color;
       }
 
       &.toggled {

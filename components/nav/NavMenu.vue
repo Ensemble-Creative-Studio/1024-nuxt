@@ -115,29 +115,34 @@ $ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transform: translateX(100%);
+  transform: translate(100%, 0%);
   transition: transform 1.5s $ease-out;
 
   &--active {
-    transform: translateX(0%);
+    transform: translate(0%, 0%);
   }
 
   @include viewport-375 {
-    transform: translate(0%, -100%);
     width: 100%;
+    transform: translate(0%, -100%);
     padding: 9rem 1rem 2rem 1rem;
+
+    &--active {
+      transform: translate(0%, 0%);
+    }
   }
 
   &__main {
     font-size: $main-text-size;
-    transform: translateX(100%);
+    transform: translate(100%, 0%);
     transition: transform 1.5s $ease-out;
 
     &--active {
-      transform: translateX(0%);
+      transform: translate(0%, 0%);
     }
 
     @include viewport-375 {
+      transform: translate(0%, 0%);
       margin: auto;
       width: 100%;
       font-size: $mobile-main-text-size;
@@ -145,7 +150,7 @@ $ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   &__secondary {
-    transform: translateX(100%);
+    transform: translate(100%, 0%);
     transition: transform 1.5s $ease-out;
 
     &--active {
@@ -153,6 +158,7 @@ $ease-out: cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     @include viewport-375 {
+      transform: translate(0%, 0%);
       margin: auto;
       width: 100%;
     }

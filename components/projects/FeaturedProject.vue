@@ -2,8 +2,6 @@
 const props = defineProps({
   project: [Object],
 })
-
-const $projectVideo = ref(null)
 </script>
 
 <template>

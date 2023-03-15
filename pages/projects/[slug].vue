@@ -2,6 +2,8 @@
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
+const { isMobile } = useDevice()
+
 const sanity = useSanity()
 const route = useRoute()
 
@@ -9,11 +11,7 @@ const GET_SINGLE_PROJECT = groq`*[_type == "projects" && slug.current == "${rout
   {
     ...,
     relatedProjects[] -> {
-      title,
-      slug,
-      releaseDate,
-      mainImage,
-      mainVideo,
+      ...,
       categories[] -> {
         title,
         slug
@@ -32,6 +30,29 @@ const $anchors = ref()
 
 const $projectPage = ref()
 const $ctx = ref()
+
+const $description = ref()
+const $gallery = ref()
+const $credits = ref()
+
+function scrollToSection(section) {
+  let offset
+
+  if (section.classList.contains('hero')) {
+    offset = isMobile ? 0 : 0
+  } else {
+    offset = isMobile ? window.innerHeight - 100 : window.innerHeight - 100
+  }
+
+  gsap.to(window, {
+    scrollTo: {
+      y: section.offsetTop + offset,
+      autoKill: false,
+    },
+    duration: 1.5,
+    ease: 'power3.out',
+  })
+}
 
 onMounted(() => {
   $ctx.value = gsap.context((self) => {
@@ -101,12 +122,12 @@ onUnmounted(() => {
             }}</span>
             <span class="content__type">{{ project.field }}</span>
           </div>
-          <div class="content__description">
+          <div class="content__description" ref="$description">
             <SanityContent :blocks="project.description" />
           </div>
         </GridContainer>
       </section>
-      <section class="gallery">
+      <section class="gallery" ref="$gallery">
         <GridContainer>
           <div class="gallery__title-container">
             <h2 class="gallery__title">Gallery</h2>
@@ -137,7 +158,7 @@ onUnmounted(() => {
           </ul>
         </GridContainer>
       </section>
-      <section class="credits">
+      <section class="credits" ref="$credits">
         <GridContainer>
           <header class="credits__header">
             <div>{{ project.title }}</div>
@@ -162,16 +183,16 @@ onUnmounted(() => {
       <BottomAnchors ref="$anchors">
         <ul class="BottomAnchors__list">
           <li class="BottomAnchors__item">
-            <button ref="$top">Top</button>
+            <button @click="scrollToSection($hero)">Top</button>
           </li>
           <li class="BottomAnchors__item">
-            <button ref="$description">Description</button>
+            <button @click="scrollToSection($description)">Description</button>
           </li>
           <li class="BottomAnchors__item">
-            <button ref="$gallery">Gallery</button>
+            <button @click="scrollToSection($gallery)">Gallery</button>
           </li>
           <li class="BottomAnchors__item">
-            <button ref="$credits">Credits</button>
+            <button @click="scrollToSection($credits)">Credits</button>
           </li>
         </ul>
       </BottomAnchors>

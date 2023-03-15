@@ -2,47 +2,50 @@
 const props = defineProps({
   projects: [Object],
   categories: [Object],
+  order: String,
 })
 </script>
 
 <template>
   <ul class="ProjectsList">
-    <li class="item" v-for="item in projects">
-      <NuxtLink
-        class="item__link"
-        :to="{ name: 'projects-slug', params: { slug: item.slug.current } }"
-        :key="item._id"
-      >
-        <div class="item__container">
-          <div class="item__date" v-if="item.releaseDate">
-            {{ item.releaseDate.slice(0, 4) }}
-          </div>
-          <div class="item__meta">
-            <h3 class="item__title" v-if="item.title">{{ item.title }}</h3>
-            <ul
-              class="item__categories item__categories--mobile"
-              v-if="item.categories"
-            >
+    <template v-for="item in projects">
+      <li class="item">
+        <NuxtLink
+          class="item__link"
+          :to="{ name: 'projects-slug', params: { slug: item.slug.current } }"
+          :key="item._id"
+        >
+          <div class="item__container">
+            <div class="item__date" v-if="item.releaseDate">
+              {{ item.releaseDate.slice(0, 4) }}
+            </div>
+            <div class="item__meta">
+              <h3 class="item__title" v-if="item.title">{{ item.title }}</h3>
+              <ul
+                class="item__categories item__categories--mobile"
+                v-if="item.categories"
+              >
+                <li class="item__category" v-for="category in item.categories">
+                  {{ category.title }}
+                </li>
+              </ul>
+            </div>
+            <ul class="item__categories" v-if="item.categories">
               <li class="item__category" v-for="category in item.categories">
                 {{ category.title }}
               </li>
             </ul>
+            <div class="item__thumbnail">
+              <SanityImage
+                v-if="item.mainImage"
+                :asset-id="item.mainImage.asset._ref"
+                auto="format"
+              />
+            </div>
           </div>
-          <ul class="item__categories" v-if="item.categories">
-            <li class="item__category" v-for="category in item.categories">
-              {{ category.title }}
-            </li>
-          </ul>
-          <div class="item__thumbnail">
-            <SanityImage
-              v-if="item.mainImage"
-              :asset-id="item.mainImage.asset._ref"
-              auto="format"
-            />
-          </div>
-        </div>
-      </NuxtLink>
-    </li>
+        </NuxtLink>
+      </li>
+    </template>
   </ul>
 </template>
 
@@ -57,11 +60,6 @@ const props = defineProps({
 
     @include viewport-375 {
       font-size: $mobile-list-text-size;
-    }
-
-    // Maybe delete it
-    &:last-child {
-      border-bottom: 0.1rem solid $dark-grey;
     }
 
     &:hover {
