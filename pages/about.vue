@@ -209,10 +209,10 @@ onUnmounted(() => {
           <button @click="scrollToSection($description)">About</button>
         </li>
         <li class="BottomAnchors__item">
-          <button @click="scrollToSection($awards)">Awards</button>
+          <button @click="scrollToSection($exhibitions)">Exhibitions</button>
         </li>
         <li class="BottomAnchors__item">
-          <button @click="scrollToSection($exhibitions)">Exhibitions</button>
+          <button @click="scrollToSection($awards)">Awards</button>
         </li>
         <li class="BottomAnchors__item">
           <button @click="scrollToSection($festivals)">Festivals</button>
