@@ -9,7 +9,7 @@ const GET_BLOG = groq`*[_type == "blog"] | order(_createdAt desc)
   }
 `
 const { data } = await useAsyncData('blog', () => sanity.fetch(GET_BLOG))
-const blog = data._rawValue
+const blog = data.value
 </script>
 
 <template>

@@ -15,28 +15,7 @@ const query = groq`*[_type == "home"][0]
 `
 const sanity = useSanity()
 const { data } = await useAsyncData('home', () => sanity.fetch(query))
-const home = data._rawValue
-
-const $main = ref()
-const $tl = ref()
-const $ctx = ref()
-
-onMounted(() => {
-  $ctx.value = gsap.context((self) => {
-    const title = self.selector('.hero .title')
-    $tl.value = gsap.to(title, {
-      y: 0,
-      delay: 1,
-      duration: 1,
-      autoAlpha: 1,
-      ease: 'power3.out',
-    })
-  }, $main.value)
-})
-
-onUnmounted(() => {
-  $ctx.value.revert()
-})
+const home = data.value
 </script>
 
 <template>
@@ -64,15 +43,15 @@ onUnmounted(() => {
 
     @include viewport-375 {
       height: auto;
-      padding-top: 15rem; //
+      padding-top: 15rem;
     }
 
     .title {
       grid-column: 2 / span 8;
       font-size: $main-text-size;
       font-weight: $extra-light;
-      opacity: 0;
-      transform: translateY(10rem);
+      // opacity: 0;
+      // transform: translateY(10rem);
 
       @include viewport-375 {
         grid-column: 1 / span 10;

@@ -22,7 +22,7 @@ const GET_SINGLE_ARTICLE = groq`*[_type == "blog" && slug.current == "${route.pa
 const { data } = await useAsyncData(`blog/${route.params.slug}`, () =>
   sanity.fetch(GET_SINGLE_ARTICLE)
 )
-const article = data._rawValue
+const article = data.value
 
 // const serializers = {
 //   marks: {

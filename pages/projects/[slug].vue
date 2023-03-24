@@ -22,7 +22,7 @@ const GET_SINGLE_PROJECT = groq`*[_type == "projects" && slug.current == "${rout
 const { data } = await useAsyncData(`projects/${route.params.slug}`, () =>
   sanity.fetch(GET_SINGLE_PROJECT)
 )
-const project = data._rawValue
+const project = data.value
 
 const $hero = ref()
 const $galleryMedia = ref([])
@@ -102,12 +102,20 @@ onUnmounted(() => {
     <section class="hero" ref="$hero">
       <SanityImage
         class="hero__thumbnail"
-        v-if="!project.mainVideo"
         :asset-id="project.mainImage.asset._ref"
         auto="format"
         :q="75"
       />
-      <video class="hero__video" v-if="project.mainVideo" src=""></video>
+      <video
+        class="hero__video"
+        v-if="project.mainVideoUrl"
+        :src="project.mainVideoUrl"
+        autoplay
+        muted
+        loop
+        playsinline
+        webkit-playsinline
+      ></video>
       <h1 class="hero__title">{{ project.title }}</h1>
     </section>
     <main class="main">
@@ -117,9 +125,7 @@ onUnmounted(() => {
             {{ project.claim }}
           </div>
           <div class="content__details">
-            <span class="content__date">{{
-              project.releaseDate.slice(0, 4)
-            }}</span>
+            <span class="content__date">{{ project.releaseDate.slice(0, 4) }}</span>
             <span class="content__type">{{ project.field }}</span>
           </div>
           <div class="content__description" ref="$description">
@@ -136,7 +142,11 @@ onUnmounted(() => {
           <ul class="gallery__wrapper">
             <li
               :class="[
-                item._type === 'galleryMedia' ? 'item--media' : 'item--text',
+                item._type === 'galleryMedia'
+                  ? 'item--media'
+                  : item._type === 'galleryVideo'
+                  ? 'item--video'
+                  : 'item--text',
                 'item',
               ]"
               v-if="project?.gallery"
@@ -150,10 +160,12 @@ onUnmounted(() => {
                   </div>
                 </li>
               </ul>
-              <p class="item__text" v-if="item._type === 'galleryText'">
-                {{ item.text }}
-              </p>
-              <div class="item__video"></div>
+              <div class="item__text" v-if="item._type === 'galleryText'">
+                <SanityContent :blocks="item.text" />
+              </div>
+              <div class="item__video" v-if="item._type === 'galleryVideo'">
+                <video :src="item.url" autoplay muted loop playsinline webkitplaysline></video>
+              </div>
             </li>
           </ul>
         </GridContainer>
@@ -273,10 +285,23 @@ onUnmounted(() => {
     &__type {
       margin-left: 1rem;
       text-decoration: underline;
+      display: inline-block;
+      text-decoration: underline;
+      text-decoration: underline;
+      text-decoration-thickness: from-font;
+      text-underline-offset: 0.5rem;
     }
 
     &__description {
       margin-top: 6rem;
+
+      a {
+        display: inline-block;
+        text-decoration: underline;
+        text-decoration: underline;
+        text-decoration-thickness: from-font;
+        text-underline-offset: 0.5rem;
+      }
 
       p {
         &:not(:first-child) {
@@ -322,7 +347,8 @@ onUnmounted(() => {
       margin-top: 6rem;
 
       .item {
-        &--media {
+        &--media,
+        &--video {
           grid-column: 3 / span 8;
 
           @include viewport-375 {
@@ -332,6 +358,14 @@ onUnmounted(() => {
 
         &--text {
           grid-column: 2 / span 6;
+
+          a {
+            display: inline-block;
+            text-decoration: underline;
+            text-decoration: underline;
+            text-decoration-thickness: from-font;
+            text-underline-offset: 0.5rem;
+          }
 
           @include viewport-375 {
             font-size: $mobile-paragraph-text-size;

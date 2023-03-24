@@ -9,14 +9,12 @@ const { isMobile } = useDevice()
 const query = groq`*[_type == "about"][0]`
 const sanity = useSanity()
 const { data } = await useAsyncData('about', () => sanity.fetch(query))
-const about = data._rawValue
+const about = data.value
 
 const $hero = ref()
 const $anchors = ref()
 
 const $about = ref()
-const $tl = ref()
-const $ctx = ref()
 
 const $description = ref()
 const $festivals = ref()
@@ -35,53 +33,6 @@ function scrollToSection(section) {
     ease: 'power3.out',
   })
 }
-
-onMounted(() => {
-  $ctx.value = gsap.context((self) => {
-    const title = self.selector('.hero .title')
-    $tl.value = gsap.to(title, {
-      y: 0,
-      delay: 1,
-      duration: 1,
-      autoAlpha: 1,
-      ease: 'power3.out',
-    })
-
-    setTimeout(() => {
-      ScrollTrigger.create({
-        start: '50%',
-        trigger: $hero.value,
-        onEnter: () => {
-          gsap.to($anchors.value.$el, {
-            y: 0,
-            duration: 0.5,
-          })
-        },
-        onLeaveBack: () => {
-          gsap.to($anchors.value.$el, {
-            y: 50,
-            duration: 0.5,
-          })
-        },
-      })
-    }, 1000)
-  }, $about.value)
-})
-
-onBeforeUnmount(() => {
-  gsap.to($anchors.value.$el, {
-    y: 50,
-    duration: 0.5,
-  })
-
-  ScrollTrigger.getAll().forEach((trigger) => {
-    trigger.kill()
-  })
-})
-
-onUnmounted(() => {
-  $ctx.value.revert()
-})
 </script>
 
 <template>
@@ -235,8 +186,8 @@ onUnmounted(() => {
       grid-column: 2 / span 5;
       font-size: $secondary-text-size;
       font-weight: $extra-light;
-      opacity: 0;
-      transform: translateY(10rem);
+      // opacity: 0;
+      // transform: translateY(10rem);
 
       @include viewport-375 {
         grid-column: 1 / -1;
@@ -410,10 +361,6 @@ onUnmounted(() => {
         @include viewport-375 {
           font-size: $mobile-list-text-size;
           border-top: none;
-        }
-
-        &:not(:first-child) {
-          margin-top: 1.5rem;
         }
 
         &__container {
