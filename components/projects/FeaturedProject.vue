@@ -23,6 +23,11 @@ const props = defineProps({
       class="FeaturedProject__video"
       v-if="project.mainVideoUrl"
       :src="project.mainVideoUrl"
+      autoplay
+      muted
+      loop
+      playsinline
+      webkit-playsinline
     ></video>
     <h2 class="FeaturedProject__title">{{ project.title }}</h2>
   </NuxtLink>
