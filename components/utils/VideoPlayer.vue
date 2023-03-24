@@ -1,44 +1,16 @@
 <script setup>
 import screenfull from 'screenfull'
 
-import useWindowResize from '~~/utils/useWindowResize'
-import useKeyboard from '~~/utils/useKeyboard'
-import { is } from 'immutable'
-
 const { isTouch, isSafari, isAndroid, isIos, isSamsung } = useDevice()
-const {
-  windowWidth,
-  windowHeight,
-  subscribeWindowResize,
-  unsubscribeWindowResize,
-  mdBreakpoint,
-} = useWindowResize()
-const { subscribeKeydown, unsubscribeKeydown, spaceKey, mKey, fKey } =
-  useKeyboard()
-const {
-  subscribeMouseup,
-  unsubscribeMouseup,
-  subscribeMousemove,
-  unsubscribeMousemove,
-} = useMouse()
-const {
-  subscribeTouchend,
-  unsubscribeTouchend,
-  subscribeTouchmove,
-  unsubscribeTouchmove,
-} = useTouch()
 
 const props = defineProps({
   vimeoUrl: String,
-  vimeoId: String,
 })
 
+const $main = ref(null)
 const $video = ref(null)
 const $timeline = ref(null)
 
-const isLoaded = ref(false)
-const hasPlayedOnce = ref(false)
-const hidePlayerTimeout = ref(null)
 const videoCurrentTime = ref(0)
 const videoFormatedCurrentTime = ref(formatTime(videoCurrentTime.value))
 const videoDuration = ref(null)
@@ -48,40 +20,19 @@ const isPlaying = ref(false)
 const isMuted = ref(false)
 const isFullscreen = ref(false)
 const isTimelineActive = ref(false)
-const isPlayerHidden = ref(false)
 
-const timelineLeft = ref(0)
-const timelineWidth = ref(0)
 const isUserDownOnTimeline = ref(false)
 
 let raf = null
 
-onMounted(() => {
-  console.log('mounting')
-  setVideoData()
-})
-
-function onLoadedMetada() {
-  console.log('metadata loaded')
-  setVideoData()
-}
-
 function setVideoData() {
   videoDuration.value = $video.value.duration
   videoFormatedDuration.value = formatTime(videoDuration.value)
-
-  $video.value.addEventListener('timeupdate', onVideoTimeUpdate)
-  $video.value.addEventListener('ended', onVideoEnded)
 }
 
-// function togglePlay() {
-//   // play the video if it's paused and vice versa
-//   if (!isPlaying.value) {
-//     onPlayBtnClick()
-//   } else {
-//     onPauseBtnClick()
-//   }
-// }
+watch($video, () => {
+  setVideoData()
+})
 
 function onPlayBtnClick() {
   isPlaying.value = true
@@ -96,10 +47,8 @@ function onPauseBtnClick() {
 }
 
 function onUpdate() {
-  if (isPlaying.value === true || isPlaying.value === false || isUserDownOnTimeline.value === true) {
-    videoCurrentTime.value = $video.value.currentTime
-    raf = window.requestAnimationFrame(onUpdate)
-  }
+  videoCurrentTime.value = $video.value.currentTime
+  raf = window.requestAnimationFrame(onUpdate)
 }
 
 function onTouchend() {
@@ -109,8 +58,6 @@ function onTouchend() {
 }
 
 function onMousemove(event) {
-  resetHidePlayerTimeout()
-
   if (isUserDownOnTimeline.value === true) {
     if (isTimelineActive.value === true) {
       seekOnTimeline(event.clientX)
@@ -119,37 +66,53 @@ function onMousemove(event) {
 }
 
 function onTouchmove(event) {
-  resetHidePlayerTimeout()
-
   if (isUserDownOnTimeline.value === true) {
     seekOnTimeline(event.touches[0].clientX)
   }
 }
 
 function onVisualClick() {
-  // playerStore.setPlayingState(!isPlaying.value)
+  isPlaying.value = !isPlaying.value
+
+  if (isPlaying.value === true) {
+    onPlayBtnClick()
+  } else {
+    onPauseBtnClick()
+  }
+}
+
+function onDownload() {
+  console.log('Download')
 }
 
 function onToggleMuteBtnClick() {
-  // playerStore.setMutedState(!isMuted.value)
-  resetHidePlayerTimeout()
+  isMuted.value = !isMuted.value
+
+  if (isMuted.value === true) {
+    $video.value.muted = true
+  } else {
+    $video.value.muted = false
+  }
 }
 
 function onFullscreenBtnClick() {
-  // const $fullscreenNode =
-  //   isIos || isAndroid || isSamsung ? $video.value : $main.value
+  const $fullscreenNode = isIos || isAndroid || isSamsung ? $video.value : $main.value
 
-  // screenfull.request($fullscreenNode)
-  resetHidePlayerTimeout()
+  screenfull.toggle($fullscreenNode)
+  isFullscreen.value = true
 }
 
 function onMinimizeBtnClick() {
+  isFullscreen.value = false
   screenfull.exit()
-  resetHidePlayerTimeout()
 }
 
+onMounted(() => {
+  screenfull.on('change', onScreenfullChange)
+})
+
 function onScreenfullChange() {
-  // playerStore.setFullscreenState(screenfull.isFullscreen)
+  isFullscreen.value = screenfull.isFullscreen
 }
 
 function onVideoTimeUpdate() {
@@ -169,60 +132,23 @@ function onTimelineClick(event) {
 }
 
 function seekOnTimeline(userX) {
-  console.log('user clicked on timeline')
-
   const timelineLeft = $timeline.value.getBoundingClientRect().left
   const timelineWidth = $timeline.value.getBoundingClientRect().width
   const userXRelativeToTimeline = userX - timelineLeft
 
-  const seekTime =
-    (userXRelativeToTimeline / timelineWidth) * videoDuration.value
+  const seekTime = (userXRelativeToTimeline / timelineWidth) * videoDuration.value
 
   $video.value.currentTime = seekTime
 
-  resetHidePlayerTimeout()
+  onPlayBtnClick()
 }
 
 function onTimelineMouseDown() {
   isUserDownOnTimeline.value = true
-  console.log('user down on timeline')
 }
 
 function onTimelineMouseUp() {
   isUserDownOnTimeline.value = false
-  console.log('user up on timeline')
-}
-
-function setupHidePlayerTimeout() {
-  // playerStore.setPlayerHiddenState(false)
-
-  if (hidePlayerTimeout.value) {
-    clearTimeout(hidePlayerTimeout.value)
-  }
-
-  hidePlayerTimeout.value = setTimeout(() => {
-    // playerStore.setPlayerHiddenState(true)
-  }, 2000)
-}
-
-function resetHidePlayerTimeout() {
-  // playerStore.setPlayerHiddenState(false)
-
-  if (isPlaying.value === true && hidePlayerTimeout.value) {
-    clearTimeout(hidePlayerTimeout.value)
-
-    hidePlayerTimeout.value = setTimeout(() => {
-      // playerStore.setPlayerHiddenState(true)
-    }, 2000)
-  }
-}
-
-function cancelHidePlayerTimeout() {
-  // playerStore.setPlayerHiddenState(false)
-
-  if (hidePlayerTimeout.value) {
-    clearTimeout(hidePlayerTimeout.value)
-  }
 }
 
 function onVideoEnded() {
@@ -231,7 +157,7 @@ function onVideoEnded() {
 </script>
 
 <template>
-  <div class="VideoPlayer" @click="togglePlay">
+  <div class="VideoPlayer" ref="$main">
     <video
       :src="props.vimeoUrl"
       class="video"
@@ -239,26 +165,17 @@ function onVideoEnded() {
       crossorigin="anonymous"
       playsinline
       webkit-playsinline
-      @click="togglePlay"
-      @loadedmetadata="onLoadedMetada"
+      @click="onVisualClick"
+      @loadedmetadata="setVideoData"
+      @timeupdate="onVideoTimeUpdate"
       @ended="onVideoEnded"
     ></video>
     <div class="controls">
       <div class="controls__play-pause">
-        <button
-          class="controls__play"
-          @click="onPlayBtnClick"
-          type="button"
-          v-show="!isPlaying"
-        >
+        <button class="controls__play" @click="onPlayBtnClick" type="button" v-show="!isPlaying">
           Play
         </button>
-        <button
-          class="controls__pause"
-          @click="onPauseBtnClick"
-          type="button"
-          v-show="isPlaying"
-        >
+        <button class="controls__pause" @click="onPauseBtnClick" type="button" v-show="isPlaying">
           Pause
         </button>
       </div>
@@ -269,10 +186,17 @@ function onVideoEnded() {
         <div class="controls__total-time">{{ videoFormatedDuration }}</div>
       </div>
       <div class="controls__mute">
-        <button @click="onToggleMuteBtnClick" type="button">Mute</button>
+        <button @click="onToggleMuteBtnClick" type="button" v-show="!isMuted">Mute</button>
+        <button @click="onToggleMuteBtnClick" type="button" v-show="isMuted">Unmute</button>
       </div>
       <div class="controls__download">
         <button @click="onDownload" type="button">Download</button>
+      </div>
+      <div class="controls__fullscreen">
+        <button @click="onFullscreenBtnClick" type="button" v-show="!isFullscreen">
+          Fullscreen
+        </button>
+        <button @click="onMinimizeBtnClick" type="button" v-show="isFullscreen">Minimize</button>
       </div>
       <div
         class="controls__timeline"
@@ -286,9 +210,7 @@ function onVideoEnded() {
         <div
           class="controls__timeline-current"
           :style="{
-            transform: `translate3d(-${
-              100 - (videoCurrentTime / videoDuration) * 100
-            }%, 0, 0)`,
+            transform: `translate3d(-${100 - (videoCurrentTime / videoDuration) * 100}%, 0, 0)`,
           }"
         ></div>
       </div>
@@ -299,7 +221,6 @@ function onVideoEnded() {
 <style lang="scss">
 .VideoPlayer {
   position: relative;
-  aspect-ratio: 130/73.2;
 
   .controls {
     position: absolute;
@@ -312,6 +233,7 @@ function onVideoEnded() {
 
     button {
       text-transform: uppercase;
+      cursor: pointer;
     }
 
     &__time {
@@ -331,18 +253,24 @@ function onVideoEnded() {
       margin-left: 1.2rem;
     }
 
+    &__fullscreen {
+      margin-left: 1.2rem;
+    }
+
     &__timeline {
       overflow: hidden;
       position: absolute;
-      bottom: -1rem;
+      bottom: 0;
       left: 0;
       width: 100%;
-      height: 2rem;
+      height: 1rem;
       display: flex;
       align-items: center;
       cursor: pointer;
 
       &-background {
+        position: absolute;
+        bottom: 0;
         height: 0.1rem;
         background-color: #737373;
         opacity: 0.8;
@@ -353,6 +281,7 @@ function onVideoEnded() {
         height: 0.2rem;
         background-color: $white;
         position: absolute;
+        bottom: 0;
         width: 100%;
         transform: scaleX(0);
         transform-origin: left;
