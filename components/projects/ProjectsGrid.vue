@@ -40,9 +40,7 @@ const $ctx = ref()
 <template>
   <ul
     :class="[
-      gridModeCols === 3
-        ? 'ProjectsGrid--three-items'
-        : 'ProjectsGrid--four-items',
+      gridModeCols === 3 ? 'ProjectsGrid--three-items' : 'ProjectsGrid--four-items',
       'ProjectsGrid',
     ]"
     ref="$projects"
@@ -60,6 +58,15 @@ const $ctx = ref()
               :asset-id="item.mainImage.asset._ref"
               auto="format"
             />
+            <video
+              v-if="item.mainVideoUrl"
+              :src="item.mainVideoUrl"
+              muted
+              loop
+              autoplay
+              playsinline
+              webkit-playsinline
+            ></video>
           </div>
           <h3 class="item__title">{{ item.title }}</h3>
         </NuxtLink>
@@ -81,10 +88,6 @@ const $ctx = ref()
     padding: 0 1rem;
   }
 
-  // .item.animated {
-  //   transition: all 0.5s ease-in-out;
-  // }
-
   &--three-items {
     grid-template-columns: repeat(3, 1fr);
 
@@ -103,6 +106,7 @@ const $ctx = ref()
 
     &__thumbnail {
       aspect-ratio: 1 / 1;
+      position: relative;
 
       img {
         object-fit: cover;
@@ -110,10 +114,26 @@ const $ctx = ref()
         filter: grayscale(100%);
         transition: 0.25s ease-in-out;
       }
+
+      video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0;
+        visibility: hidden;
+        transition: 0.25s ease-in-out;
+      }
     }
 
     &:hover img {
       filter: grayscale(0);
+    }
+
+    &:hover video {
+      opacity: 1;
+      visibility: visible;
     }
 
     &__title {

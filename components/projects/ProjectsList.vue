@@ -22,10 +22,7 @@ const props = defineProps({
             </div>
             <div class="item__meta">
               <h3 class="item__title" v-if="item.title">{{ item.title }}</h3>
-              <ul
-                class="item__categories item__categories--mobile"
-                v-if="item.categories"
-              >
+              <ul class="item__categories item__categories--mobile" v-if="item.categories">
                 <li class="item__category" v-for="category in item.categories">
                   {{ category.title }}
                 </li>
@@ -42,6 +39,15 @@ const props = defineProps({
                 :asset-id="item.mainImage.asset._ref"
                 auto="format"
               />
+              <video
+                v-if="item.mainVideoUrl"
+                :src="item.mainVideoUrl"
+                muted
+                loop
+                autoplay
+                playsinline
+                webkit-playsinline
+              ></video>
             </div>
           </div>
         </NuxtLink>
@@ -129,6 +135,7 @@ const props = defineProps({
       max-width: 21rem;
       margin-left: auto;
       padding: 1.5rem 0;
+      position: relative;
 
       @include viewport-375 {
         grid-column: 9 / span 5;
@@ -137,7 +144,29 @@ const props = defineProps({
       img {
         aspect-ratio: 210 / 140;
         object-fit: cover;
+        filter: grayscale(100%);
+        transition: 0.25s ease-in-out;
       }
+
+      video {
+        position: absolute;
+        aspect-ratio: 210 / 140;
+        top: 1.5rem;
+        left: 0;
+        object-fit: cover;
+        opacity: 0;
+        visibility: hidden;
+        transition: 0.25s ease-in-out;
+      }
+    }
+
+    &:hover img {
+      filter: grayscale(0);
+    }
+
+    &:hover video {
+      opacity: 1;
+      visibility: visible;
     }
   }
 }

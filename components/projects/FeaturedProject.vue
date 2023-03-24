@@ -21,8 +21,8 @@ const props = defineProps({
     />
     <video
       class="FeaturedProject__video"
-      v-if="project.mainVideo"
-      src=""
+      v-if="project.mainVideoUrl"
+      :src="project.mainVideoUrl"
     ></video>
     <h2 class="FeaturedProject__title">{{ project.title }}</h2>
   </NuxtLink>
