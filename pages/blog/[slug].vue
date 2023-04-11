@@ -49,13 +49,11 @@ const { isMobile } = useDevice()
           </div>
         </section>
         <section class="content">
-          <!-- <VideoPlayer
-            class="video"
+          <VideoPlayer
             v-if="article.mainVideo"
-            :vimeoId="article.mainVideoUrl"
+            :vimeoUrl="article.mainVideoUrl"
             :quality="isMobile ? 'sd' : 'hd'"
-          /> -->
-          <NewVideoPlayer vimeoId="791896320" />
+          />
           <div class="content__gallery" v-if="article?.gallery?.medias">
             <SanityImage
               class="image"
@@ -124,6 +122,7 @@ const { isMobile } = useDevice()
 
     .content {
       grid-column: 4 / -1;
+      margin-bottom: 12rem;
 
       @include viewport-375 {
         grid-column: 1 / -1;
@@ -138,11 +137,7 @@ const { isMobile } = useDevice()
           }
 
           &:not(:first-child) {
-            margin-top: 12rem;
-
-            @include viewport-375 {
-              margin-top: 6rem;
-            }
+            margin-top: 6rem;
           }
         }
       }

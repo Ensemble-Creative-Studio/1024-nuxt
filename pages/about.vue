@@ -14,7 +14,8 @@ const about = data.value
 const $hero = ref()
 const $anchors = ref()
 
-const $about = ref()
+const $aboutPage = ref()
+const $ctx = ref()
 
 const $description = ref()
 const $festivals = ref()
@@ -33,6 +34,44 @@ function scrollToSection(section) {
     ease: 'power3.out',
   })
 }
+
+onMounted(() => {
+  $ctx.value = gsap.context(() => {
+    setTimeout(() => {
+      ScrollTrigger.create({
+        start: '50%',
+        trigger: $hero.value,
+        onEnter: () => {
+          gsap.to($anchors.value.$el, {
+            y: 0,
+            duration: 0.5,
+          })
+        },
+        onLeaveBack: () => {
+          gsap.to($anchors.value.$el, {
+            y: 50,
+            duration: 0.5,
+          })
+        },
+      })
+    }, 1000)
+  }, $aboutPage.value)
+})
+
+onBeforeUnmount(() => {
+  gsap.to($anchors.value.$el, {
+    y: 50,
+    duration: 0.5,
+  })
+
+  ScrollTrigger.getAll().forEach((trigger) => {
+    trigger.kill()
+  })
+})
+
+onUnmounted(() => {
+  $ctx.value.revert()
+})
 </script>
 
 <template>
@@ -49,18 +88,9 @@ function scrollToSection(section) {
       </GridContainer>
     </section>
     <section class="slider">
-      <Swiper
-        :slides-per-view="isMobile ? 1.1 : 2.5"
-        :space-between="10"
-        :grab-cursor="true"
-      >
+      <Swiper :slides-per-view="isMobile ? 1.1 : 2.5" :space-between="10" :grab-cursor="true">
         <SwiperSlide v-for="item in about.gallery.medias">
-          <SanityImage
-            :asset-id="item.asset._ref"
-            auto="format"
-            :q="75"
-            :key="item._id"
-          />
+          <SanityImage :asset-id="item.asset._ref" auto="format" :q="75" :key="item._id" />
         </SwiperSlide>
       </Swiper>
     </section>
