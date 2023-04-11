@@ -3,6 +3,7 @@ $viewport-320: 321px;
 $viewport-375: 481px;
 $viewport-480: 481px;
 $viewport-768: 769px;
+$viewport-992: 993px;
 $viewport-1024: 1025px;
 $viewport-1200: 1201px;
 $viewport-1400: 1401px;
@@ -45,6 +46,12 @@ $viewport-1600: 1601px;
 
 @mixin viewport-768 {
   @media screen and (max-width: $viewport-768) {
+    @content;
+  }
+}
+
+@mixin viewport-992 {
+  @media screen and (max-width: $viewport-992) {
     @content;
   }
 }

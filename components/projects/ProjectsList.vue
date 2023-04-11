@@ -5,6 +5,8 @@ const props = defineProps({
   order: String,
   displayMode: String,
 })
+
+console.log(props.projects)
 </script>
 
 <template>
@@ -61,12 +63,12 @@ const props = defineProps({
   grid-column: 1 / -1;
 
   .item {
-    font-size: $list-text-size;
+    font-size: $desktop-list;
     border-top: 0.1rem solid $dark-grey;
     transition: background-color 0.6s ease-in-out;
 
     @include viewport-375 {
-      font-size: $mobile-list-text-size;
+      font-size: $mobile-list;
     }
 
     &:hover {

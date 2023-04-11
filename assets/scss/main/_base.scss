@@ -2,7 +2,7 @@
 @import './../resources/variables';
 
 body {
-  font-size: $default-text-size;
+  font-size: $desktop-default-text;
   font-family: $the-future;
   font-feature-settings: 'ss02', 'ss05', 'ss06', 'ss07', 'ss08', 'ss09', 'ss11',
     'ss12';
@@ -11,7 +11,7 @@ body {
   overflow-x: hidden;
 
   @include viewport-375 {
-    font-size: $mobile-default-text-size;
+    font-size: $mobile-default-text;
   }
 }
 

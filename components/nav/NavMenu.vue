@@ -107,7 +107,7 @@ $ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   top: 0;
   right: 0;
   height: 100%;
-  width: 55rem; // WIP
+  width: 55rem;
   background-color: $black;
   padding: 9rem 2rem 5rem 2rem;
   z-index: 30;
@@ -122,6 +122,10 @@ $ease-out: cubic-bezier(0.16, 1, 0.3, 1);
     transform: translate(0%, 0%);
   }
 
+  @include viewport-768 {
+    width: 40rem;
+  }
+
   @include viewport-375 {
     width: 100%;
     transform: translate(0%, -100%);
@@ -133,7 +137,7 @@ $ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   &__main {
-    font-size: $main-text-size;
+    font-size: $desktop-h2;
     transform: translate(100%, 0%);
     transition: transform 1.5s $ease-out;
 
@@ -143,9 +147,9 @@ $ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 
     @include viewport-375 {
       transform: translate(0%, 0%);
-      margin: auto;
+      margin: 0;
       width: 100%;
-      font-size: $mobile-main-text-size;
+      font-size: $mobile-h2;
     }
   }
 
@@ -159,7 +163,7 @@ $ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 
     @include viewport-375 {
       transform: translate(0%, 0%);
-      margin: auto;
+      margin: 0;
       width: 100%;
     }
 

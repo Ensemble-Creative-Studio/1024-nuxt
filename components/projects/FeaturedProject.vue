@@ -44,14 +44,14 @@ const props = defineProps({
   }
 
   &__title {
-    font-size: $main-text-size;
+    font-size: $desktop-h2;
     font-weight: $extra-light;
     position: absolute;
     bottom: calc(1.5rem + 2rem);
     left: 2rem;
 
     @include viewport-375 {
-      font-size: $mobile-main-text-size;
+      font-size: $mobile-h2;
       left: 1rem;
       bottom: 1rem;
     }

@@ -48,15 +48,27 @@ const home = data.value
 
     .title {
       grid-column: 2 / span 8;
-      font-size: $main-text-size;
+      font-size: $desktop-h2;
       font-weight: $extra-light;
-      // opacity: 0;
-      // transform: translateY(10rem);
+
+      @include viewport-1200 {
+        grid-column: 1 / -1;
+      }
+
+      @include viewport-992 {
+        font-size: 4rem;
+      }
 
       @include viewport-375 {
         grid-column: 1 / span 10;
-        font-size: $mobile-secondary-text-size;
+        font-size: $mobile-h4;
       }
+    }
+  }
+
+  .FeaturedProjects {
+    @include viewport-375 {
+      margin-top: 6rem;
     }
   }
 }

@@ -214,14 +214,14 @@ onUnmounted(() => {
   .hero {
     .title {
       grid-column: 2 / span 5;
-      font-size: $secondary-text-size;
+      font-size: $desktop-h4;
       font-weight: $extra-light;
       // opacity: 0;
       // transform: translateY(10rem);
 
       @include viewport-375 {
         grid-column: 1 / -1;
-        font-size: $mobile-secondary-text-size;
+        font-size: $mobile-h4;
       }
     }
   }
@@ -250,7 +250,7 @@ onUnmounted(() => {
 
       @include viewport-375 {
         grid-column: 2 / -1;
-        font-size: $mobile-paragraph-text-size;
+        font-size: $mobile-text-read;
       }
     }
   }
@@ -292,7 +292,7 @@ onUnmounted(() => {
 
       @include viewport-375 {
         grid-column: 2 / -1;
-        font-size: $mobile-paragraph-text-size;
+        font-size: $mobile-text-read;
       }
     }
   }
@@ -338,7 +338,7 @@ onUnmounted(() => {
 
   .conclusion {
     margin-top: 12rem;
-    font-size: $secondary-text-size;
+    font-size: $desktop-h4;
     font-weight: $extra-light;
 
     @include viewport-375 {
@@ -350,7 +350,7 @@ onUnmounted(() => {
 
       @include viewport-375 {
         grid-column: 1 / -1;
-        font-size: $mobile-secondary-text-size;
+        font-size: $mobile-h4;
       }
     }
   }
@@ -368,12 +368,12 @@ onUnmounted(() => {
 
     &__title {
       grid-column: 2 / -1;
-      font-size: $secondary-text-size;
+      font-size: $desktop-h4;
       font-weight: $extra-light;
 
       @include viewport-375 {
         grid-column: 1 / -1;
-        font-size: $mobile-secondary-text-size;
+        font-size: $mobile-h4;
       }
     }
 
@@ -386,10 +386,10 @@ onUnmounted(() => {
 
       .item {
         border-top: 0.1rem solid $dark-grey;
-        font-size: $list-text-size;
+        font-size: $desktop-list;
 
         @include viewport-375 {
-          font-size: $mobile-list-text-size;
+          font-size: $mobile-list;
           border-top: none;
         }
 

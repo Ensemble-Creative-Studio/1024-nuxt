@@ -48,12 +48,12 @@ const blog = data.value
   .pagination {
     margin-top: 12rem;
     padding-bottom: 12rem;
-    font-size: $list-text-size;
+    font-size: $desktop-list;
 
     @include viewport-375 {
       margin-top: 9rem;
       padding-bottom: 4rem;
-      font-size: $mobile-list-text-size;
+      font-size: $mobile-list;
     }
 
     &__container {

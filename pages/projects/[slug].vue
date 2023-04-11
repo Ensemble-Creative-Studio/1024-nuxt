@@ -55,7 +55,7 @@ function scrollToSection(section) {
 }
 
 onMounted(() => {
-  $ctx.value = gsap.context((self) => {
+  $ctx.value = gsap.context(() => {
     setTimeout(() => {
       ScrollTrigger.create({
         start: '50%',
@@ -164,7 +164,7 @@ onUnmounted(() => {
                 <SanityContent :blocks="item.text" />
               </div>
               <div class="item__video" v-if="item._type === 'galleryVideo'">
-                <video :src="item.url" autoplay muted loop playsinline webkitplaysline></video>
+                <VideoPlayer :vimeoUrl="item.url" :quality="isMobile ? 'sd' : 'hd'" />
               </div>
             </li>
           </ul>
@@ -186,11 +186,11 @@ onUnmounted(() => {
           </ul>
         </GridContainer>
       </section>
-      <section class="related-projects" v-if="project.relatedProjects">
+      <section class="related-projects">
         <GridContainer>
           <h2 class="related-projects__title">Related projects</h2>
         </GridContainer>
-        <ProjectsList :projects="project.relatedProjects" />
+        <ProjectsList :projects="project.relatedProjects ? project.relatedProjects : []" />
       </section>
       <BottomAnchors ref="$anchors">
         <ul class="BottomAnchors__list">
@@ -234,14 +234,14 @@ onUnmounted(() => {
     }
 
     &__title {
-      font-size: $main-text-size;
+      font-size: $desktop-h2;
       font-weight: $extra-light;
       position: fixed;
       bottom: 1.5rem;
       left: 2rem;
 
       @include viewport-375 {
-        font-size: $mobile-main-text-size;
+        font-size: $desktop-h2;
         left: 1rem;
         bottom: 6rem;
       }
@@ -258,22 +258,33 @@ onUnmounted(() => {
   .content {
     &__claim {
       grid-column: 2 / span 5;
-      font-size: $main-text-size;
+      font-size: $desktop-h2;
       font-weight: $extra-light;
       margin-top: 6rem;
 
-      @include viewport-375 {
-        font-size: $mobile-main-text-size;
-        grid-column: 1 / -1;
+      @include viewport-1200 {
+        grid-column: 2 / span 8;
+      }
+
+      @include viewport-992 {
+        font-size: 4rem;
       }
     }
 
     &__description {
       grid-column: 2 / span 5;
 
+      @include viewport-1200 {
+        grid-column: 2 / span 8;
+      }
+
+      @include viewport-768 {
+        grid-column: 1 / -1;
+      }
+
       @include viewport-375 {
         grid-column: 2 / -1;
-        font-size: $mobile-paragraph-text-size;
+        font-size: $mobile-text-read;
       }
     }
 
@@ -321,12 +332,12 @@ onUnmounted(() => {
     }
 
     &__title {
-      font-size: $main-text-size;
+      font-size: $desktop-h4;
       font-weight: $extra-light;
       grid-column: 1 / -1;
 
       @include viewport-375 {
-        font-size: $mobile-main-text-size;
+        font-size: $mobile-h4;
       }
     }
 
@@ -368,19 +379,27 @@ onUnmounted(() => {
           }
 
           @include viewport-375 {
-            font-size: $mobile-paragraph-text-size;
+            font-size: $mobile-text-read;
             grid-column: 2 / -1;
           }
         }
 
         &:not(:first-child) {
           margin-top: 12rem;
+
+          @include viewport-375 {
+            margin-top: 6rem;
+          }
         }
 
         &__inner {
           li {
             &:not(:first-child) {
               margin-top: 12rem;
+
+              @include viewport-375 {
+                margin-top: 6rem;
+              }
             }
           }
         }
@@ -390,10 +409,9 @@ onUnmounted(() => {
 
   .credits {
     margin-top: 9rem;
-    padding-bottom: 9rem;
 
     @include viewport-375 {
-      font-size: $mobile-secondary-text-size;
+      font-size: $mobile-text-read;
     }
 
     &__header {
@@ -451,11 +469,11 @@ onUnmounted(() => {
 
     &__title {
       grid-column: 1 / -1;
-      font-size: $main-text-size;
+      font-size: $desktop-h4;
       font-weight: $extra-light;
 
       @include viewport-375 {
-        font-size: $mobile-main-text-size;
+        font-size: $mobile-h2;
       }
     }
 

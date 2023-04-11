@@ -15,25 +15,48 @@ $the-future: 'The Future', Arial, sans-serif;
 $extra-light: 200;
 $light: 300;
 
-// Font sizes
-$main-text-size: 5.2rem;
-$secondary-text-size: 4rem;
-$list-text-size: 2.6rem;
-$paragraph-text-size: 2.4rem;
-$default-text-size: 2rem;
+/**
+* Font sizes
+*/
 
-// $tablet-main-text-size: 4.8rem;
-// $tablet-secondary-text-size: 3.6rem;
-// $tablet-list-text-size: 2.4rem;
-// $tablet-paragraph-text-size: 2.2rem;
-// $tablet-default-text-size: 1.8rem;
+/* Default */
+$desktop-default-text: 2rem;
+$mobile-default-text: 1.6rem;
 
-$mobile-main-text-size: 3.6rem;
-$mobile-secondary-text-size: 2.6rem;
-$mobile-list-text-size: 1.6rem;
-$mobile-paragraph-text-size: 2.4rem;
-$mobile-default-text-size: 1.6rem;
+/* Desktop */
+$desktop-h1: 5.2rem;
+$desktop-h2: 5.2rem;
+$desktop-h4: 4rem;
+$desktop-h4-u: 2.6rem;
+$desktop-list: 2.6rem;
+$desktop-player: 1.2rem;
+$desktop-list-u: 2.6rem;
 
-// Line heights
-$main-text-lh: 1;
-$secondary-text-lh: 1;
+/* Desktop Text */
+$desktop-text-description: 2rem;
+$desktop-text-read: 2.4rem;
+
+/* Desktop Filters */
+$desktop-filters-main: 1.8rem;
+$desktop-filters-active: 1.8rem;
+
+/* Mobile */
+$mobile-h1: 3.6rem;
+$mobile-h2: 3.6rem;
+$mobile-h4: 2.6rem;
+$mobile-list: 1.6rem;
+$mobile-player: 1rem;
+
+/* Mobile Text */
+$mobile-text-description: 1.6rem;
+$mobile-text-description-active: 1.6rem;
+$mobile-text-read: 2.4rem;
+$mobile-text-read-u: 2rem;
+
+/* Mobile Filters */
+$mobile-filters-main: 1.6rem;
+$mobile-filters-active: 1.6rem;
+
+/**
+* Line heights
+*/
