@@ -409,9 +409,11 @@ onUnmounted(() => {
 
   .credits {
     margin-top: 9rem;
+    padding-bottom: 9rem;
 
     @include viewport-375 {
       font-size: $mobile-text-read;
+      padding-bottom: 0;
     }
 
     &__header {
