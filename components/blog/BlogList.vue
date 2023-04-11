@@ -18,7 +18,6 @@ const { isMobile } = useDevice()
           :vimeoUrl="item.mainVideoUrl"
           :quality="isMobile ? 'sd' : 'hd'"
         />
-        <!-- <NewVideoPlayer v-if="item.mainVideo" vimeoId="791896320" /> -->
         <Swiper
           :slides-per-view="1"
           :space-between="10"
