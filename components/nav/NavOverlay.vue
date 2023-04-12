@@ -12,16 +12,5 @@
   z-index: 20;
   mix-blend-mode: difference;
   background-color: $white;
-  // animation: show 0.5s ease-in-out forwards;
-  // animation-delay: 0.25s;
 }
-
-// @keyframes show {
-//   0% {
-//     pointer-events: none;
-//   }
-//   100% {
-//     pointer-events: all;
-//   }
-// }
 </style>

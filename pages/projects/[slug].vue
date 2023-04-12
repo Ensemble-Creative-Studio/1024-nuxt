@@ -101,7 +101,7 @@ onUnmounted(() => {
     </Head>
     <section class="hero" ref="$hero">
       <SanityImage
-        class="hero__thumbnail"
+        class="hero__banner"
         :asset-id="project.mainImage.asset._ref"
         auto="format"
         :q="75"
@@ -118,7 +118,7 @@ onUnmounted(() => {
       ></video>
       <h1 class="hero__title">{{ project.title }}</h1>
     </section>
-    <main class="main">
+    <div class="main">
       <section class="content">
         <GridContainer>
           <div class="content__claim">
@@ -208,7 +208,7 @@ onUnmounted(() => {
           </li>
         </ul>
       </BottomAnchors>
-    </main>
+    </div>
   </div>
 </template>
 
@@ -221,7 +221,7 @@ onUnmounted(() => {
     position: relative;
     background-color: transparent;
 
-    &__thumbnail,
+    &__banner,
     &__video {
       height: 100%;
       position: fixed;
