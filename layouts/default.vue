@@ -28,11 +28,23 @@ watch(
     <Transition>
       <NavOverlay v-if="isNavActive" @click.native="closeMenu()" />
     </Transition>
-    <slot />
+    <main :class="[isNavActive && 'content--inverted', 'content']">
+      <slot />
+    </main>
   </div>
 </template>
 
 <style lang="scss">
+.content {
+  transition: opacity 0.5s ease-in-out;
+  transition-property: filter, background-color;
+
+  &--inverted {
+    filter: grayscale(1);
+    background-color: black;
+  }
+}
+
 .v-enter-active,
 .v-leave-active {
   transition: opacity 0.5s ease-in-out;
