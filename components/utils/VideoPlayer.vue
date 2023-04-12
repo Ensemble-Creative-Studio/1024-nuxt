@@ -292,6 +292,7 @@ function onVideoEnded() {
 <style lang="scss">
 .VideoPlayer {
   position: relative;
+  background-color: $black;
 
   .controls {
     position: absolute;

@@ -23,9 +23,7 @@ const GET_CATEGORIES = groq`*[_type == "categories"]
     "projectsInside": *[_type == "projects" && references(^._id)]
   }
 `
-let categories = await useAsyncData('categories', () =>
-  sanity.fetch(GET_CATEGORIES)
-)
+let categories = await useAsyncData('categories', () => sanity.fetch(GET_CATEGORIES))
 categories = categories.data.value
 categories.forEach((category) => {
   category.projectsInside = category.projectsInside.filter((project) => {
@@ -73,9 +71,7 @@ const filteredProjects = computed(() => {
     function isTagged(element) {
       return tags.value.includes(element)
     }
-    return projects.filter((project) =>
-      project.categoriesTitles?.some(isTagged)
-    )
+    return projects.filter((project) => project.categoriesTitles?.some(isTagged))
   }
 })
 
@@ -115,9 +111,7 @@ function setOrder(value) {
 const finalProjects = computed(() => {
   let filteredByTagsProjects = filteredProjects.value
   if (order.value === 'byName') {
-    filteredByTagsProjects = filteredByTagsProjects.sort((a, b) =>
-      a.title.localeCompare(b.title)
-    )
+    filteredByTagsProjects = filteredByTagsProjects.sort((a, b) => a.title.localeCompare(b.title))
   } else {
     filteredByTagsProjects = filteredByTagsProjects.sort(
       (a, b) => parseInt(b.releaseDate) - parseInt(a.releaseDate)
@@ -156,11 +150,21 @@ const finalProjects = computed(() => {
         {{ showMobileFilters ? 'Close' : 'Filter' }}
       </button>
       <div class="mobile-bar__display-mode">
-        <button class="mobile-bar__grid" @click="setGridMode(4)">Grid</button>
-        <button class="mobile-bar__list" @click="setListMode()">List</button>
+        <button
+          :class="[displayMode === 'grid' && 'mobile-bar__grid--active', 'mobile-bar__grid']"
+          @click="setGridMode(4)"
+        >
+          Grid
+        </button>
+        <button
+          :class="[displayMode === 'list' && 'mobile-bar__list--active', 'mobile-bar__list']"
+          @click="setListMode()"
+        >
+          List
+        </button>
       </div>
     </div>
-    <div :class="[showMobileFilters ? 'container--active' : '', 'container']">
+    <div :class="[showMobileFilters && 'container--active', 'container']">
       <ul class="order" ref="$order">
         <li :class="[order === 'byDate' && 'order-date--active', 'order-date']">
           <button ref="$date" @click="setOrder('date')">Date</button>
@@ -171,7 +175,7 @@ const finalProjects = computed(() => {
       </ul>
       <ul class="filters">
         <li class="filters__all">
-          <button @click="toggleAll()" :class="[all ? 'toggled' : '', 'all']">
+          <button @click="toggleAll()" :class="[all && 'toggled', 'all']">
             <span class="all__label">All&nbsp;</span>
             <span class="all__length">{{ projects.length }}</span>
           </button>
@@ -187,53 +191,35 @@ const finalProjects = computed(() => {
       </ul>
       <ul class="display-mode">
         <li
-          :class="[
-            displayMode === 'grid' && 'display-mode__grid--active',
-            'display-mode__grid',
-          ]"
+          :class="[displayMode === 'grid' && 'display-mode__grid--active', 'display-mode__grid']"
           @click="setGridMode(4)"
         >
           Grid
         </li>
         <li
           :class="[
-            displayMode === 'grid' &&
-              gridModeCols === 4 &&
-              'display-mode__four-grid--active',
+            displayMode === 'grid' && gridModeCols === 4 && 'display-mode__four-grid--active',
             'display-mode__four-grid',
           ]"
           @click="setGridMode(4)"
         >
           <FourItemsGridIcon
-            :color="
-              displayMode === 'grid' && gridModeCols === 4
-                ? '#ffffff'
-                : '#727272'
-            "
+            :color="displayMode === 'grid' && gridModeCols === 4 ? '#ffffff' : '#727272'"
           />
         </li>
         <li
           :class="[
-            displayMode === 'grid' &&
-              gridModeCols === 3 &&
-              'display-mode__three-grid--active',
+            displayMode === 'grid' && gridModeCols === 3 && 'display-mode__three-grid--active',
             'display-mode__three-grid',
           ]"
           @click="setGridMode(3)"
         >
           <ThreeItemsGridIcon
-            :color="
-              displayMode === 'grid' && gridModeCols === 3
-                ? '#ffffff'
-                : '#727272'
-            "
+            :color="displayMode === 'grid' && gridModeCols === 3 ? '#ffffff' : '#727272'"
           />
         </li>
         <li
-          :class="[
-            displayMode === 'list' && 'display-mode__list--active',
-            'display-mode__list',
-          ]"
+          :class="[displayMode === 'list' && 'display-mode__list--active', 'display-mode__list']"
           @click="setListMode()"
         >
           List
@@ -270,7 +256,7 @@ const finalProjects = computed(() => {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: fixed;
+    position: sticky;
     bottom: 0;
     z-index: 10;
     background-color: $black;
@@ -287,7 +273,7 @@ const finalProjects = computed(() => {
       align-items: flex-start;
       padding: 3rem 1rem;
       transform: translateY(calc(100% - 41px));
-      transition: 0.6s ease-in-out;
+      transition: 0.6s cubic-bezier(0.1, 0.82, 0.76, 0.965);
       transition-property: opacity transform;
 
       &--active {
@@ -321,6 +307,18 @@ const finalProjects = computed(() => {
 
     @include viewport-375 {
       display: flex;
+    }
+
+    &__grid,
+    &__list {
+      color: $medium-grey;
+
+      &--active {
+        color: $white;
+        text-decoration: underline;
+        text-decoration-thickness: from-font;
+        text-underline-offset: 0.5rem;
+      }
     }
   }
 

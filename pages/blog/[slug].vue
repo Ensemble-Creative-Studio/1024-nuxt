@@ -39,7 +39,7 @@ const { isMobile } = useDevice()
       <Title>{{ article.title }}</Title>
       <Meta name="description" content="Project description" />
     </Head>
-    <main class="main">
+    <div class="main">
       <GridContainer>
         <section class="infos">
           <GoBackButton />
@@ -65,7 +65,7 @@ const { isMobile } = useDevice()
           </div>
         </section>
       </GridContainer>
-    </main>
+    </div>
   </div>
 </template>
 
