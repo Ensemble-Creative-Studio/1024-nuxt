@@ -100,7 +100,16 @@ onUnmounted(() => {
       </GridContainer>
     </section>
     <section class="marquee">
-      <span>{{ about.marqueeText }}</span>
+      <ul class="marquee__content">
+        <li>{{ about.marqueeText }}</li>
+        <li>{{ about.marqueeText }}</li>
+        <li>{{ about.marqueeText }}</li>
+      </ul>
+      <ul class="marquee__content" aria-hidden="true">
+        <li>{{ about.marqueeText }}</li>
+        <li>{{ about.marqueeText }}</li>
+        <li>{{ about.marqueeText }}</li>
+      </ul>
     </section>
     <section class="history">
       <GridContainer>
@@ -259,14 +268,24 @@ onUnmounted(() => {
     margin-top: 12rem;
     font-size: 12rem;
     font-weight: $extra-light;
+    --gap: 1rem;
+    display: flex;
+    overflow: hidden;
+    user-select: none;
+    gap: var(--gap);
+
+    &__content {
+      flex-shrink: 0;
+      display: flex;
+      justify-content: space-around;
+      min-width: 100%;
+      gap: var(--gap);
+      animation: scroll 150s linear infinite;
+    }
 
     @include viewport-375 {
       font-size: 4.6rem;
       margin-top: 6rem;
-    }
-
-    span {
-      white-space: nowrap;
     }
   }
 
@@ -446,6 +465,15 @@ onUnmounted(() => {
     @include viewport-375 {
       padding-bottom: 6.5rem;
     }
+  }
+}
+
+@keyframes scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-100% - var(--gap)));
   }
 }
 </style>
