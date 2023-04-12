@@ -5,6 +5,7 @@ const { isTouch, isSafari, isAndroid, isIos, isSamsung } = useDevice()
 
 const props = defineProps({
   vimeoUrl: String,
+  downloadUrl: String,
 })
 
 const $main = ref(null)
@@ -81,9 +82,9 @@ function onVisualClick() {
   }
 }
 
-function onDownload() {
-  console.log('Download')
-}
+// function onDownload() {
+//   console.log('Download')
+// }
 
 function onToggleMuteBtnClick() {
   isMuted.value = !isMuted.value
@@ -159,7 +160,7 @@ function onVideoEnded() {
 <template>
   <div class="VideoPlayer" ref="$main">
     <video
-      :src="props.vimeoUrl"
+      :src="vimeoUrl"
       class="video"
       ref="$video"
       crossorigin="anonymous"
@@ -267,7 +268,9 @@ function onVideoEnded() {
         </button>
       </div>
       <div class="controls__download">
-        <button @click="onDownload" type="button">Download</button>
+        <button>
+          <a :href="downloadUrl" type="button">Download</a>
+        </button>
       </div>
       <div
         class="controls__timeline"

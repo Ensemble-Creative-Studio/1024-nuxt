@@ -164,7 +164,11 @@ onUnmounted(() => {
                 <SanityContent :blocks="item.text" />
               </div>
               <div class="item__video" v-if="item._type === 'galleryVideo'">
-                <VideoPlayer :vimeoUrl="item.url" :quality="isMobile ? 'sd' : 'hd'" />
+                <VideoPlayer
+                  :vimeoUrl="item.url"
+                  :downloadUrl="item.downloadUrl"
+                  :quality="isMobile ? 'sd' : 'hd'"
+                />
               </div>
             </li>
           </ul>

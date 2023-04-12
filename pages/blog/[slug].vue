@@ -52,6 +52,7 @@ const { isMobile } = useDevice()
           <VideoPlayer
             v-if="article.mainVideo"
             :vimeoUrl="article.mainVideoUrl"
+            :downloadUrl="article.mainVideoDownloadUrl"
             :quality="isMobile ? 'sd' : 'hd'"
           />
           <div class="content__gallery" v-if="article?.gallery?.medias">
