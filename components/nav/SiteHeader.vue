@@ -10,7 +10,7 @@ function toggleNav() {
   <header class="SiteHeader">
     <SiteLogo />
     <div
-      :class="[isNavActive ? 'active' : '', 'menu-icon']"
+      :class="[isNavActive && 'active', 'menu-icon']"
       @click="toggleNav()"
     >
       <input class="menu-icon__cheeckbox" type="checkbox" />
