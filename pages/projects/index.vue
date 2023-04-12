@@ -235,7 +235,7 @@ const finalProjects = computed(() => {
 
   .ProjectsGrid {
     margin-top: 30rem;
-    padding-bottom: 7rem;
+    padding-bottom: 2rem;
 
     @include viewport-375 {
       margin-top: 15rem;
@@ -243,7 +243,7 @@ const finalProjects = computed(() => {
   }
   .ProjectsList {
     margin-top: 30rem;
-    padding-bottom: 5rem;
+    padding-bottom: 2rem;
 
     @include viewport-375 {
       margin-top: 15rem;
