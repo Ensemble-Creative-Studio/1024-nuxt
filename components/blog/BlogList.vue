@@ -16,6 +16,7 @@ const { isMobile } = useDevice()
         <VideoPlayer
           v-if="item.mainVideo"
           :vimeoUrl="item.mainVideoUrl"
+          :downloadUrl="item.mainVideoDownloadUrl"
           :quality="isMobile ? 'sd' : 'hd'"
         />
         <Swiper

@@ -37,7 +37,6 @@ const props = defineProps({
 .FeaturedProject {
   height: 100vh;
   position: relative;
-  margin-top: -2rem;
 
   @include viewport-375 {
     margin-top: 0;
@@ -47,8 +46,9 @@ const props = defineProps({
     font-size: $desktop-h2;
     font-weight: $extra-light;
     position: absolute;
-    bottom: calc(1.5rem + 2rem);
     left: 2rem;
+    bottom: 2rem;
+    transform: translateY(10rem);
 
     @include viewport-375 {
       font-size: $mobile-h2;
