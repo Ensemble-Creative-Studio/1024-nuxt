@@ -42,8 +42,8 @@ console.log(props.projects)
                 auto="format"
               />
               <video
-                v-if="item.mainVideoUrl"
-                :src="item.mainVideoUrl"
+                v-if="item.thumbnailVideoUrl"
+                :src="item.thumbnailVideoUrl"
                 muted
                 loop
                 autoplay
