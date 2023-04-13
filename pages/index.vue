@@ -43,8 +43,6 @@ onMounted(() => {
     const panels = self.selector('.panel')
 
     panels.forEach((panel, i) => {
-      let prevPanel
-
       ScrollTrigger.create({
         markers: true,
         trigger: panel,
@@ -61,13 +59,6 @@ onMounted(() => {
       })
     })
   }, $index.value)
-
-  // const $featuredProjects = ref(null)
-  // const wrapper = $featuredProjects.value.$el
-
-  // ScrollTrigger.create({
-  //   snap: 1 / items.length,
-  // })
 })
 
 const $title = home.baseline
@@ -78,6 +69,7 @@ const splitTitle = computed(() => {
 
 onBeforeUnmount(() => {
   ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
+  $ctx.value.revert()
 })
 </script>
 
