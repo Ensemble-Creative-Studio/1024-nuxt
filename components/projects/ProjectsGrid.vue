@@ -9,32 +9,39 @@ const props = defineProps({
 })
 
 // Animations
-const $projects = ref()
+const $projectsGrid = ref()
 const $tl = ref()
 const $ctx = ref()
 
-// onMounted(() => {
-//   $ctx.value = gsap.context((self) => {
-//     const project = self.selector('.ProjectsGrid .item')
-//     $tl.value = gsap.to(project, {
-//       y: 0,
-//       delay: 1,
-//       duration: 1,
-//       autoAlpha: 1,
-//       ease: 'power3.out',
-//       stagger: 0.1,
-//     })
-//   }, $projects.value)
-// })
+onMounted(() => {
+  $ctx.value = gsap.context((self) => {
+    const projects = self.selector('.ProjectsGrid .item')
 
-// onBeforeUnmount(() => {
-//   gsap.to($projectsGrid.value.$el, {
-//     delay: 0,
-//     duration: 2,
-//     rotate: 100,
-//     ease: 'power3.out',
-//   })
-// })
+    $tl.value = gsap.to(projects, {
+      y: 0,
+      delay: 1,
+      duration: 1,
+      autoAlpha: 1,
+      ease: 'power3.out',
+      stagger: 0.1,
+    })
+  }, $projectsGrid.value)
+})
+
+onBeforeUnmount(() => {
+  console.log('right before unmount of Grid')
+
+  $ctx.value = gsap.context((self) => {
+    const projects = self.selector('.ProjectsGrid .item')
+
+    $tl.value = gsap.to(projects, {
+      duration: 0.5,
+      autoAlpha: 0,
+      ease: 'power3.out',
+      stagger: 0.1,
+    })
+  }, $projectsGrid.value)
+})
 </script>
 
 <template>
@@ -43,7 +50,7 @@ const $ctx = ref()
       gridModeCols === 3 ? 'ProjectsGrid--three-items' : 'ProjectsGrid--four-items',
       'ProjectsGrid',
     ]"
-    ref="$projects"
+    ref="$projectsGrid"
   >
     <template v-for="item in projects">
       <li class="item">
@@ -99,8 +106,8 @@ const $ctx = ref()
   }
 
   .item {
-    // opacity: 0;
-    // transform: translateY(5rem);
+    opacity: 0;
+    transform: translateY(3rem);
 
     @include viewport-375 {
       grid-column: auto / span 2;

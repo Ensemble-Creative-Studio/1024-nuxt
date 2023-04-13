@@ -1,4 +1,6 @@
 <script setup>
+import gsap from 'gsap'
+
 const props = defineProps({
   projects: [Object],
   categories: [Object],
@@ -6,11 +8,43 @@ const props = defineProps({
   displayMode: String,
 })
 
-console.log(props.projects)
+// Animations
+const $projectsList = ref()
+const $tl = ref()
+const $ctx = ref()
+
+onMounted(() => {
+  $ctx.value = gsap.context((self) => {
+    const projects = self.selector('.ProjectsList .item')
+
+    $tl.value = gsap.to(projects, {
+      delay: 1,
+      duration: 1,
+      autoAlpha: 1,
+      ease: 'power3.out',
+      stagger: 0.1,
+    })
+  }, $projectsList.value)
+})
+
+onBeforeUnmount(() => {
+  console.log('right before unmount of List')
+
+  $ctx.value = gsap.context((self) => {
+    const projects = self.selector('.ProjectsList .item')
+
+    $tl.value = gsap.to(projects, {
+      duration: 0.5,
+      autoAlpha: 0,
+      ease: 'power3.out',
+      stagger: 0.1,
+    })
+  }, $projectsList.value)
+})
 </script>
 
 <template>
-  <ul class="ProjectsList">
+  <ul class="ProjectsList" ref="$projectsList">
     <template v-for="item in projects">
       <li class="item">
         <NuxtLink
@@ -66,6 +100,7 @@ console.log(props.projects)
     font-size: $desktop-list;
     border-top: 0.1rem solid $dark-grey;
     transition: background-color 0.6s ease-in-out;
+    opacity: 0;
 
     @include viewport-375 {
       font-size: $mobile-list;
