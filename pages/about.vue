@@ -18,19 +18,17 @@ const $anchors = ref()
 
 const $aboutPage = ref()
 const $ctx = ref()
-
 const tl = gsap.timeline()
+
+const $introduction = about.introduction
+const splitIntroduction = computed(() => {
+  return $introduction.split(' ')
+})
 
 const $description = ref()
 const $festivals = ref()
 const $exhibitions = ref()
 const $awards = ref()
-
-const $introduction = about.introduction
-
-const splitIntroduction = computed(() => {
-  return $introduction.split(' ')
-})
 
 function scrollToSection(section) {
   const offset = isMobile ? 50 : 50
@@ -56,19 +54,41 @@ onMounted(() => {
     }
 
     tl.to(chunks, {
-      delay: Math.random() * (1.5 - 0.5) + 0.5,
-      duration: Math.random() * (1.5 - 0.5) + 0.5,
-      autoAlpha: 1,
-      ease: 'power3.out',
-      stagger: 0.07,
-    }).to(slides, {
-      y: 0,
-      delay: -1,
+      delay: 0.5,
       duration: 1,
       autoAlpha: 1,
-      ease: 'power3.out',
-      stagger: 0.25,
+      ease: 'power2.out',
+      stagger: 0.03,
     })
+      .to(chunks, {
+        duration: 0.05,
+        autoAlpha: 0,
+        ease: 'power3.out',
+      })
+      .to(chunks, {
+        duration: 0.1,
+        autoAlpha: 1,
+        ease: 'power3.out',
+      })
+      .to(chunks, {
+        duration: 0.1,
+        autoAlpha: 0,
+        ease: 'power3.out',
+      })
+      .to(chunks, {
+        delay: 0.25,
+        duration: 0.2,
+        autoAlpha: 1,
+        ease: 'power3.out',
+      })
+      .to(slides, {
+        y: 0,
+        delay: -1,
+        duration: 1,
+        autoAlpha: 1,
+        ease: 'power3.out',
+        stagger: 0.25,
+      })
 
     // REFACTOR
     setTimeout(() => {
@@ -101,9 +121,7 @@ onBeforeUnmount(() => {
   ScrollTrigger.getAll().forEach((trigger) => {
     trigger.kill()
   })
-})
 
-onUnmounted(() => {
   $ctx.value.revert()
 })
 </script>
@@ -455,19 +473,19 @@ onUnmounted(() => {
 
         &__container {
           @include grid(12, 1fr, 1, 0);
-          padding: 0 2rem;
+          padding: 3rem 2rem;
           align-items: center;
           position: relative;
 
           @include viewport-375 {
-            padding: 0 1rem;
+            padding: 2rem 1rem;
           }
         }
 
         &__date {
           grid-column: 2 / span 1;
           color: $medium-grey;
-          padding: 3rem 0;
+          // padding: 3rem 0;
 
           @include viewport-375 {
             grid-column: 1 / span 2;
@@ -477,7 +495,7 @@ onUnmounted(() => {
 
         &__title {
           grid-column: 3 / span 4;
-          padding: 3rem 0;
+          // padding: 3rem 0;
 
           @include viewport-375 {
             grid-column: 3 / -1;
@@ -488,7 +506,7 @@ onUnmounted(() => {
         &__localization {
           grid-column: 7 / -1;
           color: $medium-grey;
-          padding: 3rem 0;
+          // padding: 3rem 0;
 
           @include viewport-375 {
             padding: 0;

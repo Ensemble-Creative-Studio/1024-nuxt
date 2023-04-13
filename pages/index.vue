@@ -37,32 +37,31 @@ onMounted(() => {
 
     tl.to(chunks, {
       delay: 0.5,
-      duration: 0.5,
+      duration: 1,
       autoAlpha: 1,
       ease: 'power2.out',
-      stagger: 0.02,
+      stagger: 0.03,
     })
       .to(chunks, {
         duration: 0.05,
         autoAlpha: 0,
-        ease: 'power2.out',
+        ease: 'power3.out',
       })
       .to(chunks, {
         duration: 0.1,
         autoAlpha: 1,
-        ease: 'power1.out',
+        ease: 'power3.out',
       })
       .to(chunks, {
         duration: 0.1,
         autoAlpha: 0,
-        ease: 'power2.out',
+        ease: 'power3.out',
       })
       .to(chunks, {
         delay: 0.25,
-        duration: 0.1,
+        duration: 0.2,
         autoAlpha: 1,
-        ease: 'power1.out',
-        stagger: 0.02,
+        ease: 'power3.out',
       })
 
     const panels = self.selector('.FeaturedProject')
@@ -72,7 +71,6 @@ onMounted(() => {
     setTimeout(() => {
       panels.forEach((panel, i) => {
         ScrollTrigger.create({
-          markers: true,
           trigger: panel,
           pin: true,
           pinSpacing: false,
@@ -87,7 +85,6 @@ onMounted(() => {
         })
 
         ScrollTrigger.create({
-          markers: true,
           trigger: panel,
           top: '100% 100%',
           id: `title-${i}`,
@@ -116,7 +113,10 @@ const splitTitle = computed(() => {
 })
 
 onBeforeUnmount(() => {
-  ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
+  ScrollTrigger.getAll().forEach((trigger) => {
+    trigger.kill()
+  })
+
   $ctx.value.revert()
 })
 </script>
@@ -220,7 +220,7 @@ onBeforeUnmount(() => {
     margin-top: calc(100vh);
 
     @include viewport-375 {
-      margin-top: calc(100vh + 6rem) // TODO
+      margin-top: calc(100vh + 6rem); // TODO
     }
 
     .FeaturedProject {

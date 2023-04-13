@@ -1,8 +1,25 @@
 <script setup>
-// Fetch data
-const sanity = useSanity()
+import gsap from 'gsap'
 
-const GET_BLOG = groq`*[_type == "blog"] | order(_createdAt desc)
+const sanity = useSanity()
+const router = useRouter()
+
+const $ctx = ref()
+const $blogPage = ref()
+const $tl = ref()
+
+const itemsPerPage = 3
+const currentPage = ref(1)
+
+if (router.currentRoute.value.query.page) {
+  currentPage.value = parseInt(router.currentRoute.value.query.page)
+}
+
+// Calculate offset and limit based on current page
+const offset = (currentPage.value - 1) * itemsPerPage
+const limit = itemsPerPage
+
+const GET_BLOG = groq`*[_type == "blog"] | order(_createdAt desc)[${offset}...${offset + limit}]
   {
     ...,
     "videoUrl": video.asset->url,
@@ -10,10 +27,45 @@ const GET_BLOG = groq`*[_type == "blog"] | order(_createdAt desc)
 `
 const { data } = await useAsyncData('blog', () => sanity.fetch(GET_BLOG))
 const blog = data.value
+
+const totalPages = computed(() => {
+  return blog.length / itemsPerPage + 1
+})
+
+const goToPage = (index) => {
+  currentPage.value = index
+  router.push({ query: { page: index } })
+
+  setTimeout(() => {
+    window.location.reload(true)
+  }, 0)
+}
+
+// Watch for changes in currentPage and trigger BlogList component re-render
+// watch(currentPage, (newPage) => {
+//   console.log(newPage)
+// })
+
+onMounted(() => {
+  $ctx.value = gsap.context((self) => {
+    const blog = self.selector('.BlogList')
+
+    $tl.value = gsap.to(blog, {
+      delay: 1,
+      duration: 1,
+      autoAlpha: 1,
+      ease: 'power3.out',
+    })
+  }, $blogPage.value)
+})
+
+onBeforeUnmount(() => {
+  $ctx.value.revert()
+})
 </script>
 
 <template>
-  <div class="blog">
+  <div class="blog" ref="$blogPage">
     <Head>
       <Title>1024 | Blog</Title>
       <Meta name="description" content="Contact page description" />
@@ -22,20 +74,25 @@ const blog = data.value
     <section class="pagination">
       <GridContainer>
         <div class="pagination__container">
-          <button class="pagination__button pagination__button--previous">
+          <!-- Render previous button with updated route query parameter for previous page -->
+          <button
+            class="pagination__button pagination__button--previous"
+            @click="goToPage(currentPage - 1)"
+          >
             Previous
           </button>
           <span class="pagination__separator">-</span>
-          <button class="pagination__button pagination__button--next">
+          <!-- Render next button with updated route query parameter for next page -->
+          <button
+            class="pagination__button pagination__button--next"
+            @click="goToPage(currentPage + 1)"
+          >
             Next
           </button>
           <span class="pagination__separator">/</span>
           <ul class="pagination__pages">
-            <li>01</li>
-            <li>02</li>
-            <li>03</li>
-            <li>...</li>
-            <li>20</li>
+            <!-- Render page numbers with updated route query parameter for respective page -->
+            <li v-for="page in totalPages" :key="page" @click="goToPage(page)">{{ page }}</li>
           </ul>
         </div>
       </GridContainer>

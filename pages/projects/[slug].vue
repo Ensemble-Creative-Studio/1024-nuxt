@@ -135,12 +135,12 @@ onUnmounted(() => {
             <span class="content__date">{{ project.releaseDate.slice(0, 4) }}</span>
             <span class="content__type">{{ project.field }}</span>
           </div>
-          <div class="content__description" ref="$description">
+          <div class="content__description" ref="$description" v-if="project.description">
             <SanityContent :blocks="project.description" />
           </div>
         </GridContainer>
       </section>
-      <section class="gallery" ref="$gallery">
+      <section class="gallery" ref="$gallery" v-if="project?.gallery">
         <GridContainer>
           <div class="gallery__title-container">
             <h2 class="gallery__title">Gallery</h2>

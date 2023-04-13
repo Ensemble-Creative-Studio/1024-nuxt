@@ -55,11 +55,12 @@ const { isMobile } = useDevice()
 .BlogList {
   @include grid(12, 1fr, 1, 0);
   padding: 0 2rem;
-  margin-top: 12rem;
+  padding-top: 12rem;
+  opacity: 0;
 
   @include viewport-375 {
     padding: 0 1rem;
-    margin-top: 15rem;
+    padding-top: 15rem;
   }
 
   .item {
