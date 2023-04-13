@@ -33,10 +33,10 @@ onMounted(() => {
     }
 
     $tl.value = gsap.to(chunks, {
-      delay: 1,
-      duration: 1,
+      delay: Math.random() * (1.5 - 0.5) + 0.5,
+      duration: Math.random() * (1.5 - 0.5) + 0.5,
       autoAlpha: 1,
-      ease: 'power2.out',
+      ease: 'power3.out',
       stagger: 0.07,
     })
 
@@ -52,13 +52,10 @@ onMounted(() => {
         pinSpacing: false,
         id: `pin-${i}`,
         onUpdate: (self) => {
-          // Check if scrolling reaches 80% of the panel's height
-          if (self.progress > 0.8) {
+          if (self.progress > 0.7) {
             panel.classList.add('off')
-            console.log('adding the class')
           } else {
             panel.classList.remove('off')
-            console.log('removing the class')
           }
         },
       })
@@ -99,17 +96,95 @@ onBeforeUnmount(() => {
         </h1>
       </GridContainer>
     </section>
-    <section class="test">
-      <div :class="['panel', `panel-${i}`]" ref="$panel" v-for="(n, i) in 5">
-        PANEL {{ i }}
-        <footer class="footer">PROJECT TITLE OF PANEL {{ i }}</footer>
-      </div>
-    </section>
-    <!-- <FeaturedProjects ref="$featuredProjects" :projects="home.featuredProjects" /> -->
+    <div class="FeaturedProjects">
+      <NuxtLink
+        v-for="(project, i) in home.featuredProjects"
+        :key="project._id"
+        :class="['panel', 'FeaturedProject', `panel-${i}`]"
+        :to="{
+          name: 'projects-slug',
+          params: { slug: project.slug.current },
+        }"
+      >
+        <div class="FeaturedProject__thumbnail">
+          <video
+            v-if="project.mainVideoUrl"
+            :src="project.mainVideoUrl"
+            autoplay
+            muted
+            loop
+            playsinline
+            webkit-playsinline
+          ></video>
+          <SanityImage
+            class="FeaturedProject__thumbnail"
+            v-else
+            :asset-id="project.mainImage.asset._ref"
+            auto="format"
+            :q="75"
+          />
+        </div>
+        <footer class="FeaturedProject__footer">
+          <h2 class="FeaturedProject__title">{{ project.title }}</h2>
+        </footer>
+      </NuxtLink>
+    </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
+.FeaturedProjects {
+  margin-top: -2rem;
+
+  .FeaturedProject {
+    height: 120vh;
+    position: relative;
+
+    @include viewport-375 {
+      margin-top: 0;
+    }
+
+    &__footer {
+      display: flex;
+      position: absolute;
+      padding: 2rem;
+      width: 100%;
+      left: 0;
+      bottom: 20vh;
+
+      @include viewport-375 {
+        font-size: $mobile-h2;
+        left: 1rem;
+        bottom: 1rem;
+      }
+    }
+
+    &__title {
+      font-size: $desktop-h2;
+      font-weight: $extra-light;
+    }
+
+    &__thumbnail {
+      height: 100%;
+
+      img,
+      video {
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+  }
+
+  .panel {
+    transition: filter 0.5s ease;
+    background-color: $white;
+
+    &.off {
+      filter: invert(1) grayscale(1);
+    }
+  }
+}
+
 .test {
   margin-top: -2rem;
 
