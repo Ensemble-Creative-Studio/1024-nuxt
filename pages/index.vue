@@ -42,22 +42,26 @@ onMounted(() => {
 
     const panels = self.selector('.panel')
 
-    panels.forEach((panel, i) => {
-      ScrollTrigger.create({
-        markers: true,
-        trigger: panel,
-        pin: true,
-        pinSpacing: false,
-        id: `pin-${i}`,
-        onUpdate: (self) => {
-          if (self.progress > 0.7) {
-            panel.classList.add('off')
-          } else {
-            panel.classList.remove('off')
-          }
-        },
+    setTimeout(() => {
+      panels.forEach((panel, i) => {
+        ScrollTrigger.create({
+          markers: true,
+          trigger: panel,
+          pin: true,
+          pinSpacing: false,
+          id: `pin-${i}`,
+          onUpdate: (self) => {
+            if (self.progress > 0.7) {
+              panel.classList.add('off')
+            } else {
+              panel.classList.remove('off')
+            }
+          },
+        })
       })
-    })
+    }, 1000)
+
+    console.log('anim construct')
   }, $index.value)
 })
 

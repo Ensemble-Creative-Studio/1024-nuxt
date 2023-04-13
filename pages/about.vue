@@ -22,6 +22,17 @@ const $festivals = ref()
 const $exhibitions = ref()
 const $awards = ref()
 
+const $introduction = about.introduction
+const $marquee = about.marqueeText
+
+const splitIntroduction = computed(() => {
+  return $introduction.split(' ')
+})
+
+const splitMarquee = computed(() => {
+  return $marquee.split(' ')
+})
+
 function scrollToSection(section) {
   const offset = isMobile ? 50 : 50
 
@@ -101,14 +112,18 @@ onUnmounted(() => {
     </section>
     <section class="marquee">
       <ul class="marquee__content">
-        <li>{{ about.marqueeText }}</li>
-        <li>{{ about.marqueeText }}</li>
-        <li>{{ about.marqueeText }}</li>
+        <li class="marquee__text">
+          <span class="marquee__chunk" v-for="(word, index) in splitMarquee" :key="index">
+            {{ word }}{{ index !== splitMarquee.length - 1 ? ' ' : '' }}
+          </span>
+        </li>
       </ul>
       <ul class="marquee__content" aria-hidden="true">
-        <li>{{ about.marqueeText }}</li>
-        <li>{{ about.marqueeText }}</li>
-        <li>{{ about.marqueeText }}</li>
+        <li class="marquee__text">
+          <span class="marquee__chunk" v-for="(word, index) in splitMarquee" :key="index">
+            {{ word }}{{ index !== splitMarquee.length - 1 ? ' ' : '' }}
+          </span>
+        </li>
       </ul>
     </section>
     <section class="history">
@@ -283,20 +298,14 @@ onUnmounted(() => {
       animation: scroll 150s linear infinite;
     }
 
+    &__chunk {
+      opacity: 0;
+    }
+
     @include viewport-375 {
       font-size: 4.6rem;
       margin-top: 6rem;
     }
-  }
-
-  .marquee {
-    width: 100%;
-    white-space: nowrap;
-    overflow: hidden;
-  }
-
-  .marquee span {
-    display: inline-block;
   }
 
   .history {
