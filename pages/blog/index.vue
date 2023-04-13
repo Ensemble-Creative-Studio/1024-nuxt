@@ -19,6 +19,9 @@ if (router.currentRoute.value.query.page) {
 const offset = (currentPage.value - 1) * itemsPerPage
 const limit = itemsPerPage
 
+const GET_BLOG_COUNT = groq`count(*[_type == 'blog'])`
+const { data: blogCount } = await useAsyncData('blogCount', () => sanity.fetch(GET_BLOG_COUNT))
+
 const GET_BLOG = groq`*[_type == "blog"] | order(_createdAt desc)[${offset}...${offset + limit}]
   {
     ...,
@@ -29,7 +32,7 @@ const { data } = await useAsyncData('blog', () => sanity.fetch(GET_BLOG))
 const blog = data.value
 
 const totalPages = computed(() => {
-  return blog.length / itemsPerPage + 1
+  return blogCount.value / itemsPerPage
 })
 
 const goToPage = (index) => {
@@ -74,7 +77,6 @@ onBeforeUnmount(() => {
     <section class="pagination">
       <GridContainer>
         <div class="pagination__container">
-          <!-- Render previous button with updated route query parameter for previous page -->
           <button
             class="pagination__button pagination__button--previous"
             @click="goToPage(currentPage - 1)"
@@ -82,7 +84,6 @@ onBeforeUnmount(() => {
             Previous
           </button>
           <span class="pagination__separator">-</span>
-          <!-- Render next button with updated route query parameter for next page -->
           <button
             class="pagination__button pagination__button--next"
             @click="goToPage(currentPage + 1)"
@@ -90,10 +91,35 @@ onBeforeUnmount(() => {
             Next
           </button>
           <span class="pagination__separator">/</span>
-          <ul class="pagination__pages">
-            <!-- Render page numbers with updated route query parameter for respective page -->
-            <li v-for="page in totalPages" :key="page" @click="goToPage(page)">{{ page }}</li>
-          </ul>
+          <div class="pagination__pages">
+            <button
+              class="pagination__page"
+              v-if="currentPage - 1 > 0"
+              @click="goToPage(currentPage - 1)"
+            >
+              {{ currentPage - 1 < 10 ? `0${currentPage - 1}` : currentPage - 1 }}
+            </button>
+            <button class="pagination__page pagination__page--active">
+              {{ currentPage < 10 ? `0${currentPage}` : currentPage }}
+            </button>
+            <button
+              class="pagination__page"
+              v-if="currentPage !== totalPages"
+              @click="goToPage(currentPage + 1)"
+            >
+              {{ currentPage + 1 < 10 ? `0${currentPage + 1}` : currentPage + 1 }}
+            </button>
+            <button
+              class="pagination__page"
+              v-if="currentPage + 1 < totalPages"
+              @click="goToPage(currentPage + 1)"
+            >
+              ...
+            </button>
+            <button class="pagination__page" v-if="currentPage + 1 < totalPages">
+              {{ totalPages < 10 ? `0${totalPages}` : totalPages }}
+            </button>
+          </div>
         </div>
       </GridContainer>
     </section>
@@ -138,6 +164,7 @@ onBeforeUnmount(() => {
       text-decoration: underline;
       text-decoration-thickness: from-font;
       text-underline-offset: 0.5rem;
+      cursor: pointer;
     }
 
     &__pages {
@@ -147,11 +174,18 @@ onBeforeUnmount(() => {
       @include viewport-375 {
         margin-top: 2rem;
       }
+    }
 
-      li {
-        &:not(:first-child) {
-          margin-left: 2rem;
-        }
+    &__page {
+      cursor: pointer;
+      color: $medium-grey;
+
+      &:not(:first-child) {
+        margin-left: 2rem;
+      }
+
+      &--active {
+        color: $white;
       }
     }
   }
