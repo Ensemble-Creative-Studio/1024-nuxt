@@ -6,6 +6,8 @@ import 'swiper/css'
 
 const { isMobile } = useDevice()
 
+const isNavActive = useState('isNavActive')
+
 const query = groq`*[_type == "about"][0]`
 const sanity = useSanity()
 const { data } = await useAsyncData('about', () => sanity.fetch(query))
