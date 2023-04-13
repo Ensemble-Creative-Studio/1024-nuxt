@@ -20,8 +20,9 @@ const home = data.value
 
 // Animations
 const $ctx = ref()
-const $tl = ref()
 const $index = ref()
+
+const tl = gsap.timeline()
 
 onMounted(() => {
   $ctx.value = gsap.context((self) => {
@@ -32,16 +33,43 @@ onMounted(() => {
       ;[chunks[i], chunks[j]] = [chunks[j], chunks[i]]
     }
 
-    $tl.value = gsap.to(chunks, {
-      delay: Math.random() * (1.5 - 0.5) + 0.5,
-      duration: Math.random() * (1.5 - 0.5) + 0.5,
+    tl.to(chunks, {
+      delay: 0.5,
+      duration: 0.5,
       autoAlpha: 1,
-      ease: 'power3.out',
-      stagger: 0.07,
+      ease: 'power2.out',
+      stagger: 0.02,
     })
+      .to(chunks, {
+        duration: 0.05,
+        autoAlpha: 0,
+        ease: 'power2.out',
+        // stagger: 0.05,
+      })
+      .to(chunks, {
+        duration: 0.1,
+        autoAlpha: 1,
+        ease: 'power1.out',
+        // stagger: 0.05,
+      })
+      .to(chunks, {
+        duration: 0.1,
+        autoAlpha: 0,
+        ease: 'power2.out',
+        // stagger: 0.05,
+      })
+      .to(chunks, {
+        delay: 0.25,
+        duration: 0.1,
+        autoAlpha: 1,
+        ease: 'power1.out',
+        stagger: 0.02,
+      })
 
-    const panels = self.selector('.panel')
+    const panels = self.selector('.FeaturedProject')
+    const panelTitles = self.selector('.FeaturedProject__title')
 
+    // REFACTOR
     setTimeout(() => {
       panels.forEach((panel, i) => {
         ScrollTrigger.create({
@@ -51,17 +79,35 @@ onMounted(() => {
           pinSpacing: false,
           id: `pin-${i}`,
           onUpdate: (self) => {
-            if (self.progress > 0.7) {
+            if (self.progress > 0.5) {
               panel.classList.add('off')
             } else {
               panel.classList.remove('off')
             }
           },
         })
+
+        ScrollTrigger.create({
+          markers: true,
+          trigger: panel,
+          top: '100% 100%',
+          id: `title-${i}`,
+          onEnter: () => {
+            console.log("anim ", panelTitles[i].innerHTML);
+            panelTitles[i].classList.add('FeaturedProject__title--active')
+          },
+          onLeave: () => {
+            panelTitles[i].classList.remove('FeaturedProject__title--active')
+          },
+          onEnterBack: () => {
+            panelTitles[i].classList.add('FeaturedProject__title--active')
+          },
+          onLeaveBack: () => {
+            panelTitles[i].classList.remove('FeaturedProject__title--active')
+          },
+        })
       })
     }, 1000)
-
-    console.log('anim construct')
   }, $index.value)
 })
 
@@ -72,7 +118,6 @@ const splitTitle = computed(() => {
 })
 
 onBeforeUnmount(() => {
-  ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
   $ctx.value.revert()
 })
 </script>
@@ -96,7 +141,7 @@ onBeforeUnmount(() => {
       <NuxtLink
         v-for="(project, i) in home.featuredProjects"
         :key="project._id"
-        :class="['panel', 'FeaturedProject', `panel-${i}`]"
+        class="FeaturedProject"
         :to="{
           name: 'projects-slug',
           params: { slug: project.slug.current },
@@ -129,110 +174,13 @@ onBeforeUnmount(() => {
 </template>
 
 <style lang="scss" scoped>
-.FeaturedProjects {
-  margin-top: -2rem;
-
-  .FeaturedProject {
-    height: 120vh;
-    position: relative;
-
-    @include viewport-375 {
-      margin-top: 0;
-    }
-
-    &__footer {
-      display: flex;
-      position: absolute;
-      padding: 2rem;
-      width: 100%;
-      left: 0;
-      bottom: 20vh;
-
-      @include viewport-375 {
-        font-size: $mobile-h2;
-        left: 1rem;
-        bottom: 1rem;
-      }
-    }
-
-    &__title {
-      font-size: $desktop-h2;
-      font-weight: $extra-light;
-    }
-
-    &__thumbnail {
-      height: 100%;
-
-      img,
-      video {
-        height: 100%;
-        object-fit: cover;
-      }
-    }
-  }
-
-  .panel {
-    transition: filter 0.5s ease;
-    background-color: $white;
-
-    &.off {
-      filter: invert(1) grayscale(1);
-    }
-  }
-}
-
-.test {
-  margin-top: -2rem;
-
-  .panel {
-    color: black;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    height: 120vh;
-    transition: background-color 0.5s ease;
-
-    &.off {
-      background-color: pink;
-    }
-
-    .footer {
-      position: absolute;
-      left: 0;
-      bottom: 20vh;
-      background-color: black;
-      width: 100%;
-      color: white;
-      padding: 4rem 2rem;
-    }
-
-    &-0 {
-      background-color: red;
-    }
-
-    &-1 {
-      background-color: blue;
-    }
-
-    &-2 {
-      background-color: green;
-    }
-
-    &-3 {
-      background-color: yellow;
-    }
-
-    &-4 {
-      background-color: orange;
-    }
-  }
-}
-
 .index {
   .hero {
     height: 100vh;
     padding-top: 30rem;
+    position: fixed;
+    top: 0;
+    left: 0;
 
     @include viewport-375 {
       height: auto;
@@ -243,6 +191,8 @@ onBeforeUnmount(() => {
       grid-column: 2 / span 8;
       font-size: $desktop-h2;
       font-weight: $extra-light;
+      position: sticky;
+      bottom: 50%;
 
       &__chunk {
         opacity: 0;
@@ -268,8 +218,63 @@ onBeforeUnmount(() => {
   }
 
   .FeaturedProjects {
+    margin-top: calc(100vh);
+
     @include viewport-375 {
-      margin-top: 6rem;
+      margin-top: 6rem; // TODO
+    }
+
+    .FeaturedProject {
+      height: 120vh;
+      position: relative;
+      transition: filter 0.5s ease;
+
+      &.off {
+        filter: invert(1) grayscale(1);
+      }
+
+      @include viewport-375 {
+        margin-top: 0;
+      }
+
+      &__footer {
+        display: flex;
+        position: sticky;
+        padding: 2rem;
+        width: 100%;
+        left: 0;
+        bottom: 0;
+
+        @include viewport-375 {
+          font-size: $mobile-h2;
+          left: 1rem;
+          bottom: 1rem;
+        }
+      }
+
+      &__title {
+        font-size: $desktop-h2;
+        font-weight: $extra-light;
+        opacity: 0;
+        transform: translateY(10rem);
+        transition: 1s cubic-bezier(0.16, 1, 0.3, 1);
+        transition-property: opacity, transform;
+
+        &--active {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      &__thumbnail {
+        height: 100%;
+
+        img,
+        video {
+          height: 100%;
+          object-fit: cover;
+        }
+      }
     }
   }
 }

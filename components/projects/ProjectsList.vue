@@ -99,7 +99,7 @@ onBeforeUnmount(() => {
   .item {
     font-size: $desktop-list;
     border-top: 0.1rem solid $dark-grey;
-    transition: background-color 0.6s ease-in-out;
+    transition: background-color 0.2s ease-in-out;
     opacity: 0;
 
     @include viewport-375 {

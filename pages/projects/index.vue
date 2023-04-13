@@ -123,7 +123,7 @@ const finalProjects = computed(() => {
 </script>
 
 <template>
-  <div class="projects">
+  <div class="projects" :class="[isNavActive && 'content--inverted', 'content']">
     <Head>
       <Title>1024 | Work</Title>
       <Meta name="description" content="1024 architecture website" />
@@ -234,7 +234,7 @@ const finalProjects = computed(() => {
   height: calc(100% - 5rem);
 
   .ProjectsGrid {
-    margin-top: 30rem;
+    padding-top: 30rem;
     padding-bottom: 2rem;
 
     @include viewport-375 {

@@ -28,7 +28,7 @@ watch(
     <Transition>
       <NavOverlay v-if="isNavActive" @click.native="closeMenu()" />
     </Transition>
-    <main :class="[isNavActive && 'content--inverted', 'content']">
+    <main>
       <slot />
     </main>
   </div>
@@ -41,7 +41,6 @@ watch(
 
   &--inverted {
     filter: grayscale(1);
-    background-color: black;
   }
 }
 

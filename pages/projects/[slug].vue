@@ -56,6 +56,7 @@ function scrollToSection(section) {
 
 onMounted(() => {
   $ctx.value = gsap.context(() => {
+    // REFACTOR
     setTimeout(() => {
       ScrollTrigger.create({
         start: '50%',
@@ -94,7 +95,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="project-page" ref="$projectPage">
+  <div class="project-page" ref="$projectPage" :class="[isNavActive && 'content--inverted', 'content']">
     <Head>
       <Title>{{ project.title }}</Title>
       <Meta name="description" content="Project description" />

@@ -46,7 +46,7 @@ const blog = data.value
 <style lang="scss" scoped>
 .blog {
   .pagination {
-    margin-top: 12rem;
+    padding-top: 12rem;
     padding-bottom: 12rem;
     font-size: $desktop-list;
 

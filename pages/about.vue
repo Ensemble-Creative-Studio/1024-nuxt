@@ -17,20 +17,17 @@ const $anchors = ref()
 const $aboutPage = ref()
 const $ctx = ref()
 
+const tl = gsap.timeline()
+
 const $description = ref()
 const $festivals = ref()
 const $exhibitions = ref()
 const $awards = ref()
 
 const $introduction = about.introduction
-const $marquee = about.marqueeText
 
 const splitIntroduction = computed(() => {
   return $introduction.split(' ')
-})
-
-const splitMarquee = computed(() => {
-  return $marquee.split(' ')
 })
 
 function scrollToSection(section) {
@@ -47,7 +44,31 @@ function scrollToSection(section) {
 }
 
 onMounted(() => {
-  $ctx.value = gsap.context(() => {
+  $ctx.value = gsap.context((self) => {
+    const chunks = self.selector('.title__chunk')
+    const slides = self.selector('.swiper-slide')
+
+    for (let i = chunks.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1))
+      ;[chunks[i], chunks[j]] = [chunks[j], chunks[i]]
+    }
+
+    tl.to(chunks, {
+      delay: Math.random() * (1.5 - 0.5) + 0.5,
+      duration: Math.random() * (1.5 - 0.5) + 0.5,
+      autoAlpha: 1,
+      ease: 'power3.out',
+      stagger: 0.07,
+    }).to(slides, {
+      y: 0,
+      delay: -1,
+      duration: 1,
+      autoAlpha: 1,
+      ease: 'power3.out',
+      stagger: 0.25,
+    })
+
+    // REFACTOR
     setTimeout(() => {
       ScrollTrigger.create({
         start: '50%',
@@ -86,7 +107,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="about" ref="$about">
+  <div class="about" ref="$aboutPage" :class="[isNavActive && 'content--inverted', 'content']">
     <Head>
       <Title>1024 | About</Title>
       <Meta name="description" content="About page description" />
@@ -94,13 +115,15 @@ onUnmounted(() => {
     <section class="hero" ref="$hero">
       <GridContainer>
         <h1 class="title">
-          {{ about.introduction }}
+          <span class="title__chunk" v-for="(word, index) in splitIntroduction" :key="index">
+            {{ word }}{{ index !== splitIntroduction.length - 1 ? ' ' : '' }}
+          </span>
         </h1>
       </GridContainer>
     </section>
     <section class="slider">
       <Swiper :slides-per-view="isMobile ? 1.1 : 2.5" :space-between="10" :grab-cursor="true">
-        <SwiperSlide v-for="item in about.gallery.medias">
+        <SwiperSlide v-for="item in about.gallery.medias" class="slider__item">
           <SanityImage :asset-id="item.asset._ref" auto="format" :q="75" :key="item._id" />
         </SwiperSlide>
       </Swiper>
@@ -110,19 +133,19 @@ onUnmounted(() => {
         <p>{{ about.description }}</p>
       </GridContainer>
     </section>
-    <section class="marquee">
+    <section class="marquee" ref="$marquee">
       <ul class="marquee__content">
         <li class="marquee__text">
-          <span class="marquee__chunk" v-for="(word, index) in splitMarquee" :key="index">
-            {{ word }}{{ index !== splitMarquee.length - 1 ? ' ' : '' }}
-          </span>
+          {{ about.marqueeText }}
+          {{ about.marqueeText }}
+          {{ about.marqueeText }}
         </li>
       </ul>
       <ul class="marquee__content" aria-hidden="true">
         <li class="marquee__text">
-          <span class="marquee__chunk" v-for="(word, index) in splitMarquee" :key="index">
-            {{ word }}{{ index !== splitMarquee.length - 1 ? ' ' : '' }}
-          </span>
+          {{ about.marqueeText }}
+          {{ about.marqueeText }}
+          {{ about.marqueeText }}
         </li>
       </ul>
     </section>
@@ -240,8 +263,10 @@ onUnmounted(() => {
       grid-column: 2 / span 5;
       font-size: $desktop-h4;
       font-weight: $extra-light;
-      // opacity: 0;
-      // transform: translateY(10rem);
+
+      &__chunk {
+        opacity: 0;
+      }
 
       @include viewport-375 {
         grid-column: 1 / -1;
@@ -259,6 +284,11 @@ onUnmounted(() => {
 
     .swiper {
       padding: 0 2rem;
+
+      &-slide {
+        opacity: 0;
+        transform: translateY(5rem);
+      }
     }
   }
 
