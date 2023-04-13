@@ -50,6 +50,8 @@ function onPauseBtnClick() {
 function onUpdate() {
   videoCurrentTime.value = $video.value.currentTime
   raf = window.requestAnimationFrame(onUpdate)
+
+  // console.log('video playing')
 }
 
 function onTouchend() {
@@ -155,6 +157,10 @@ function onTimelineMouseUp() {
 function onVideoEnded() {
   isPlaying.value = false
 }
+
+onBeforeUnmount(() => {
+  window.cancelAnimationFrame(raf)
+})
 </script>
 
 <template>

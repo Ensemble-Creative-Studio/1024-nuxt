@@ -2,6 +2,8 @@
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
+const isNavActive = useState('isNavActive')
+
 const query = groq`*[_type == "home"][0]
   {
     ...,
@@ -44,19 +46,16 @@ onMounted(() => {
         duration: 0.05,
         autoAlpha: 0,
         ease: 'power2.out',
-        // stagger: 0.05,
       })
       .to(chunks, {
         duration: 0.1,
         autoAlpha: 1,
         ease: 'power1.out',
-        // stagger: 0.05,
       })
       .to(chunks, {
         duration: 0.1,
         autoAlpha: 0,
         ease: 'power2.out',
-        // stagger: 0.05,
       })
       .to(chunks, {
         delay: 0.25,
@@ -93,7 +92,6 @@ onMounted(() => {
           top: '100% 100%',
           id: `title-${i}`,
           onEnter: () => {
-            console.log("anim ", panelTitles[i].innerHTML);
             panelTitles[i].classList.add('FeaturedProject__title--active')
           },
           onLeave: () => {
@@ -118,6 +116,7 @@ const splitTitle = computed(() => {
 })
 
 onBeforeUnmount(() => {
+  ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
   $ctx.value.revert()
 })
 </script>
@@ -221,7 +220,7 @@ onBeforeUnmount(() => {
     margin-top: calc(100vh);
 
     @include viewport-375 {
-      margin-top: 6rem; // TODO
+      margin-top: calc(100vh + 6rem) // TODO
     }
 
     .FeaturedProject {

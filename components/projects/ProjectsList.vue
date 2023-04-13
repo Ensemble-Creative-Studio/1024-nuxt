@@ -9,11 +9,11 @@ const props = defineProps({
 })
 
 // Animations
-const $projectsList = ref()
 const $tl = ref()
 const $ctx = ref()
+const $projectsList = ref()
 
-onMounted(() => {
+const showProjects = () => {
   $ctx.value = gsap.context((self) => {
     const projects = self.selector('.ProjectsList .item')
 
@@ -25,11 +25,16 @@ onMounted(() => {
       stagger: 0.1,
     })
   }, $projectsList.value)
-})
+}
 
-onBeforeUnmount(() => {
-  console.log('right before unmount of List')
+const updateProjects = () => {
+  const projects = $projectsList.value.querySelectorAll('.ProjectsList .item')
+  projects.forEach((project) => {
+    project.style.opacity = '1'
+  })
+}
 
+const hideProjects = () => {
   $ctx.value = gsap.context((self) => {
     const projects = self.selector('.ProjectsList .item')
 
@@ -40,11 +45,28 @@ onBeforeUnmount(() => {
       stagger: 0.1,
     })
   }, $projectsList.value)
+}
+
+onMounted(() => {
+  showProjects()
 })
+
+onBeforeUnmount(() => {
+  hideProjects()
+})
+
+watch(
+  () => props.projects,
+  () => {
+    setTimeout(() => {
+      updateProjects()
+    }, 0)
+  }
+)
 </script>
 
 <template>
-  <ul class="ProjectsList" ref="$projectsList">
+  <ul class="ProjectsList" ref="$projectsList" v-if="projects.length > 0">
     <template v-for="item in projects">
       <li class="item">
         <NuxtLink
@@ -90,17 +112,26 @@ onBeforeUnmount(() => {
       </li>
     </template>
   </ul>
+  <div v-else class="ProjectsList--empty">No project matching your filters</div>
 </template>
 
 <style lang="scss">
 .ProjectsList {
   grid-column: 1 / -1;
 
+  &--empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+
   .item {
     font-size: $desktop-list;
     border-top: 0.1rem solid $dark-grey;
     transition: background-color 0.2s ease-in-out;
     opacity: 0;
+    height: 16rem;
 
     @include viewport-375 {
       font-size: $mobile-list;
@@ -110,11 +141,16 @@ onBeforeUnmount(() => {
       background-color: $dark-dark-grey;
     }
 
+    &__link {
+      height: 100%;
+    }
+
     &__container {
       @include grid(12, 1fr, 1, 0);
       padding: 0 2rem;
       align-items: center;
       position: relative;
+      height: 100%;
 
       @include viewport-375 {
         padding: 0 1rem;
@@ -171,7 +207,7 @@ onBeforeUnmount(() => {
       grid-column: 11 / -1;
       max-width: 21rem;
       margin-left: auto;
-      padding: 1.5rem 0;
+      // padding: 1.5rem 0;
       position: relative;
 
       @include viewport-375 {

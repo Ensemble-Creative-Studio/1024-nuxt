@@ -1,4 +1,12 @@
 <script setup>
+import gsap from 'gsap'
+
+const isNavActive = useState('isNavActive')
+
+const $ctx = ref(null)
+const $tl = ref(null)
+const $projects = ref(null)
+
 const sanity = useSanity()
 
 const GET_PROJECTS = groq`*[_type == "projects"]
@@ -123,7 +131,7 @@ const finalProjects = computed(() => {
 </script>
 
 <template>
-  <div class="projects" :class="[isNavActive && 'content--inverted', 'content']">
+  <div class="projects" :class="[isNavActive && 'content--inverted', 'content']" ref="$projects">
     <Head>
       <Title>1024 | Work</Title>
       <Meta name="description" content="1024 architecture website" />
@@ -181,7 +189,12 @@ const finalProjects = computed(() => {
           </button>
         </li>
         <li class="filters__category" v-for="category in categories">
-          <button class="category" @click="toggle($event)" ref="$filters">
+          <button
+            class="category"
+            @click="toggle($event)"
+            ref="$filters"
+            v-if="category.projectsInside.length > 0"
+          >
             <span class="category__label">{{ category.title }}&nbsp;</span>
             <span class="category__length">
               {{ category.projectsInside.length }}
@@ -231,6 +244,7 @@ const finalProjects = computed(() => {
 
 <style lang="scss" scoped>
 .projects {
+  min-height: 100vh;
   height: calc(100% - 5rem);
 
   .ProjectsGrid {
@@ -238,15 +252,15 @@ const finalProjects = computed(() => {
     padding-bottom: 2rem;
 
     @include viewport-375 {
-      margin-top: 15rem;
+      padding-top: 15rem;
     }
   }
   .ProjectsList {
-    margin-top: 30rem;
+    padding-top: 30rem;
     padding-bottom: 2rem;
 
     @include viewport-375 {
-      margin-top: 15rem;
+      padding-top: 15rem;
     }
   }
 
@@ -256,7 +270,7 @@ const finalProjects = computed(() => {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: sticky;
+    position: fixed; // WARNING
     bottom: 0;
     z-index: 10;
     background-color: $black;

@@ -8,12 +8,12 @@ const props = defineProps({
   gridModeCols: Number,
 })
 
-// Animations
 const $projectsGrid = ref()
 const $tl = ref()
 const $ctx = ref()
 
-onMounted(() => {
+// Define GSAP animations
+const showProjects = () => {
   $ctx.value = gsap.context((self) => {
     const projects = self.selector('.ProjectsGrid .item')
 
@@ -26,22 +26,44 @@ onMounted(() => {
       stagger: 0.1,
     })
   }, $projectsGrid.value)
-})
+}
 
-onBeforeUnmount(() => {
-  console.log('right before unmount of Grid')
+const updateProjects = () => {
+  const projects = $projectsGrid.value.querySelectorAll('.ProjectsGrid .item')
+  projects.forEach((project) => {
+    project.style.opacity = '1'
+    project.style.transform = 'translateY(0)'
+  })
+}
 
+const hideProjects = () => {
   $ctx.value = gsap.context((self) => {
     const projects = self.selector('.ProjectsGrid .item')
 
     $tl.value = gsap.to(projects, {
-      duration: 0.5,
+      y: 30,
       autoAlpha: 0,
-      ease: 'power3.out',
-      stagger: 0.1,
+      ease: 'none',
     })
   }, $projectsGrid.value)
+}
+
+onMounted(() => {
+  showProjects()
 })
+
+onBeforeUnmount(() => {
+  hideProjects()
+})
+
+watch(
+  () => props.projects,
+  () => {
+    setTimeout(() => {
+      updateProjects()
+    }, 0)
+  }
+)
 </script>
 
 <template>
@@ -51,6 +73,7 @@ onBeforeUnmount(() => {
       'ProjectsGrid',
     ]"
     ref="$projectsGrid"
+    v-if="projects.length > 0"
   >
     <template v-for="item in projects">
       <li class="item">
@@ -82,6 +105,7 @@ onBeforeUnmount(() => {
       </li>
     </template>
   </ul>
+  <div v-else class="ProjectsGrid--empty">No project matching your filters</div>
 </template>
 
 <style lang="scss">
@@ -103,6 +127,13 @@ onBeforeUnmount(() => {
     @include viewport-375 {
       grid-template-columns: repeat(4, 1fr);
     }
+  }
+
+  &--empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
   }
 
   .item {

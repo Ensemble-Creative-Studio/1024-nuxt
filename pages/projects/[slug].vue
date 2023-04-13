@@ -2,6 +2,7 @@
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
+const isNavActive = useState('isNavActive')
 const { isMobile } = useDevice()
 
 const sanity = useSanity()
@@ -95,18 +96,16 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="project-page" ref="$projectPage" :class="[isNavActive && 'content--inverted', 'content']">
+  <div
+    class="project-page"
+    ref="$projectPage"
+    :class="[isNavActive && 'content--inverted', 'content']"
+  >
     <Head>
       <Title>{{ project.title }}</Title>
       <Meta name="description" content="Project description" />
     </Head>
     <section class="hero" ref="$hero">
-      <SanityImage
-        class="hero__banner"
-        :asset-id="project.mainImage.asset._ref"
-        auto="format"
-        :q="75"
-      />
       <video
         class="hero__video"
         v-if="project.mainVideoUrl"
@@ -117,6 +116,13 @@ onUnmounted(() => {
         playsinline
         webkit-playsinline
       ></video>
+      <SanityImage
+        v-else
+        class="hero__banner"
+        :asset-id="project.mainImage.asset._ref"
+        auto="format"
+        :q="75"
+      />
       <h1 class="hero__title">{{ project.title }}</h1>
     </section>
     <div class="main">
@@ -191,7 +197,7 @@ onUnmounted(() => {
           </ul>
         </GridContainer>
       </section>
-      <section class="related-projects">
+      <section class="related-projects" v-if="project.relatedProjects">
         <GridContainer>
           <h2 class="related-projects__title">Related projects</h2>
         </GridContainer>
@@ -255,7 +261,6 @@ onUnmounted(() => {
 
   .main {
     background-color: $black;
-    padding-bottom: 5rem;
     z-index: 10;
     position: relative;
   }
