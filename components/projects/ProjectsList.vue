@@ -18,7 +18,7 @@ const showProjects = () => {
     const projects = self.selector('.ProjectsList .item')
 
     $tl.value = gsap.to(projects, {
-      delay: 1,
+      delay: 0.5,
       duration: 1,
       autoAlpha: 1,
       ease: 'power3.out',
@@ -28,6 +28,8 @@ const showProjects = () => {
 }
 
 const updateProjects = () => {
+  window.scrollTo(0, 0)
+
   const projects = $projectsList.value.querySelectorAll('.ProjectsList .item')
   projects.forEach((project) => {
     project.style.opacity = '1'

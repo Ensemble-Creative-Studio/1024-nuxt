@@ -84,11 +84,13 @@ const $projectsGrid = ref(null)
 const $projectsList = ref(null)
 
 function setGridMode(value) {
+  window.scrollTo(0, 0)
   displayMode.value = 'grid'
   gridModeCols.value = value
 }
 
 function setListMode() {
+  window.scrollTo(0, 0)
   displayMode.value = 'list'
   gridModeCols.value = 4
 }

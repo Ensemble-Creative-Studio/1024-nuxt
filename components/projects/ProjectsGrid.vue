@@ -29,6 +29,8 @@ const showProjects = () => {
 }
 
 const updateProjects = () => {
+  window.scrollTo(0, 0)
+
   const projects = $projectsGrid.value.querySelectorAll('.ProjectsGrid .item')
   projects.forEach((project) => {
     project.style.opacity = '1'

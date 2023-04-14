@@ -83,9 +83,10 @@ onBeforeUnmount(() => {
           >
             Previous
           </button>
-          <span class="pagination__separator">-</span>
+          <span class="pagination__separator" v-if="currentPage !== totalPages">-</span>
           <button
             class="pagination__button pagination__button--next"
+            v-if="currentPage !== totalPages"
             @click="goToPage(currentPage + 1)"
           >
             Next
@@ -116,7 +117,11 @@ onBeforeUnmount(() => {
             >
               ...
             </button>
-            <button class="pagination__page" v-if="currentPage + 1 < totalPages">
+            <button
+              class="pagination__page"
+              v-if="currentPage + 1 < totalPages"
+              @click="goToPage(totalPages)"
+            >
               {{ totalPages < 10 ? `0${totalPages}` : totalPages }}
             </button>
           </div>
