@@ -1,10 +1,4 @@
 <script setup>
-import gsap from 'gsap'
-
-const isNavActive = useState('isNavActive')
-
-const $ctx = ref(null)
-const $tl = ref(null)
 const $projects = ref(null)
 
 const sanity = useSanity()
@@ -16,7 +10,7 @@ const GET_PROJECTS = groq`*[_type == "projects"]
       title,
       slug
     },
-    "categoriesTitles": categories[]->title, // Refactor this later not to use a join
+    "categoriesTitles": categories[]->title,
     "videoUrl": video.asset->url,
   }
 `
@@ -131,7 +125,7 @@ const finalProjects = computed(() => {
 </script>
 
 <template>
-  <div class="projects" :class="[isNavActive && 'content--inverted', 'content']" ref="$projects">
+  <div class="projects" ref="$projects">
     <Head>
       <Title>1024 | Work</Title>
       <Meta name="description" content="1024 architecture website" />
@@ -249,7 +243,7 @@ const finalProjects = computed(() => {
 
   .ProjectsGrid {
     padding-top: 30rem;
-    padding-bottom: 2rem;
+    padding-bottom: 7rem;
 
     @include viewport-375 {
       padding-top: 15rem;
@@ -257,7 +251,7 @@ const finalProjects = computed(() => {
   }
   .ProjectsList {
     padding-top: 30rem;
-    padding-bottom: 2rem;
+    padding-bottom: 5rem;
 
     @include viewport-375 {
       padding-top: 15rem;
@@ -270,7 +264,7 @@ const finalProjects = computed(() => {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: fixed; // WARNING
+    position: fixed;
     bottom: 0;
     z-index: 10;
     background-color: $black;

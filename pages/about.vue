@@ -6,8 +6,6 @@ import 'swiper/css'
 
 const { isMobile } = useDevice()
 
-const isNavActive = useState('isNavActive')
-
 const query = groq`*[_type == "about"][0]`
 const sanity = useSanity()
 const { data } = await useAsyncData('about', () => sanity.fetch(query))
@@ -127,7 +125,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="about" ref="$aboutPage" :class="[isNavActive && 'content--inverted', 'content']">
+  <div class="about" ref="$aboutPage">
     <Head>
       <Title>1024 | About</Title>
       <Meta name="description" content="About page description" />

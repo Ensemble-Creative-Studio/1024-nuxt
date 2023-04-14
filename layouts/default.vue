@@ -28,19 +28,18 @@ watch(
     <Transition>
       <NavOverlay v-if="isNavActive" @click.native="closeMenu()" />
     </Transition>
-    <main>
+    <main :class="[isNavActive && 'content-wrapper--grayscale', 'content-wrapper']">
       <slot />
     </main>
   </div>
 </template>
 
 <style lang="scss">
-.content {
-  transition: opacity 0.5s ease-in-out;
-  transition-property: filter, background-color;
-
-  &--inverted {
-    filter: grayscale(1);
+.content-wrapper {
+  &--grayscale {
+    img, video {
+      filter: grayscale(1);
+    }
   }
 }
 

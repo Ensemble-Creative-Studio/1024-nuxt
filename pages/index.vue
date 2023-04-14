@@ -173,6 +173,22 @@ onBeforeUnmount(() => {
 </template>
 
 <style lang="scss" scoped>
+.content-wrapper {
+  &--grayscale {
+    .index {
+      .FeaturedProjects {
+        .FeaturedProject {
+          &.off {
+            img, video {
+              filter: grayscale(0) invert(0) !important; // WIP
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 .index {
   .hero {
     height: 100vh;

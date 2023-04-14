@@ -2,7 +2,6 @@
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-const isNavActive = useState('isNavActive')
 const { isMobile } = useDevice()
 
 const sanity = useSanity()
@@ -99,7 +98,6 @@ onUnmounted(() => {
   <div
     class="project-page"
     ref="$projectPage"
-    :class="[isNavActive && 'content--inverted', 'content']"
   >
     <Head>
       <Title>{{ project.title }}</Title>
