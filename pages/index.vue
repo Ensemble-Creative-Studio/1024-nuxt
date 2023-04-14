@@ -36,33 +36,11 @@ onMounted(() => {
     }
 
     tl.to(chunks, {
-      delay: 0.5,
-      duration: 1,
+      duration: 2.5,
       autoAlpha: 1,
       ease: 'power2.out',
       stagger: 0.03,
     })
-      .to(chunks, {
-        duration: 0.05,
-        autoAlpha: 0,
-        ease: 'power3.out',
-      })
-      .to(chunks, {
-        duration: 0.1,
-        autoAlpha: 1,
-        ease: 'power3.out',
-      })
-      .to(chunks, {
-        duration: 0.1,
-        autoAlpha: 0,
-        ease: 'power3.out',
-      })
-      .to(chunks, {
-        delay: 0.25,
-        duration: 0.2,
-        autoAlpha: 1,
-        ease: 'power3.out',
-      })
 
     const panels = self.selector('.FeaturedProject')
     const panelTitles = self.selector('.FeaturedProject__title')
@@ -179,7 +157,8 @@ onBeforeUnmount(() => {
       .FeaturedProjects {
         .FeaturedProject {
           &.off {
-            img, video {
+            img,
+            video {
               filter: grayscale(0) invert(0) !important; // WIP
             }
           }

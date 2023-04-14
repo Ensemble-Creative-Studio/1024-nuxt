@@ -19,8 +19,8 @@ const showProjects = () => {
 
     $tl.value = gsap.to(projects, {
       y: 0,
-      delay: 1,
-      duration: 1,
+      delay: 0.5,
+      duration: 1.5,
       autoAlpha: 1,
       ease: 'power3.out',
       stagger: 0.1,
