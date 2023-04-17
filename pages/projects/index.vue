@@ -247,7 +247,7 @@ const finalProjects = computed(() => {
     padding-top: 30rem;
     padding-bottom: 7rem;
 
-    @include viewport-375 {
+    @include viewport-480 {
       padding-top: 15rem;
     }
   }
@@ -255,7 +255,7 @@ const finalProjects = computed(() => {
     padding-top: 30rem;
     padding-bottom: 5rem;
 
-    @include viewport-375 {
+    @include viewport-480 {
       padding-top: 15rem;
     }
   }
@@ -275,7 +275,7 @@ const finalProjects = computed(() => {
     width: 100%;
     border-top: 0.1rem solid $dark-grey;
 
-    @include viewport-375 {
+    @include viewport-480 {
       font-size: 1.6rem;
       height: auto;
       background-color: $black;
@@ -315,7 +315,7 @@ const finalProjects = computed(() => {
       }
     }
 
-    @include viewport-375 {
+    @include viewport-480 {
       display: flex;
     }
 
@@ -336,7 +336,7 @@ const finalProjects = computed(() => {
     display: flex;
     align-items: center;
 
-    @include viewport-375 {
+    @include viewport-480 {
       display: block;
       order: 2;
       flex: 1;
@@ -366,7 +366,7 @@ const finalProjects = computed(() => {
       &:not(:first-child) {
         margin-left: 2rem;
 
-        @include viewport-375 {
+        @include viewport-480 {
           margin-left: 0;
           margin-top: 2rem;
         }
@@ -378,14 +378,14 @@ const finalProjects = computed(() => {
     display: flex;
     align-items: center;
 
-    @include viewport-375 {
+    @include viewport-480 {
       display: block;
       flex: 1;
     }
 
     > li {
       &:not(:first-child) {
-        @include viewport-375 {
+        @include viewport-480 {
           margin: 2rem 0;
         }
       }
@@ -396,7 +396,7 @@ const finalProjects = computed(() => {
       cursor: pointer;
       margin-left: 2rem;
 
-      @include viewport-375 {
+      @include viewport-480 {
         margin-left: 0;
       }
 
@@ -431,7 +431,7 @@ const finalProjects = computed(() => {
     display: flex;
     align-items: center;
 
-    @include viewport-375 {
+    @include viewport-480 {
       display: none;
     }
 

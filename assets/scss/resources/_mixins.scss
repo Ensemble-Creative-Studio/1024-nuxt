@@ -1,6 +1,6 @@
 // Screen breakpoints
 $viewport-320: 321px;
-$viewport-375: 481px;
+$viewport-375: 376px;
 $viewport-480: 481px;
 $viewport-768: 769px;
 $viewport-992: 993px;
@@ -32,8 +32,8 @@ $viewport-1600: 1601px;
   }
 }
 
-@mixin viewport-375 {
-  @media screen and (max-width: $viewport-375) {
+@mixin viewport-480 {
+  @media screen and (max-width: $viewport-480) {
     @content;
   }
 }

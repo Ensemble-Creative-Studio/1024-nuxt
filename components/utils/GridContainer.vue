@@ -10,7 +10,7 @@
   width: 100%;
   padding: 0 2rem;
 
-  @include viewport-375 {
+  @include viewport-480 {
     padding: 0 1rem;
   }
 }

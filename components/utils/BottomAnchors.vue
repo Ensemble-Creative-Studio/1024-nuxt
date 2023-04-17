@@ -11,7 +11,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: sticky;
+  position: fixed;
   bottom: 0;
   z-index: 10;
   background-color: $black;
@@ -21,9 +21,10 @@
   border-top: 0.1rem solid $dark-grey;
   transform: translateY(5rem);
 
-  @include viewport-375 {
+  @include viewport-480 {
     font-size: $mobile-filters-main;
     justify-content: center;
+    transform: translateY(0) !important;
   }
 
   .BottomAnchors__list {
@@ -43,7 +44,7 @@
       &:not(:first-child) {
         margin-left: 2rem;
 
-        @include viewport-375 {
+        @include viewport-480 {
           margin-left: 1.5rem;
         }
       }

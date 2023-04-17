@@ -29,7 +29,7 @@ const $galleryMedia = ref([])
 const $anchors = ref()
 
 const $projectPage = ref()
-const $ctx = ref()
+const trigger = ref()
 
 const $description = ref()
 const $gallery = ref()
@@ -55,10 +55,11 @@ function scrollToSection(section) {
 }
 
 onMounted(() => {
-  $ctx.value = gsap.context(() => {
-    // REFACTOR
-    setTimeout(() => {
-      ScrollTrigger.create({
+  setTimeout(() => {
+    let mm = gsap.matchMedia()
+
+    mm.add('(min-width: 481px)', () => {
+      trigger.value = ScrollTrigger.create({
         start: '50%',
         trigger: $hero.value,
         onEnter: () => {
@@ -74,8 +75,14 @@ onMounted(() => {
           })
         },
       })
-    }, 1000)
-  }, $projectPage.value)
+    })
+  }, 1000)
+
+  window.addEventListener('resize', () => {
+    if (trigger.value !== null) {
+      trigger.value.refresh()
+    }
+  })
 })
 
 onBeforeUnmount(() => {
@@ -87,10 +94,6 @@ onBeforeUnmount(() => {
   ScrollTrigger.getAll().forEach((trigger) => {
     trigger.kill()
   })
-})
-
-onUnmounted(() => {
-  $ctx.value.revert()
 })
 </script>
 
@@ -243,14 +246,14 @@ onUnmounted(() => {
     }
 
     &__title {
-      font-size: $desktop-h2;
+      font-size: $desktop-h4;
       font-weight: $extra-light;
       position: fixed;
       bottom: 1.5rem;
       left: 2rem;
 
-      @include viewport-375 {
-        font-size: $desktop-h2;
+      @include viewport-480 {
+        font-size: $mobile-h2;
         left: 1rem;
         bottom: 6rem;
       }
@@ -266,7 +269,7 @@ onUnmounted(() => {
   .content {
     &__claim {
       grid-column: 2 / span 5;
-      font-size: $desktop-h2;
+      font-size: $desktop-h4;
       font-weight: $extra-light;
       margin-top: 6rem;
 
@@ -274,12 +277,13 @@ onUnmounted(() => {
         grid-column: 2 / span 8;
       }
 
-      @include viewport-992 {
-        font-size: $mobile-h2;
-      }
-
       @include viewport-768 {
         grid-column: 1 / -1;
+      }
+
+      @include viewport-480 {
+        font-size: $mobile-h2;
+        margin-top: 4rem;
       }
     }
 
@@ -299,11 +303,7 @@ onUnmounted(() => {
         grid-column: 2 / span 8;
       }
 
-      // @include viewport-768 {
-      //   grid-column: 1 / -1;
-      // }
-
-      @include viewport-375 {
+      @include viewport-480 {
         grid-column: 2 / -1;
         font-size: $mobile-text-read;
       }
@@ -352,7 +352,7 @@ onUnmounted(() => {
       font-weight: $extra-light;
       grid-column: 1 / -1;
 
-      @include viewport-375 {
+      @include viewport-480 {
         font-size: $mobile-h4;
       }
     }
@@ -362,7 +362,7 @@ onUnmounted(() => {
       font-size: 2.6rem;
       color: $medium-grey;
 
-      @include viewport-375 {
+      @include viewport-480 {
         transform: scale(0.7);
         transform-origin: top left;
       }
@@ -382,7 +382,7 @@ onUnmounted(() => {
             grid-column: 2 / span 10;
           }
 
-          @include viewport-375 {
+          @include viewport-480 {
             grid-column: 1 / -1;
           }
         }
@@ -398,7 +398,7 @@ onUnmounted(() => {
             text-underline-offset: 0.5rem;
           }
 
-          @include viewport-375 {
+          @include viewport-480 {
             font-size: $mobile-text-read;
             grid-column: 2 / -1;
           }
@@ -407,7 +407,7 @@ onUnmounted(() => {
         &:not(:first-child) {
           margin-top: 12rem;
 
-          @include viewport-375 {
+          @include viewport-480 {
             margin-top: 6rem;
           }
         }
@@ -421,7 +421,7 @@ onUnmounted(() => {
                 margin-top: 9rem;
               }
 
-              @include viewport-375 {
+              @include viewport-480 {
                 margin-top: 6rem;
               }
             }
@@ -435,7 +435,7 @@ onUnmounted(() => {
     margin-top: 9rem;
     padding-bottom: 9rem;
 
-    @include viewport-375 {
+    @include viewport-480 {
       font-size: $mobile-text-read;
       margin-top: 6rem;
       padding-bottom: 0;
@@ -448,7 +448,7 @@ onUnmounted(() => {
         padding-bottom: 6rem;
       }
 
-      @include viewport-375 {
+      @include viewport-480 {
         grid-column: 1 / -1;
       }
     }
@@ -458,7 +458,7 @@ onUnmounted(() => {
       @include grid(9, 1fr, 1, 3);
       margin-top: 6rem;
 
-      @include viewport-375 {
+      @include viewport-480 {
         grid-column: 2 / span 10;
         @include grid(12, 1fr, 1, 0);
       }
@@ -467,7 +467,7 @@ onUnmounted(() => {
         grid-column: auto / span 3;
         @include grid(3, 1fr, 1, 0);
 
-        @include viewport-375 {
+        @include viewport-480 {
           grid-column: 1 / -1;
 
           &:not(:first-child) {
@@ -479,7 +479,7 @@ onUnmounted(() => {
           color: $medium-grey;
           grid-column: 1 / span 2;
 
-          @include viewport-375 {
+          @include viewport-480 {
             grid-column: 1 / -1;
           }
         }
@@ -487,7 +487,7 @@ onUnmounted(() => {
         &__text {
           grid-column: 1 / span 2;
 
-          @include viewport-375 {
+          @include viewport-480 {
             grid-column: 1 / -1;
           }
         }
@@ -503,7 +503,7 @@ onUnmounted(() => {
       font-size: $desktop-h4;
       font-weight: $extra-light;
 
-      @include viewport-375 {
+      @include viewport-480 {
         font-size: $mobile-h2;
       }
     }

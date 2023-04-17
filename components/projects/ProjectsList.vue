@@ -120,6 +120,7 @@ watch(
 <style lang="scss">
 .ProjectsList {
   grid-column: 1 / -1;
+  padding-bottom: 5rem;
 
   &--empty {
     display: flex;
@@ -141,7 +142,7 @@ watch(
       padding: 2rem 0;
     }
 
-    @include viewport-375 {
+    @include viewport-480 {
       font-size: $mobile-list;
     }
 
@@ -160,7 +161,7 @@ watch(
       position: relative;
       height: 100%;
 
-      @include viewport-375 {
+      @include viewport-480 {
         padding: 0 1rem;
       }
     }
@@ -169,7 +170,7 @@ watch(
       grid-column: 1 / span 1;
       color: $medium-grey;
 
-      @include viewport-375 {
+      @include viewport-480 {
         grid-column: 1 / span 3;
       }
     }
@@ -181,7 +182,7 @@ watch(
         grid-column: 3 / span 6;
       }
 
-      @include viewport-375 {
+      @include viewport-480 {
         grid-column: 4 / span 5;
       }
     }
@@ -224,7 +225,7 @@ watch(
       // padding: 1.5rem 0;
       position: relative;
 
-      @include viewport-375 {
+      @include viewport-480 {
         grid-column: 9 / span 5;
       }
 

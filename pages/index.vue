@@ -176,7 +176,7 @@ onBeforeUnmount(() => {
     top: 0;
     left: 0;
 
-    @include viewport-375 {
+    @include viewport-480 {
       height: auto;
       padding-top: 15rem;
     }
@@ -200,11 +200,11 @@ onBeforeUnmount(() => {
         grid-column: 1 / -1;
       }
 
-      @include viewport-992 {
+      @include viewport-1024 {
         font-size: $mobile-h2;
       }
 
-      @include viewport-375 {
+      @include viewport-480 {
         grid-column: 1 / span 10;
         font-size: $mobile-h4;
       }
@@ -214,7 +214,7 @@ onBeforeUnmount(() => {
   .FeaturedProjects {
     margin-top: calc(100vh);
 
-    @include viewport-375 {
+    @include viewport-480 {
       margin-top: calc(100vh + 6rem); // TODO
     }
 
@@ -227,7 +227,7 @@ onBeforeUnmount(() => {
         filter: invert(1) grayscale(1);
       }
 
-      @include viewport-375 {
+      @include viewport-480 {
         margin-top: 0;
       }
 
@@ -239,7 +239,7 @@ onBeforeUnmount(() => {
         left: 0;
         bottom: 0;
 
-        @include viewport-375 {
+        @include viewport-480 {
           font-size: $mobile-h2;
           left: 1rem;
           bottom: 1rem;

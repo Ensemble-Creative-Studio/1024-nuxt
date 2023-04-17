@@ -17,6 +17,7 @@ const $anchors = ref()
 const $aboutPage = ref()
 const $ctx = ref()
 const tl = gsap.timeline()
+const trigger = ref()
 
 const $introduction = about.introduction
 const splitIntroduction = computed(() => {
@@ -52,62 +53,48 @@ onMounted(() => {
     }
 
     tl.to(chunks, {
-      delay: 0.5,
-      duration: 1,
+      duration: 2.5,
       autoAlpha: 1,
       ease: 'power2.out',
       stagger: 0.03,
+    }).to(slides, {
+      y: 0,
+      delay: -1,
+      duration: 1,
+      autoAlpha: 1,
+      ease: 'power3.out',
+      stagger: 0.25,
     })
-      .to(chunks, {
-        duration: 0.05,
-        autoAlpha: 0,
-        ease: 'power3.out',
-      })
-      .to(chunks, {
-        duration: 0.1,
-        autoAlpha: 1,
-        ease: 'power3.out',
-      })
-      .to(chunks, {
-        duration: 0.1,
-        autoAlpha: 0,
-        ease: 'power3.out',
-      })
-      .to(chunks, {
-        delay: 0.25,
-        duration: 0.2,
-        autoAlpha: 1,
-        ease: 'power3.out',
-      })
-      .to(slides, {
-        y: 0,
-        delay: -1,
-        duration: 1,
-        autoAlpha: 1,
-        ease: 'power3.out',
-        stagger: 0.25,
-      })
 
-    // REFACTOR
     setTimeout(() => {
-      ScrollTrigger.create({
-        start: '50%',
-        trigger: $hero.value,
-        onEnter: () => {
-          gsap.to($anchors.value.$el, {
-            y: 0,
-            duration: 0.5,
-          })
-        },
-        onLeaveBack: () => {
-          gsap.to($anchors.value.$el, {
-            y: 50,
-            duration: 0.5,
-          })
-        },
+      let mm = gsap.matchMedia()
+
+      mm.add('(min-width: 481px)', () => {
+        trigger.value = ScrollTrigger.create({
+          start: '50%',
+          trigger: $hero.value,
+          onEnter: () => {
+            gsap.to($anchors.value.$el, {
+              y: 0,
+              duration: 0.5,
+            })
+          },
+          onLeaveBack: () => {
+            gsap.to($anchors.value.$el, {
+              y: 50,
+              duration: 0.5,
+            })
+          },
+        })
       })
     }, 1000)
   }, $aboutPage.value)
+
+  window.addEventListener('resize', () => {
+    if (trigger.value !== null) {
+      trigger.value.refresh()
+    }
+  })
 })
 
 onBeforeUnmount(() => {
@@ -119,8 +106,6 @@ onBeforeUnmount(() => {
   ScrollTrigger.getAll().forEach((trigger) => {
     trigger.kill()
   })
-
-  $ctx.value.revert()
 })
 </script>
 
@@ -272,7 +257,7 @@ onBeforeUnmount(() => {
 .about {
   padding-top: 26rem;
 
-  @include viewport-375 {
+  @include viewport-480 {
     padding-top: 15rem;
   }
 
@@ -281,12 +266,17 @@ onBeforeUnmount(() => {
       grid-column: 2 / span 5;
       font-size: $desktop-h4;
       font-weight: $extra-light;
+      max-width: 70rem;
 
       &__chunk {
         opacity: 0;
       }
 
-      @include viewport-375 {
+      @include viewport-1024 {
+        grid-column: 2 / span 10;
+      }
+
+      @include viewport-480 {
         grid-column: 1 / -1;
         font-size: $mobile-h4;
       }
@@ -296,7 +286,7 @@ onBeforeUnmount(() => {
   .slider {
     margin-top: 12rem;
 
-    @include viewport-375 {
+    @include viewport-480 {
       margin-top: 6rem;
     }
 
@@ -313,14 +303,18 @@ onBeforeUnmount(() => {
   .description {
     margin-top: 12rem;
 
-    @include viewport-375 {
+    @include viewport-480 {
       margin-top: 6rem;
     }
 
     p {
       grid-column: 2 / span 5;
 
-      @include viewport-375 {
+      @include viewport-1024 {
+        grid-column: 2 / span 8;
+      }
+
+      @include viewport-480 {
         grid-column: 2 / -1;
         font-size: $mobile-text-read;
       }
@@ -350,7 +344,7 @@ onBeforeUnmount(() => {
       opacity: 0;
     }
 
-    @include viewport-375 {
+    @include viewport-480 {
       font-size: 4.6rem;
       margin-top: 6rem;
     }
@@ -359,14 +353,19 @@ onBeforeUnmount(() => {
   .history {
     margin-top: 12rem;
 
-    @include viewport-375 {
+    @include viewport-480 {
       margin-top: 6rem;
     }
 
     p {
       grid-column: 2 / span 5;
+      max-width: 70rem;
 
-      @include viewport-375 {
+      @include viewport-1024 {
+        grid-column: 2 / span 8;
+      }
+
+      @include viewport-480 {
         grid-column: 2 / -1;
         font-size: $mobile-text-read;
       }
@@ -377,7 +376,7 @@ onBeforeUnmount(() => {
     margin-top: 12rem;
     font-weight: $extra-light;
 
-    @include viewport-375 {
+    @include viewport-480 {
       margin-top: 6rem;
     }
 
@@ -385,7 +384,7 @@ onBeforeUnmount(() => {
       @include grid(12, 1fr, 1, 2);
       padding: 0 2rem;
 
-      @include viewport-375 {
+      @include viewport-480 {
         row-gap: 6rem;
         padding: 0 1rem;
       }
@@ -393,7 +392,7 @@ onBeforeUnmount(() => {
       .item {
         grid-column: auto / span 4;
 
-        @include viewport-375 {
+        @include viewport-480 {
           grid-column: 1 / -1;
         }
 
@@ -417,14 +416,21 @@ onBeforeUnmount(() => {
     font-size: $desktop-h4;
     font-weight: $extra-light;
 
-    @include viewport-375 {
+    @include viewport-480 {
       margin-top: 6rem;
+      grid-column: 1 / -1;
+      font-size: $mobile-h4;
     }
 
     p {
       grid-column: 2 / span 5;
+      max-width: 70rem;
 
-      @include viewport-375 {
+      @include viewport-1024 {
+        grid-column: 2 / span 10;
+      }
+
+      @include viewport-480 {
         grid-column: 1 / -1;
         font-size: $mobile-h4;
       }
@@ -437,7 +443,7 @@ onBeforeUnmount(() => {
     margin-top: 12rem;
     font-weight: $extra-light;
 
-    @include viewport-375 {
+    @include viewport-480 {
       margin-top: 6rem;
       font-weight: $light;
     }
@@ -447,7 +453,7 @@ onBeforeUnmount(() => {
       font-size: $desktop-h4;
       font-weight: $extra-light;
 
-      @include viewport-375 {
+      @include viewport-480 {
         grid-column: 1 / -1;
         font-size: $mobile-h4;
       }
@@ -456,7 +462,7 @@ onBeforeUnmount(() => {
     &__list {
       margin-top: 6rem;
 
-      @include viewport-375 {
+      @include viewport-480 {
         margin-top: 2rem;
       }
 
@@ -464,7 +470,7 @@ onBeforeUnmount(() => {
         border-top: 0.1rem solid $dark-grey;
         font-size: $desktop-list;
 
-        @include viewport-375 {
+        @include viewport-480 {
           font-size: $mobile-list;
           border-top: none;
         }
@@ -475,7 +481,7 @@ onBeforeUnmount(() => {
           align-items: center;
           position: relative;
 
-          @include viewport-375 {
+          @include viewport-480 {
             padding: 2rem 1rem;
           }
         }
@@ -485,7 +491,7 @@ onBeforeUnmount(() => {
           color: $medium-grey;
           // padding: 3rem 0;
 
-          @include viewport-375 {
+          @include viewport-480 {
             grid-column: 1 / span 2;
             padding: 0;
           }
@@ -495,7 +501,7 @@ onBeforeUnmount(() => {
           grid-column: 3 / span 4;
           // padding: 3rem 0;
 
-          @include viewport-375 {
+          @include viewport-480 {
             grid-column: 3 / -1;
             padding: 0;
           }
@@ -506,7 +512,7 @@ onBeforeUnmount(() => {
           color: $medium-grey;
           // padding: 3rem 0;
 
-          @include viewport-375 {
+          @include viewport-480 {
             padding: 0;
             grid-row: 2;
             grid-column: 3 / -1;
@@ -519,7 +525,7 @@ onBeforeUnmount(() => {
   .festivals {
     padding-bottom: 5rem;
 
-    @include viewport-375 {
+    @include viewport-480 {
       padding-bottom: 6.5rem;
     }
   }

@@ -76,6 +76,12 @@ const { isMobile } = useDevice()
     position: relative;
     margin-top: 12rem;
 
+    .GridContainer {
+      @include viewport-1200 {
+        display: block;
+      }
+    }
+
     .infos {
       grid-column: 1 / span 3;
       display: flex;
@@ -87,16 +93,35 @@ const { isMobile } = useDevice()
       padding-bottom: 2rem;
       top: 12rem;
 
-      @include viewport-375 {
+      @include viewport-1200 {
+        position: relative;
+        top: 0;
+        height: auto;
+      }
+
+      @include viewport-480 {
         grid-column: 1 / -1;
         position: relative;
         top: 0;
         height: auto;
         padding-bottom: 0;
+        margin-bottom: 6rem;
+      }
+
+      .GoBackButton {
+        @include viewport-1200 {
+          margin-bottom: 6rem;
+        }
+
+        @include viewport-480 {
+          margin-bottom: 0;
+        }
       }
 
       &__meta {
-        @include viewport-375 {
+        max-width: 70rem;
+
+        @include viewport-480 {
           @include grid(12, 1fr, 1, 0);
         }
       }
@@ -106,7 +131,7 @@ const { isMobile } = useDevice()
         text-decoration-thickness: from-font;
         text-underline-offset: 0.5rem;
 
-        @include viewport-375 {
+        @include viewport-480 {
           grid-column: 1 / -1;
         }
       }
@@ -114,7 +139,7 @@ const { isMobile } = useDevice()
       &__excerpt {
         margin-top: 1rem;
 
-        @include viewport-375 {
+        @include viewport-480 {
           margin-top: 2rem;
           grid-column: 2 / span 10;
         }
@@ -125,14 +150,18 @@ const { isMobile } = useDevice()
       grid-column: 4 / -1;
       margin-bottom: 12rem;
 
-      @include viewport-375 {
+      @include viewport-480 {
         grid-column: 1 / -1;
+      }
+
+      .VideoPlayer {
+        margin-bottom: 6rem;
       }
 
       &__gallery {
         .image {
           &:first-child {
-            @include viewport-375 {
+            @include viewport-480 {
               margin-top: 6rem;
             }
           }

@@ -308,16 +308,34 @@ onBeforeUnmount(() => {
     bottom: 0;
     width: 100%;
     display: flex;
+    align-items: center;
     flex-wrap: wrap;
-    font-size: 1.2rem;
+    font-size: $desktop-player;
     padding: 0 1.2rem 1.2rem 1.2rem;
+
+    @include viewport-480 {
+      font-size: $mobile-player;
+      padding: 0.4rem 0.6rem;
+      // justify-content: space-evenly;
+    }
 
     button {
       text-transform: uppercase;
       cursor: pointer;
+      display: block;
+
+      svg {
+        margin: 0 auto;
+        display: block;
+      }
+    }
+
+    &__play-pause {
+      order: 0;
     }
 
     &__time {
+      order: 1;
       display: flex;
       margin-left: 1.2rem;
     }
@@ -327,15 +345,30 @@ onBeforeUnmount(() => {
     }
 
     &__mute {
+      order: 2;
       margin-left: 1.2rem;
     }
 
     &__download {
       margin-left: 1.2rem;
+      order: 4;
+
+      @include viewport-480 {
+        order: 5;
+      }
+
+      @include viewport-320 {
+        display: none;
+      }
     }
 
     &__fullscreen {
+      order: 3;
       margin-left: 1.2rem;
+
+      @include viewport-480 {
+        order: 4;
+      }
     }
 
     &__timeline {
@@ -349,6 +382,13 @@ onBeforeUnmount(() => {
       align-items: center;
       cursor: pointer;
 
+      @include viewport-480 {
+        position: relative;
+        width: 5rem;
+        order: 4;
+        margin-left: 1.2rem;
+      }
+
       &-background {
         position: absolute;
         bottom: 0;
@@ -356,6 +396,11 @@ onBeforeUnmount(() => {
         background-color: #737373;
         opacity: 0.8;
         width: 100%;
+
+        @include viewport-480 {
+          bottom: 50%;
+          transform: translateY(calc(50% + 0.1rem));
+        }
       }
 
       &-current {
@@ -366,6 +411,10 @@ onBeforeUnmount(() => {
         width: 100%;
         transform: scaleX(0);
         transform-origin: left;
+
+        @include viewport-480 {
+          bottom: 0.35rem;
+        }
       }
     }
   }

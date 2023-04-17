@@ -138,7 +138,7 @@ onBeforeUnmount(() => {
     padding-bottom: 12rem;
     font-size: $desktop-list;
 
-    @include viewport-375 {
+    @include viewport-480 {
       margin-top: 9rem;
       padding-bottom: 4rem;
       font-size: $mobile-list;
@@ -149,7 +149,7 @@ onBeforeUnmount(() => {
       display: flex;
       align-items: center;
 
-      @include viewport-375 {
+      @include viewport-480 {
         grid-column: 1 / -1;
         display: block;
       }
@@ -176,7 +176,7 @@ onBeforeUnmount(() => {
       display: flex;
       align-items: center;
 
-      @include viewport-375 {
+      @include viewport-480 {
         margin-top: 2rem;
       }
     }

@@ -124,7 +124,7 @@ $ease-out: cubic-bezier(0.16, 1, 0.3, 1);
     width: 40rem;
   }
 
-  @include viewport-375 {
+  @include viewport-480 {
     width: 100%;
     transform: translate(0%, -100%);
     padding: 9rem 1rem 2rem 1rem;
@@ -143,7 +143,7 @@ $ease-out: cubic-bezier(0.16, 1, 0.3, 1);
       transform: translate(0%, 0%);
     }
 
-    @include viewport-375 {
+    @include viewport-480 {
       transform: translate(0%, 0%);
       margin: 0;
       width: 100%;
@@ -159,7 +159,7 @@ $ease-out: cubic-bezier(0.16, 1, 0.3, 1);
       transform: translateX(0%);
     }
 
-    @include viewport-375 {
+    @include viewport-480 {
       transform: translate(0%, 0%);
       margin: 0;
       width: 100%;
@@ -191,7 +191,7 @@ $ease-out: cubic-bezier(0.16, 1, 0.3, 1);
       margin-top: 3rem;
       justify-content: center;
 
-      @include viewport-375 {
+      @include viewport-480 {
         align-items: flex-start;
         justify-content: flex-start;
         margin-left: 3rem;

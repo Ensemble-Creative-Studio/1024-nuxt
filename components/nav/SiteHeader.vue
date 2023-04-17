@@ -37,7 +37,7 @@ function toggleNav() {
   z-index: 40;
   mix-blend-mode: difference;
 
-  @include viewport-375 {
+  @include viewport-480 {
     background-color: $black;
     padding: 1rem;
     height: 6rem;

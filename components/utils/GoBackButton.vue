@@ -17,7 +17,7 @@ function goBack() {
   text-decoration-thickness: from-font;
   text-underline-offset: 0.5rem;
 
-  @include viewport-375 {
+  @include viewport-480 {
     position: fixed;
     width: 100%;
     height: 4rem;

@@ -119,7 +119,7 @@ watch(
   padding: 0 1.5rem;
   overflow: hidden;
 
-  @include viewport-375 {
+  @include viewport-480 {
     padding: 0 1rem;
   }
 
@@ -171,7 +171,7 @@ watch(
   &--three-items {
     grid-template-columns: repeat(3, 1fr);
 
-    @include viewport-375 {
+    @include viewport-480 {
       grid-template-columns: repeat(4, 1fr);
     }
 
@@ -180,7 +180,7 @@ watch(
         grid-column: auto / span 1;
       }
 
-      @include viewport-375 {
+      @include viewport-480 {
         grid-column: auto / span 2;
       }
     }

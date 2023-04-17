@@ -58,7 +58,7 @@ const { isMobile } = useDevice()
   padding-top: 12rem;
   opacity: 0;
 
-  @include viewport-375 {
+  @include viewport-480 {
     padding: 0 1rem;
     padding-top: 15rem;
   }
@@ -66,7 +66,7 @@ const { isMobile } = useDevice()
   .item {
     grid-column: 3 / span 8;
 
-    @include viewport-375 {
+    @include viewport-480 {
       grid-column: 1 / -1;
     }
 
@@ -99,7 +99,7 @@ const { isMobile } = useDevice()
       align-items: flex-start;
       justify-content: space-between;
 
-      @include viewport-375 {
+      @include viewport-480 {
         @include grid(12, 1fr, 1, 0);
       }
     }
@@ -110,7 +110,7 @@ const { isMobile } = useDevice()
       text-decoration-thickness: from-font;
       text-underline-offset: 0.5rem;
 
-      @include viewport-375 {
+      @include viewport-480 {
         grid-column: 1 / -1;
       }
     }
@@ -119,7 +119,7 @@ const { isMobile } = useDevice()
       flex: 1;
       margin-left: 1rem;
 
-      @include viewport-375 {
+      @include viewport-480 {
         margin-left: 0;
         margin-top: 2rem;
         grid-column: 2 / span 10;
