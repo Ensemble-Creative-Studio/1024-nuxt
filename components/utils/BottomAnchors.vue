@@ -15,11 +15,16 @@
   bottom: 0;
   z-index: 10;
   background-color: $black;
-  font-size: 1.8rem;
+  font-size: $desktop-filters-main;
   color: $medium-grey;
   width: 100%;
   border-top: 0.1rem solid $dark-grey;
   transform: translateY(5rem);
+
+  @include viewport-375 {
+    font-size: $mobile-filters-main;
+    justify-content: center;
+  }
 
   .BottomAnchors__list {
     display: flex;
@@ -37,6 +42,10 @@
 
       &:not(:first-child) {
         margin-left: 2rem;
+
+        @include viewport-375 {
+          margin-left: 1.5rem;
+        }
       }
     }
   }

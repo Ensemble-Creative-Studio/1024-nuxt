@@ -95,10 +95,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div
-    class="project-page"
-    ref="$projectPage"
-  >
+  <div class="project-page" ref="$projectPage">
     <Head>
       <Title>{{ project.title }}</Title>
       <Meta name="description" content="Project description" />
@@ -181,11 +178,14 @@ onUnmounted(() => {
       </section>
       <section class="credits" ref="$credits">
         <GridContainer>
-          <header class="credits__header">
+          <header
+            class="credits__header"
+            :class="[!project.credits && 'credits__header--is-empty']"
+          >
             <div>{{ project.title }}</div>
             <span>1024 architecture</span>
           </header>
-          <ul class="credits__wrapper">
+          <ul class="credits__wrapper" v-if="project.credits">
             <li class="item" v-for="item in project?.credits?.list">
               <h3 class="item__label">{{ item.role }}</h3>
               <p class="item__text">
@@ -275,7 +275,20 @@ onUnmounted(() => {
       }
 
       @include viewport-992 {
-        font-size: 4rem;
+        font-size: $mobile-h2;
+      }
+
+      @include viewport-768 {
+        grid-column: 1 / -1;
+      }
+    }
+
+    &__details {
+      grid-column: 1 / -1;
+      margin-top: 6rem;
+
+      @include viewport-768 {
+        grid-column: 2 / span 10;
       }
     }
 
@@ -286,19 +299,14 @@ onUnmounted(() => {
         grid-column: 2 / span 8;
       }
 
-      @include viewport-768 {
-        grid-column: 1 / -1;
-      }
+      // @include viewport-768 {
+      //   grid-column: 1 / -1;
+      // }
 
       @include viewport-375 {
         grid-column: 2 / -1;
         font-size: $mobile-text-read;
       }
-    }
-
-    &__details {
-      grid-column: 1 / -1;
-      margin-top: 6rem;
     }
 
     &__type {
@@ -370,6 +378,10 @@ onUnmounted(() => {
         &--video {
           grid-column: 3 / span 8;
 
+          @include viewport-768 {
+            grid-column: 2 / span 10;
+          }
+
           @include viewport-375 {
             grid-column: 1 / -1;
           }
@@ -405,6 +417,10 @@ onUnmounted(() => {
             &:not(:first-child) {
               margin-top: 12rem;
 
+              @include viewport-768 {
+                margin-top: 9rem;
+              }
+
               @include viewport-375 {
                 margin-top: 6rem;
               }
@@ -421,11 +437,16 @@ onUnmounted(() => {
 
     @include viewport-375 {
       font-size: $mobile-text-read;
+      margin-top: 6rem;
       padding-bottom: 0;
     }
 
     &__header {
       grid-column: 2 / -1;
+
+      &--is-empty {
+        padding-bottom: 6rem;
+      }
 
       @include viewport-375 {
         grid-column: 1 / -1;

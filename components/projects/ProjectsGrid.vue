@@ -123,26 +123,11 @@ watch(
     padding: 0 1rem;
   }
 
-  &--three-items {
-    grid-template-columns: repeat(3, 1fr);
-
-    @include viewport-375 {
-      grid-template-columns: repeat(4, 1fr);
-    }
-  }
-
-  &--empty {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-  }
-
   .item {
     opacity: 0;
     transform: translateY(3rem);
 
-    @include viewport-375 {
+    @include viewport-768 {
       grid-column: auto / span 2;
     }
 
@@ -181,6 +166,31 @@ watch(
     &__title {
       margin-top: 1rem;
     }
+  }
+
+  &--three-items {
+    grid-template-columns: repeat(3, 1fr);
+
+    @include viewport-375 {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .item {
+      @include viewport-768 {
+        grid-column: auto / span 1;
+      }
+
+      @include viewport-375 {
+        grid-column: auto / span 2;
+      }
+    }
+  }
+
+  &--empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
   }
 }
 </style>

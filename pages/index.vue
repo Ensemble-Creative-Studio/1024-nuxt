@@ -201,7 +201,7 @@ onBeforeUnmount(() => {
       }
 
       @include viewport-992 {
-        font-size: 4rem;
+        font-size: $mobile-h2;
       }
 
       @include viewport-375 {
