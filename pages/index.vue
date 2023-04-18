@@ -183,7 +183,8 @@ onBeforeUnmount(() => {
 
     .title {
       grid-column: 2 / span 8;
-      font-size: $desktop-h2;
+      max-width: 110rem;
+      font-size: $desktop-h4;
       font-weight: $extra-light;
       position: sticky;
       bottom: 50%;
@@ -234,7 +235,7 @@ onBeforeUnmount(() => {
       &__footer {
         display: flex;
         position: sticky;
-        padding: 2rem;
+        padding: 1.5rem 2rem;
         width: 100%;
         left: 0;
         bottom: 0;
@@ -247,7 +248,7 @@ onBeforeUnmount(() => {
       }
 
       &__title {
-        font-size: $desktop-h2;
+        font-size: $desktop-h4;
         font-weight: $extra-light;
         opacity: 0;
         transform: translateY(10rem);
