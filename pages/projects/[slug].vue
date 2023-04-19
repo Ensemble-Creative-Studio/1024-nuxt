@@ -282,7 +282,7 @@ onBeforeUnmount(() => {
       }
 
       @include viewport-480 {
-        font-size: $mobile-h2;
+        font-size: $mobile-h4; // $mobile-h2 on Figma
         margin-top: 4rem;
       }
     }
