@@ -24,7 +24,6 @@ const props = defineProps({
         webkit-playsinline
       ></video>
       <SanityImage
-        class="FeaturedProject__thumbnail"
         v-else
         :asset-id="project.mainImage.asset._ref"
         auto="format"

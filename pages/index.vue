@@ -1,6 +1,8 @@
 <script setup>
 import gsap from 'gsap'
 
+const { isMobile } = useDevice()
+
 const query = groq`*[_type == "home"][0]
   {
     ...,
@@ -41,17 +43,17 @@ onMounted(() => {
   }, $index.value)
 })
 
-const $title = home.baseline
+const $baseline = home.baseline
 
-const splitTitle = computed(() => {
-  return $title.split(' ')
+const splitBaseline = computed(() => {
+  return $baseline.split(' ')
 })
 
 onBeforeUnmount(() => {
   $ctx.value.revert()
 })
 
-console.log($ctx);
+console.log($ctx)
 </script>
 
 <template>
@@ -60,16 +62,17 @@ console.log($ctx);
       <Title>1024</Title>
       <Meta name="description" content="1024 architecture website" />
     </Head>
-    <section class="hero">
+    <section class="hero" v-if="!isMobile">
       <GridContainer>
         <h1 class="title">
-          <span class="title__chunk" v-for="(word, index) in splitTitle" :key="index">
-            {{ word }}{{ index !== splitTitle.length - 1 ? ' ' : '' }}
+          <span class="title__chunk" v-for="(word, index) in splitBaseline" :key="index">
+            {{ word }}{{ index !== splitBaseline.length - 1 ? ' ' : '' }}
           </span>
         </h1>
       </GridContainer>
     </section>
-    <FeaturedProjects :projects="home.featuredProjects" />
+    <FeaturedProjects v-if="!isMobile" :projects="home.featuredProjects" />
+    <MobileFeaturedProjects v-else :baseline="home.baseline" :projects="home.featuredProjects" />
   </div>
 </template>
 
@@ -77,14 +80,14 @@ console.log($ctx);
 .index {
   .hero {
     height: 100vh;
+    width: 100%;
     padding-top: 30rem;
     position: fixed;
     top: 0;
     left: 0;
 
     @include viewport-480 {
-      height: auto;
-      padding-top: 15rem;
+      display: none;
     }
 
     .title {
@@ -95,14 +98,6 @@ console.log($ctx);
       position: sticky;
       bottom: 50%;
 
-      &__chunk {
-        opacity: 0;
-
-        &:first-child {
-          margin-left: 0;
-        }
-      }
-
       @include viewport-1200 {
         grid-column: 1 / -1;
       }
@@ -112,8 +107,15 @@ console.log($ctx);
       }
 
       @include viewport-480 {
-        grid-column: 1 / span 10;
-        font-size: $mobile-h4;
+        display: none;
+      }
+
+      &__chunk {
+        opacity: 0;
+
+        &:first-child {
+          margin-left: 0;
+        }
       }
     }
   }
