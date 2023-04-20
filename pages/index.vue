@@ -26,21 +26,24 @@ const $index = ref()
 const tl = gsap.timeline()
 
 onMounted(() => {
-  $ctx.value = gsap.context((self) => {
-    const chunks = self.selector('.title__chunk')
+  // Only for desktop
+  if (!isMobile) {
+    $ctx.value = gsap.context((self) => {
+      const chunks = self.selector('.title__chunk')
 
-    for (let i = chunks.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1))
-      ;[chunks[i], chunks[j]] = [chunks[j], chunks[i]]
-    }
+      for (let i = chunks.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1))
+        ;[chunks[i], chunks[j]] = [chunks[j], chunks[i]]
+      }
 
-    tl.to(chunks, {
-      duration: 2.5,
-      autoAlpha: 1,
-      ease: 'power2.out',
-      stagger: 0.03,
-    })
-  }, $index.value)
+      tl.to(chunks, {
+        duration: 2.5,
+        autoAlpha: 1,
+        ease: 'power2.out',
+        stagger: 0.03,
+      })
+    }, $index.value)
+  }
 })
 
 const $baseline = home.baseline
@@ -50,7 +53,9 @@ const splitBaseline = computed(() => {
 })
 
 onBeforeUnmount(() => {
-  $ctx.value.revert()
+  if ($ctx.value) {
+    $ctx.value.revert()
+  }
 })
 </script>
 

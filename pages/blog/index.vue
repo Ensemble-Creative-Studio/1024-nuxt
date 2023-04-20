@@ -39,6 +39,7 @@ const goToPage = (index) => {
   currentPage.value = index
   router.push({ query: { page: index } })
 
+  // TODO
   setTimeout(() => {
     window.location.reload(true)
   }, 0)
@@ -73,7 +74,7 @@ onBeforeUnmount(() => {
       <Title>1024 | Blog</Title>
       <Meta name="description" content="Contact page description" />
     </Head>
-    <BlogList :blog="blog" />
+    <BlogList :blog="blog" :page="currentPage" />
     <section class="pagination">
       <GridContainer>
         <div class="pagination__container">

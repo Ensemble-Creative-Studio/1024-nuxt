@@ -2,10 +2,12 @@
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import { EffectCreative } from 'swiper'
 
+import gsap from 'gsap'
+
 import 'swiper/css'
 import 'swiper/css/effect-creative'
 
-const modules = [EffectCreative]
+const router = useRouter()
 
 const props = defineProps({
   baseline: {
@@ -18,14 +20,15 @@ const props = defineProps({
   },
 })
 
+const modules = [EffectCreative]
+
 const projectTitles = computed(() => {
   return props.projects.map((project) => project.title)
 })
 
 const $swiper = ref()
 const activeSlideIndex = ref(-1)
-const isHeroPassed = ref(false)
-const currentProgress = ref(0)
+// const currentProgress = ref(0)
 
 const onSwiper = ($event) => {
   $swiper.value = $event
@@ -35,10 +38,10 @@ const onSlideChange = () => {
   activeSlideIndex.value = $swiper.value.activeIndex - 1
 }
 
-const onSliderMove = ($event) => {
-  console.log($event.progress)
-  currentProgress.value = $event.progress
-}
+// const onSliderMove = ($event) => {
+//   console.log($event.progress)
+//   currentProgress.value = $event.progress
+// }
 
 const footerTransform = computed(() => {
   if (activeSlideIndex.value === -1) {
@@ -48,27 +51,46 @@ const footerTransform = computed(() => {
   }
 })
 
-// watch(activeSlideIndex, (newValue) => {
-//   if (newValue === 0) {
-//     $swiper.value.slidesPerView = 1
-//     console.log($swiper.value.slidesPerView);
-//   } else {
-//     $swiper.value.slidesPerView = 1.13
-//     console.log($swiper.value.slidesPerView);
-//   }
-// })
+const $ctx = ref()
+const $tl = ref()
+const $mobileFeaturedProjects = ref()
+
+watch(activeSlideIndex, (newValue) => {
+  if (newValue === projectTitles.value.length) {
+    $swiper.value.allowTouchMove = false
+
+    $ctx.value = gsap.context((self) => {
+      const blog = self.selector('.MobileFeaturedProjects__footer')
+
+      $tl.value = gsap.to(blog, {
+        y: -400,
+        duration: 1,
+        autoAlpha: 1,
+        delay: 1,
+        ease: 'power3.out',
+      })
+    }, $mobileFeaturedProjects.value)
+
+    setTimeout(() => {
+      router.push('/projects')
+    }, 1000)
+  }
+})
+
+onBeforeUnmount(() => {
+  $ctx.value.revert()
+})
 </script>
 
 <template>
-  <div class="MobileFeaturedProjects">
+  <div class="MobileFeaturedProjects" ref="$mobileFeaturedProjects">
     <swiper
       @swiper="onSwiper($event)"
       @slideChange="onSlideChange($event)"
-      @slider-move="onSliderMove($event)"
       :prevent-interaction-on-transition="true"
       class="MobileFeaturedProjects__slider"
       :grabCursor="true"
-      :slides-per-view="isHeroPassed >= 0 ? 1 : 1.13"
+      :slides-per-view="1"
       :space-between="10"
       :effect="'creative'"
       :speed="600"
@@ -116,9 +138,7 @@ const footerTransform = computed(() => {
           </div>
         </NuxtLink>
       </swiper-slide>
-      <swiper-slide>
-        <p>PROJECTS TRANSITION</p>
-      </swiper-slide>
+      <swiper-slide></swiper-slide>
     </swiper>
     <div class="MobileFeaturedProjects__footer" :style="{ transform: footerTransform }">
       <h2
