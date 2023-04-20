@@ -24,29 +24,52 @@ const projectTitles = computed(() => {
 
 const $swiper = ref()
 const activeSlideIndex = ref(-1)
+const isHeroPassed = ref(false)
+const currentProgress = ref(0)
 
-const onSlideChange = ($event) => {
-  activeSlideIndex.value = $event.activeIndex - 1
+const onSwiper = ($event) => {
+  $swiper.value = $event
+}
+
+const onSlideChange = () => {
+  activeSlideIndex.value = $swiper.value.activeIndex - 1
+}
+
+const onSliderMove = ($event) => {
+  console.log($event.progress)
+  currentProgress.value = $event.progress
 }
 
 const footerTransform = computed(() => {
   if (activeSlideIndex.value === -1) {
-    return 'translateX(85%)'
+    return 'translateX(calc(100% - 5rem))'
   } else {
     return `translateX(-${activeSlideIndex.value * 50}%)`
   }
 })
+
+// watch(activeSlideIndex, (newValue) => {
+//   if (newValue === 0) {
+//     $swiper.value.slidesPerView = 1
+//     console.log($swiper.value.slidesPerView);
+//   } else {
+//     $swiper.value.slidesPerView = 1.13
+//     console.log($swiper.value.slidesPerView);
+//   }
+// })
 </script>
 
 <template>
   <div class="MobileFeaturedProjects">
     <swiper
-      ref="$swiper"
+      @swiper="onSwiper($event)"
       @slideChange="onSlideChange($event)"
+      @slider-move="onSliderMove($event)"
       :prevent-interaction-on-transition="true"
       class="MobileFeaturedProjects__slider"
       :grabCursor="true"
-      :space-between="0"
+      :slides-per-view="isHeroPassed >= 0 ? 1 : 1.13"
+      :space-between="10"
       :effect="'creative'"
       :speed="600"
       :creativeEffect="{
@@ -61,7 +84,9 @@ const footerTransform = computed(() => {
     >
       <swiper-slide>
         <div class="baseline">
-          {{ baseline }}
+          <GridContainer>
+            <h1 class="baseline__title">{{ baseline }}</h1>
+          </GridContainer>
         </div>
       </swiper-slide>
       <swiper-slide v-for="(project, index) in projects">
@@ -98,8 +123,7 @@ const footerTransform = computed(() => {
     <div class="MobileFeaturedProjects__footer" :style="{ transform: footerTransform }">
       <h2
         :class="[
-          index === activeSlideIndex && 'test--active',
-          'test',
+          index === activeSlideIndex && 'MobileFeaturedProjects__title--active',
           'MobileFeaturedProjects__title',
         ]"
         v-for="(title, index) in projectTitles"
@@ -127,12 +151,25 @@ const footerTransform = computed(() => {
     height: 100%;
     width: 100%;
 
+    .swiper-slide {
+      &:nth-child(2) {
+        transform: translateX(-5rem);
+      }
+    }
+
     .baseline {
-      font-size: $mobile-h4;
-      padding: 0 1rem 2.4rem 1rem;
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
+      height: 100%;
+      background-color: $black;
+
+      .GridContainer {
+        height: inherit;
+        align-items: center;
+      }
+
+      &__title {
+        grid-column: 1 / span 10;
+        font-size: $mobile-h4;
+      }
     }
 
     .MobileFeaturedProject {
@@ -196,19 +233,19 @@ const footerTransform = computed(() => {
     will-change: transform;
     transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
     pointer-events: none;
+  }
 
-    .test {
-      font-size: $mobile-h4;
-      color: $medium-grey;
-      min-width: 50%;
+  &__title {
+    font-size: $mobile-h4;
+    color: $medium-grey;
+    min-width: 50%;
 
-      &:not(:last-child) {
-        margin-right: 1rem;
-      }
+    &:not(:last-child) {
+      margin-right: 1rem;
+    }
 
-      &--active {
-        color: $white;
-      }
+    &--active {
+      color: $white;
     }
   }
 }
