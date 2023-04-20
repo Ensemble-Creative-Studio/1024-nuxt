@@ -116,6 +116,7 @@ const footerTransform = computed(() => {
   height: 100%;
   width: 100%;
   padding-top: 6rem;
+  overflow: hidden;
 
   &__slider {
     height: 100%;
