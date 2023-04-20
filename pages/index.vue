@@ -54,7 +54,7 @@ const splitBaseline = computed(() => {
 
 onBeforeUnmount(() => {
   if ($ctx.value) {
-    $ctx.value.revert()
+    $ctx.value = null
   }
 })
 </script>

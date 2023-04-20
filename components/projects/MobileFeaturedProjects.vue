@@ -65,20 +65,19 @@ watch(activeSlideIndex, (newValue) => {
       $tl.value = gsap.to(blog, {
         y: -400,
         duration: 1,
-        autoAlpha: 1,
+        autoAlpha: 0,
         delay: 1,
         ease: 'power3.out',
+        onComplete: () => {
+          router.push('/projects')
+        },
       })
     }, $mobileFeaturedProjects.value)
-
-    setTimeout(() => {
-      router.push('/projects')
-    }, 1000)
   }
 })
 
-onBeforeUnmount(() => {
-  $ctx.value.revert()
+onUnmounted(() => {
+  $ctx.value = null
 })
 </script>
 
