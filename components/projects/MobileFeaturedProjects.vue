@@ -131,7 +131,14 @@ const footerTransform = computed(() => {
       >
         {{ title }}
       </h2>
-      <h2 class="MobileFeaturedProjects__title">All projects</h2>
+      <h2
+        :class="[
+          projectTitles.length === activeSlideIndex && 'MobileFeaturedProjects__title--active',
+          'MobileFeaturedProjects__title',
+        ]"
+      >
+        All projects
+      </h2>
     </div>
   </div>
 </template>
@@ -239,6 +246,7 @@ const footerTransform = computed(() => {
     font-size: $mobile-h4;
     color: $medium-grey;
     min-width: 50%;
+    transition: color 0.5s ease-in-out;
 
     &:not(:last-child) {
       margin-right: 1rem;
