@@ -19,21 +19,29 @@ const { isMobile } = useDevice()
           :downloadUrl="item.mainVideoDownloadUrl"
           :quality="isMobile ? 'sd' : 'hd'"
         />
-        <Swiper
-          :slides-per-view="1"
-          :space-between="10"
+        <swiper
+          :slides-per-view="1.1"
+          :space-between="0"
           :grab-cursor="true"
+          :free-mode="true"
+          :breakpoints="{
+            480: {
+              slidesPerView: 1,
+              spaceBetween: 10,
+              freeMode: false
+            },
+          }"
           v-else-if="item.gallery"
         >
-          <SwiperSlide v-for="media in item.gallery.medias">
+          <swiper-slide v-for="media in item.gallery.medias">
             <SanityImage
               :asset-id="media.asset._ref"
               auto="format"
               :q="75"
               :key="media._id"
             />
-          </SwiperSlide>
-        </Swiper>
+          </swiper-slide>
+        </swiper>
         <NuxtLink
           class="item__link"
           :to="{ name: 'blog-slug', params: { slug: item.slug.current } }"

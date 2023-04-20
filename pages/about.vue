@@ -125,11 +125,21 @@ onBeforeUnmount(() => {
       </GridContainer>
     </section>
     <section class="slider">
-      <Swiper :slides-per-view="isMobile ? 1.1 : 2.5" :space-between="10" :grab-cursor="true">
-        <SwiperSlide v-for="item in about.gallery.medias" class="slider__item">
+      <swiper
+        :space-between="10"
+        :grab-cursor="true"
+        :free-mode="true"
+        :slides-per-view="1.1"
+        :breakpoints="{
+          480: {
+            slidesPerView: 2.5,
+          },
+        }"
+      >
+        <swiper-slide v-for="item in about.gallery.medias" class="slider__item">
           <SanityImage :asset-id="item.asset._ref" auto="format" :q="75" :key="item._id" />
-        </SwiperSlide>
-      </Swiper>
+        </swiper-slide>
+      </swiper>
     </section>
     <section class="description" ref="$description">
       <GridContainer>

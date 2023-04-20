@@ -91,6 +91,9 @@ const footerTransform = computed(() => {
           </div>
         </NuxtLink>
       </swiper-slide>
+      <swiper-slide>
+        <p>PROJECTS TRANSITION</p>
+      </swiper-slide>
     </swiper>
     <div class="MobileFeaturedProjects__footer" :style="{ transform: footerTransform }">
       <h2
@@ -104,6 +107,7 @@ const footerTransform = computed(() => {
       >
         {{ title }}
       </h2>
+      <h2 class="MobileFeaturedProjects__title">All projects</h2>
     </div>
   </div>
 </template>

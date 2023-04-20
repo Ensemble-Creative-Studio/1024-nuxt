@@ -87,7 +87,7 @@ onBeforeUnmount(() => {
 }
 
 .FeaturedProjects {
-  margin-top: calc(100vh);
+  margin-top: calc(100vh - 2rem); // TODO
 
   @include viewport-480 {
     margin-top: calc(100vh + 6rem); // TODO

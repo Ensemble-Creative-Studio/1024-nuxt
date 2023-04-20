@@ -52,8 +52,6 @@ const splitBaseline = computed(() => {
 onBeforeUnmount(() => {
   $ctx.value.revert()
 })
-
-console.log($ctx)
 </script>
 
 <template>
@@ -118,6 +116,10 @@ console.log($ctx)
         }
       }
     }
+  }
+
+  .FeaturedProjects {
+    // margin-top: -2rem;
   }
 }
 </style>
