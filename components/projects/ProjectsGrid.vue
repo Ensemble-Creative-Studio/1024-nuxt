@@ -46,6 +46,9 @@ const hideProjects = () => {
       y: 30,
       autoAlpha: 0,
       ease: 'none',
+      onComplete: () => {
+        // $ctx.value = null
+      },
     })
   }, $projectsGrid.value)
 }

@@ -45,6 +45,9 @@ const hideProjects = () => {
       autoAlpha: 0,
       ease: 'power3.out',
       stagger: 0.1,
+      onComplete: () => {
+        // $ctx.value = null
+      },
     })
   }, $projectsList.value)
 }
