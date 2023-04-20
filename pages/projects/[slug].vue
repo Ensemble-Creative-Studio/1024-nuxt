@@ -458,6 +458,11 @@ onBeforeUnmount(() => {
       @include grid(9, 1fr, 1, 3);
       margin-top: 6rem;
 
+      @include viewport-768 {
+        @include grid(10, 1fr, 1, 3);
+        grid-column: 2 / span 10;
+      }
+
       @include viewport-480 {
         grid-column: 2 / span 10;
         @include grid(12, 1fr, 1, 0);
@@ -466,6 +471,10 @@ onBeforeUnmount(() => {
       .item {
         grid-column: auto / span 3;
         @include grid(3, 1fr, 1, 0);
+
+        @include viewport-768 {
+          grid-column: auto / span 5;
+        }
 
         @include viewport-480 {
           grid-column: 1 / -1;

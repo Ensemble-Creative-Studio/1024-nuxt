@@ -53,9 +53,17 @@ const goToPage = (index) => {
 onMounted(() => {
   $ctx.value = gsap.context((self) => {
     const blog = self.selector('.BlogList')
+    const pagination = self.selector('.pagination')
 
     $tl.value = gsap.to(blog, {
       delay: 1,
+      duration: 1,
+      autoAlpha: 1,
+      ease: 'power3.out',
+    })
+
+    $tl.value = gsap.to(pagination, {
+      delay: 0,
       duration: 1,
       autoAlpha: 1,
       ease: 'power3.out',
@@ -80,11 +88,17 @@ onBeforeUnmount(() => {
         <div class="pagination__container">
           <button
             class="pagination__button pagination__button--previous"
+            v-if="currentPage !== 1"
             @click="goToPage(currentPage - 1)"
           >
             Previous
           </button>
-          <span class="pagination__separator" v-if="currentPage !== totalPages">-</span>
+          <span
+            class="pagination__separator"
+            v-if="currentPage !== totalPages && currentPage !== 1"
+          >
+            -
+          </span>
           <button
             class="pagination__button pagination__button--next"
             v-if="currentPage !== totalPages"
@@ -138,6 +152,7 @@ onBeforeUnmount(() => {
     padding-top: 12rem;
     padding-bottom: 12rem;
     font-size: $desktop-list;
+    opacity: 0;
 
     @include viewport-480 {
       margin-top: 9rem;
@@ -159,12 +174,6 @@ onBeforeUnmount(() => {
     &__separator {
       margin: 0 2rem;
     }
-
-    // &__previous {
-    // }
-
-    // &__next {
-    // }
 
     &__button {
       text-decoration: underline;

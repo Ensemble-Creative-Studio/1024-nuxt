@@ -4,6 +4,7 @@ import 'swiper/css'
 
 const props = defineProps({
   blog: [Object],
+  page: [Number],
 })
 
 const { isMobile } = useDevice()
@@ -14,7 +15,7 @@ const { isMobile } = useDevice()
     <li class="item" v-for="item in blog">
       <div class="item__container">
         <VideoPlayer
-          v-if="item.mainVideo"
+          v-if="item.mainVideoUrl"
           :vimeoUrl="item.mainVideoUrl"
           :downloadUrl="item.mainVideoDownloadUrl"
           :quality="isMobile ? 'sd' : 'hd'"
@@ -23,25 +24,20 @@ const { isMobile } = useDevice()
           :slides-per-view="1.1"
           :space-between="0"
           :grab-cursor="true"
-          :free-mode="true"
           :breakpoints="{
             480: {
               slidesPerView: 1,
               spaceBetween: 10,
-              freeMode: false
+              freeMode: false,
             },
           }"
-          v-else-if="item.gallery"
+          v-else-if="item.gallery?.medias?.length > 1"
         >
           <swiper-slide v-for="media in item.gallery.medias">
-            <SanityImage
-              :asset-id="media.asset._ref"
-              auto="format"
-              :q="75"
-              :key="media._id"
-            />
+            <SanityImage :asset-id="media.asset._ref" auto="format" :q="75" :key="media._id" />
           </swiper-slide>
         </swiper>
+        <SanityImage v-else-if="item.mainImage" :asset-id="item.mainImage.asset._ref" auto="format" :q="75" />
         <NuxtLink
           class="item__link"
           :to="{ name: 'blog-slug', params: { slug: item.slug.current } }"
