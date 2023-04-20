@@ -23,28 +23,17 @@ watch(isNavActive, (value) => {
     <div :class="[isNavActive && 'NavMenu__main--active', 'NavMenu__main']">
       <ul class="nav">
         <li class="nav__item">
-          <NuxtLink class="main__link" to="/projects" @click="closeMenu()">
-            Projects
-          </NuxtLink>
+          <NuxtLink class="main__link" to="/projects" @click="closeMenu()">Projects</NuxtLink>
         </li>
         <li class="nav__item">
-          <NuxtLink class="main__link" to="/about" @click="closeMenu()">
-            About
-          </NuxtLink>
+          <NuxtLink class="main__link" to="/about" @click="closeMenu()">About</NuxtLink>
         </li>
         <li class="nav__item">
-          <NuxtLink class="main__link" to="/blog" @click="closeMenu()">
-            Blog
-          </NuxtLink>
+          <NuxtLink class="main__link" to="/blog?page=1" @click="closeMenu()">Blog</NuxtLink>
         </li>
       </ul>
     </div>
-    <div
-      :class="[
-        isNavActive && 'NavMenu__secondary--active',
-        'NavMenu__secondary',
-      ]"
-    >
+    <div :class="[isNavActive && 'NavMenu__secondary--active', 'NavMenu__secondary']">
       <ul class="address">
         <li class="address__item">{{ navMenu.address.label }}</li>
         <li class="address__item">{{ navMenu.address.streetNo }}</li>
@@ -52,28 +41,21 @@ watch(isNavActive, (value) => {
       </ul>
       <ul class="annex">
         <li class="annex__item">
-          <a
-            class="annex__link"
-            :href="navMenu.externalLinks.press"
-            target="blank"
-            >Press
-          </a>
+          <a class="annex__link" :href="navMenu.externalLinks.press" target="blank">Press</a>
         </li>
         <li class="annex__item">
-          <a
-            class="annex__link"
-            :href="navMenu.externalLinks.jobs"
-            target="blank"
+          <a class="annex__link" :href="navMenu.externalLinks.jobs" target="blank"
             >Jobs / Internships
           </a>
         </li>
         <li class="annex__item">
-          <a
-            class="annex__link"
-            :href="navMenu.externalLinks.requests"
-            target="blank"
-            >Requests
-          </a>
+          <a class="annex__link" :href="navMenu.externalLinks.requests" target="blank">Requests</a>
+        </li>
+        <li class="annex__item">
+          <NuxtLink class="annex__link" to="/cookies">Cookies</NuxtLink>
+        </li>
+        <li class="annex__item">
+          <NuxtLink class="annex__link" to="/legal">Legal Notice</NuxtLink>
         </li>
       </ul>
       <ul class="social-media">

@@ -20,6 +20,7 @@ const { isMobile } = useDevice()
           :downloadUrl="item.mainVideoDownloadUrl"
           :quality="isMobile ? 'sd' : 'hd'"
         />
+        <!-- <div v-if="item.mainVideoUrl">VIDEO</div> -->
         <swiper
           :slides-per-view="1.1"
           :space-between="0"
@@ -61,6 +62,7 @@ const { isMobile } = useDevice()
   padding: 0 2rem;
   padding-top: 12rem;
   opacity: 0;
+  overflow: hidden;
 
   @include viewport-480 {
     padding: 0 1rem;

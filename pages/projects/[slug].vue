@@ -209,13 +209,13 @@ onBeforeUnmount(() => {
           <li class="BottomAnchors__item">
             <button @click="scrollToSection($hero)">Top</button>
           </li>
-          <li class="BottomAnchors__item">
+          <li class="BottomAnchors__item" v-if="project.description">
             <button @click="scrollToSection($description)">Description</button>
           </li>
           <li class="BottomAnchors__item">
-            <button @click="scrollToSection($gallery)">Gallery</button>
+            <button @click="scrollToSection($gallery)" v-if="project.gallery">Gallery</button>
           </li>
-          <li class="BottomAnchors__item">
+          <li class="BottomAnchors__item" v-if="project.credits">
             <button @click="scrollToSection($credits)">Credits</button>
           </li>
         </ul>
@@ -446,6 +446,10 @@ onBeforeUnmount(() => {
 
       &--is-empty {
         padding-bottom: 6rem;
+
+        @include viewport-480 {
+          padding-bottom: 12rem;
+        }
       }
 
       @include viewport-480 {

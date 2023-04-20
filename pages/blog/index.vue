@@ -6,7 +6,8 @@ const router = useRouter()
 
 const $ctx = ref()
 const $blogPage = ref()
-const $tl = ref()
+
+const tl = gsap.timeline()
 
 const itemsPerPage = 3
 const currentPage = ref(1)
@@ -55,14 +56,13 @@ onMounted(() => {
     const blog = self.selector('.BlogList')
     const pagination = self.selector('.pagination')
 
-    $tl.value = gsap.to(blog, {
+    tl.to(blog, {
       delay: 1,
       duration: 1,
       autoAlpha: 1,
       ease: 'power3.out',
     })
-
-    $tl.value = gsap.to(pagination, {
+    tl.to(pagination, {
       delay: 0,
       duration: 1,
       autoAlpha: 1,
