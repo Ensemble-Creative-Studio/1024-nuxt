@@ -43,11 +43,12 @@ const footerTransform = computed(() => {
     <swiper
       ref="$swiper"
       @slideChange="onSlideChange($event)"
+      :prevent-interaction-on-transition="true"
       class="MobileFeaturedProjects__slider"
       :grabCursor="true"
       :space-between="0"
       :effect="'creative'"
-      :speed="700"
+      :speed="600"
       :creativeEffect="{
         prev: {
           translate: ['-100%', 0, -300],
@@ -190,6 +191,7 @@ const footerTransform = computed(() => {
     z-index: 100;
     will-change: transform;
     transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
 
     .test {
       font-size: $mobile-h4;
