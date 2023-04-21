@@ -20,6 +20,37 @@ const props = defineProps({
   },
 })
 
+// Animations
+const $ctx = ref()
+const $tl = ref()
+const $mobileFeaturedProjects = ref()
+
+const tl = gsap.timeline()
+
+onMounted(() => {
+  $ctx.value = gsap.context((self) => {
+    const chunks = self.selector('.title__chunk')
+
+    for (let i = chunks.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1))
+      ;[chunks[i], chunks[j]] = [chunks[j], chunks[i]]
+    }
+
+    tl.to(chunks, {
+      duration: 2.5,
+      autoAlpha: 1,
+      ease: 'power2.out',
+      stagger: 0.03,
+    })
+  }, $mobileFeaturedProjects.value)
+
+  console.log('test')
+})
+
+const splitBaseline = computed(() => {
+  return props.baseline.split(' ')
+})
+
 const modules = [EffectCreative]
 
 const projectTitles = computed(() => {
@@ -50,10 +81,6 @@ const footerTransform = computed(() => {
     return `translateX(-${activeSlideIndex.value * 50}%)`
   }
 })
-
-const $ctx = ref()
-const $tl = ref()
-const $mobileFeaturedProjects = ref()
 
 watch(activeSlideIndex, (newValue) => {
   if (newValue === projectTitles.value.length) {
@@ -106,7 +133,11 @@ onUnmounted(() => {
       <swiper-slide>
         <div class="baseline">
           <GridContainer>
-            <h1 class="baseline__title">{{ baseline }}</h1>
+            <h1 class="title">
+              <span class="title__chunk" v-for="(word, index) in splitBaseline" :key="index">
+                {{ word }}{{ index !== splitBaseline.length - 1 ? ' ' : '' }}
+              </span>
+            </h1>
           </GridContainer>
         </div>
       </swiper-slide>
@@ -196,9 +227,17 @@ onUnmounted(() => {
         align-items: center;
       }
 
-      &__title {
+      .title {
         grid-column: 1 / span 10;
         font-size: $mobile-h4;
+
+        &__chunk {
+          opacity: 0;
+
+          &:first-child {
+            margin-left: 0;
+          }
+        }
       }
     }
 
