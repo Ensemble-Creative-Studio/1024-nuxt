@@ -57,7 +57,7 @@ const projectTitles = computed(() => {
 
 const $swiper = ref()
 const activeSlideIndex = ref(-1)
-// const currentProgress = ref(0)
+const totalOffsetWidth = ref(0)
 
 const onSwiper = ($event) => {
   $swiper.value = $event
@@ -67,20 +67,26 @@ const onSlideChange = () => {
   activeSlideIndex.value = $swiper.value.activeIndex - 1
 }
 
-// const onSliderMove = ($event) => {
-//   console.log($event.progress)
-//   currentProgress.value = $event.progress
-// }
-
-const footerTransform = computed(() => {
-  if (activeSlideIndex.value === -1) {
-    return 'translateX(calc(100% - 5rem))'
-  } else {
-    return `translateX(-${activeSlideIndex.value * 50}%)`
-  }
-})
+let previousSlideIndex = 0
 
 watch(activeSlideIndex, (newValue) => {
+  const currentTitle = document.querySelectorAll('.MobileFeaturedProjects__title')[newValue - 1]
+
+  if (currentTitle !== undefined && newValue !== 0) {
+    if (newValue > previousSlideIndex) {
+      totalOffsetWidth.value += currentTitle.offsetWidth + 70
+    } else if (newValue < previousSlideIndex) {
+      const prevTitle = document.querySelectorAll('.MobileFeaturedProjects__title')[
+        previousSlideIndex - 1
+      ]
+      totalOffsetWidth.value -= prevTitle.offsetWidth + 70
+    }
+  } else {
+    totalOffsetWidth.value = 0
+  }
+
+  previousSlideIndex = newValue
+
   if (newValue === projectTitles.value.length) {
     $swiper.value.allowTouchMove = false
 
@@ -98,6 +104,14 @@ watch(activeSlideIndex, (newValue) => {
         },
       })
     }, $mobileFeaturedProjects.value)
+  }
+})
+
+const footerTransform = computed(() => {
+  if (activeSlideIndex.value === -1) {
+    return 'translateX(calc(100% - 3rem))'
+  } else {
+    return `translateX(calc(-${totalOffsetWidth.value}px + 1rem))`
   }
 })
 
@@ -205,10 +219,11 @@ onBeforeUnmount(() => {
   &__slider {
     height: 100%;
     width: 100%;
+    z-index: 0;
 
     .swiper-slide {
-      // &:nth-child(2) {
-      //   transform: translateX(-5rem);
+      // &:nth-child(1) {
+      //   width: 85%;
       // }
 
       .empty {
@@ -218,6 +233,7 @@ onBeforeUnmount(() => {
 
     .baseline {
       height: 100%;
+      width: 100%;
       background-color: $black;
 
       .GridContainer {
@@ -245,6 +261,7 @@ onBeforeUnmount(() => {
       position: relative;
       padding: 0 1rem;
       background-color: $black;
+      pointer-events: none;
 
       &__overlay {
         z-index: 10;
@@ -295,7 +312,6 @@ onBeforeUnmount(() => {
     height: 7rem;
     display: flex;
     align-items: center;
-    padding: 0 1rem;
     z-index: 100;
     will-change: transform;
     transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
@@ -303,13 +319,13 @@ onBeforeUnmount(() => {
   }
 
   &__title {
-    font-size: $mobile-h4;
+    font-size: $mobile-h2;
+    white-space: nowrap;
     color: $medium-grey;
-    min-width: 50%;
     transition: color 0.5s ease-in-out;
 
     &:not(:last-child) {
-      margin-right: 1rem;
+      margin-right: 7rem;
     }
 
     &--active {
