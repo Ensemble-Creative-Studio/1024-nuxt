@@ -137,7 +137,7 @@ onUnmounted(() => {
           </div>
         </NuxtLink>
       </swiper-slide>
-      <swiper-slide></swiper-slide>
+      <swiper-slide class="empty"></swiper-slide>
     </swiper>
     <div class="MobileFeaturedProjects__footer" :style="{ transform: footerTransform }">
       <h2
@@ -178,8 +178,12 @@ onUnmounted(() => {
     width: 100%;
 
     .swiper-slide {
-      &:nth-child(2) {
-        transform: translateX(-5rem);
+      // &:nth-child(2) {
+      //   transform: translateX(-5rem);
+      // }
+
+      .empty {
+        background-color: $black;
       }
     }
 
@@ -221,7 +225,7 @@ onUnmounted(() => {
 
       &--previous {
         .MobileFeaturedProject__overlay {
-          opacity: 0.9;
+          opacity: 1;
           visibility: visible;
         }
       }
