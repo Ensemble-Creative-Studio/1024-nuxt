@@ -91,18 +91,19 @@ watch(activeSlideIndex, (newValue) => {
     $swiper.value.allowTouchMove = false
 
     $ctx.value = gsap.context((self) => {
-      const blog = self.selector('.MobileFeaturedProjects__footer')
+      const projectsLabel = self.selector('.MobileFeaturedProjects__title:last-child')
 
-      $tl.value = gsap.to(blog, {
+      $tl.value = gsap.to(projectsLabel, {
         y: -200,
-        duration: 0.5,
+        duration: 1,
         autoAlpha: 0,
         delay: 1,
         ease: 'power3.out',
-        onComplete: () => {
-          router.push('/projects')
-        },
       })
+
+      setTimeout(() => {
+        router.push('/projects')
+      }, 800)
     }, $mobileFeaturedProjects.value)
   }
 })
@@ -115,9 +116,9 @@ const footerTransform = computed(() => {
   }
 })
 
-onBeforeUnmount(() => {
-  $ctx.value = null
-})
+// onBeforeUnmount(() => {
+//   $ctx.value = null
+// })
 </script>
 
 <template>
