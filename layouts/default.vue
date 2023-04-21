@@ -35,9 +35,9 @@ watch(
 </template>
 
 <style lang="scss">
-.layout {
-  overflow-x: hidden;
-}
+// .layout {
+//   overflow-x: hidden;
+// }
 
 .content-wrapper {
   &--grayscale {

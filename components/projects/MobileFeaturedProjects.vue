@@ -215,7 +215,7 @@ const footerTransform = computed(() => {
 
     .swiper-slide {
       &.baseline {
-        width: 90% !important;
+        width: 85% !important;
       }
 
       width: 100 !important;
@@ -297,7 +297,7 @@ const footerTransform = computed(() => {
   }
 
   &__footer {
-    position: absolute;
+    position: fixed;
     bottom: 0;
     left: 0;
     height: 7rem;
