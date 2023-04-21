@@ -132,6 +132,11 @@ $cubic: cubic-bezier(0.16, 1, 0.3, 1);
     transform: translate(0%, 0%);
     padding: 0;
     background-color: transparent;
+    pointer-events: none;
+
+    &--active {
+      pointer-events: all;
+    }
   }
 
   &__main {

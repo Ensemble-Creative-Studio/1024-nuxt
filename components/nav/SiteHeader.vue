@@ -9,15 +9,14 @@ function toggleNav() {
 <template>
   <header class="SiteHeader">
     <SiteLogo />
-    <div
-      :class="[isNavActive && 'active', 'menu-icon']"
-      @click="toggleNav()"
-    >
-      <input class="menu-icon__cheeckbox" type="checkbox" />
-      <div>
-        <span></span>
-        <span></span>
-        <span></span>
+    <div :class="[isNavActive && 'active', 'menu-icon']" @click="toggleNav()">
+      <input class="menu-icon__checkbox" type="checkbox" />
+      <div class="burger">
+        <span class="burger__horizontal"></span>
+        <span class="burger__horizontal"></span>
+        <span class="burger__horizontal"></span>
+        <span class="burger__vertical burger__vertical--left"></span>
+        <span class="burger__vertical burger__vertical--right"></span>
       </div>
     </div>
   </header>
@@ -57,7 +56,7 @@ function toggleNav() {
   height: 20px;
   cursor: pointer;
 
-  .menu-icon__cheeckbox {
+  .menu-icon__checkbox {
     display: block;
     width: 100%;
     height: 100%;
@@ -69,7 +68,7 @@ function toggleNav() {
     opacity: 0;
   }
 
-  div {
+  .burger {
     pointer-events: none;
     margin: auto;
     position: absolute;
@@ -79,43 +78,85 @@ function toggleNav() {
     bottom: 0;
     width: 30px;
     height: 20px;
-  }
 
-  span {
-    position: absolute;
-    display: block;
-    width: 100%;
-    height: 2.4px;
-    background-color: $white;
-    border-radius: 1px;
-    transition: all 0.5s cubic-bezier(0.1, 0.82, 0.76, 0.965);
+    &__horizontal {
+      position: absolute;
+      display: block;
+      width: 100%;
+      height: 2.4px;
+      background-color: $white;
+      border-radius: 1px;
+      // transition: all 0.5s cubic-bezier(0.1, 0.82, 0.76, 0.965);
 
-    &:first-of-type {
-      top: 0;
+      &:nth-child(1) {
+        top: 0;
+      }
+
+      &:nth-child(2) {
+        top: 50%;
+        transform: translateY(-50%);
+      }
+
+      &:nth-child(3) {
+        bottom: 0;
+      }
     }
 
-    &:nth-of-type(2) {
-      top: 50%;
-      transform: translateY(-50%);
-    }
+    &__vertical {
+      opacity: 0;
+      position: absolute;
+      display: block;
+      width: 65%;
+      height: 2.4px;
+      background-color: $white;
+      border-radius: 1px;
 
-    &:last-of-type {
-      bottom: 0;
+      &--left {
+        transform: rotate(90deg) translateY(0px);
+        transform-origin: top left;
+        top: 0px;
+        left: 3px;
+      }
+
+      &--right {
+        transform: rotate(90deg) translateY(0px);
+        transform-origin: top left;
+        bottom: 18px;
+        right: -18px;
+      }
     }
   }
 
   &.active {
-    span {
-      &:first-of-type {
-        transform: rotate(45deg);
+    .burger__horizontal {
+      &:nth-child(1) {
+        transform: rotate(35deg);
         top: 9px;
       }
 
-      &:last-of-type {
-        transform: rotate(-45deg);
+      &:nth-child(3) {
+        transform: rotate(-35deg);
         bottom: 8.5px;
       }
     }
+
+    .burger__vertical {
+      animation: 0.2s blink forwards;
+    }
+  }
+}
+
+@keyframes blink {
+  0% {
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
   }
 }
 </style>
