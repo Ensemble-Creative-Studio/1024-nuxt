@@ -94,8 +94,8 @@ watch(activeSlideIndex, (newValue) => {
       const blog = self.selector('.MobileFeaturedProjects__footer')
 
       $tl.value = gsap.to(blog, {
-        y: -400,
-        duration: 1,
+        y: -200,
+        duration: 0.5,
         autoAlpha: 0,
         delay: 1,
         ease: 'power3.out',
