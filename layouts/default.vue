@@ -35,6 +35,10 @@ watch(
 </template>
 
 <style lang="scss">
+.layout {
+  overflow-x: hidden;
+}
+
 .content-wrapper {
   &--grayscale {
     img, video {

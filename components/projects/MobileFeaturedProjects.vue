@@ -109,7 +109,7 @@ watch(activeSlideIndex, (newValue) => {
 
 const footerTransform = computed(() => {
   if (activeSlideIndex.value === -1) {
-    return 'translateX(calc(100% - 3rem))'
+    return 'translateX(calc(50%))'
   } else {
     return `translateX(calc(-${totalOffsetWidth.value}px + 10px))`
   }
@@ -127,11 +127,11 @@ onBeforeUnmount(() => {
       @slideChange="onSlideChange($event)"
       :prevent-interaction-on-transition="true"
       class="MobileFeaturedProjects__slider"
-      :grabCursor="true"
-      :slides-per-view="1"
       :space-between="10"
-      :effect="'creative'"
+      :grabCursor="true"
+      :slides-per-view="'auto'"
       :speed="600"
+      :effect="'creative'"
       :creativeEffect="{
         prev: {
           translate: ['-100%', 0, -300],
@@ -142,16 +142,14 @@ onBeforeUnmount(() => {
       }"
       :modules="modules"
     >
-      <swiper-slide>
-        <div class="baseline">
-          <GridContainer>
-            <h1 class="title">
-              <span class="title__chunk" v-for="(word, index) in splitBaseline" :key="index">
-                {{ word }}{{ index !== splitBaseline.length - 1 ? ' ' : '' }}
-              </span>
-            </h1>
-          </GridContainer>
-        </div>
+      <swiper-slide class="baseline">
+        <GridContainer>
+          <h1 class="title">
+            <span class="title__chunk" v-for="(word, index) in splitBaseline" :key="index">
+              {{ word }}{{ index !== splitBaseline.length - 1 ? ' ' : '' }}
+            </span>
+          </h1>
+        </GridContainer>
       </swiper-slide>
       <swiper-slide v-for="(project, index) in projects">
         <NuxtLink
@@ -207,24 +205,19 @@ onBeforeUnmount(() => {
 
 <style lang="scss">
 .MobileFeaturedProjects {
-  position: fixed;
-  top: 50%;
-  transform: translateY(-50%);
-  left: 0;
-  height: 100%;
-  width: 100%;
+  height: 100vh;
   padding-top: 6rem;
-  overflow: hidden;
 
   &__slider {
     height: 100%;
-    width: 100%;
     z-index: 0;
 
     .swiper-slide {
-      // &:nth-child(1) {
-      //   width: 85%;
-      // }
+      &.baseline {
+        width: 90% !important;
+      }
+
+      width: 100 !important;
 
       .empty {
         background-color: $black;
@@ -233,7 +226,6 @@ onBeforeUnmount(() => {
 
     .baseline {
       height: 100%;
-      width: 100%;
       background-color: $black;
 
       .GridContainer {
@@ -257,7 +249,6 @@ onBeforeUnmount(() => {
 
     .MobileFeaturedProject {
       height: 100%;
-      width: 100%;
       position: relative;
       padding: 0 1rem;
       background-color: $black;
@@ -266,7 +257,7 @@ onBeforeUnmount(() => {
       &__overlay {
         z-index: 10;
         background-color: $black;
-        opacity: 0.8;
+        opacity: 1;
         width: 100%;
         height: 100%;
         position: absolute;
@@ -306,13 +297,11 @@ onBeforeUnmount(() => {
 
   &__footer {
     position: absolute;
-    width: 100%;
     bottom: 0;
     left: 0;
     height: 7rem;
     display: flex;
     align-items: center;
-    z-index: 100;
     will-change: transform;
     transition: transform 0.5s ease-in-out;
     pointer-events: none;
