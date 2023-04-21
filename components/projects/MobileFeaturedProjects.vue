@@ -111,7 +111,7 @@ const footerTransform = computed(() => {
   if (activeSlideIndex.value === -1) {
     return 'translateX(calc(100% - 3rem))'
   } else {
-    return `translateX(calc(-${totalOffsetWidth.value}px + 1rem))`
+    return `translateX(calc(-${totalOffsetWidth.value}px + 10px))`
   }
 })
 
@@ -314,8 +314,10 @@ onBeforeUnmount(() => {
     align-items: center;
     z-index: 100;
     will-change: transform;
-    transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform 0.5s ease-in-out;
     pointer-events: none;
+    justify-content: flex-start;
+    overflow: visible;
   }
 
   &__title {
