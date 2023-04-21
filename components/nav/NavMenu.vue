@@ -20,6 +20,7 @@ watch(isNavActive, (value) => {
 
 <template>
   <nav :class="[isNavActive && 'NavMenu--active', 'NavMenu']">
+    <div :class="[isNavActive && 'NavMenu__background--active', 'NavMenu__background']"></div>
     <div :class="[isNavActive && 'NavMenu__main--active', 'NavMenu__main']">
       <ul class="nav">
         <li class="nav__item">
@@ -80,7 +81,7 @@ watch(isNavActive, (value) => {
 </template>
 
 <style lang="scss">
-$ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+$cubic: cubic-bezier(0.16, 1, 0.3, 1);
 
 .NavMenu {
   position: fixed;
@@ -88,18 +89,38 @@ $ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   right: 0;
   height: 100%;
   width: 55rem;
-  background-color: $black;
   padding: 9rem 2rem 5rem 2rem;
   z-index: 30;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  transition: transform 1.5s $cubic;
   transform: translate(100%, 0%);
-  transition: transform 1.5s $ease-out;
+  overflow: hidden;
+  background-color: $black;
 
   &--active {
     transform: translate(0%, 0%);
+  }
+
+  &__background {
+    background-color: $black;
+    transition: transform 1.5s $cubic;
+    overflow: hidden;
+    transform: translate(0%, -100%);
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    display: none;
+
+    &--active {
+      transform: translate(0%, 0%);
+    }
+
+    @include viewport-480 {
+      display: block;
+    }
   }
 
   @include viewport-768 {
@@ -108,18 +129,15 @@ $ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 
   @include viewport-480 {
     width: 100%;
-    transform: translate(0%, -100%);
-    padding: 9rem 1rem 2rem 1rem;
-
-    &--active {
-      transform: translate(0%, 0%);
-    }
+    transform: translate(0%, 0%);
+    padding: 0;
+    background-color: transparent;
   }
 
   &__main {
     font-size: $desktop-h2;
     transform: translate(100%, 0%);
-    transition: transform 1.5s $ease-out;
+    transition: transform 1.5s $cubic;
 
     &--active {
       transform: translate(0%, 0%);
@@ -130,12 +148,18 @@ $ease-out: cubic-bezier(0.16, 1, 0.3, 1);
       margin: 0;
       width: 100%;
       font-size: $mobile-h2;
+      padding: 9rem 1rem 0 1rem;
+      opacity: 0;
+
+      &--active {
+        animation: 1s $cubic 0.3s 1 slideIn forwards;
+      }
     }
   }
 
   &__secondary {
     transform: translate(100%, 0%);
-    transition: transform 1.5s $ease-out;
+    transition: transform 1.5s $cubic;
 
     &--active {
       transform: translateX(0%);
@@ -145,6 +169,12 @@ $ease-out: cubic-bezier(0.16, 1, 0.3, 1);
       transform: translate(0%, 0%);
       margin: 0;
       width: 100%;
+      padding: 0 1rem 2rem 1rem;
+      opacity: 0;
+
+      &--active {
+        animation: 1s $cubic 0.3s 1 slideIn forwards;
+      }
     }
 
     .address {
@@ -190,6 +220,17 @@ $ease-out: cubic-bezier(0.16, 1, 0.3, 1);
         }
       }
     }
+  }
+}
+
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-2rem);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 </style>

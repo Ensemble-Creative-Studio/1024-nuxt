@@ -43,8 +43,6 @@ onMounted(() => {
       stagger: 0.03,
     })
   }, $mobileFeaturedProjects.value)
-
-  console.log('test')
 })
 
 const splitBaseline = computed(() => {
@@ -103,7 +101,7 @@ watch(activeSlideIndex, (newValue) => {
   }
 })
 
-onUnmounted(() => {
+onBeforeUnmount(() => {
   $ctx.value = null
 })
 </script>
