@@ -40,6 +40,7 @@ function toggleNav() {
     background-color: $black;
     padding: 1rem;
     height: 6rem;
+    mix-blend-mode: initial;
   }
 
   .SiteLogo {

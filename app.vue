@@ -15,6 +15,14 @@ gsap.registerPlugin(ScrollTrigger, ScrollToPlugin)
 </template>
 
 <style lang="scss">
+.App {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
 .page-enter-active,
 .page-leave-active {
   transition: 0.4s ease-in-out;

@@ -181,36 +181,39 @@ const footerTransform = computed(() => {
       </swiper-slide>
       <swiper-slide class="empty"></swiper-slide>
     </swiper>
-    <div class="MobileFeaturedProjects__footer" :style="{ transform: footerTransform }">
-      <h2
-        :class="[
-          index === activeSlideIndex && 'MobileFeaturedProjects__title--active',
-          'MobileFeaturedProjects__title',
-        ]"
-        v-for="(title, index) in projectTitles"
-        :key="title"
-      >
-        {{ title }}
-      </h2>
-      <h2
-        :class="[
-          projectTitles.length === activeSlideIndex && 'MobileFeaturedProjects__title--active',
-          'MobileFeaturedProjects__title',
-        ]"
-      >
-        All projects
-      </h2>
+    <div class="MobileFeaturedProjects__footer">
+      <div class="MobileFeaturedProjects__inner-footer" :style="{ transform: footerTransform }">
+        <h2
+          :class="[
+            index === activeSlideIndex && 'MobileFeaturedProjects__title--active',
+            'MobileFeaturedProjects__title',
+          ]"
+          v-for="(title, index) in projectTitles"
+          :key="title"
+        >
+          {{ title }}
+        </h2>
+        <h2
+          :class="[
+            projectTitles.length === activeSlideIndex && 'MobileFeaturedProjects__title--active',
+            'MobileFeaturedProjects__title',
+          ]"
+        >
+          All projects
+        </h2>
+      </div>
     </div>
   </div>
 </template>
 
 <style lang="scss">
 .MobileFeaturedProjects {
-  height: 100vh;
-  padding-top: 6rem;
+  height: 100%;
+  width: 100%;
+  position: fixed;
 
   &__slider {
-    height: 100%;
+    height: inherit;
     z-index: 0;
 
     .swiper-slide {
@@ -218,7 +221,7 @@ const footerTransform = computed(() => {
         width: 85% !important;
       }
 
-      width: 100 !important;
+      width: 100% !important;
 
       .empty {
         background-color: $black;
@@ -249,11 +252,10 @@ const footerTransform = computed(() => {
     }
 
     .MobileFeaturedProject {
-      height: 100%;
       position: relative;
       padding: 0 1rem;
       background-color: $black;
-      pointer-events: none;
+      height: 100%;
 
       &__overlay {
         z-index: 10;
@@ -277,7 +279,7 @@ const footerTransform = computed(() => {
       }
 
       &__thumbnail {
-        height: calc(100% - 7rem);
+        height: 100%;
 
         img,
         video {
@@ -301,13 +303,18 @@ const footerTransform = computed(() => {
     bottom: 0;
     left: 0;
     height: 7rem;
+    z-index: 10;
+    pointer-events: none;
+    justify-content: flex-start;
+    background-color: $black;
+  }
+
+  &__inner-footer {
+    height: 7rem;
     display: flex;
     align-items: center;
     will-change: transform;
     transition: transform 0.5s ease-in-out;
-    pointer-events: none;
-    justify-content: flex-start;
-    overflow: visible;
   }
 
   &__title {
