@@ -74,7 +74,7 @@ watch(
 <template>
   <ul
     :class="[
-      gridModeCols === 3 ? 'ProjectsGrid--three-items' : 'ProjectsGrid--four-items',
+      gridModeCols === 6 ? 'ProjectsGrid--six-items' : 'ProjectsGrid--four-items',
       'ProjectsGrid',
     ]"
     ref="$projectsGrid"
@@ -171,20 +171,20 @@ watch(
     }
   }
 
-  &--three-items {
-    grid-template-columns: repeat(3, 1fr);
+  &--six-items {
+    grid-template-columns: repeat(6, 1fr);
 
-    @include viewport-480 {
-      grid-template-columns: repeat(4, 1fr);
+    @include viewport-992 {
+      // grid-template-columns: repeat(6, 1fr);
     }
 
     .item {
       @include viewport-768 {
-        grid-column: auto / span 1;
+        grid-column: auto / span 2;
       }
 
       @include viewport-480 {
-        grid-column: auto / span 2;
+        grid-column: auto / span 3;
       }
     }
   }
