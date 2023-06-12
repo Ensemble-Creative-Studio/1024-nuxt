@@ -24,6 +24,12 @@ const { data } = await useAsyncData(`projects/${route.params.slug}`, () =>
 )
 const project = data.value
 
+// if project is empty, throw an error
+
+if (Object.keys(project).length === 0) {
+  throw createError({ statusCode: 404, statusMessage: 'Project not found' })
+}
+
 // console.log(Object.keys(project))
 
 // try {
