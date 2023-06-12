@@ -24,6 +24,19 @@ const { data } = await useAsyncData(`projects/${route.params.slug}`, () =>
 )
 const project = data.value
 
+// try {
+//   if (Object.keys(project).length === 0) {
+//     throw createError({ statusCode: 404, statusMessage: 'Project not found' })
+//   }
+// } catch (error) {
+//   if (true) {
+//     console.log('Production mode error handler')
+//     return error({ statusCode: error.statusCode, message: error.statusMessage })
+//   } else {
+//     console.error(error)
+//   }
+// }
+
 const $hero = ref()
 const $galleryMedia = ref([])
 const $anchors = ref()
@@ -78,12 +91,14 @@ onMounted(() => {
     })
   }, 1000)
 
-  window.addEventListener('resize', () => {
-    if (trigger.value !== null) {
-      trigger.value.refresh()
-    }
-  })
+  window.addEventListener('resize', handleResize)
 })
+
+const handleResize = () => {
+  if (trigger.value !== null) {
+    trigger.value.refresh()
+  }
+}
 
 onBeforeUnmount(() => {
   gsap.to($anchors.value.$el, {
@@ -94,6 +109,8 @@ onBeforeUnmount(() => {
   ScrollTrigger.getAll().forEach((trigger) => {
     trigger.kill()
   })
+
+  removeEventListener('resize', handleResize)
 })
 </script>
 
@@ -247,7 +264,7 @@ onBeforeUnmount(() => {
 
     &__title {
       font-size: $desktop-h4;
-      font-weight: $extra-light;
+      // font-weight: $extra-light;
       position: fixed;
       bottom: 1.5rem;
       left: 2rem;
@@ -270,7 +287,7 @@ onBeforeUnmount(() => {
     &__claim {
       grid-column: 2 / span 5;
       font-size: $desktop-h4;
-      font-weight: $extra-light;
+      // font-weight: $extra-light;
       margin-top: 6rem;
 
       @include viewport-1200 {
@@ -349,7 +366,7 @@ onBeforeUnmount(() => {
 
     &__title {
       font-size: $desktop-h4;
-      font-weight: $extra-light;
+      // font-weight: $extra-light;
       grid-column: 1 / -1;
 
       @include viewport-480 {
@@ -514,7 +531,7 @@ onBeforeUnmount(() => {
     &__title {
       grid-column: 1 / -1;
       font-size: $desktop-h4;
-      font-weight: $extra-light;
+      // font-weight: $extra-light;
 
       @include viewport-480 {
         font-size: $mobile-h2;

@@ -90,12 +90,14 @@ onMounted(() => {
     }, 1000)
   }, $aboutPage.value)
 
-  window.addEventListener('resize', () => {
-    if (trigger.value !== null) {
-      trigger.value.refresh()
-    }
-  })
+  window.addEventListener('resize', handleResize)
 })
+
+const handleResize = () => {
+  if (trigger.value !== null) {
+    trigger.value.refresh()
+  }
+}
 
 onBeforeUnmount(() => {
   gsap.to($anchors.value.$el, {
@@ -106,6 +108,8 @@ onBeforeUnmount(() => {
   ScrollTrigger.getAll().forEach((trigger) => {
     trigger.kill()
   })
+
+  removeEventListener('resize', handleResize)
 })
 </script>
 

@@ -27,9 +27,9 @@ const error = useError()
   <div class="Error">
     <SiteHeader />
     <NavMenu :isNavActive="isNavActive" :navMenu="navMenu" />
-    <Transition>
+    <!-- <Transition>
       <NavOverlay v-if="isNavActive" @click.native="closeMenu()" />
-    </Transition>
+    </Transition> -->
     <h1 class="Error__title" v-if="error.statusCode >= 400">Error</h1>
     <h1 class="Error__title" v-else>Server Error</h1>
     <p class="Error__baseline" v-if="error.statusCode >= 400">

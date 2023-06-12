@@ -50,7 +50,6 @@ function toggleNav() {
   }
 }
 
-// Rename and refactor this later
 .menu-icon {
   position: relative;
   width: 29px;
