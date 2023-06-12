@@ -267,7 +267,6 @@ const finalProjects = computed(() => {
     padding: 1rem 0;
     display: flex;
     justify-content: space-between;
-    align-items: center;
     position: fixed;
     bottom: 0;
     z-index: 10;

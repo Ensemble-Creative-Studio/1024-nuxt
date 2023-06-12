@@ -96,15 +96,17 @@ watch(
                 webkit-playsinline
               ></video>
             </div>
-            <h3 class="item__title" v-if="item.title">{{ item.title }}</h3>
+            <div class="item__meta">
+              <h3 class="item__title" v-if="item.title">{{ item.title }}</h3>
+              <ul class="item__categories item__categories--mobile" v-if="item.categories">
+                <li class="item__category" v-for="category in item.categories">
+                  {{ category.title }}
+                </li>
+              </ul>
+            </div>
             <div class="item__date" v-if="item.releaseDate">
               {{ item.releaseDate.slice(0, 4) }}
             </div>
-            <ul class="item__categories item__categories--mobile" v-if="item.categories">
-              <li class="item__category" v-for="category in item.categories">
-                {{ category.title }}
-              </li>
-            </ul>
             <ul class="item__categories" v-if="item.categories">
               <li class="item__category" v-for="category in item.categories">
                 {{ category.title }}
@@ -161,7 +163,6 @@ watch(
       align-items: center;
       position: relative;
       height: 100%;
-      // border: 0.1rem solid white;
 
       @include viewport-480 {
         padding: 0 1rem;
@@ -170,30 +171,27 @@ watch(
 
     &__date {
       grid-column: auto / span 2;
-      // border: 0.1rem solid orange;
       color: $medium-grey;
 
       @include viewport-480 {
-        grid-column: 1 / span 3;
+        grid-column: 11 / span 2;
       }
     }
 
-    &__title {
+    &__meta {
       grid-column: 3 / span 2;
-      // border: 0.1rem solid red;
 
       @include viewport-768 {
         grid-column: 3 / span 6;
       }
 
       @include viewport-480 {
-        grid-column: 4 / span 5;
+        grid-column: 6 / span 5;
       }
     }
 
     &__categories {
       grid-column: auto / span 6;
-      // border: 0.1rem solid green;
       color: $medium-grey;
 
       // REWORK
@@ -208,7 +206,7 @@ watch(
         display: none;
 
         @include viewport-768 {
-          display: flex;
+          display: block;
         }
       }
     }
@@ -225,15 +223,11 @@ watch(
 
     &__thumbnail {
       grid-column: auto / span 2;
-      // border: 0.1rem solid blue;
-      // max-width: 21rem;
-      // max-height: 21rem;
       margin-left: 0;
-      // padding: 1.5rem 0;
       position: relative;
 
       @include viewport-480 {
-        grid-column: 9 / span 5;
+        grid-column: auto / span 4;
       }
 
       img {
@@ -243,8 +237,8 @@ watch(
         filter: grayscale(100%);
         transition: 0.25s ease-in-out;
 
-        @include viewport-768 {
-          aspect-ratio: 1 / 1;
+        @include viewport-480 {
+          width: 100%;
         }
       }
 
@@ -258,6 +252,10 @@ watch(
         opacity: 0;
         visibility: hidden;
         transition: 0.25s ease-in-out;
+
+        @include viewport-480 {
+          width: 100%;
+        }
       }
     }
 
