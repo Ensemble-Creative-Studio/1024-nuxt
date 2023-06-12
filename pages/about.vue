@@ -146,21 +146,14 @@ onBeforeUnmount(() => {
         <p>{{ about.description }}</p>
       </GridContainer>
     </section>
-    <section class="marquee" ref="$marquee">
-      <ul class="marquee__content">
-        <li class="marquee__text">
-          {{ about.marqueeText }}
-          {{ about.marqueeText }}
-          {{ about.marqueeText }}
-        </li>
-      </ul>
-      <ul class="marquee__content" aria-hidden="true">
-        <li class="marquee__text">
-          {{ about.marqueeText }}
-          {{ about.marqueeText }}
-          {{ about.marqueeText }}
-        </li>
-      </ul>
+    <section class="in-between">
+      <GridContainer>
+        <ul class="in-between__content">
+          <li class="in-between__text" v-for="item in about.inBetweenText">
+            {{ item.text }}
+          </li>
+        </ul>
+      </GridContainer>
     </section>
     <section class="history">
       <GridContainer>
@@ -275,7 +268,7 @@ onBeforeUnmount(() => {
     .title {
       grid-column: 2 / span 5;
       font-size: $desktop-h4;
-      font-weight: $extra-light;
+      // font-weight: $extra-light;
       max-width: 70rem;
 
       &__chunk {
@@ -331,31 +324,19 @@ onBeforeUnmount(() => {
     }
   }
 
-  .marquee {
+  .in-between {
     margin-top: 12rem;
-    font-size: 12rem;
-    font-weight: $extra-light;
-    --gap: 1rem;
-    display: flex;
-    overflow: hidden;
-    user-select: none;
-    gap: var(--gap);
 
     &__content {
-      flex-shrink: 0;
-      display: flex;
-      justify-content: space-around;
-      min-width: 100%;
-      gap: var(--gap);
-      animation: scroll 150s linear infinite;
+      grid-column: 2 / span 5;
+      max-width: 70rem;
     }
 
-    &__chunk {
-      opacity: 0;
+    &__text {
+      display: block;
     }
 
     @include viewport-480 {
-      font-size: 4.6rem;
       margin-top: 6rem;
     }
   }
@@ -384,7 +365,7 @@ onBeforeUnmount(() => {
 
   .team {
     margin-top: 12rem;
-    font-weight: $extra-light;
+    // font-weight: $extra-light;
 
     @include viewport-480 {
       margin-top: 6rem;
@@ -424,7 +405,7 @@ onBeforeUnmount(() => {
   .conclusion {
     margin-top: 12rem;
     font-size: $desktop-h4;
-    font-weight: $extra-light;
+    // font-weight: $extra-light;
 
     @include viewport-480 {
       margin-top: 6rem;
@@ -451,7 +432,7 @@ onBeforeUnmount(() => {
   .awards,
   .festivals {
     margin-top: 12rem;
-    font-weight: $extra-light;
+    // font-weight: $extra-light;
 
     @include viewport-480 {
       margin-top: 6rem;
@@ -461,7 +442,7 @@ onBeforeUnmount(() => {
     &__title {
       grid-column: 2 / -1;
       font-size: $desktop-h4;
-      font-weight: $extra-light;
+      // font-weight: $extra-light;
 
       @include viewport-480 {
         grid-column: 1 / -1;
@@ -487,12 +468,12 @@ onBeforeUnmount(() => {
 
         &__container {
           @include grid(12, 1fr, 1, 0);
-          padding: 3rem 2rem;
+          padding: 1.5rem 2rem;
           align-items: center;
           position: relative;
 
           @include viewport-480 {
-            padding: 2rem 1rem;
+            padding: .75rem 1rem;
           }
         }
 
