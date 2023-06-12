@@ -69,28 +69,11 @@ onBeforeUnmount(() => {
 </template>
 
 <style lang="scss">
-.content-wrapper {
-  &--grayscale {
-    .index {
-      .FeaturedProjects {
-        .FeaturedProject {
-          &.off {
-            img,
-            video {
-              filter: grayscale(0) invert(0) !important; // WIP
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
 .FeaturedProjects {
-  margin-top: calc(100vh - 2rem); // TODO
+  margin-top: calc(80vh - 2rem); // TODO
 
   @include viewport-480 {
-    margin-top: calc(100vh + 6rem); // TODO
+    margin-top: calc(50vh + 6rem); // TODO
   }
 
   .FeaturedProject {
@@ -123,7 +106,7 @@ onBeforeUnmount(() => {
 
     &__title {
       font-size: $desktop-h4;
-      font-weight: $extra-light;
+      // font-weight: $extra-light;
       opacity: 0;
       transform: translateY(10rem);
       transition: 1s cubic-bezier(0.16, 1, 0.3, 1);

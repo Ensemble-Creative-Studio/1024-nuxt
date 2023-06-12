@@ -24,6 +24,8 @@ const { data } = await useAsyncData(`projects/${route.params.slug}`, () =>
 )
 const project = data.value
 
+// console.log(Object.keys(project))
+
 // try {
 //   if (Object.keys(project).length === 0) {
 //     throw createError({ statusCode: 404, statusMessage: 'Project not found' })
@@ -115,7 +117,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="project-page" ref="$projectPage">
+  <div class="project-page" ref="$projectPage" v-if="Object.keys(project).length !== 0">
     <Head>
       <Title>{{ project.title }}</Title>
       <Meta name="description" content="Project description" />

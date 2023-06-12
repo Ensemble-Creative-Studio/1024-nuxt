@@ -169,71 +169,73 @@ const finalProjects = computed(() => {
       </div>
     </div>
     <div :class="[showMobileFilters && 'container--active', 'container']">
-      <ul class="order" ref="$order">
-        <li :class="[order === 'byDate' && 'order-date--active', 'order-date']">
-          <button ref="$date" @click="setOrder('date')">Date</button>
-        </li>
-        <li :class="[order === 'byName' && 'order-name--active', 'order-name']">
-          <button ref="$name" @click="setOrder('name')">Name</button>
-        </li>
-      </ul>
-      <ul class="filters">
-        <li class="filters__all">
-          <button @click="toggleAll()" :class="[all && 'toggled', 'all']">
-            <span class="all__label">All&nbsp;</span>
-            <span class="all__length">{{ projects.length }}</span>
-          </button>
-        </li>
-        <li class="filters__category" v-for="category in categories">
-          <button
-            class="category"
-            @click="toggle($event)"
-            ref="$filters"
-            v-if="category.projectsInside.length > 0"
+      <GridContainer>
+        <ul class="display-mode">
+          <li
+            :class="[displayMode === 'grid' && 'display-mode__grid--active', 'display-mode__grid']"
+            @click="setGridMode(4)"
           >
-            <span class="category__label">{{ category.title }}&nbsp;</span>
-            <span class="category__length">
-              {{ category.projectsInside.length }}
-            </span>
-          </button>
-        </li>
-      </ul>
-      <ul class="display-mode">
-        <li
-          :class="[displayMode === 'grid' && 'display-mode__grid--active', 'display-mode__grid']"
-          @click="setGridMode(4)"
-        >
-          Grid
-        </li>
-        <li
-          :class="[
-            displayMode === 'grid' && gridModeCols === 4 && 'display-mode__four-grid--active',
-            'display-mode__four-grid',
-          ]"
-          @click="setGridMode(4)"
-        >
-          <FourItemsGridIcon
-            :color="displayMode === 'grid' && gridModeCols === 4 ? '#ffffff' : '#727272'"
-          />
-        </li>
-        <li
-          :class="[
-            displayMode === 'grid' && gridModeCols === 3 && 'display-mode__three-grid--active',
-            'display-mode__three-grid',
-          ]"
-          @click="setGridMode(3)"
-        >
-          <ThreeItemsGridIcon
-            :color="displayMode === 'grid' && gridModeCols === 3 ? '#ffffff' : '#727272'"
-          />
-        </li>
-        <li
-          :class="[displayMode === 'list' && 'display-mode__list--active', 'display-mode__list']"
-          @click="setListMode()"
-        >
-          List
-        </li>
-      </ul>
+            Grid
+          </li>
+          <li
+            :class="[
+              displayMode === 'grid' && gridModeCols === 6 && 'display-mode__three-grid--active',
+              'display-mode__three-grid',
+            ]"
+            @click="setGridMode(6)"
+          >
+            <SixItemsGridIcon
+              :color="displayMode === 'grid' && gridModeCols === 6 ? '#ffffff' : '#727272'"
+            />
+          </li>
+          <li
+            :class="[
+              displayMode === 'grid' && gridModeCols === 4 && 'display-mode__four-grid--active',
+              'display-mode__four-grid',
+            ]"
+            @click="setGridMode(4)"
+          >
+            <FourItemsGridIcon
+              :color="displayMode === 'grid' && gridModeCols === 4 ? '#ffffff' : '#727272'"
+            />
+          </li>
+          <li
+            :class="[displayMode === 'list' && 'display-mode__list--active', 'display-mode__list']"
+            @click="setListMode()"
+          >
+            List
+          </li>
+        </ul>
+        <ul class="order" ref="$order">
+          <li :class="[order === 'byName' && 'order-name--active', 'order-name']">
+            <button ref="$name" @click="setOrder('name')">Name</button>
+          </li>
+          <li :class="[order === 'byDate' && 'order-date--active', 'order-date']">
+            <button ref="$date" @click="setOrder('date')">Date</button>
+          </li>
+        </ul>
+        <ul class="filters">
+          <li class="filters__all">
+            <button @click="toggleAll()" :class="[all && 'toggled', 'all']">
+              <span class="all__label">All&nbsp;</span>
+              <span class="all__length">{{ projects.length }}</span>
+            </button>
+          </li>
+          <li class="filters__category" v-for="category in categories">
+            <button
+              class="category"
+              @click="toggle($event)"
+              ref="$filters"
+              v-if="category.projectsInside.length > 0"
+            >
+              <span class="category__label">{{ category.title }}&nbsp;</span>
+              <span class="category__length">
+                {{ category.projectsInside.length }}
+              </span>
+            </button>
+          </li>
+        </ul>
+      </GridContainer>
     </div>
   </div>
 </template>
@@ -262,10 +264,9 @@ const finalProjects = computed(() => {
 
   .container {
     height: 5rem;
-    padding: 1rem 1.5rem;
+    padding: 1rem 0;
     display: flex;
     justify-content: space-between;
-    align-items: center;
     position: fixed;
     bottom: 0;
     z-index: 10;
@@ -275,8 +276,7 @@ const finalProjects = computed(() => {
     width: 100%;
     border-top: 0.1rem solid $dark-grey;
 
-    @include viewport-480 {
-      font-size: 1.6rem;
+    @include viewport-1024 {
       height: auto;
       background-color: $black;
       justify-content: flex-start;
@@ -289,6 +289,10 @@ const finalProjects = computed(() => {
       &--active {
         transform: translateY(-4rem);
       }
+    }
+
+    @include viewport-480 {
+      font-size: 1.6rem;
     }
   }
 
@@ -315,7 +319,7 @@ const finalProjects = computed(() => {
       }
     }
 
-    @include viewport-480 {
+    @include viewport-1024 {
       display: flex;
     }
 
@@ -335,8 +339,9 @@ const finalProjects = computed(() => {
   .order {
     display: flex;
     align-items: center;
+    grid-column: auto / span 4;
 
-    @include viewport-480 {
+    @include viewport-1024 {
       display: block;
       order: 2;
       flex: 1;
@@ -344,6 +349,7 @@ const finalProjects = computed(() => {
 
     &-name,
     &-date {
+      flex: 50%;
       transition: 0.3s ease-in-out;
       transition-property: text-decoration, color;
 
@@ -364,11 +370,11 @@ const finalProjects = computed(() => {
       }
 
       &:not(:first-child) {
-        margin-left: 2rem;
+        margin-left: 1rem;
 
-        @include viewport-480 {
+        @include viewport-1024 {
           margin-left: 0;
-          margin-top: 2rem;
+          // margin-top: 2rem;
         }
       }
     }
@@ -377,15 +383,16 @@ const finalProjects = computed(() => {
   .filters {
     display: flex;
     align-items: center;
+    grid-column: auto / span 6;
 
-    @include viewport-480 {
+    @include viewport-1024 {
       display: block;
       flex: 1;
     }
 
     > li {
       &:not(:first-child) {
-        @include viewport-480 {
+        @include viewport-1024 {
           margin: 2rem 0;
         }
       }
@@ -394,9 +401,9 @@ const finalProjects = computed(() => {
     .all,
     .category {
       cursor: pointer;
-      margin-left: 2rem;
+      margin-right: 2rem;
 
-      @include viewport-480 {
+      @include viewport-1024 {
         margin-left: 0;
       }
 
@@ -423,6 +430,7 @@ const finalProjects = computed(() => {
 
       &__length {
         color: $dark-grey;
+        margin-left: 0.6rem;
       }
     }
   }
@@ -430,8 +438,9 @@ const finalProjects = computed(() => {
   .display-mode {
     display: flex;
     align-items: center;
+    grid-column: auto / span 2;
 
-    @include viewport-480 {
+    @include viewport-1024 {
       display: none;
     }
 

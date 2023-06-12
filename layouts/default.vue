@@ -25,10 +25,7 @@ watch(
   <div class="layout">
     <SiteHeader />
     <NavMenu :isNavActive="isNavActive" :navMenu="navMenu" />
-    <Transition>
-      <NavOverlay v-if="isNavActive" @click.native="closeMenu()" />
-    </Transition>
-    <main :class="[isNavActive && 'content-wrapper--grayscale', 'content-wrapper']">
+    <main class="content-wrapper">
       <slot />
     </main>
   </div>
@@ -41,23 +38,5 @@ watch(
   left: 0;
   width: 100%;
   height: 100%;
-}
-
-.content-wrapper {
-  &--grayscale {
-    img, video {
-      filter: grayscale(1);
-    }
-  }
-}
-
-.v-enter-active,
-.v-leave-active {
-  transition: opacity 0.5s ease-in-out;
-}
-
-.v-enter-from,
-.v-leave-to {
-  opacity: 0;
 }
 </style>

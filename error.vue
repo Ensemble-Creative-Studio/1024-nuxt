@@ -51,7 +51,7 @@ const error = useError()
 
   &__title {
     font-size: 12rem;
-    font-weight: $extra-light;
+    // font-weight: $extra-light;
     text-align: center;
   }
 

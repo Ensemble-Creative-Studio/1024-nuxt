@@ -80,22 +80,6 @@ watch(
           :key="item._id"
         >
           <div class="item__container">
-            <div class="item__date" v-if="item.releaseDate">
-              {{ item.releaseDate.slice(0, 4) }}
-            </div>
-            <div class="item__meta">
-              <h3 class="item__title" v-if="item.title">{{ item.title }}</h3>
-              <ul class="item__categories item__categories--mobile" v-if="item.categories">
-                <li class="item__category" v-for="category in item.categories">
-                  {{ category.title }}
-                </li>
-              </ul>
-            </div>
-            <ul class="item__categories" v-if="item.categories">
-              <li class="item__category" v-for="category in item.categories">
-                {{ category.title }}
-              </li>
-            </ul>
             <div class="item__thumbnail">
               <SanityImage
                 v-if="item.mainImage"
@@ -112,6 +96,22 @@ watch(
                 webkit-playsinline
               ></video>
             </div>
+            <div class="item__meta">
+              <h3 class="item__title" v-if="item.title">{{ item.title }}</h3>
+              <ul class="item__categories item__categories--mobile" v-if="item.categories">
+                <li class="item__category" v-for="category in item.categories">
+                  {{ category.title }}
+                </li>
+              </ul>
+            </div>
+            <div class="item__date" v-if="item.releaseDate">
+              {{ item.releaseDate.slice(0, 4) }}
+            </div>
+            <ul class="item__categories" v-if="item.categories">
+              <li class="item__category" v-for="category in item.categories">
+                {{ category.title }}
+              </li>
+            </ul>
           </div>
         </NuxtLink>
       </li>
@@ -137,7 +137,7 @@ watch(
     border-top: 0.1rem solid $dark-grey;
     transition: background-color 0.2s ease-in-out;
     opacity: 0;
-    height: 16rem;
+    // height: 16rem;
 
     @include viewport-768 {
       font-size: $tablet-list;
@@ -159,7 +159,7 @@ watch(
 
     &__container {
       @include grid(12, 1fr, 1, 0);
-      padding: 0 2rem;
+      padding: 1rem 2rem;
       align-items: center;
       position: relative;
       height: 100%;
@@ -170,28 +170,28 @@ watch(
     }
 
     &__date {
-      grid-column: 1 / span 1;
+      grid-column: auto / span 2;
       color: $medium-grey;
 
       @include viewport-480 {
-        grid-column: 1 / span 3;
+        grid-column: 11 / span 2;
       }
     }
 
     &__meta {
-      grid-column: 2 / span 2;
+      grid-column: 3 / span 2;
 
       @include viewport-768 {
         grid-column: 3 / span 6;
       }
 
       @include viewport-480 {
-        grid-column: 4 / span 5;
+        grid-column: 6 / span 5;
       }
     }
 
     &__categories {
-      grid-column: 4 / span 6;
+      grid-column: auto / span 6;
       color: $medium-grey;
 
       // REWORK
@@ -206,7 +206,7 @@ watch(
         display: none;
 
         @include viewport-768 {
-          display: flex;
+          display: block;
         }
       }
     }
@@ -222,36 +222,40 @@ watch(
     }
 
     &__thumbnail {
-      grid-column: 11 / -1;
-      max-width: 21rem;
-      margin-left: auto;
-      // padding: 1.5rem 0;
+      grid-column: auto / span 2;
+      margin-left: 0;
       position: relative;
 
       @include viewport-480 {
-        grid-column: 9 / span 5;
+        grid-column: auto / span 4;
       }
 
       img {
-        aspect-ratio: 210 / 140;
+        aspect-ratio: 1 / 1;
+        width: 50%;
         object-fit: cover;
         filter: grayscale(100%);
         transition: 0.25s ease-in-out;
 
-        @include viewport-768 {
-          aspect-ratio: 1 / 1;
+        @include viewport-480 {
+          width: 100%;
         }
       }
 
       video {
+        width: 50%;
+        top: 0;
         position: absolute;
-        aspect-ratio: 210 / 140;
-        top: 1.5rem;
+        aspect-ratio: 1 / 1;
         left: 0;
         object-fit: cover;
         opacity: 0;
         visibility: hidden;
         transition: 0.25s ease-in-out;
+
+        @include viewport-480 {
+          width: 100%;
+        }
       }
     }
 
