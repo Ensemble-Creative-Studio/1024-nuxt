@@ -22,6 +22,7 @@ const home = data.value
 // Animations
 const $ctx = ref()
 const $index = ref()
+const $hero = ref()
 
 const tl = gsap.timeline()
 
@@ -44,7 +45,19 @@ onMounted(() => {
       })
     }, $index.value)
   }
+
+  if (!isMobile) {
+    window.addEventListener('scroll', handleScroll, { passive: true })
+  }
 })
+
+const handleScroll = () => {
+  let scrollTop = window.scrollY
+
+  if (scrollTop < window.innerHeight) {
+    $hero.value.style.opacity = 1 - (scrollTop / window.innerHeight) * 5
+  }
+}
 
 const $baseline = home.baseline
 
@@ -56,6 +69,8 @@ onBeforeUnmount(() => {
   if ($ctx.value) {
     $ctx.value = null
   }
+
+  removeEventListener('scroll', handleScroll)
 })
 </script>
 
@@ -65,7 +80,7 @@ onBeforeUnmount(() => {
       <Title>1024</Title>
       <Meta name="description" content="1024 architecture website" />
     </Head>
-    <section class="hero" v-if="!isMobile">
+    <section class="hero" ref="$hero" v-if="!isMobile">
       <GridContainer>
         <h1 class="title">
           <span class="title__chunk" v-for="(word, index) in splitBaseline" :key="index">
@@ -97,7 +112,7 @@ onBeforeUnmount(() => {
       grid-column: 2 / span 8;
       max-width: 110rem;
       font-size: $desktop-h4;
-      font-weight: $extra-light;
+      // font-weight: $extra-light;
       position: sticky;
       bottom: 50%;
 

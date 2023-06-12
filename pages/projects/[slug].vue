@@ -24,6 +24,21 @@ const { data } = await useAsyncData(`projects/${route.params.slug}`, () =>
 )
 const project = data.value
 
+// console.log(Object.keys(project))
+
+// try {
+//   if (Object.keys(project).length === 0) {
+//     throw createError({ statusCode: 404, statusMessage: 'Project not found' })
+//   }
+// } catch (error) {
+//   if (true) {
+//     console.log('Production mode error handler')
+//     return error({ statusCode: error.statusCode, message: error.statusMessage })
+//   } else {
+//     console.error(error)
+//   }
+// }
+
 const $hero = ref()
 const $galleryMedia = ref([])
 const $anchors = ref()
@@ -98,7 +113,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="project-page" ref="$projectPage">
+  <div class="project-page" ref="$projectPage" v-if="Object.keys(project).length !== 0">
     <Head>
       <Title>{{ project.title }}</Title>
       <Meta name="description" content="Project description" />
@@ -247,7 +262,7 @@ onBeforeUnmount(() => {
 
     &__title {
       font-size: $desktop-h4;
-      font-weight: $extra-light;
+      // font-weight: $extra-light;
       position: fixed;
       bottom: 1.5rem;
       left: 2rem;
@@ -270,7 +285,7 @@ onBeforeUnmount(() => {
     &__claim {
       grid-column: 2 / span 5;
       font-size: $desktop-h4;
-      font-weight: $extra-light;
+      // font-weight: $extra-light;
       margin-top: 6rem;
 
       @include viewport-1200 {
@@ -349,7 +364,7 @@ onBeforeUnmount(() => {
 
     &__title {
       font-size: $desktop-h4;
-      font-weight: $extra-light;
+      // font-weight: $extra-light;
       grid-column: 1 / -1;
 
       @include viewport-480 {
@@ -514,7 +529,7 @@ onBeforeUnmount(() => {
     &__title {
       grid-column: 1 / -1;
       font-size: $desktop-h4;
-      font-weight: $extra-light;
+      // font-weight: $extra-light;
 
       @include viewport-480 {
         font-size: $mobile-h2;

@@ -292,7 +292,7 @@ const footerTransform = computed(() => {
         position: absolute;
         bottom: 0;
         font-size: $mobile-h2;
-        font-weight: $extra-light;
+        // font-weight: $extra-light;
         padding: 1rem;
       }
     }

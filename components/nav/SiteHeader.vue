@@ -9,14 +9,13 @@ function toggleNav() {
 <template>
   <header class="SiteHeader">
     <SiteLogo />
-    <div :class="[isNavActive && 'active', 'menu-icon']" @click="toggleNav()">
+    <div :class="[isNavActive && 'menu-icon--active', 'menu-icon']" @click="toggleNav()">
       <input class="menu-icon__checkbox" type="checkbox" />
       <div class="burger">
-        <span class="burger__horizontal"></span>
-        <span class="burger__horizontal"></span>
-        <span class="burger__horizontal"></span>
-        <span class="burger__vertical burger__vertical--left"></span>
-        <span class="burger__vertical burger__vertical--right"></span>
+        <span class="burger__bar burger__bar--top"></span>
+        <span class="burger__bar burger__bar--right"></span>
+        <span class="burger__bar burger__bar--bottom"></span>
+        <span class="burger__bar burger__bar--left"></span>
       </div>
     </div>
   </header>
@@ -37,10 +36,8 @@ function toggleNav() {
   mix-blend-mode: difference;
 
   @include viewport-480 {
-    background-color: $black;
     padding: 1rem;
     height: 6rem;
-    mix-blend-mode: initial;
   }
 
   .SiteLogo {
@@ -77,87 +74,61 @@ function toggleNav() {
     right: 0;
     left: 0;
     bottom: 0;
-    width: 30px;
+    width: 20px;
     height: 20px;
 
-    &__horizontal {
+    &__bar {
       position: absolute;
       display: block;
       width: 100%;
       height: 2.4px;
       background-color: $white;
-      border-radius: 1px;
-      // transition: all 0.5s cubic-bezier(0.1, 0.82, 0.76, 0.965);
+      transition: all 0.5s cubic-bezier(0.1, 0.82, 0.76, 0.965);
 
-      &:nth-child(1) {
+      &--top {
         top: 0;
-      }
-
-      &:nth-child(2) {
-        top: 50%;
-        transform: translateY(-50%);
-      }
-
-      &:nth-child(3) {
-        bottom: 0;
-      }
-    }
-
-    &__vertical {
-      opacity: 0;
-      position: absolute;
-      display: block;
-      width: 65%;
-      height: 2.4px;
-      background-color: $white;
-      border-radius: 1px;
-
-      &--left {
-        transform: rotate(90deg) translateY(0px);
-        transform-origin: top left;
-        top: 0px;
-        left: 3px;
+        transform: translateY(0);
       }
 
       &--right {
-        transform: rotate(90deg) translateY(0px);
-        transform-origin: top left;
-        bottom: 18px;
-        right: -18px;
+        top: 50%;
+        transform: translateY(-50%) rotate(90deg);
+        right: -50%;
+      }
+
+      &--bottom {
+        bottom: 0;
+        transform: translateY(0);
+      }
+
+      &--left {
+        top: 50%;
+        left: -50%;
+        transform: translateY(-50%) rotate(90deg);
       }
     }
   }
 
-  &.active {
-    .burger__horizontal {
-      &:nth-child(1) {
-        transform: rotate(35deg);
-        top: 9px;
-      }
+  &--active {
+    .burger {
+      &__bar {
+        &--top {
+          transform: translateY(8.5px);
+        }
 
-      &:nth-child(3) {
-        transform: rotate(-35deg);
-        bottom: 8.5px;
+        &--right {
+          transform: translateY(-50%) translateX(-10px) rotate(90deg);
+        }
+
+        &--bottom {
+          transform: translateY(-8.5px);
+        }
+
+        &--left {
+          transform: translateY(-50%) translateX(10px) rotate(90deg);
+        }
       }
     }
-
-    .burger__vertical {
-      animation: 0.2s blink forwards;
-    }
-  }
-}
-
-@keyframes blink {
-  0% {
-    opacity: 0;
-  }
-
-  10% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 0;
   }
 }
 </style>
