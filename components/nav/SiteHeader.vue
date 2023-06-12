@@ -36,10 +36,8 @@ function toggleNav() {
   mix-blend-mode: difference;
 
   @include viewport-480 {
-    background-color: $black;
     padding: 1rem;
     height: 6rem;
-    mix-blend-mode: initial;
   }
 
   .SiteLogo {

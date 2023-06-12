@@ -98,7 +98,8 @@ $cubic: cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   &__background {
-    background-color: $black;
+    background-color: $white;
+    overflow: hidden;
     transition: transform 1.5s $cubic;
     overflow: hidden;
     transform: translate(0%, -100%);
