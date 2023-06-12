@@ -5,17 +5,9 @@ const props = defineProps({
 
 const isNavActive = useState('isNavActive')
 
-function closeMenu() {
+function closeNav() {
   isNavActive.value = false
 }
-
-watch(isNavActive, (value) => {
-  if (value) {
-    //
-  } else {
-    //
-  }
-})
 </script>
 
 <template>
@@ -24,13 +16,13 @@ watch(isNavActive, (value) => {
     <div :class="[isNavActive && 'NavMenu__main--active', 'NavMenu__main']">
       <ul class="nav">
         <li class="nav__item">
-          <NuxtLink class="main__link" to="/projects" @click="closeMenu()">Projects</NuxtLink>
+          <NuxtLink class="main__link" to="/projects" @click="closeNav()">Projects</NuxtLink>
         </li>
         <li class="nav__item">
-          <NuxtLink class="main__link" to="/about" @click="closeMenu()">About</NuxtLink>
+          <NuxtLink class="main__link" to="/about" @click="closeNav()">About</NuxtLink>
         </li>
         <li class="nav__item">
-          <NuxtLink class="main__link" to="/blog?page=1" @click="closeMenu()">Blog</NuxtLink>
+          <NuxtLink class="main__link" to="/blog?page=1" @click="closeNav()">Blog</NuxtLink>
         </li>
       </ul>
     </div>
@@ -98,7 +90,8 @@ $cubic: cubic-bezier(0.16, 1, 0.3, 1);
   transition: transform 1.5s $cubic;
   transform: translate(100%, 0%);
   overflow: hidden;
-  background-color: $black;
+  background-color: $white;
+  color: $black;
 
   &--active {
     transform: translate(0%, 0%);

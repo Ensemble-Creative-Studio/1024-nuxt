@@ -1,5 +1,13 @@
+<script setup>
+const isNavActive = useState('isNavActive')
+
+function closeNav() {
+  isNavActive.value = false
+}
+</script>
+
 <template>
-  <div class="NavOverlay"></div>
+  <div class="NavOverlay" @mouseover="closeNav"></div>
 </template>
 
 <style lang="scss">
