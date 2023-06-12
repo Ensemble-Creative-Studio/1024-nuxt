@@ -117,7 +117,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="project-page" ref="$projectPage" v-if="Object.keys(project).length !== 0">
+  <div class="project-page" ref="$projectPage">
     <Head>
       <Title>{{ project.title }}</Title>
       <Meta name="description" content="Project description" />
