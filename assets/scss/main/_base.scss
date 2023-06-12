@@ -18,8 +18,9 @@ body {
   height: 100%;
   background-color: $black;
   font-size: $desktop-default-text;
-  font-family: $the-future;
-  font-feature-settings: 'ss02', 'ss06', 'ss07', 'ss08', 'ss09', 'ss11', 'ss12';
+  font-family: $neue-haas-grotesk;
+  font-weight: 400;
+  // font-feature-settings: 'ss02', 'ss06', 'ss07', 'ss08', 'ss09', 'ss11', 'ss12';
 
   @include viewport-480 {
     font-size: $mobile-default-text;
