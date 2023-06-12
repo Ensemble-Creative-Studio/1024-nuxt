@@ -22,13 +22,10 @@ const GET_SINGLE_PROJECT = groq`*[_type == "projects" && slug.current == "${rout
 const { data } = await useAsyncData(`projects/${route.params.slug}`, () =>
   sanity.fetch(GET_SINGLE_PROJECT)
 )
-const project = data.value
-
-// if project is empty, throw an error
-
-if (Object.keys(project).length === 0) {
+if (Object.keys(data.value).length === 0)
   throw createError({ statusCode: 404, statusMessage: 'Project not found' })
-}
+
+const project = data.value
 
 // console.log(Object.keys(project))
 

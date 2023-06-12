@@ -1,24 +1,24 @@
 <script setup>
-const isNavActive = useState('isNavActive', () => false)
+// const isNavActive = useState('isNavActive', () => false)
 
-function closeMenu() {
-  isNavActive.value = false
-}
+// function closeMenu() {
+//   isNavActive.value = false
+// }
 
 const route = useRoute()
 
-const query = groq`*[_type == "navMenu"][0]`
-const sanity = useSanity()
-const { data } = await useAsyncData('navMenu', () => sanity.fetch(query))
-const navMenu = data._rawValue
+// const query = groq`*[_type == "navMenu"][0]`
+// const sanity = useSanity()
+// const { data } = await useAsyncData('navMenu', () => sanity.fetch(query))
+// const navMenu = data._rawValue
 
-watch(
-  route,
-  () => {
-    isNavActive.value = false
-  },
-  { deep: true, immediate: true }
-)
+// watch(
+//   route,
+//   () => {
+//     isNavActive.value = false
+//   },
+//   { deep: true, immediate: true }
+// )
 
 const error = useError()
 </script>
@@ -26,7 +26,7 @@ const error = useError()
 <template>
   <div class="Error">
     <SiteHeader />
-    <NavMenu :isNavActive="isNavActive" :navMenu="navMenu" />
+    <!-- <NavMenu :isNavActive="isNavActive" :navMenu="navMenu" /> -->
     <!-- <Transition>
       <NavOverlay v-if="isNavActive" @click.native="closeMenu()" />
     </Transition> -->
