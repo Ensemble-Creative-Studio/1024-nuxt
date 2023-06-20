@@ -8,48 +8,47 @@ const $ctx = ref()
 const $blogPage = ref()
 
 const tl = gsap.timeline()
+const blog = ref([])
 
 const itemsPerPage = 3
 const currentPage = ref(1)
 
-if (router.currentRoute.value.query.page) {
-  currentPage.value = parseInt(router.currentRoute.value.query.page)
-}
-
-// Calculate offset and limit based on current page
-const offset = (currentPage.value - 1) * itemsPerPage
-const limit = itemsPerPage
+// if (router.currentRoute.value.query.page) {
+//   currentPage.value = parseInt(router.currentRoute.value.query.page)
+// }
 
 const GET_BLOG_COUNT = groq`count(*[_type == 'blog'])`
 const { data: blogCount } = await useAsyncData('blogCount', () => sanity.fetch(GET_BLOG_COUNT))
-
-const GET_BLOG = groq`*[_type == "blog"] | order(_createdAt desc)[${offset}...${offset + limit}]
-  {
-    ...,
-    "videoUrl": video.asset->url,
-  }
-`
-const { data } = await useAsyncData('blog', () => sanity.fetch(GET_BLOG))
-const blog = data.value
 
 const totalPages = computed(() => {
   return blogCount.value / itemsPerPage
 })
 
-const goToPage = (index) => {
+// Calculate offset and limit based on current page
+const offset = computed(() => {
+  return (currentPage.value - 1) * itemsPerPage
+})
+const limit = itemsPerPage
+
+const goToPage = async (index) => {
   currentPage.value = index
   router.push({ query: { page: index } })
 
-  // TODO
-  setTimeout(() => {
-    window.location.reload(true)
-  }, 0)
+  const GET_BLOG = groq`*[_type == "blog"] | order(_createdAt desc)[${offset.value}...${
+    offset.value + limit
+  }]
+  {
+    ...,
+    "videoUrl": video.asset->url,
+  }
+  `
+  const { data } = await useAsyncData('blog', () => sanity.fetch(GET_BLOG))
+  blog.value = data.value
+
+  window.scrollTo(0, 0)
 }
 
-// Watch for changes in currentPage and trigger BlogList component re-render
-// watch(currentPage, (newPage) => {
-//   console.log(newPage)
-// })
+goToPage(currentPage.value)
 
 onMounted(() => {
   $ctx.value = gsap.context((self) => {

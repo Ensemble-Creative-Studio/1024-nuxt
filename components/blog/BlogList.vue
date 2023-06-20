@@ -20,7 +20,6 @@ const { isMobile } = useDevice()
           :downloadUrl="item.mainVideoDownloadUrl"
           :quality="isMobile ? 'sd' : 'hd'"
         />
-        <!-- <div v-if="item.mainVideoUrl">VIDEO</div> -->
         <swiper
           :slides-per-view="1.1"
           :space-between="0"
@@ -38,7 +37,12 @@ const { isMobile } = useDevice()
             <SanityImage :asset-id="media.asset._ref" auto="format" :q="75" :key="media._id" />
           </swiper-slide>
         </swiper>
-        <SanityImage v-else-if="item.mainImage" :asset-id="item.mainImage.asset._ref" auto="format" :q="75" />
+        <SanityImage
+          v-else-if="item.mainImage"
+          :asset-id="item.mainImage.asset._ref"
+          auto="format"
+          :q="75"
+        />
         <NuxtLink
           class="item__link"
           :to="{ name: 'blog-slug', params: { slug: item.slug.current } }"
