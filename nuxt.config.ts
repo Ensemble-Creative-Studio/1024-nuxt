@@ -7,9 +7,6 @@ const sanityConfig = {
 const config: NuxtConfig & { sanity: typeof sanityConfig } = {
   modules: ['@nuxtjs/sanity', '@nuxtjs/device'],
   sanity: sanityConfig,
-  app: {
-    pageTransition: { name: 'page', mode: 'out-in' },
-  },
   // proxy: {
   //   proxies: {
   //     '/api': {
@@ -36,6 +33,12 @@ const config: NuxtConfig & { sanity: typeof sanityConfig } = {
     '~/components/blog',
     '~/components/icons',
   ],
+  nitro: {
+    prerender: {
+      routes: ['/404.html'],
+    },
+  },
+  generate: { fallback: '404.html' },
 }
 
 export default config

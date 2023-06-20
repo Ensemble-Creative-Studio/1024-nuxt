@@ -6,6 +6,7 @@ const { isMobile } = useDevice()
 
 const sanity = useSanity()
 const route = useRoute()
+const router = useRouter()
 
 const GET_SINGLE_PROJECT = groq`*[_type == "projects" && slug.current == "${route.params.slug}"][0]
   {
@@ -22,8 +23,10 @@ const GET_SINGLE_PROJECT = groq`*[_type == "projects" && slug.current == "${rout
 const { data } = await useAsyncData(`projects/${route.params.slug}`, () =>
   sanity.fetch(GET_SINGLE_PROJECT)
 )
-// if (Object.keys(data.value).length === 0)
-//   throw createError({ statusCode: 404, statusMessage: 'Project not found' })
+if (Object.keys(data.value).length === 0) {
+  router.push('/404')
+  throw createError({ statusCode: 404, statusMessage: 'Project not found' })
+}
 
 const project = data.value
 
