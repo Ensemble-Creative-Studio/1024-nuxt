@@ -334,6 +334,15 @@ onBeforeUnmount(() => {
     &__content {
       grid-column: 2 / span 5;
       max-width: 70rem;
+
+      @include viewport-1024 {
+        grid-column: 2 / span 8;
+      }
+
+      @include viewport-480 {
+        grid-column: 2 / -1;
+        font-size: $mobile-text-read;
+      }
     }
 
     &__text {
@@ -477,7 +486,7 @@ onBeforeUnmount(() => {
           position: relative;
 
           @include viewport-480 {
-            padding: .75rem 1rem;
+            padding: 0.75rem 1rem;
           }
         }
 

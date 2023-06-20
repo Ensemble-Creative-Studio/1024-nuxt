@@ -22,8 +22,8 @@ const GET_SINGLE_PROJECT = groq`*[_type == "projects" && slug.current == "${rout
 const { data } = await useAsyncData(`projects/${route.params.slug}`, () =>
   sanity.fetch(GET_SINGLE_PROJECT)
 )
-if (Object.keys(data.value).length === 0)
-  throw createError({ statusCode: 404, statusMessage: 'Project not found' })
+// if (Object.keys(data.value).length === 0)
+//   throw createError({ statusCode: 404, statusMessage: 'Project not found' })
 
 const project = data.value
 
@@ -164,7 +164,7 @@ onBeforeUnmount(() => {
         <GridContainer>
           <div class="gallery__title-container">
             <h2 class="gallery__title">Gallery</h2>
-            <span class="gallery__counter">{{ $galleryMedia.length }}</span>
+            <span class="gallery__counter">{{ $galleryMedia ? $galleryMedia.length : '' }}</span>
           </div>
           <ul class="gallery__wrapper">
             <li
@@ -220,12 +220,12 @@ onBeforeUnmount(() => {
           </ul>
         </GridContainer>
       </section>
-      <section class="related-projects" v-if="project.relatedProjects">
+      <!-- <section class="related-projects" v-if="project.relatedProjects">
         <GridContainer>
           <h2 class="related-projects__title">Related projects</h2>
         </GridContainer>
         <ProjectsList :projects="project.relatedProjects ? project.relatedProjects : []" />
-      </section>
+      </section> -->
       <BottomAnchors ref="$anchors">
         <ul class="BottomAnchors__list">
           <li class="BottomAnchors__item">
