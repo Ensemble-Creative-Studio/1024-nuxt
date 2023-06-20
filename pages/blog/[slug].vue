@@ -1,6 +1,7 @@
 <script setup>
 const sanity = useSanity()
 const route = useRoute()
+const router = useRouter()
 
 const GET_SINGLE_ARTICLE = groq`*[_type == "blog" && slug.current == "${route.params.slug}"][0]
   {
@@ -22,6 +23,11 @@ const GET_SINGLE_ARTICLE = groq`*[_type == "blog" && slug.current == "${route.pa
 const { data } = await useAsyncData(`blog/${route.params.slug}`, () =>
   sanity.fetch(GET_SINGLE_ARTICLE)
 )
+if (Object.keys(data.value).length === 0) {
+  router.push('/404')
+  throw createError({ statusCode: 404, statusMessage: 'Article not found' })
+}
+
 const article = data.value
 
 // const serializers = {

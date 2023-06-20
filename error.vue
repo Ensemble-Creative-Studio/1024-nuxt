@@ -1,42 +1,17 @@
 <script setup>
-// const isNavActive = useState('isNavActive', () => false)
-
-// function closeMenu() {
-//   isNavActive.value = false
-// }
-
-const route = useRoute()
-
-// const query = groq`*[_type == "navMenu"][0]`
-// const sanity = useSanity()
-// const { data } = await useAsyncData('navMenu', () => sanity.fetch(query))
-// const navMenu = data._rawValue
-
-// watch(
-//   route,
-//   () => {
-//     isNavActive.value = false
-//   },
-//   { deep: true, immediate: true }
-// )
-
 const error = useError()
 </script>
 
 <template>
   <div class="Error">
     <SiteHeader />
-    <!-- <NavMenu :isNavActive="isNavActive" :navMenu="navMenu" /> -->
-    <!-- <Transition>
-      <NavOverlay v-if="isNavActive" @click.native="closeMenu()" />
-    </Transition> -->
     <h1 class="Error__title" v-if="error.statusCode >= 400">Error</h1>
     <h1 class="Error__title" v-else>Server Error</h1>
     <p class="Error__baseline" v-if="error.statusCode >= 400">
       The page has not been found ({{ error.statusCode }})
     </p>
-    <p class="Error__baseline" v-else>Something went wrong server-side ({{ error.statusCode }})</p>
-    <NuxtLink to="/" class="Error__backlink">Go back to home</NuxtLink>
+    <p class="Error__baseline" v-else>The server has encountered an error ({{ error.statusCode }})</p>
+    <a href="/" class="Error__backlink">Go back to home</a>
   </div>
 </template>
 
