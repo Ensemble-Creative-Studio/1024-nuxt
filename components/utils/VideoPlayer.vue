@@ -20,18 +20,15 @@ const videoFormatedDuration = ref(formatTime(videoDuration.value))
 const isPlaying = ref(false)
 const isMuted = ref(false)
 const isFullscreen = ref(false)
+const isLoaded = ref(false)
 
 let raf = null
 
 function setVideoData() {
   videoDuration.value = $video.value.duration
   videoFormatedDuration.value = formatTime(videoDuration.value)
+  isLoaded.value = true
 }
-
-watch($video, () => {
-  setVideoData()
-  onVisualClick()
-})
 
 function onPlayBtnClick() {
   isPlaying.value = true
@@ -51,6 +48,7 @@ function onUpdate() {
 }
 
 function onVisualClick() {
+  console.log('onVisualClick')
   isPlaying.value = !isPlaying.value
 
   if (isPlaying.value === true) {
@@ -84,6 +82,10 @@ function onMinimizeBtnClick() {
 
 onMounted(() => {
   screenfull.on('change', onScreenfullChange)
+
+  if (!isLoaded) {
+    setVideoData()
+  }
 })
 
 function onScreenfullChange() {
@@ -136,7 +138,6 @@ onBeforeUnmount(() => {
       crossorigin="anonymous"
       playsinline
       webkit-playsinline
-      autoplay="autoplay"
       @click="onVisualClick"
       @loadedmetadata="setVideoData"
       @timeupdate="onVideoTimeUpdate"
