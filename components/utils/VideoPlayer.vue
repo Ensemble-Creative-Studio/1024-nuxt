@@ -20,9 +20,6 @@ const videoFormatedDuration = ref(formatTime(videoDuration.value))
 const isPlaying = ref(false)
 const isMuted = ref(false)
 const isFullscreen = ref(false)
-const isTimelineActive = ref(false)
-
-const isUserDownOnTimeline = ref(false)
 
 let raf = null
 
@@ -33,6 +30,7 @@ function setVideoData() {
 
 watch($video, () => {
   setVideoData()
+  onVisualClick()
 })
 
 function onPlayBtnClick() {
@@ -50,28 +48,6 @@ function onPauseBtnClick() {
 function onUpdate() {
   videoCurrentTime.value = $video.value.currentTime
   raf = window.requestAnimationFrame(onUpdate)
-
-  // console.log('video playing')
-}
-
-function onTouchend() {
-  if (isUserDownOnTimeline.value === true) {
-    isUserDownOnTimeline.value = false
-  }
-}
-
-function onMousemove(event) {
-  if (isUserDownOnTimeline.value === true) {
-    if (isTimelineActive.value === true) {
-      seekOnTimeline(event.clientX)
-    }
-  }
-}
-
-function onTouchmove(event) {
-  if (isUserDownOnTimeline.value === true) {
-    seekOnTimeline(event.touches[0].clientX)
-  }
 }
 
 function onVisualClick() {
@@ -83,10 +59,6 @@ function onVisualClick() {
     onPauseBtnClick()
   }
 }
-
-// function onDownload() {
-//   console.log('Download')
-// }
 
 function onToggleMuteBtnClick() {
   isMuted.value = !isMuted.value
@@ -146,14 +118,6 @@ function seekOnTimeline(userX) {
   onPlayBtnClick()
 }
 
-function onTimelineMouseDown() {
-  isUserDownOnTimeline.value = true
-}
-
-function onTimelineMouseUp() {
-  isUserDownOnTimeline.value = false
-}
-
 function onVideoEnded() {
   isPlaying.value = false
 }
@@ -172,6 +136,7 @@ onBeforeUnmount(() => {
       crossorigin="anonymous"
       playsinline
       webkit-playsinline
+      autoplay="autoplay"
       @click="onVisualClick"
       @loadedmetadata="setVideoData"
       @timeupdate="onVideoTimeUpdate"

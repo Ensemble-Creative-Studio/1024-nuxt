@@ -137,6 +137,7 @@ watch(
     &__thumbnail {
       aspect-ratio: 1 / 1;
       position: relative;
+      pointer-events: none;
 
       img {
         object-fit: cover;

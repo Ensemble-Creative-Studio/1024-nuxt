@@ -225,6 +225,7 @@ watch(
       grid-column: auto / span 2;
       margin-left: 0;
       position: relative;
+      pointer-events: none;
 
       @include viewport-480 {
         grid-column: auto / span 4;
