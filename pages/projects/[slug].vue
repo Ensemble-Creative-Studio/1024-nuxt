@@ -30,21 +30,6 @@ if (Object.keys(data.value).length === 0) {
 
 const project = data.value
 
-// console.log(Object.keys(project))
-
-// try {
-//   if (Object.keys(project).length === 0) {
-//     throw createError({ statusCode: 404, statusMessage: 'Project not found' })
-//   }
-// } catch (error) {
-//   if (true) {
-//     console.log('Production mode error handler')
-//     return error({ statusCode: error.statusCode, message: error.statusMessage })
-//   } else {
-//     console.error(error)
-//   }
-// }
-
 const $hero = ref()
 const $galleryMedia = ref([])
 const $anchors = ref()
