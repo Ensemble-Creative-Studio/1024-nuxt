@@ -198,6 +198,7 @@ const footerTransform = computed(() => {
             projectTitles.length === activeSlideIndex && 'MobileFeaturedProjects__title--active',
             'MobileFeaturedProjects__title',
           ]"
+          class="MobileFeaturedProjects__title--all-projects"
         >
           All projects
         </h2>
@@ -292,7 +293,6 @@ const footerTransform = computed(() => {
         position: absolute;
         bottom: 0;
         font-size: $mobile-h2;
-        // font-weight: $extra-light;
         padding: 1rem;
       }
     }
@@ -329,6 +329,12 @@ const footerTransform = computed(() => {
 
     &--active {
       color: $white;
+    }
+
+    &--all-projects {
+      text-decoration: underline;
+      text-decoration-thickness: from-font;
+      text-underline-offset: 0.5rem;
     }
   }
 }
