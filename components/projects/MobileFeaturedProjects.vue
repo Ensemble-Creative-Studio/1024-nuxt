@@ -18,6 +18,10 @@ const props = defineProps({
     type: Array,
     required: true,
   },
+  firstProject: {
+    type: Object,
+    required: true,
+  },
 })
 
 // Animations
@@ -52,7 +56,9 @@ const splitBaseline = computed(() => {
 const modules = [EffectCreative]
 
 const projectTitles = computed(() => {
-  return props.projects.map((project) => project.title)
+  const temp = props.projects.map((project) => project.title)
+  temp.unshift(props.firstProject.title)
+  return temp
 })
 
 const $swiper = ref()
@@ -65,6 +71,8 @@ const onSwiper = ($event) => {
 
 const onSlideChange = () => {
   activeSlideIndex.value = $swiper.value.activeIndex - 1
+
+  console.log(activeSlideIndex.value)
 }
 
 let previousSlideIndex = 0
@@ -152,6 +160,37 @@ const footerTransform = computed(() => {
           </h1>
         </GridContainer>
       </swiper-slide>
+      <swiper-slide>
+        <NuxtLink
+          :to="{
+            name: 'projects-slug',
+            params: { slug: firstProject.slug.current },
+          }"
+          :class="[
+            activeSlideIndex === 1 && 'MobileFeaturedProject--previous',
+            'MobileFeaturedProject',
+          ]"
+        >
+          <div class="MobileFeaturedProject__overlay"></div>
+          <div class="MobileFeaturedProject__thumbnail">
+            <video
+              v-if="firstProject.mainVideoUrl"
+              :src="firstProject.mainVideoUrl"
+              autoplay
+              muted
+              loop
+              playsinline
+              webkit-playsinline
+            ></video>
+            <SanityImage
+              v-else
+              :asset-id="firstProject.mainImage.asset._ref"
+              auto="format"
+              :q="75"
+            />
+          </div>
+        </NuxtLink>
+      </swiper-slide>
       <swiper-slide v-for="(project, index) in projects">
         <NuxtLink
           :key="project._id"
@@ -160,7 +199,7 @@ const footerTransform = computed(() => {
             params: { slug: project.slug.current },
           }"
           :class="[
-            index === activeSlideIndex - 1 && 'MobileFeaturedProject--previous',
+            index === activeSlideIndex - 2 && 'MobileFeaturedProject--previous',
             'MobileFeaturedProject',
           ]"
         >
