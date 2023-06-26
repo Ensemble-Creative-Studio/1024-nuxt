@@ -71,8 +71,6 @@ const onSwiper = ($event) => {
 
 const onSlideChange = () => {
   activeSlideIndex.value = $swiper.value.activeIndex - 1
-
-  console.log(activeSlideIndex.value)
 }
 
 let previousSlideIndex = 0
