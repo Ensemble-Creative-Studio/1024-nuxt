@@ -55,7 +55,6 @@ onMounted(() => {
           top: '100% 100%',
           id: `title-${i}`,
           onEnter: () => {
-            console.log('onEnter')
             if (panelTitles[i]) panelTitles[i].classList.add('FeaturedProject__title--active')
           },
         })
