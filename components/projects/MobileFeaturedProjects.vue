@@ -18,6 +18,10 @@ const props = defineProps({
     type: Array,
     required: true,
   },
+  firstProject: {
+    type: Object,
+    required: true,
+  },
 })
 
 // Animations
@@ -52,7 +56,9 @@ const splitBaseline = computed(() => {
 const modules = [EffectCreative]
 
 const projectTitles = computed(() => {
-  return props.projects.map((project) => project.title)
+  const temp = props.projects.map((project) => project.title)
+  temp.unshift(props.firstProject.title)
+  return temp
 })
 
 const $swiper = ref()
@@ -152,6 +158,37 @@ const footerTransform = computed(() => {
           </h1>
         </GridContainer>
       </swiper-slide>
+      <swiper-slide>
+        <NuxtLink
+          :to="{
+            name: 'projects-slug',
+            params: { slug: firstProject.slug.current },
+          }"
+          :class="[
+            activeSlideIndex === 1 && 'MobileFeaturedProject--previous',
+            'MobileFeaturedProject',
+          ]"
+        >
+          <div class="MobileFeaturedProject__overlay"></div>
+          <div class="MobileFeaturedProject__thumbnail">
+            <video
+              v-if="firstProject.mainVideoUrl"
+              :src="firstProject.mainVideoUrl"
+              autoplay
+              muted
+              loop
+              playsinline
+              webkit-playsinline
+            ></video>
+            <SanityImage
+              v-else
+              :asset-id="firstProject.mainImage.asset._ref"
+              auto="format"
+              :q="75"
+            />
+          </div>
+        </NuxtLink>
+      </swiper-slide>
       <swiper-slide v-for="(project, index) in projects">
         <NuxtLink
           :key="project._id"
@@ -160,7 +197,7 @@ const footerTransform = computed(() => {
             params: { slug: project.slug.current },
           }"
           :class="[
-            index === activeSlideIndex - 1 && 'MobileFeaturedProject--previous',
+            index === activeSlideIndex - 2 && 'MobileFeaturedProject--previous',
             'MobileFeaturedProject',
           ]"
         >
@@ -198,6 +235,7 @@ const footerTransform = computed(() => {
             projectTitles.length === activeSlideIndex && 'MobileFeaturedProjects__title--active',
             'MobileFeaturedProjects__title',
           ]"
+          class="MobileFeaturedProjects__title--all-projects"
         >
           All projects
         </h2>
@@ -292,7 +330,6 @@ const footerTransform = computed(() => {
         position: absolute;
         bottom: 0;
         font-size: $mobile-h2;
-        // font-weight: $extra-light;
         padding: 1rem;
       }
     }
@@ -329,6 +366,12 @@ const footerTransform = computed(() => {
 
     &--active {
       color: $white;
+    }
+
+    &--all-projects {
+      text-decoration: underline;
+      text-decoration-thickness: from-font;
+      text-underline-offset: 0.5rem;
     }
   }
 }
