@@ -1,12 +1,12 @@
 <script setup>
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-const { isMobile } = useDevice()
+const { isMobile } = useDevice();
 
-const sanity = useSanity()
-const route = useRoute()
-const router = useRouter()
+const sanity = useSanity();
+const route = useRoute();
+const router = useRouter();
 
 const GET_SINGLE_PROJECT = groq`*[_type == "projects" && slug.current == "${route.params.slug}"][0]
   {
@@ -17,37 +17,47 @@ const GET_SINGLE_PROJECT = groq`*[_type == "projects" && slug.current == "${rout
         title,
         slug
       }
-    }
+    },
+     gallery[] {
+     ...,
+   images[] {
+   ...,
+        "assetRef":asset->{
+          metadata,
+        }
+      }
+    },
   }
-`
+`;
+
 const { data } = await useAsyncData(`projects/${route.params.slug}`, () =>
   sanity.fetch(GET_SINGLE_PROJECT)
-)
+);
 if (Object.keys(data.value).length === 0) {
-  router.push('/404')
-  throw createError({ statusCode: 404, statusMessage: 'Project not found' })
+  router.push("/404");
+  throw createError({ statusCode: 404, statusMessage: "Project not found" });
 }
 
-const project = data.value
+const project = data.value;
+console.log(project);
+const $hero = ref();
+const $galleryMedia = ref([]);
+const $anchors = ref();
 
-const $hero = ref()
-const $galleryMedia = ref([])
-const $anchors = ref()
+const $projectPage = ref();
+const trigger = ref();
 
-const $projectPage = ref()
-const trigger = ref()
-
-const $description = ref()
-const $gallery = ref()
-const $credits = ref()
+const $description = ref();
+const $gallery = ref();
+const $credits = ref();
 
 function scrollToSection(section) {
-  let offset
+  let offset;
 
-  if (section.classList.contains('hero')) {
-    offset = isMobile ? 0 : 0
+  if (section.classList.contains("hero")) {
+    offset = isMobile ? 0 : 0;
   } else {
-    offset = isMobile ? window.innerHeight - 100 : window.innerHeight - 100
+    offset = isMobile ? window.innerHeight - 100 : window.innerHeight - 100;
   }
 
   gsap.to(window, {
@@ -56,55 +66,55 @@ function scrollToSection(section) {
       autoKill: false,
     },
     duration: 1.5,
-    ease: 'power3.out',
-  })
+    ease: "power3.out",
+  });
 }
 
 onMounted(() => {
   setTimeout(() => {
-    let mm = gsap.matchMedia()
+    let mm = gsap.matchMedia();
 
-    mm.add('(min-width: 481px)', () => {
+    mm.add("(min-width: 481px)", () => {
       trigger.value = ScrollTrigger.create({
-        start: '50%',
+        start: "50%",
         trigger: $hero.value,
         onEnter: () => {
           gsap.to($anchors.value.$el, {
             y: 0,
             duration: 0.5,
-          })
+          });
         },
         onLeaveBack: () => {
           gsap.to($anchors.value.$el, {
             y: 50,
             duration: 0.5,
-          })
+          });
         },
-      })
-    })
-  }, 1000)
+      });
+    });
+  }, 1000);
 
-  window.addEventListener('resize', handleResize)
-})
+  window.addEventListener("resize", handleResize);
+});
 
 const handleResize = () => {
   if (trigger.value !== null) {
-    trigger.value.refresh()
+    trigger.value.refresh();
   }
-}
+};
 
 onBeforeUnmount(() => {
   gsap.to($anchors.value.$el, {
     y: 50,
     duration: 0.5,
-  })
+  });
 
   ScrollTrigger.getAll().forEach((trigger) => {
-    trigger.kill()
-  })
+    trigger.kill();
+  });
 
-  removeEventListener('resize', handleResize)
-})
+  removeEventListener("resize", handleResize);
+});
 </script>
 
 <template>
@@ -140,10 +150,16 @@ onBeforeUnmount(() => {
             {{ project.claim }}
           </div>
           <div class="content__details">
-            <span class="content__date">{{ project.releaseDate.slice(0, 4) }}</span>
+            <span class="content__date">{{
+              project.releaseDate.slice(0, 4)
+            }}</span>
             <span class="content__type">{{ project.field }}</span>
           </div>
-          <div class="content__description" ref="$description" v-if="project.description">
+          <div
+            class="content__description"
+            ref="$description"
+            v-if="project.description"
+          >
             <SanityContent :blocks="project.description" />
           </div>
         </GridContainer>
@@ -152,7 +168,9 @@ onBeforeUnmount(() => {
         <GridContainer>
           <div class="gallery__title-container">
             <h2 class="gallery__title">Gallery</h2>
-            <span class="gallery__counter">{{ $galleryMedia ? $galleryMedia.length : '' }}</span>
+            <span class="gallery__counter">{{
+              $galleryMedia ? $galleryMedia.length : ""
+            }}</span>
           </div>
           <ul class="gallery__wrapper">
             <li
@@ -169,12 +187,20 @@ onBeforeUnmount(() => {
               :key="index"
             >
               <ul class="item__inner" v-if="item._type === 'galleryMedia'">
-                <li v-for="image in item.images" ref="$galleryMedia">
+                <li
+                  v-for="image in item.images"
+                  ref="$galleryMedia"
+                  :class="{
+                    vertical:
+                      image.assetRef.metadata.dimensions.aspectRatio < 1,
+                  }"
+                >
                   <div class="item__image">
                     <SanityImage :asset-id="image.asset._ref" auto="format" />
                   </div>
                 </li>
               </ul>
+
               <div class="item__text" v-if="item._type === 'galleryText'">
                 <SanityContent :blocks="item.text" />
               </div>
@@ -208,12 +234,14 @@ onBeforeUnmount(() => {
           </ul>
         </GridContainer>
       </section>
-      <!-- <section class="related-projects" v-if="project.relatedProjects">
+      <section class="related-projects" v-if="project.relatedProjects">
         <GridContainer>
           <h2 class="related-projects__title">Related projects</h2>
         </GridContainer>
-        <ProjectsList :projects="project.relatedProjects ? project.relatedProjects : []" />
-      </section> -->
+        <ProjectsList
+          :projects="project.relatedProjects ? project.relatedProjects : []"
+        />
+      </section>
       <BottomAnchors ref="$anchors">
         <ul class="BottomAnchors__list">
           <li class="BottomAnchors__item">
@@ -223,7 +251,9 @@ onBeforeUnmount(() => {
             <button @click="scrollToSection($description)">Description</button>
           </li>
           <li class="BottomAnchors__item">
-            <button @click="scrollToSection($gallery)" v-if="project.gallery">Gallery</button>
+            <button @click="scrollToSection($gallery)" v-if="project.gallery">
+              Gallery
+            </button>
           </li>
           <li class="BottomAnchors__item" v-if="project.credits">
             <button @click="scrollToSection($credits)">Credits</button>
@@ -274,6 +304,24 @@ onBeforeUnmount(() => {
     background-color: $black;
     z-index: 10;
     position: relative;
+  }
+  .item__inner {
+    display: flex;
+    flex-direction: row; /* default flex-direction but making it explicit */
+    flex-wrap: wrap; /* allows items to wrap to the next line */
+    justify-content: center;
+  }
+
+  .item__inner li {
+  }
+
+  .item__inner li.vertical {
+    display: flex;
+    flex: 0 0 50%; /* flex-grow | flex-shrink | flex-basis */
+    padding: 2rem;
+    @include viewport-480 {
+      padding: 1rem;
+    }
   }
 
   .content {

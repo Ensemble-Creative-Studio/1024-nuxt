@@ -27,6 +27,42 @@ const $ctx = ref(null)
 const $baseline = ref(null)
 
 const tl = gsap.timeline()
+const allProjectFooter = ref(null);
+
+onMounted(() => {
+  // You can directly access the DOM element via allProjectFooter.value now
+      setTimeout(() => {
+  if (allProjectFooter.value) {
+    ScrollTrigger.create({
+      trigger: allProjectFooter.value,
+      start: "top bottom",
+      end: "bottom top",
+      onEnter: () => {
+        const backgroundBlack = document.querySelector('.backgroundBlack');
+        if (backgroundBlack) {
+          gsap.to(backgroundBlack, { opacity: 1, duration:0.1 });
+        }
+           setTimeout(() => {
+              if (window.scrollY + window.innerHeight >= allProjectFooter.value.offsetTop + allProjectFooter.value.offsetHeight) {
+          window.location.href = '/projects';
+        }
+         }, 800)
+      },
+      onLeaveBack: () => {
+        const backgroundBlack = document.querySelector('.backgroundBlack');
+        if (backgroundBlack) {
+          gsap.to(backgroundBlack, { opacity: 0, duration:0.1 });
+        }
+      },
+      onEnterBack: () => { // When entering back from the bottom
+        // If the footer is 100% visible, navigate to /projects
+  
+      }
+    });
+  }
+      }, 500)
+});
+
 
 onMounted(() => {
   $ctx.value = gsap.context((self) => {
@@ -81,6 +117,7 @@ onMounted(() => {
       })
     }, 500)
   }, $featuredProjects.value)
+  
 })
 
 onBeforeUnmount(() => {
@@ -107,10 +144,41 @@ onBeforeUnmount(() => {
       </GridContainer>
     </div>
     <FeaturedProject :project="project" v-for="project in projects" :key="project._id" />
+    <div  class='FeaturedProject footer' ref="allProjectFooter">
+    <div class='backgroundBlack'> </div>
+
+    <a href='/projects' class='FeaturedProject__title'> 
+    <div class='FeaturedProject__footer'>    All Project</div>
+    </a>
+       </div>
   </div>
 </template>
 
 <style lang="scss">
+.FeaturedProject.footer{
+background-color:black;
+height:40vh !important;
+position:relative;
+    z-index: 1; /* Make sure this is above the black background */
+    position: relative; /* This ensures z-index works correctly */
+}
+
+.FeaturedProject.footer a{
+height:100%;
+display:flex;
+align-items:center;
+padding-left:10rem;
+}
+.backgroundBlack{
+  position: fixed; /* Added this */
+ opacity:0;
+    left: 0;
+    right: 0;
+    bottom: 0rem; /* Adjust this value to control how much it overflows */
+    background-color: black;
+    height:10rem;
+    z-index: -1; /* Put it behind other content */
+}
 .FeaturedProjects {
   .FeaturedProject {
     height: 120vh;

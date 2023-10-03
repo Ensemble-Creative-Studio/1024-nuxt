@@ -80,7 +80,7 @@ $cubic: cubic-bezier(0.16, 1, 0.3, 1);
   top: 0;
   right: 0;
   height: 100%;
-  width: 55rem;
+  width: 30rem;
   padding: 9rem 2rem 5rem 2rem;
   z-index: 30;
   margin: 0 auto;
@@ -90,15 +90,15 @@ $cubic: cubic-bezier(0.16, 1, 0.3, 1);
   transition: transform 1.5s $cubic;
   transform: translate(100%, 0%);
   overflow: hidden;
-  background-color: $white;
-  color: $black;
+  background-color: $black;
+  color: $white;
 
   &--active {
     transform: translate(0%, 0%);
   }
 
   &__background {
-    background-color: $white;
+    background-color: $black;
     overflow: hidden;
     transition: transform 1.5s $cubic;
     overflow: hidden;
@@ -177,7 +177,7 @@ $cubic: cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .address {
-      margin-left: 3rem;
+      margin-left: 0rem;
 
       &__item {
         &:not(:first-child) {

@@ -117,9 +117,9 @@ watch(
 .ProjectsGrid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  column-gap: 1rem;
-  row-gap: 2rem;
-  padding: 0 1.5rem;
+  column-gap: 4rem;
+  row-gap: 5rem;
+  padding: 0 2.5rem;
   overflow: hidden;
 
   @include viewport-480 {
