@@ -148,7 +148,7 @@ onBeforeUnmount(() => {
     <div class='backgroundBlack'> </div>
 
     <a href='/projects' class='FeaturedProject__title'> 
-    <div class='FeaturedProject__footer'>    All Project</div>
+    <div class='FeaturedProject__footer'>    All Projects</div>
     </a>
        </div>
   </div>
