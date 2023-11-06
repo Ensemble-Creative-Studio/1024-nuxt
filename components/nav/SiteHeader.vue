@@ -86,24 +86,27 @@ function toggleNav() {
 
       &--top {
         top: 0;
-        transform: translateY(0);
+     transform: translateY(8.5px);
       }
 
       &--right {
         top: 50%;
-        transform: translateY(-50%) rotate(90deg);
+
+                  transform: translateY(-50%) translateX(-10px) rotate(90deg);
         right: -50%;
       }
 
       &--bottom {
         bottom: 0;
-        transform: translateY(0);
+                  transform: translateY(-8.5px);
+
       }
 
       &--left {
         top: 50%;
         left: -50%;
-        transform: translateY(-50%) rotate(90deg);
+
+                  transform: translateY(-50%) translateX(10px) rotate(90deg);
       }
     }
   }
@@ -112,19 +115,20 @@ function toggleNav() {
     .burger {
       &__bar {
         &--top {
-          transform: translateY(8.5px);
+      
+                 transform: translateY(0);
         }
 
         &--right {
-          transform: translateY(-50%) translateX(-10px) rotate(90deg);
+        transform: translateY(-50%) rotate(90deg);
         }
 
         &--bottom {
-          transform: translateY(-8.5px);
+        transform: translateY(0);
         }
 
         &--left {
-          transform: translateY(-50%) translateX(10px) rotate(90deg);
+        transform: translateY(-50%) rotate(90deg);
         }
       }
     }

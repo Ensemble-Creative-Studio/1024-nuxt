@@ -54,7 +54,7 @@ function closeNav() {
       <ul class="social-media">
         <li class="social-media__item">
           <a :href="navMenu.instagram" target="blank">
-            <img src="@/assets/img/instagram-icon.svg" alt="" />
+                    <img src="@/assets/img/vimeo-icon.svg" alt="" />
           </a>
         </li>
         <li class="social-media__item">
@@ -64,7 +64,8 @@ function closeNav() {
         </li>
         <li class="social-media__item">
           <a :href="navMenu.vimeo" target="blank">
-            <img src="@/assets/img/vimeo-icon.svg" alt="" />
+
+                <img src="@/assets/img/instagram-icon.svg" alt="" />
           </a>
         </li>
       </ul>
@@ -134,7 +135,7 @@ $cubic: cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   &__main {
-    font-size: $desktop-h2;
+    font-size: 3.6rem;
     transform: translate(100%, 0%);
     transition: transform 1.5s $cubic;
 
@@ -200,7 +201,7 @@ $cubic: cubic-bezier(0.16, 1, 0.3, 1);
       display: flex;
       align-items: center;
       margin-top: 3rem;
-      justify-content: center;
+      justify-content: flex-start;
 
       @include viewport-480 {
         align-items: flex-start;
@@ -214,8 +215,8 @@ $cubic: cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         img {
-          width: 1.5rem;
-          height: 1.5rem;
+          width: 2.5rem;
+          height: 2.5rem;
         }
       }
     }
