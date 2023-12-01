@@ -185,9 +185,9 @@ padding-left:10rem;
     position: relative;
     transition: filter 0.5s ease-in-out;
 
-    &.off {
+    /* &.off {
       filter: invert(1) grayscale(1);
-    }
+    } */
 
     @include viewport-480 {
       margin-top: 0;

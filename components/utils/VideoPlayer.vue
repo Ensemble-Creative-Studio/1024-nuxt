@@ -1,12 +1,19 @@
 <script setup>
 import screenfull from 'screenfull'
+import { useNuxtApp } from '#app'
+
+// Assuming you have the urlFor function provided via a Nuxt plugin
+const { urlFor } = useNuxtApp(); // Access the urlFor function
+
 
 const { isTouch, isSafari, isAndroid, isIos, isSamsung } = useDevice()
 
 const props = defineProps({
   vimeoUrl: String,
   downloadUrl: String,
+  poster: String, // Expect an asset reference for the poster image
 })
+
 
 const $main = ref(null)
 const $video = ref(null)
@@ -131,8 +138,10 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="VideoPlayer" ref="$main">
+  
     <video
       :src="vimeoUrl"
+      :poster="poster"
       class="video"
       ref="$video"
       crossorigin="anonymous"

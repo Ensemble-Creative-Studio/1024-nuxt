@@ -6,6 +6,9 @@ const sanityConfig = {
 
 const config: NuxtConfig & { sanity: typeof sanityConfig } = {
   modules: ['@nuxtjs/sanity', '@nuxtjs/device'],
+  plugins: [
+    '~/plugins/sanity-image-builder.js', // Add this line
+  ],
   sanity: sanityConfig,
   // proxy: {
   //   proxies: {

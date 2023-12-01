@@ -18,9 +18,13 @@ function closeNav() {
         <li class="nav__item">
           <NuxtLink class="main__link" to="/projects" @click="closeNav()">Projects</NuxtLink>
         </li>
+           <li class="nav__item">
+          <NuxtLink class="main__link" to="/mad" @click="closeNav()">MAD</NuxtLink>
+        </li>
         <li class="nav__item">
           <NuxtLink class="main__link" to="/about" @click="closeNav()">About</NuxtLink>
         </li>
+     
         <li class="nav__item">
           <NuxtLink class="main__link" to="/blog?page=1" @click="closeNav()">Blog</NuxtLink>
         </li>
@@ -193,6 +197,16 @@ $cubic: cubic-bezier(0.16, 1, 0.3, 1);
       &__item {
         &:not(:first-child) {
           margin-top: 0.3rem;
+        }
+         &:nth-child(4) 
+        {
+          margin-top: 2rem;
+          font-size:1.2rem
+        }
+         &:nth-child(5) 
+        {
+               margin-top: 0.3rem;
+          font-size:1.2rem
         }
       }
     }

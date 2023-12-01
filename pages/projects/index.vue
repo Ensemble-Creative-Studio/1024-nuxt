@@ -3,7 +3,7 @@ const $projects = ref(null)
 
 const sanity = useSanity()
 
-const GET_PROJECTS = groq`*[_type == "projects"]
+const GET_PROJECTS = groq`*[_type == "projects" && (hideProject == false || !defined(hideProject))]|order(orderRank)
   {
     ...,
     categories[] -> {
@@ -14,7 +14,10 @@ const GET_PROJECTS = groq`*[_type == "projects"]
     "videoUrl": video.asset->url,
   }
 `
+
+
 let projects = await useAsyncData('projects', () => sanity.fetch(GET_PROJECTS))
+console.log(projects)
 projects = projects.data.value.filter((project) => {
   return project.releaseDate && project.categories
 })
@@ -79,7 +82,7 @@ const filteredProjects = computed(() => {
 
 // Display mode
 const displayMode = ref('grid')
-const gridModeCols = ref(4)
+const gridModeCols = ref(6)
 const $projectsGrid = ref(null)
 const $projectsList = ref(null)
 
@@ -102,28 +105,52 @@ function toggleFilters() {
 }
 
 // Sorting
-const order = ref('byDate')
+const order = ref('selection'); // Setting default to 'selection'
 
 function setOrder(value) {
-  if (value === 'date') {
-    order.value = 'byDate'
-  } else {
-    order.value = 'byName'
+  // Directly set the order based on the button clicked
+  switch (value) {
+    case 'date':
+      order.value = 'byDate';
+      break;
+    case 'name':
+      order.value = 'byName';
+      break;
+    case 'selection':
+      order.value = 'selection';
+      break;
+    default:
+      order.value = 'selection';
+      break;
   }
 }
 
+
+
 const finalProjects = computed(() => {
-  let filteredByTagsProjects = filteredProjects.value
-  if (order.value === 'byName') {
-    filteredByTagsProjects = filteredByTagsProjects.sort((a, b) => a.title.localeCompare(b.title))
-  } else {
-    filteredByTagsProjects = filteredByTagsProjects.sort(
-      (a, b) => parseInt(b.releaseDate) - parseInt(a.releaseDate)
-    )
+  let sortedProjects = [...filteredProjects.value]; // Create a copy to avoid mutating the original array
+
+  switch (order.value) {
+    case 'byName':
+      sortedProjects.sort((a, b) => a.title.localeCompare(b.title));
+      break;
+    case 'byDate':
+      sortedProjects.sort((a, b) => parseInt(b.releaseDate) - parseInt(a.releaseDate));
+      break;
+    case 'selection':
+      // Reapply the default sorting logic, assuming it's based on orderRank
+      sortedProjects.sort((a, b) => a.orderRank - b.orderRank);
+      break;
+    default:
+      // Handle any other unexpected case (if needed)
+      break;
   }
 
-  return filteredByTagsProjects
-})
+  return sortedProjects;
+});
+
+
+
 </script>
 
 <template>
@@ -171,12 +198,12 @@ const finalProjects = computed(() => {
     <div :class="[showMobileFilters && 'container--active', 'container']">
       <GridContainer>
         <ul class="display-mode">
-          <li
+          <!-- <li
             :class="[displayMode === 'grid' && 'display-mode__grid--active', 'display-mode__grid']"
             @click="setGridMode(4)"
           >
-            Grid
-          </li>
+     
+          </li> -->
           <li
             :class="[
               displayMode === 'grid' && gridModeCols === 6 && 'display-mode__three-grid--active',
@@ -188,7 +215,7 @@ const finalProjects = computed(() => {
               :color="displayMode === 'grid' && gridModeCols === 6 ? '#ffffff' : '#727272'"
             />
           </li>
-          <li
+          <!-- <li
             :class="[
               displayMode === 'grid' && gridModeCols === 4 && 'display-mode__four-grid--active',
               'display-mode__four-grid',
@@ -198,7 +225,7 @@ const finalProjects = computed(() => {
             <FourItemsGridIcon
               :color="displayMode === 'grid' && gridModeCols === 4 ? '#ffffff' : '#727272'"
             />
-          </li>
+          </li> -->
           <li
             :class="[displayMode === 'list' && 'display-mode__list--active', 'display-mode__list']"
             @click="setListMode()"
@@ -208,12 +235,16 @@ const finalProjects = computed(() => {
         </ul>
         <ul class="order" ref="$order">
           <li :class="[order === 'byName' && 'order-name--active', 'order-name']">
-            <button ref="$name" @click="setOrder('name')">Name</button>
+            <button @click="setOrder('name')">Name</button>
           </li>
           <li :class="[order === 'byDate' && 'order-date--active', 'order-date']">
-            <button ref="$date" @click="setOrder('date')">Date</button>
+            <button @click="setOrder('date')">Date</button>
+          </li>
+          <li :class="[order === 'selection' && 'order-selection--active', 'order-selection']">
+            <button @click="setOrder('selection')">Selection</button>
           </li>
         </ul>
+        
         <ul class="filters">
           <li class="filters__all">
             <button @click="toggleAll()" :class="[all && 'toggled', 'all']">
@@ -348,8 +379,9 @@ const finalProjects = computed(() => {
     }
 
     &-name,
-    &-date {
-      flex: 50%;
+    &-date,
+    &-selection {
+      flex: 0.25;
       transition: 0.3s ease-in-out;
       transition-property: text-decoration, color;
 

@@ -8,7 +8,7 @@ const sanity = useSanity();
 const route = useRoute();
 const router = useRouter();
 
-const GET_SINGLE_PROJECT = groq`*[_type == "projects" && slug.current == "${route.params.slug}"][0]
+const GET_SINGLE_PROJECT = groq`*[_type == "MAD"][0]
   {
     ...,
     relatedProjects[] -> {
@@ -155,9 +155,7 @@ onBeforeUnmount(() => {
             {{ project.claim }}
           </div>
           <div class="content__details">
-            <span class="content__date">{{
-              project.releaseDate.slice(0, 4)
-            }}</span>
+           
             <span class="content__type">{{ project.field }}</span>
           </div>
           <div
