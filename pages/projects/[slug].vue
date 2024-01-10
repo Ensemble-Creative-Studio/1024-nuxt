@@ -100,34 +100,36 @@ onMounted(() => {
   }, 1000);
 
   window.addEventListener("resize", handleResize);
-    const itemTextElements = document.querySelectorAll('.item__text');
+   setTimeout(() => {
+  const itemTextElements = document.querySelectorAll('.item__text');
 
-  // Loop through each .item__text element
-  itemTextElements.forEach((element) => {
-    // Get all <a> elements within the current .item__text element
-    const linksInItemText = element.querySelectorAll('a');
+// Loop through each .item__text element
+itemTextElements.forEach((element) => {
+  // Get all <a> elements within the current .item__text element
+  const linksInItemText = element.querySelectorAll('a');
 
-    // Loop through each <a> element within the .item__text element
-    linksInItemText.forEach((link) => {
-      // Add target="_blank" attribute to the <a> element
-      link.setAttribute('target', '_blank');
-    });
+  // Loop through each <a> element within the .item__text element
+  linksInItemText.forEach((link) => {
+    // Add target="_blank" attribute to the <a> element
+    link.setAttribute('target', '_blank');
   });
+});
 
-  // Get all elements with class .content__description
-  const contentDescriptionElements = document.querySelectorAll('.content__description');
+// Get all elements with class .content__description
+const contentDescriptionElements = document.querySelectorAll('.content__description');
 
-  // Loop through each .content__description element
-  contentDescriptionElements.forEach((element) => {
-    // Get all <a> elements within the current .content__description element
-    const linksInContentDescription = element.querySelectorAll('a');
+// Loop through each .content__description element
+contentDescriptionElements.forEach((element) => {
+  // Get all <a> elements within the current .content__description element
+  const linksInContentDescription = element.querySelectorAll('a');
 
-    // Loop through each <a> element within the .content__description element
-    linksInContentDescription.forEach((link) => {
-      // Add target="_blank" attribute to the <a> element
-      link.setAttribute('target', '_blank');
-    });
+  // Loop through each <a> element within the .content__description element
+  linksInContentDescription.forEach((link) => {
+    // Add target="_blank" attribute to the <a> element
+    link.setAttribute('target', '_blank');
   });
+});
+}, 1000);
 });
 
 const handleResize = () => {
