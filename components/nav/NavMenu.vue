@@ -19,7 +19,7 @@ function closeNav() {
           <NuxtLink class="main__link" to="/projects" @click="closeNav()">Projects</NuxtLink>
         </li>
            <li class="nav__item">
-          <NuxtLink class="main__link" to="/mad" @click="closeNav()">MAD</NuxtLink>
+          <NuxtLink class="main__link" to="/mad" @click="closeNav()">MadMapper</NuxtLink>
         </li>
         <li class="nav__item">
           <NuxtLink class="main__link" to="/about" @click="closeNav()">About</NuxtLink>
@@ -37,16 +37,15 @@ function closeNav() {
         <li class="address__item">{{ navMenu.address.city }}</li>
       </ul>
       <ul class="annex">
-        <li class="annex__item">
-          <a class="annex__link" :href="navMenu.externalLinks.press" target="blank">Press</a>
+            <li class="annex__item">
+    <a class="annex__link" :href="'mailto:' + navMenu.externalLinks.requests" >Contact</a>
         </li>
         <li class="annex__item">
-          <a class="annex__link" :href="navMenu.externalLinks.jobs" target="blank"
-            >Jobs / Internships
+    <a class="annex__link" :href="'mailto:' + navMenu.externalLinks.press">Press</a>
+        </li>
+        <li class="annex__item">
+    <a class="annex__link" :href="'mailto:' + navMenu.externalLinks.jobs" >Jobs / Internships
           </a>
-        </li>
-        <li class="annex__item">
-          <a class="annex__link" :href="navMenu.externalLinks.requests" target="blank">Requests</a>
         </li>
         <li class="annex__item">
           <NuxtLink class="annex__link" to="/cookies">Cookies</NuxtLink>
@@ -62,13 +61,13 @@ function closeNav() {
           </a>
         </li>
         <li class="social-media__item">
-          <a :href="navMenu.facebook" target="blank">
+          <a :href="navMenu.vimeo" target="blank">
+
             <img src="@/assets/img/facebook-icon.svg" alt="" />
           </a>
         </li>
         <li class="social-media__item">
-          <a :href="navMenu.vimeo" target="blank">
-
+          <a :href="navMenu.facebook" target="blank">
                 <img src="@/assets/img/instagram-icon.svg" alt="" />
           </a>
         </li>

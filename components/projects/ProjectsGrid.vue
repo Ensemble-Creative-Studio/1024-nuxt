@@ -52,10 +52,37 @@ const hideProjects = () => {
     })
   }, $projectsGrid.value)
 }
+const addVideoHoverListeners = () => {
+  const items = $projectsGrid.value.querySelectorAll('.item');
+
+  items.forEach((item) => {
+    const video = item.querySelector('video');
+
+    item.addEventListener('mouseenter', () => {
+     if (video) {
+        video.play();
+      }
+    });
+
+    item.addEventListener('mouseleave', () => {
+   
+          if (video) {
+        video.pause();
+        setTimeout(() => {
+          video.currentTime = 0;
+        }, 200);
+    
+      }
+    });
+  });
+};
 
 onMounted(() => {
-  showProjects()
-})
+  showProjects();
+  // Add video hover listeners after the projects are displayed
+  addVideoHoverListeners();
+});
+
 
 onBeforeUnmount(() => {
   hideProjects()
@@ -100,7 +127,7 @@ watch(
               :src="item.thumbnailVideoUrl"
               muted
               loop
-              autoplay
+           
               playsinline
               webkit-playsinline
             ></video>
@@ -142,6 +169,9 @@ watch(
       img {
         object-fit: cover;
         height: 100%;
+        width:100%;
+        aspect-ratio: 1 / 1;
+
         filter: grayscale(100%);
         transition: 0.25s ease-in-out;
       }

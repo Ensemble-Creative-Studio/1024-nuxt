@@ -91,6 +91,34 @@ onMounted(() => {
   }, $aboutPage.value)
 
   window.addEventListener('resize', handleResize)
+   const itemTextElements = document.querySelectorAll('.item__text');
+
+  // Loop through each .item__text element
+  itemTextElements.forEach((element) => {
+    // Get all <a> elements within the current .item__text element
+    const linksInItemText = element.querySelectorAll('a');
+
+    // Loop through each <a> element within the .item__text element
+    linksInItemText.forEach((link) => {
+      // Add target="_blank" attribute to the <a> element
+      link.setAttribute('target', '_blank');
+    });
+  });
+
+  // Get all elements with class .content__description
+  const contentDescriptionElements = document.querySelectorAll('.content__description');
+
+  // Loop through each .content__description element
+  contentDescriptionElements.forEach((element) => {
+    // Get all <a> elements within the current .content__description element
+    const linksInContentDescription = element.querySelectorAll('a');
+
+    // Loop through each <a> element within the .content__description element
+    linksInContentDescription.forEach((link) => {
+      // Add target="_blank" attribute to the <a> element
+      link.setAttribute('target', '_blank');
+    });
+  });
 })
 
 const handleResize = () => {
@@ -195,7 +223,13 @@ onBeforeUnmount(() => {
     </section>
     <section class="exhibitions" ref="$exhibitions">
       <GridContainer>
-        <h2 class="exhibitions__title">Exhibitions</h2>
+        <h2 class="exhibitions__title">Exhibitions and festivals</h2>
+            <div
+            class="content__description"
+         
+          >
+                    <SanityContent :blocks="about.exFest" />
+     </div>
       </GridContainer>
       <ul class="exhibitions__list">
         <li class="item" v-for="item in about.exhibitions">
@@ -209,52 +243,17 @@ onBeforeUnmount(() => {
         </li>
       </ul>
     </section>
-    <section class="awards" ref="$awards">
-      <GridContainer>
-        <h2 class="awards__title">Awards</h2>
-      </GridContainer>
-      <ul class="awards__list">
-        <li class="item" v-for="item in about.awards">
-          <div class="item__container">
-            <div class="item__date">{{ item.date?.slice(0, 4) }}</div>
-            <h3 class="item__title">{{ item.title }}</h3>
-            <p class="item__localization">
-              {{ item.localization }}
-            </p>
-          </div>
-        </li>
-      </ul>
-    </section>
-    <section class="festivals" ref="$festivals">
-      <GridContainer>
-        <h2 class="festivals__title">Festivals</h2>
-      </GridContainer>
-      <ul class="festivals__list">
-        <li class="item" v-for="item in about.festivals">
-          <div class="item__container">
-            <div class="item__date">{{ item.date?.slice(0, 4) }}</div>
-            <h3 class="item__title">{{ item.title }}</h3>
-            <p class="item__localization">
-              {{ item.localization }}
-            </p>
-          </div>
-        </li>
-      </ul>
-    </section>
+
+
     <BottomAnchors ref="$anchors">
       <ul class="BottomAnchors__list">
         <li class="BottomAnchors__item">
           <button @click="scrollToSection($description)">About</button>
         </li>
         <li class="BottomAnchors__item">
-          <button @click="scrollToSection($exhibitions)">Exhibitions</button>
+          <button @click="scrollToSection($exhibitions)">Exhibitions and festivals</button>
         </li>
-        <li class="BottomAnchors__item">
-          <button @click="scrollToSection($awards)">Awards</button>
-        </li>
-        <li class="BottomAnchors__item">
-          <button @click="scrollToSection($festivals)">Festivals</button>
-        </li>
+     
       </ul>
     </BottomAnchors>
   </div>
@@ -353,7 +352,77 @@ onBeforeUnmount(() => {
       margin-top: 6rem;
     }
   }
+  .content {
+    &__claim {
+      grid-column: 2 / span 5;
+      font-size: $desktop-h4;
+      // font-weight: $extra-light;
+      margin-top: 6rem;
 
+      @include viewport-1200 {
+        grid-column: 2 / span 8;
+      }
+
+      @include viewport-768 {
+        grid-column: 1 / -1;
+      }
+
+      @include viewport-480 {
+        font-size: $mobile-h4; // $mobile-h2 on Figma
+        margin-top: 4rem;
+      }
+    }
+
+    &__details {
+      grid-column: 1 / -1;
+      margin-top: 6rem;
+
+      @include viewport-768 {
+        grid-column: 2 / span 10;
+      }
+    }
+
+    &__description {
+      grid-column: 2 / span 5;
+
+      @include viewport-1200 {
+        grid-column: 2 / span 8;
+      }
+
+      @include viewport-480 {
+        grid-column: 2 / -1;
+        font-size: $mobile-text-read;
+      }
+    }
+
+    &__type {
+      margin-left: 1rem;
+      text-decoration: none;
+      display: inline-block;
+      text-decoration: none;
+      text-decoration: none;
+      text-decoration-thickness: from-font;
+      text-underline-offset: 0.5rem;
+    }
+
+    &__description {
+      margin-top: 6rem;
+
+      a {
+        display: inline-block;
+        text-decoration: underline;
+        text-decoration: underline;
+        text-decoration-thickness: from-font;
+        text-underline-offset: 0.5rem;
+      }
+
+      p {
+        &:not(:first-child) {
+          margin-top: 4rem;
+        }
+      }
+    }
+  }
   .history {
     margin-top: 12rem;
 
@@ -445,6 +514,7 @@ onBeforeUnmount(() => {
   .awards,
   .festivals {
     margin-top: 12rem;
+    padding-bottom:10rem;
     // font-weight: $extra-light;
 
     @include viewport-480 {

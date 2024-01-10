@@ -153,6 +153,8 @@ onBeforeUnmount(() => {
       @ended="onVideoEnded"
     ></video>
     <div class="controls">
+      <div class="flex">
+
       <div class="controls__play-pause">
         <button class="controls__play" @click="onPlayBtnClick" type="button" v-show="!isPlaying">
           <svg
@@ -184,75 +186,75 @@ onBeforeUnmount(() => {
         </div>
         <div class="controls__total-time">{{ videoFormatedDuration }}</div>
       </div>
-      <div class="controls__mute">
-        <button @click="onToggleMuteBtnClick" type="button" v-show="!isMuted">
-          <svg
-            width="17"
-            height="16"
-            viewBox="0 0 17 16"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <rect x="2" y="8.5" width="3" height="5" stroke="white" />
-            <rect x="12" y="8.5" width="3" height="5" stroke="white" />
-            <path
-              d="M15 8C15 4.41015 12.0899 1.5 8.5 1.5C4.91015 1.5 2 4.41015 2 8"
-              stroke="white"
-            />
-          </svg>
-        </button>
-        <button @click="onToggleMuteBtnClick" type="button" v-show="isMuted">
-          <svg
-            width="17"
-            height="16"
-            viewBox="0 0 17 16"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <rect x="2" y="8.5" width="3" height="5" stroke="#727272" />
-            <rect x="12" y="8.5" width="3" height="5" stroke="#727272" />
-            <path
-              d="M15 8C15 4.41015 12.0899 1.5 8.5 1.5C4.91015 1.5 2 4.41015 2 8"
-              stroke="#727272"
-            />
-          </svg>
-        </button>
       </div>
-      <div class="controls__fullscreen">
-        <button @click="onFullscreenBtnClick" type="button" v-show="!isFullscreen">
-          <svg
-            width="17"
-            height="16"
-            viewBox="0 0 17 16"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M2.5 9V14H9.5V9H2.5ZM8.5 13H3.5V10H8.5V13Z" fill="white" />
-            <path d="M2.5 2V8H3.5V3H13.5V13H10.5V14H14.5V2H2.5Z" fill="white" />
-          </svg>
-        </button>
-        <button @click="onMinimizeBtnClick" type="button" v-show="isFullscreen">
-          <svg
-            width="17"
-            height="16"
-            viewBox="0 0 17 16"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M2.5 14V2H14.5V14H2.5ZM8.5 9H3.5V13H8.5V9Z"
-              fill="white"
-            />
-          </svg>
-        </button>
-      </div>
-      <div class="controls__download">
-        <button>
-          <a :href="downloadUrl" type="button">Download</a>
-        </button>
-      </div>
+<div class="flex">
+  <div class="controls__mute">
+    <button @click="onToggleMuteBtnClick" type="button" v-show="!isMuted">
+      <svg
+        width="17"
+        height="16"
+        viewBox="0 0 17 16"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <rect x="2" y="8.5" width="3" height="5" stroke="white" />
+        <rect x="12" y="8.5" width="3" height="5" stroke="white" />
+        <path
+          d="M15 8C15 4.41015 12.0899 1.5 8.5 1.5C4.91015 1.5 2 4.41015 2 8"
+          stroke="white"
+        />
+      </svg>
+    </button>
+    <button @click="onToggleMuteBtnClick" type="button" v-show="isMuted">
+      <svg
+        width="17"
+        height="16"
+        viewBox="0 0 17 16"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <rect x="2" y="8.5" width="3" height="5" stroke="#727272" />
+        <rect x="12" y="8.5" width="3" height="5" stroke="#727272" />
+        <path
+          d="M15 8C15 4.41015 12.0899 1.5 8.5 1.5C4.91015 1.5 2 4.41015 2 8"
+          stroke="#727272"
+        />
+      </svg>
+    </button>
+  </div>
+  <div class="controls__fullscreen">
+    <button @click="onFullscreenBtnClick" type="button" v-show="!isFullscreen">
+      <svg
+        width="17"
+        height="16"
+        viewBox="0 0 17 16"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path d="M2.5 9V14H9.5V9H2.5ZM8.5 13H3.5V10H8.5V13Z" fill="white" />
+        <path d="M2.5 2V8H3.5V3H13.5V13H10.5V14H14.5V2H2.5Z" fill="white" />
+      </svg>
+    </button>
+    <button @click="onMinimizeBtnClick" type="button" v-show="isFullscreen">
+      <svg
+        width="17"
+        height="16"
+        viewBox="0 0 17 16"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M2.5 14V2H14.5V14H2.5ZM8.5 9H3.5V13H8.5V9Z"
+          fill="white"
+        />
+      </svg>
+    </button>
+  </div>
+</div>
+  
+ 
       <div
         class="controls__timeline"
         ref="$timeline"
@@ -277,12 +279,15 @@ onBeforeUnmount(() => {
 .VideoPlayer {
   position: relative;
   background-color: $black;
-
+.flex{
+  display: flex;
+}
   .controls {
     position: absolute;
     bottom: 0;
     width: 100%;
     display: flex;
+    justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
     font-size: $desktop-player;
@@ -291,7 +296,7 @@ onBeforeUnmount(() => {
     @include viewport-480 {
       font-size: $mobile-player;
       padding: 0.4rem 0.6rem;
-      // justify-content: space-evenly;
+       justify-content: flex-start;
     }
 
     button {

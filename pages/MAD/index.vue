@@ -100,6 +100,34 @@ onMounted(() => {
   }, 1000);
 
   window.addEventListener("resize", handleResize);
+  const itemTextElements = document.querySelectorAll('.item__text');
+
+  // Loop through each .item__text element
+  itemTextElements.forEach((element) => {
+    // Get all <a> elements within the current .item__text element
+    const linksInItemText = element.querySelectorAll('a');
+
+    // Loop through each <a> element within the .item__text element
+    linksInItemText.forEach((link) => {
+      // Add target="_blank" attribute to the <a> element
+      link.setAttribute('target', '_blank');
+    });
+  });
+
+  // Get all elements with class .content__description
+  const contentDescriptionElements = document.querySelectorAll('.content__description');
+
+  // Loop through each .content__description element
+  contentDescriptionElements.forEach((element) => {
+    // Get all <a> elements within the current .content__description element
+    const linksInContentDescription = element.querySelectorAll('a');
+
+    // Loop through each <a> element within the .content__description element
+    linksInContentDescription.forEach((link) => {
+      // Add target="_blank" attribute to the <a> element
+      link.setAttribute('target', '_blank');
+    });
+  });
 });
 
 const handleResize = () => {
@@ -155,7 +183,9 @@ onBeforeUnmount(() => {
             {{ project.claim }}
           </div>
           <div class="content__details">
-           
+             <span class="content__date">{{
+              project.releaseDate.slice(0, 4)
+            }}</span>
             <span class="content__type">{{ project.field }}</span>
           </div>
           <div
@@ -163,17 +193,15 @@ onBeforeUnmount(() => {
             ref="$description"
             v-if="project.description"
           >
-            <SanityContent :blocks="project.description" />
+    <SanityContent :blocks="project.description" :serializers="customSerializers" />
           </div>
         </GridContainer>
       </section>
       <section class="gallery" ref="$gallery" v-if="project?.gallery">
         <GridContainer>
           <div class="gallery__title-container">
-            <h2 class="gallery__title">Gallery</h2>
-            <span class="gallery__counter">{{
-              $galleryMedia ? $galleryMedia.length : ""
-            }}</span>
+            <h2 class="gallery__title">MadMapper history</h2>
+           
           </div>
           <ul class="gallery__wrapper">
             <li
@@ -380,10 +408,9 @@ margin-top:12rem;
 
     &__type {
       margin-left: 1rem;
-      text-decoration: underline;
+      text-decoration: none;
       display: inline-block;
-      text-decoration: underline;
-      text-decoration: underline;
+   
       text-decoration-thickness: from-font;
       text-underline-offset: 0.5rem;
     }

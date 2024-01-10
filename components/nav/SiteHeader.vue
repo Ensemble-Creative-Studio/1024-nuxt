@@ -33,7 +33,7 @@ function toggleNav() {
   padding: 2rem;
   width: 100%;
   z-index: 40;
-  mix-blend-mode: difference;
+background-color:black;
 
   @include viewport-480 {
     padding: 1rem;
