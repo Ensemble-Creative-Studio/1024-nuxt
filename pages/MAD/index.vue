@@ -195,7 +195,7 @@ onBeforeUnmount(() => {
             ref="$description"
             v-if="project.description"
           >
-    <SanityContent :blocks="project.description" :serializers="customSerializers" />
+    <SanityContent :blocks="project.description"  />
           </div>
         </GridContainer>
       </section>
