@@ -29,7 +29,7 @@ function toggleNav() {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 10rem;
+  height: 6rem;
   padding: 2rem;
   width: 100%;
   z-index: 40;
@@ -121,6 +121,7 @@ background-color:black;
 
         &--right {
         transform: translateY(-50%) rotate(90deg);
+            right: -45%;
         }
 
         &--bottom {
@@ -129,6 +130,7 @@ background-color:black;
 
         &--left {
         transform: translateY(-50%) rotate(90deg);
+            left: -45%;
         }
       }
     }

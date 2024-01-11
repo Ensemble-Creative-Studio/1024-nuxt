@@ -202,7 +202,7 @@ onBeforeUnmount(() => {
       <section class="gallery" ref="$gallery" v-if="project?.gallery">
         <GridContainer>
           <div class="gallery__title-container">
-            <h2 class="gallery__title">MadMapper history</h2>
+            <h2 class="gallery__title">{{ project.galleryName }}</h2>
            
           </div>
           <ul class="gallery__wrapper">
