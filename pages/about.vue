@@ -262,6 +262,9 @@ onBeforeUnmount(() => {
 </template>
 
 <style lang="scss" scoped>
+  .exhibitions p  {
+  display: none !important;
+}
 .about {
   padding-top: 26rem;
 
