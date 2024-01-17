@@ -37,7 +37,7 @@ background-color:black;
 
   @include viewport-480 {
     padding: 1rem;
-    height: 6rem;
+    height: 4rem;
   }
 
   .SiteLogo {

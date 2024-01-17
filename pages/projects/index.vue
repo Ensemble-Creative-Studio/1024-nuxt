@@ -16,7 +16,6 @@ const GET_PROJECTS = groq`*[_type == "projects" && (hideProject == false || !def
 `;
 
 let projects = await useAsyncData("projects", () => sanity.fetch(GET_PROJECTS));
-console.log(projects);
 projects = projects.data.value.filter((project) => {
   return project.releaseDate && project.categories;
 });

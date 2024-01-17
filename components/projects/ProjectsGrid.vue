@@ -1,6 +1,8 @@
 <script setup>
 import gsap from 'gsap'
+import ScrollTrigger from 'gsap/ScrollTrigger';
 
+gsap.registerPlugin(ScrollTrigger) 
 const props = defineProps({
   projects: [Object],
   order: String,
@@ -53,6 +55,7 @@ const hideProjects = () => {
   }, $projectsGrid.value)
 }
 const addVideoHoverListeners = () => {
+
   const items = $projectsGrid.value.querySelectorAll('.item');
 
   items.forEach((item) => {
@@ -76,11 +79,57 @@ const addVideoHoverListeners = () => {
     });
   });
 };
+const addVideoScrollTriggers = () => {
+  if (window.innerWidth <= 768) { // Assuming 768px as a breakpoint for mobile devices
+    const items = $projectsGrid.value.querySelectorAll('.item');
+
+    items.forEach((item) => {
+      const video = item.querySelector('video');
+
+      if (video) {
+        // Set initial opacity to 0
+        video.style.opacity = '0';
+
+        ScrollTrigger.create({
+          trigger: item,
+    
+          start: "top center+=100", 
+          end: "top center-=400",
+          onEnter: () => { 
+            video.play();
+            video.style.opacity = '1';
+             video.style.visibility = 'visible'
+          },
+          onLeave: () => {
+            video.pause();
+            video.style.opacity = '0'; // Set opacity to 0 when video is not playing
+                  video.style.visibility = 'hidden'
+          },
+          onEnterBack: () => { 
+            video.play(); 
+            video.style.opacity = '1';
+                  video.style.visibility = 'visible'
+          },
+          onLeaveBack: () => {
+            video.pause();
+            video.style.opacity = '0';
+                      video.style.visibility = 'hidden'
+          },
+        });
+      }
+    });
+  }
+};
+
+
+
+
 
 onMounted(() => {
   showProjects();
   // Add video hover listeners after the projects are displayed
   addVideoHoverListeners();
+    addVideoScrollTriggers();
 });
 
 
