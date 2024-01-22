@@ -129,6 +129,9 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   hideProjects()
+   ScrollTrigger.getAll().forEach((trigger) => {
+    trigger.kill(); // Remove the trigger and animation
+  });
 })
 
 watch(
