@@ -129,7 +129,7 @@ onMounted(() => {
   showProjects();
   // Add video hover listeners after the projects are displayed
   addVideoHoverListeners();
-    addVideoScrollTriggers();
+    // addVideoScrollTriggers();
 });
 
 
