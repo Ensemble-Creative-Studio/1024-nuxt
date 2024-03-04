@@ -5,7 +5,7 @@ const sanityConfig = {
 }
 
 const config: NuxtConfig & { sanity: typeof sanityConfig } = {
-  modules: ['@nuxtjs/sanity', '@nuxtjs/device', '@nuxtjs/sitemap'],
+  modules: ['@nuxtjs/sanity', '@nuxtjs/device'],
   plugins: [
     '~/plugins/sanity-image-builder.js', // Add this line
   ],
@@ -42,9 +42,6 @@ const config: NuxtConfig & { sanity: typeof sanityConfig } = {
     },
   },
   generate: { fallback: '404.html' },
-  sitemap: {
-    
-  }
 }
 
 export default config
