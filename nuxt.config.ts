@@ -36,12 +36,9 @@ const config: NuxtConfig & { sanity: typeof sanityConfig } = {
     '~/components/blog',
     '~/components/icons',
   ],
-  ssr:true,
   nitro: {
     prerender: {
-      baseUrl:'https://www.1024architecture.net/',
       routes: ['/404.html'],
-      failOnError:false,
     },
   },
   generate: { fallback: '404.html' },
