@@ -1,4 +1,4 @@
-import { NuxtConfig } from '@nuxt/types'
+import type { NuxtConfig } from '@nuxt/types'
 
 const sanityConfig = {
   projectId: 'fdic53fd',
@@ -44,7 +44,10 @@ const config: NuxtConfig & { sanity: typeof sanityConfig } = {
   generate: { fallback: '404.html' },
   sitemap: {
     
-  }
+  },
+  site: {
+    url: 'https://www.1024architecture.net/',
+  },
 }
 
 export default config
