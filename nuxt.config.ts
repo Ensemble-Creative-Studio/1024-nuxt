@@ -41,6 +41,7 @@ const config: NuxtConfig & { sanity: typeof sanityConfig } = {
       routes: ['/404.html'],
     },
   },
+  ssr: true,
   generate: { fallback: '404.html' },
 }
 
