@@ -42,7 +42,9 @@ const config: NuxtConfig & { sanity: typeof sanityConfig } = {
     },
   },
   generate: { fallback: '404.html' },
-
+  sitemap: {
+    
+  },
   site: {
     url: 'https://www.1024architecture.net/',
   },
