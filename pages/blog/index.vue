@@ -82,7 +82,7 @@ onBeforeUnmount(() => {
       <Meta name="description" content="Contact page description" />
     </Head>
     <BlogList :blog="blog" :page="currentPage" />
-    <section class="pagination">
+    <!-- <section class="pagination">
       <GridContainer>
         <div class="pagination__container">
           <button
@@ -141,7 +141,7 @@ onBeforeUnmount(() => {
           </div>
         </div>
       </GridContainer>
-    </section>
+    </section> -->
   </div>
 </template>
 
