@@ -6,7 +6,9 @@ const sanityConfig = {
 
 const config: NuxtConfig & { sanity: typeof sanityConfig } = {
   modules: ['@nuxtjs/sanity', '@nuxtjs/device'],
-  plugins: ['~/plugins/sanity-image-builder.js'],
+  plugins: [
+    '~/plugins/sanity-image-builder.js', // Add this line
+  ],
   sanity: sanityConfig,
   // proxy: {
   //   proxies: {
@@ -38,7 +40,9 @@ const config: NuxtConfig & { sanity: typeof sanityConfig } = {
     prerender: {
       routes: ['/404.html'],
     },
-  }
+  },
+  ssr: true,
+  generate: { fallback: '404.html' },
 }
 
 export default config
