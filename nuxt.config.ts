@@ -41,7 +41,9 @@ const config: NuxtConfig & { sanity: typeof sanityConfig } = {
       routes: ['/404.html'],
     },
   },
-  ssr: true,
+  build: {
+    transpile: ['gsap'],
+  },
   generate: { fallback: '404.html' },
 }
 

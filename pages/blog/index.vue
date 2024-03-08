@@ -45,7 +45,7 @@ const goToPage = async (index) => {
   const { data } = await useAsyncData('blog', () => sanity.fetch(GET_BLOG))
   blog.value = data.value
 
-  window.scrollTo(0, 0)
+  // window.scrollTo(0, 0)
 }
 
 goToPage(currentPage.value)
