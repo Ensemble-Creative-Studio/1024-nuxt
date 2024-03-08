@@ -4,36 +4,349 @@
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
+
 
 <url>
-  <loc>https://1024architecture.net/</loc>
-  <lastmod>2024-03-07T00:00:00+00:00</lastmod>
+  <loc>https://www.1024architecture.net/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
   <priority>1.00</priority>
 </url>
 <url>
-  <loc>https://1024architecture.net/blog</loc>
-  <lastmod>2024-03-07T00:00:00+00:00</lastmod>
+  <loc>https://www.1024architecture.net/projects/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>https://1024architecture.net/mad</loc>
-  <lastmod>2024-03-07T00:00:00+00:00</lastmod>
+  <loc>https://www.1024architecture.net/mad/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>https://1024architecture.net/about</loc>
-  <lastmod>2024-03-07T00:00:00+00:00</lastmod>
+  <loc>https://www.1024architecture.net/about/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>https://1024architecture.net/cookies</loc>
-  <lastmod>2024-03-07T00:00:00+00:00</lastmod>
-  <priority>0.40</priority>
+  <loc>https://www.1024architecture.net/blog/?page=1</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.80</priority>
 </url>
 <url>
-  <loc>https://1024architecture.net/legal</loc>
-  <lastmod>2024-03-07T00:00:00+00:00</lastmod>
-  <priority>0.40</priority>
+  <loc>https://www.1024architecture.net/cookies/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.80</priority>
 </url>
+<url>
+  <loc>https://www.1024architecture.net/legal/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/ecrin/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/vortex/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/constellation/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/core/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/lightwave/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/space-xy/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/playground/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/starfield/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/2048-a-d/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/scanline/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/walking-cube/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/tesseract/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/delta/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/zebra-manoir/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/pulse/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/random-control/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/space-plus/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/square-cube/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/boombox/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/abies-electronicus/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/24-lines/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/3d-bridge/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/fragments/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/sphere/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/raytrace/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/motor/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/vtlzr/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/v-mirror/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/opus/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/orbis/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/v-loop/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/expo-electro/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/les-grandes-tables-de-l-ile/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/mad-orb/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/recession/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/crise/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/euphorie/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/frac-library/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/grrrrrridwave/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/metavilla/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/quantum/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/la-torre-despega/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/patterns/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/rotation/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/perspective-lyrique/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/u-z-n/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/social-club/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/french-touch/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/tangent/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/tetratennis/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/countryside-submarine/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/electro-night/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/bal-blanc/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/momento-monumento/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/sekenssor/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/digital-garden/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/1up-mushroom/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/mushboom/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/ektop-1/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/blog/hello-there/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://www.1024architecture.net/projects/new-g/</loc>
+  <lastmod>2024-03-08T09:17:57+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+
 
 </urlset>
