@@ -1,11 +1,13 @@
 <script setup>
 import gsap from 'gsap'
+import { wait } from './../../utils/wait'
 
 const sanity = useSanity()
 const router = useRouter()
 
 const $ctx = ref()
 const $blogPage = ref()
+const $pagination = ref()
 
 const tl = gsap.timeline()
 const blog = ref([])
@@ -18,61 +20,53 @@ const currentPage = ref(1)
 // }
 
 const GET_BLOG_COUNT = groq`count(*[_type == 'blog'])`
-const { data: blogCount } = await useAsyncData('blogCount', () => sanity.fetch(GET_BLOG_COUNT))
+const { data: blogCount } = useSanityQuery(GET_BLOG_COUNT)
 
-const totalPages = computed(() => {
-  return blogCount.value / itemsPerPage
-})
+const totalPages = blogCount.value / itemsPerPage
 
 // Calculate offset and limit based on current page
 const offset = computed(() => {
   return (currentPage.value - 1) * itemsPerPage
 })
-const limit = itemsPerPage
 
-const goToPage = async (index) => {
-  currentPage.value = index
-  router.push({ query: { page: index } })
-
-  const GET_BLOG = groq`*[_type == "blog"] | order(_createdAt desc)[${offset.value}...${
-    offset.value + limit
-  }]
+const GET_BLOG = groq`*[_type == "blog"]|order(_createdAt desc)[$offset...$limit]
   {
     ...,
     "videoUrl": video.asset->url,
   }
-  `
-  const { data } = await useAsyncData('blog', () => sanity.fetch(GET_BLOG))
-  blog.value = data.value
+`
 
-  // window.scrollTo(0, 0)
+blog.value = await sanity.fetch(GET_BLOG, { offset: offset.value, limit: itemsPerPage })
+
+watch(() => currentPage.value, async (data) => {
+  tl.to($pagination.value, { opacity: 0, duration: 0 })
+
+  tl.to($blogPage.value,
+    {
+      opacity: 0,
+      duration: 0.5,
+      onComplete: async () => {
+        goToPage(data)
+        await wait(500)
+        tl.to($blogPage.value, { opacity: 1, duration: 0.5 })
+      }
+    }
+  )
+
+  tl.to($pagination.value, { opacity: 1, duration: 0.5 })
+})
+
+const changePage = (index) => {
+  currentPage.value = index
 }
 
-goToPage(currentPage.value)
+const goToPage = async (index) => {
+  window.scrollTo(0, 0)
+  currentPage.value = index
+  router.push({ query: { page: index } })
 
-onMounted(() => {
-  $ctx.value = gsap.context((self) => {
-    const blog = self.selector('.BlogList')
-    const pagination = self.selector('.pagination')
-
-    tl.to(blog, {
-      delay: 1,
-      duration: 1,
-      autoAlpha: 1,
-      ease: 'power3.out',
-    })
-    tl.to(pagination, {
-      delay: 0,
-      duration: 1,
-      autoAlpha: 1,
-      ease: 'power3.out',
-    })
-  }, $blogPage.value)
-})
-
-onBeforeUnmount(() => {
-  $ctx.value.revert()
-})
+  blog.value = await sanity.fetch(GET_BLOG, { offset: offset.value, limit: itemsPerPage })
+}
 </script>
 
 <template>
@@ -82,13 +76,14 @@ onBeforeUnmount(() => {
       <Meta name="description" content="Contact page description" />
     </Head>
     <BlogList :blog="blog" :page="currentPage" />
-    <!-- <section class="pagination">
+    <!-- Uncomment this later -->
+    <!-- <section class="pagination" ref="$pagination">
       <GridContainer>
         <div class="pagination__container">
           <button
             class="pagination__button pagination__button--previous"
             v-if="currentPage !== 1"
-            @click="goToPage(currentPage - 1)"
+            @click="changePage(currentPage - 1)"
           >
             Previous
           </button>
@@ -101,7 +96,7 @@ onBeforeUnmount(() => {
           <button
             class="pagination__button pagination__button--next"
             v-if="currentPage !== totalPages"
-            @click="goToPage(currentPage + 1)"
+            @click="changePage(currentPage + 1)"
           >
             Next
           </button>
@@ -110,7 +105,7 @@ onBeforeUnmount(() => {
             <button
               class="pagination__page"
               v-if="currentPage - 1 > 0"
-              @click="goToPage(currentPage - 1)"
+              @click="changePage(currentPage - 1)"
             >
               {{ currentPage - 1 < 10 ? `0${currentPage - 1}` : currentPage - 1 }}
             </button>
@@ -120,21 +115,21 @@ onBeforeUnmount(() => {
             <button
               class="pagination__page"
               v-if="currentPage !== totalPages"
-              @click="goToPage(currentPage + 1)"
+              @click="changePage(currentPage + 1)"
             >
               {{ currentPage + 1 < 10 ? `0${currentPage + 1}` : currentPage + 1 }}
             </button>
             <button
               class="pagination__page"
               v-if="currentPage + 1 < totalPages"
-              @click="goToPage(currentPage + 1)"
+              @click="changePage(currentPage + 1)"
             >
               ...
             </button>
             <button
               class="pagination__page"
               v-if="currentPage + 1 < totalPages"
-              @click="goToPage(totalPages)"
+              @click="changePage(totalPages)"
             >
               {{ totalPages < 10 ? `0${totalPages}` : totalPages }}
             </button>
@@ -151,7 +146,6 @@ onBeforeUnmount(() => {
     padding-top: 12rem;
     padding-bottom: 12rem;
     font-size: $desktop-list;
-    opacity: 0;
 
     @include viewport-480 {
       margin-top: 9rem;

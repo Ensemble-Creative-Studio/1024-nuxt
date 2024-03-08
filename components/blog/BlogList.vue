@@ -65,7 +65,6 @@ const { isMobile } = useDevice()
   @include grid(12, 1fr, 1, 0);
   padding: 0 2rem;
   padding-top: 12rem;
-  opacity: 0;
   overflow: hidden;
 
   @include viewport-480 {

@@ -3,7 +3,7 @@ const $projects = ref(null);
 
 const sanity = useSanity();
 
-const GET_PROJECTS = groq`*[_type == "projects" && (hideProject == false || !defined(hideProject))]|order(orderRank)
+const GET_PROJECTS = groq`*[_type == "projects" && (hideProject == false || !defined(hideProject))] | order(orderRank)
   {
     ...,
     categories[] -> {
