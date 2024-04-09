@@ -23,11 +23,14 @@ const query = groq`*[_type == "home"][0]
 const sanity = useSanity()
 const { data } = await useAsyncData('home', () => sanity.fetch(query))
 const home = data.value
+
+const forceRerenderKey = ref(0);
+isMobile ? forceRerenderKey.value++ : forceRerenderKey.value;
 </script>
 
 <template>
   <div class="index">
-    <Head>
+    <Head :key="forceRerenderKey">
       <Title>1024</Title>
       <Meta name="description" content="1024 architecture website" />
     </Head>
