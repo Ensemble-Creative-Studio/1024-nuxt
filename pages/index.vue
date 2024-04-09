@@ -23,7 +23,6 @@ const query = groq`*[_type == "home"][0]
 const sanity = useSanity()
 const { data } = await useAsyncData('home', () => sanity.fetch(query))
 const home = data.value
-console.log(isMobile);
 </script>
 
 <template>
@@ -32,13 +31,13 @@ console.log(isMobile);
       <Title>1024</Title>
       <Meta name="description" content="1024 architecture website" />
     </Head>
-    <MobileFeaturedProjects
-      v-if="isMobile"
+    <FeaturedProjects
       :baseline="home.baseline"
       :firstProject="home.firstProject"
       :projects="home.featuredProjects"
+      v-if="!isMobile"
     />
-    <FeaturedProjects
+    <MobileFeaturedProjects
       v-else
       :baseline="home.baseline"
       :firstProject="home.firstProject"
