@@ -32,13 +32,13 @@ console.log(isMobile);
       <Title>1024</Title>
       <Meta name="description" content="1024 architecture website" />
     </Head>
-    <FeaturedProjects
+    <MobileFeaturedProjects
+      v-if="isMobile"
       :baseline="home.baseline"
       :firstProject="home.firstProject"
       :projects="home.featuredProjects"
-      v-if="!isMobile"
     />
-    <MobileFeaturedProjects
+    <FeaturedProjects
       v-else
       :baseline="home.baseline"
       :firstProject="home.firstProject"
