@@ -38,12 +38,6 @@ $viewport-1600: 1601px;
   }
 }
 
-@mixin viewport-480 {
-  @media screen and (max-width: $viewport-480) {
-    @content;
-  }
-}
-
 @mixin viewport-768 {
   @media screen and (max-width: $viewport-768) {
     @content;

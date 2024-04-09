@@ -23,6 +23,7 @@ const query = groq`*[_type == "home"][0]
 const sanity = useSanity()
 const { data } = await useAsyncData('home', () => sanity.fetch(query))
 const home = data.value
+console.log(isMobile);
 </script>
 
 <template>
