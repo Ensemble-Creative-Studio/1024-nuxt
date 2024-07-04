@@ -1,6 +1,7 @@
 <script setup>
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useWindowWidth } from '~/utils/useWindowWidth.js';
 
 const { isMobile } = useDevice()
 
@@ -129,12 +130,22 @@ onBeforeUnmount(() => {
 
   removeEventListener('scroll', handleScroll)
 })
+
+const { windowWidth } = useWindowWidth();
+const FeaturedProjectsClass = computed(() => {
+  return windowWidth.value < 768 ? 'MobileFeaturedProjects' : 'FeaturedProjects';
+});
+const HeroFooterClass = computed(() => {
+  return windowWidth.value < 768 ? 'MobileFeaturedProjects__footer' : 'FeaturedProject hero';
+});
+
+
 </script>
 
 <template>
-  <div class="FeaturedProjects" ref="$featuredProjects">
+  <div :class="FeaturedProjectsClass" ref="$featuredProjects">
     <FeaturedProject :project="firstProject" />
-    <div class="FeaturedProject hero" v-if="!isMobile" ref="$baseline">
+    <div :class="HeroFooterClass" v-if="!isMobile" ref="$baseline">
       <GridContainer>
         <h1 class="title">
           <span class="title__chunk" v-for="(word, index) in splitBaseline" :key="index">
