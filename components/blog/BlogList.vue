@@ -1,63 +1,71 @@
 <script setup>
-import { Swiper, SwiperSlide } from 'swiper/vue'
-import 'swiper/css'
+	import { Swiper, SwiperSlide } from "swiper/vue"
+	import "swiper/css"
 
-const props = defineProps({
-  blog: [Object],
-  page: [Number],
-})
+	const props = defineProps({
+		blog: [ Object ],
+		page: [ Number ],
+	})
 
-const { isMobile } = useDevice()
+	const { isMobile } = useDevice()
 </script>
 
 <template>
-  <ul class="BlogList">
-    <li class="item" v-for="item in blog">
-      <div class="item__container">
-        <VideoPlayer
-          v-if="item.mainVideoUrl"
-          :vimeoUrl="item.mainVideoUrl"
-          :downloadUrl="item.mainVideoDownloadUrl"
-          :quality="isMobile ? 'sd' : 'hd'"
-        />
-        <swiper
-          :slides-per-view="1.1"
-          :space-between="0"
-          :grab-cursor="true"
-          :breakpoints="{
-            480: {
-              slidesPerView: 1,
-              spaceBetween: 10,
-              freeMode: false,
-            },
-          }"
-          v-else-if="item.gallery?.medias?.length > 1"
-        >
-          <swiper-slide v-for="media in item.gallery.medias">
-            <SanityImage :asset-id="media.asset._ref" auto="format" :q="75" :key="media._id" />
-          </swiper-slide>
-        </swiper>
-        <SanityImage
-          v-else-if="item.mainImage"
-          :asset-id="item.mainImage.asset._ref"
-          auto="format"
-          :q="75"
-        />
-        <NuxtLink
-          class="item__link"
-          :to="{ name: 'blog-slug', params: { slug: item.slug.current } }"
-          :key="item._id"
-        >
-          <div class="item__meta">
-            <h3 class="item__title">{{ item.title }}</h3>
-            <p class="item__excerpt">
-              {{ item.excerpt }}
-            </p>
-          </div>
-        </NuxtLink>
-      </div>
-    </li>
-  </ul>
+	<ul class="BlogList">
+		<li class="item"
+			v-for="item in blog"
+			:key="item._id"
+		>
+			<div class="item__container">
+				<VideoPlayer
+					v-if="item.mainVideoUrl"
+					:vimeoUrl="item.mainVideoUrl"
+					:downloadUrl="item.mainVideoDownloadUrl"
+				/>
+				<swiper
+					:slides-per-view="1.1"
+					:space-between="0"
+					:grab-cursor="true"
+					:breakpoints="{
+						480: {
+							slidesPerView: 1,
+							spaceBetween: 10,
+							freeMode: false,
+						},
+					}"
+					v-else-if="item.gallery?.medias?.length > 1"
+				>
+					<swiper-slide
+						v-for="media in item.gallery.medias"
+						:key="media._id"
+					>
+						<SanityImage :asset-id="media.asset._ref"
+							auto="format"
+							:q="75"
+							:key="media._id" />
+					</swiper-slide>
+				</swiper>
+				<SanityImage
+					v-else-if="item.mainImage"
+					:asset-id="item.mainImage.asset._ref"
+					auto="format"
+					:q="75"
+				/>
+				<NuxtLink
+					class="item__link"
+					:to="{ name: 'blog-slug', params: { slug: item.slug.current } }"
+					:key="item._id"
+				>
+					<div class="item__meta">
+						<h3 class="item__title">{{ item.title }}</h3>
+						<p class="item__excerpt">
+							{{ item.excerpt }}
+						</p>
+					</div>
+				</NuxtLink>
+			</div>
+		</li>
+	</ul>
 </template>
 
 <style lang="scss">

@@ -1,24 +1,26 @@
 <script setup>
-const isNavActive = useState('isNavActive')
+	const isNavActive = useState("isNavActive")
 
-function toggleNav() {
-  isNavActive.value = !isNavActive.value
-}
+	function toggleNav() {
+		isNavActive.value = !isNavActive.value
+	}
 </script>
 
 <template>
-  <header class="SiteHeader">
-    <SiteLogo />
-    <div :class="[isNavActive && 'menu-icon--active', 'menu-icon']" @click="toggleNav()">
-      <input class="menu-icon__checkbox" type="checkbox" />
-      <div class="burger">
-        <span class="burger__bar burger__bar--top"></span>
-        <span class="burger__bar burger__bar--right"></span>
-        <span class="burger__bar burger__bar--bottom"></span>
-        <span class="burger__bar burger__bar--left"></span>
-      </div>
-    </div>
-  </header>
+	<header class="SiteHeader">
+		<SiteLogo />
+		<div :class="[isNavActive && 'menu-icon--active', 'menu-icon']"
+			@click="toggleNav()">
+			<input class="menu-icon__checkbox"
+				type="checkbox" />
+			<div class="burger">
+				<span class="burger__bar burger__bar--top"></span>
+				<span class="burger__bar burger__bar--right"></span>
+				<span class="burger__bar burger__bar--bottom"></span>
+				<span class="burger__bar burger__bar--left"></span>
+			</div>
+		</div>
+	</header>
 </template>
 
 <style lang="scss">
@@ -115,7 +117,7 @@ background-color:black;
     .burger {
       &__bar {
         &--top {
-      
+
                  transform: translateY(0);
         }
 

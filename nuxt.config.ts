@@ -5,20 +5,11 @@ const sanityConfig = {
 }
 
 const config: NuxtConfig & { sanity: typeof sanityConfig } = {
-  modules: ['@nuxtjs/sanity', '@nuxtjs/device'],
+  modules: ['@nuxtjs/sanity', '@nuxtjs/device', 'nuxt-lazy-load'],
   plugins: [
-    '~/plugins/sanity-image-builder.js', // Add this line
+    '~/plugins/sanity-image-builder.js',
   ],
   sanity: sanityConfig,
-  // proxy: {
-  //   proxies: {
-  //     '/api': {
-  //       target: 'https://player.vimeo.com/video/',
-  //       changeOrigin: true,
-  //       rewrite: (path: any) => path.replace(/^\/api/, ''),
-  //     },
-  //   },
-  // },
   css: ['@/assets/scss/main/index.scss'],
   vite: {
     css: {

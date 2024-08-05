@@ -1,83 +1,86 @@
 <script setup>
-import gsap from 'gsap'
-import { wait } from './../../utils/wait'
+	import gsap from "gsap"
+	import { wait } from "./../../utils/wait"
 
-const sanity = useSanity()
-const router = useRouter()
+	const sanity = useSanity()
+	const router = useRouter()
 
-const $ctx = ref()
-const $blogPage = ref()
-const $pagination = ref()
+	const $ctx = ref()
+	const $blogPage = ref()
+	const $pagination = ref()
 
-const tl = gsap.timeline()
-const blog = ref([])
+	const tl = gsap.timeline()
+	const blog = ref([])
 
-const itemsPerPage = 3
-const currentPage = ref(1)
+	const itemsPerPage = 3
+	const currentPage = ref(1)
 
-// if (router.currentRoute.value.query.page) {
-//   currentPage.value = parseInt(router.currentRoute.value.query.page)
-// }
+	// if (router.currentRoute.value.query.page) {
+	//   currentPage.value = parseInt(router.currentRoute.value.query.page)
+	// }
 
-const GET_BLOG_COUNT = groq`count(*[_type == 'blog'])`
-const { data: blogCount } = useSanityQuery(GET_BLOG_COUNT)
+	const GET_BLOG_COUNT = groq`count(*[_type == 'blog'])`
+	const { data: blogCount } = useSanityQuery(GET_BLOG_COUNT)
 
-const totalPages = blogCount.value / itemsPerPage
+	const totalPages = blogCount.value / itemsPerPage
 
-// Calculate offset and limit based on current page
-const offset = computed(() => {
-  return (currentPage.value - 1) * itemsPerPage
-})
+	// Calculate offset and limit based on current page
+	const offset = computed(() => {
+		return (currentPage.value - 1) * itemsPerPage
+	})
 
-const GET_BLOG = groq`*[_type == "blog"]|order(_createdAt desc)[$offset...$limit]
+	const GET_BLOG = groq`*[_type == "blog"]|order(_createdAt desc)[$offset...$limit]
   {
     ...,
     "videoUrl": video.asset->url,
   }
 `
 
-blog.value = await sanity.fetch(GET_BLOG, { offset: offset.value, limit: itemsPerPage })
+	blog.value = await sanity.fetch(GET_BLOG, { offset: offset.value, limit: itemsPerPage })
 
-watch(() => currentPage.value, async (data) => {
-  tl.to($pagination.value, { opacity: 0, duration: 0 })
+	watch(() => currentPage.value, async (data) => {
+		tl.to($pagination.value, { opacity: 0, duration: 0 })
 
-  tl.to($blogPage.value,
-    {
-      opacity: 0,
-      duration: 0.5,
-      onComplete: async () => {
-        goToPage(data)
-        await wait(500)
-        tl.to($blogPage.value, { opacity: 1, duration: 0.5 })
-      }
-    }
-  )
+		tl.to($blogPage.value,
+			{
+				opacity: 0,
+				duration: 0.5,
+				onComplete: async () => {
+					goToPage(data)
+					await wait(500)
+					tl.to($blogPage.value, { opacity: 1, duration: 0.5 })
+				}
+			}
+		)
 
-  tl.to($pagination.value, { opacity: 1, duration: 0.5 })
-})
+		tl.to($pagination.value, { opacity: 1, duration: 0.5 })
+	})
 
-const changePage = (index) => {
-  currentPage.value = index
-}
+	const changePage = (index) => {
+		currentPage.value = index
+	}
 
-const goToPage = async (index) => {
-  window.scrollTo(0, 0)
-  currentPage.value = index
-  router.push({ query: { page: index } })
+	const goToPage = async (index) => {
+		window.scrollTo(0, 0)
+		currentPage.value = index
+		router.push({ query: { page: index } })
 
-  blog.value = await sanity.fetch(GET_BLOG, { offset: offset.value, limit: itemsPerPage })
-}
+		blog.value = await sanity.fetch(GET_BLOG, { offset: offset.value, limit: itemsPerPage })
+	}
 </script>
 
 <template>
-  <div class="blog" ref="$blogPage">
-    <Head>
-      <Title>1024 | Blog</Title>
-      <Meta name="description" content="Contact page description" />
-    </Head>
-    <BlogList :blog="blog" :page="currentPage" />
-    <!-- Uncomment this later -->
-    <!-- <section class="pagination" ref="$pagination">
+	<div class="blog"
+		ref="$blogPage">
+		<Head>
+			<Title>1024 | Blog</Title>
+			<Meta name="description"
+				content="Contact page description" />
+		</Head>
+		<BlogList :blog="blog"
+			:page="currentPage" />
+		<!-- Uncomment this later -->
+		<!-- <section class="pagination" ref="$pagination">
       <GridContainer>
         <div class="pagination__container">
           <button
@@ -137,7 +140,7 @@ const goToPage = async (index) => {
         </div>
       </GridContainer>
     </section> -->
-  </div>
+	</div>
 </template>
 
 <style lang="scss" scoped>

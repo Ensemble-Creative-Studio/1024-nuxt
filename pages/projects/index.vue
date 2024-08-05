@@ -1,232 +1,238 @@
 <script setup>
-const $projects = ref(null);
+	const $projects = ref(null)
 
-const sanity = useSanity();
+	const sanity = useSanity()
 
-const GET_PROJECTS = groq`*[_type == "projects" && (hideProject == false || !defined(hideProject))] | order(orderRank)
-  {
-    ...,
-    categories[] -> {
-      title,
-      slug
-    },
-    "categoriesTitles": categories[]->title,
-    "videoUrl": video.asset->url,
-  }
-`;
+	const GET_PROJECTS = groq`*[_type == "projects"
+	&& (hideProject == false
+	|| !defined(hideProject))] | order(orderRank)
+	{
+		...,
+		categories[] -> {
+			title,
+			slug
+		},
+		"categoriesTitles": categories[]->title,
+		"videoUrl": video.asset->url,
+	}
+`
 
-let projects = await useAsyncData("projects", () => sanity.fetch(GET_PROJECTS));
-projects = projects.data.value.filter((project) => {
-  return project.releaseDate && project.categories;
-});
+	let projects = await useAsyncData("projects", () => sanity.fetch(GET_PROJECTS))
+	projects = projects.data.value.filter((project) => {
+		return project.releaseDate && project.categories
+	})
 
-const GET_CATEGORIES = groq`*[_type == "categories"]
+	const GET_CATEGORIES = groq`*[_type == "categories"]
   {
     title,
     "projectsInside": *[_type == "projects" && references(^._id)]
   }
-`;
-let categories = await useAsyncData("categories", () =>
-  sanity.fetch(GET_CATEGORIES)
-);
-categories = categories.data.value;
-categories.forEach((category) => {
-  category.projectsInside = category.projectsInside.filter((project) => {
-    return project.releaseDate && project.categories;
-  });
-});
+`
+	let categories = await useAsyncData("categories", () =>
+		sanity.fetch(GET_CATEGORIES)
+	)
+	categories = categories.data.value
+	categories.forEach((category) => {
+		category.projectsInside = category.projectsInside.filter((project) => {
+			return project.releaseDate && project.categories
+		})
+	})
 
-// Filters
-const tags = ref([]);
-const all = ref(true);
-const $filters = ref(null);
+	// Filters
+	const tags = ref([])
+	const all = ref(true)
+	const $filters = ref(null)
 
-function toggleAll() {
-  tags.value = [];
-  all.value = true;
+	function toggleAll() {
+		tags.value = []
+		all.value = true
 
-  // Remove filters styles
-  $filters.value.map((element) => {
-    element.classList.remove("toggled");
-  });
-}
+		// Remove filters styles
+		$filters.value.map((element) => {
+			element.classList.remove("toggled")
+		})
+	}
 
-function toggle(event) {
-  // Get the clicked tag
-  const element = event.target;
-  const text = element.firstChild.textContent.trim();
+	function toggle(event) {
+		// Get the clicked tag
+		const element = event.target
+		const text = element.firstChild.textContent.trim()
 
-  // Add or remove it in the tags array
-  if (!tags.value.includes(text)) {
-    element.classList.add("toggled");
-    tags.value.push(text);
-  } else {
-    tags.value.splice(tags.value.indexOf(text), 1);
-    element.classList.remove("toggled");
-  }
+		// Add or remove it in the tags array
+		if (!tags.value.includes(text)) {
+			element.classList.add("toggled")
+			tags.value.push(text)
+		} else {
+			tags.value.splice(tags.value.indexOf(text), 1)
+			element.classList.remove("toggled")
+		}
 
-  // Set 'all' to true if there is no tags left in the array
-  all.value = tags.value.length === 0 ? true : false;
-}
+		// Set 'all' to true if there is no tags left in the array
+		all.value = tags.value.length === 0 ? true : false
+	}
 
-const filteredProjects = computed(() => {
-  if (all.value === true) {
-    return projects;
-  } else {
-    function isTagged(element) {
-      return tags.value.includes(element);
-    }
-    return projects.filter((project) =>
-      project.categoriesTitles?.some(isTagged)
-    );
-  }
-});
+	const filteredProjects = computed(() => {
+		if (all.value === true) {
+			return projects
+		} else {
+			return projects.filter((project) =>
+				project.categoriesTitles?.some(isTagged)
+			)
+		}
+	})
 
-// Display mode
-const displayMode = ref("grid");
-const gridModeCols = ref(6);
-const $projectsGrid = ref(null);
-const $projectsList = ref(null);
+	function isTagged(element) {
+		return tags.value.includes(element)
+	}
 
-function setGridMode(value) {
-  window.scrollTo(0, 0);
-  displayMode.value = "grid";
-  gridModeCols.value = value;
-}
+	// Display mode
+	const displayMode = ref("grid")
+	const gridModeCols = ref(6)
+	const $projectsGrid = ref(null)
+	const $projectsList = ref(null)
 
-function setListMode() {
-  window.scrollTo(0, 0);
-  displayMode.value = "list";
-  gridModeCols.value = 4;
-}
+	function setGridMode(value) {
+		window.scrollTo(0, 0)
+		displayMode.value = "grid"
+		gridModeCols.value = value
+	}
 
-const showMobileFilters = ref(false);
+	function setListMode() {
+		window.scrollTo(0, 0)
+		displayMode.value = "list"
+		gridModeCols.value = 4
+	}
 
-function toggleFilters() {
-  showMobileFilters.value = !showMobileFilters.value;
-}
+	const showMobileFilters = ref(false)
 
-// Sorting
-const order = ref("selection"); // Setting default to 'selection'
+	function toggleFilters() {
+		showMobileFilters.value = !showMobileFilters.value
+	}
 
-function setOrder(value) {
-  // Directly set the order based on the button clicked
-  switch (value) {
-    case "date":
-      order.value = "byDate";
-      break;
-    case "name":
-      order.value = "byName";
-      break;
-    case "selection":
-      order.value = "selection";
-      break;
-    default:
-      order.value = "selection";
-      break;
-  }
-}
+	// Sorting
+	const order = ref("selection") // Setting default to 'selection'
 
-const finalProjects = computed(() => {
-  let sortedProjects = [...filteredProjects.value]; // Create a copy to avoid mutating the original array
+	function setOrder(value) {
+		// Directly set the order based on the button clicked
+		switch (value) {
+		case "date":
+			order.value = "byDate"
+			break
+		case "name":
+			order.value = "byName"
+			break
+		case "selection":
+			order.value = "selection"
+			break
+		default:
+			order.value = "selection"
+			break
+		}
+	}
 
-  switch (order.value) {
-    case "byName":
-      sortedProjects.sort((a, b) => a.title.localeCompare(b.title));
-      break;
-    case "byDate":
-      sortedProjects.sort(
-        (a, b) => parseInt(b.releaseDate) - parseInt(a.releaseDate)
-      );
-      break;
-    case "selection":
-      // Reapply the default sorting logic, assuming it's based on orderRank
-      sortedProjects.sort((a, b) => a.orderRank - b.orderRank);
-      break;
-    default:
-      // Handle any other unexpected case (if needed)
-      break;
-  }
+	const finalProjects = computed(() => {
+		let sortedProjects = [ ...filteredProjects.value ] // Create a copy to avoid mutating the original array
 
-  return sortedProjects;
-});
+		switch (order.value) {
+		case "byName":
+			sortedProjects.sort((a, b) => a.title.localeCompare(b.title))
+			break
+		case "byDate":
+			sortedProjects.sort(
+				(a, b) => parseInt(b.releaseDate) - parseInt(a.releaseDate)
+			)
+			break
+		case "selection":
+			// Reapply the default sorting logic, assuming it's based on orderRank
+			sortedProjects.sort((a, b) => a.orderRank - b.orderRank)
+			break
+		default:
+			// Handle any other unexpected case (if needed)
+			break
+		}
+
+		return sortedProjects
+	})
 </script>
 
 <template>
-  <div class="projects" ref="$projects">
-    <Head>
-      <Title>1024 | Work</Title>
-      <Meta name="description" content="1024 architecture website" />
-    </Head>
-    <ProjectsList
-      v-if="displayMode === 'list'"
-      :projects="finalProjects"
-      :categories="categories"
-      :displayMode="displayMode"
-      :order="order"
-      ref="$projectsList"
-    />
-    <ProjectsGrid
-      v-if="displayMode === 'grid'"
-      :projects="finalProjects"
-      :categories="categories"
-      :displayMode="displayMode"
-      :gridModeCols="gridModeCols"
-      :order="order"
-      ref="$projectsGrid"
-    />
-    <div class="mobile-bar">
-      <button class="mobile-bar__filters" @click="toggleFilters()">
-        {{ showMobileFilters ? "Close" : "Filter" }}
-      </button>
-      <div class="mobile-bar__display-mode">
-        <button
-          :class="[
-            displayMode === 'grid' && 'mobile-bar__grid--active',
-            'mobile-bar__grid',
-          ]"
-          @click="setGridMode(4)"
-        >
-          Grid
-        </button>
-        <button
-          :class="[
-            displayMode === 'list' && 'mobile-bar__list--active',
-            'mobile-bar__list',
-          ]"
-          @click="setListMode()"
-        >
-          List
-        </button>
-      </div>
-    </div>
-    <div :class="[showMobileFilters && 'container--active', 'container']">
-      <GridContainer>
-        <ul class="display-mode">
-          <!-- <li
+	<div class="projects"
+		ref="$projects">
+		<Head>
+			<Title>1024 | Work</Title>
+			<Meta name="description"
+				content="1024 architecture website" />
+		</Head>
+		<ProjectsList
+			v-if="displayMode === 'list'"
+			:projects="finalProjects"
+			:categories="categories"
+			:displayMode="displayMode"
+			:order="order"
+			ref="$projectsList"
+		/>
+		<ProjectsGrid
+			v-if="displayMode === 'grid'"
+			:projects="finalProjects"
+			:categories="categories"
+			:displayMode="displayMode"
+			:gridModeCols="gridModeCols"
+			:order="order"
+			ref="$projectsGrid"
+		/>
+		<div class="mobile-bar">
+			<button class="mobile-bar__filters"
+				@click="toggleFilters()">
+				{{ showMobileFilters ? "Close" : "Filter" }}
+			</button>
+			<div class="mobile-bar__display-mode">
+				<button
+					:class="[
+						displayMode === 'grid' && 'mobile-bar__grid--active',
+						'mobile-bar__grid',
+					]"
+					@click="setGridMode(4)"
+				>
+					Grid
+				</button>
+				<button
+					:class="[
+						displayMode === 'list' && 'mobile-bar__list--active',
+						'mobile-bar__list',
+					]"
+					@click="setListMode()"
+				>
+					List
+				</button>
+			</div>
+		</div>
+		<div :class="[showMobileFilters && 'container--active', 'container']">
+			<GridContainer>
+				<ul class="display-mode">
+					<!-- <li
             :class="[displayMode === 'grid' && 'display-mode__grid--active', 'display-mode__grid']"
             @click="setGridMode(4)"
           >
-     
+
           </li> -->
-          <li
-            :class="[
-              displayMode === 'grid' &&
-                gridModeCols === 6 &&
-                'display-mode__three-grid--active',
-              'display-mode__three-grid',
-            ]"
-            @click="setGridMode(6)"
-          >
-            <SixItemsGridIcon
-              :color="
-                displayMode === 'grid' && gridModeCols === 6
-                  ? '#ffffff'
-                  : '#727272'
-              "
-            />
-          </li>
-          <!-- <li
+					<li
+						:class="[
+							displayMode === 'grid' &&
+								gridModeCols === 6 &&
+								'display-mode__three-grid--active',
+							'display-mode__three-grid',
+						]"
+						@click="setGridMode(6)"
+					>
+						<SixItemsGridIcon
+							:color="
+								displayMode === 'grid' && gridModeCols === 6
+									? '#ffffff'
+									: '#727272'
+							"
+						/>
+					</li>
+					<!-- <li
             :class="[
               displayMode === 'grid' && gridModeCols === 4 && 'display-mode__four-grid--active',
               'display-mode__four-grid',
@@ -237,67 +243,72 @@ const finalProjects = computed(() => {
               :color="displayMode === 'grid' && gridModeCols === 4 ? '#ffffff' : '#727272'"
             />
           </li> -->
-          <li
-            :class="[
-              displayMode === 'list' && 'display-mode__list--active',
-              'display-mode__list',
-            ]"
-            @click="setListMode()"
-          >
-          <LineIcon
-          :color="
-            displayMode === 'list'
-              ? '#ffffff'
-              : '#727272'
-          "
-        />
-          </li>
-        </ul>
-        <ul class="order" ref="$order">
-          <li
-            :class="[order === 'byName' && 'order-name--active', 'order-name']"
-          >
-            <button @click="setOrder('name')">Name</button>
-          </li>
-          <li
-            :class="[order === 'byDate' && 'order-date--active', 'order-date']"
-          >
-            <button @click="setOrder('date')">Date</button>
-          </li>
-          <li
-            :class="[
-              order === 'selection' && 'order-selection--active',
-              'order-selection',
-            ]"
-          >
-            <button @click="setOrder('selection')">Selection</button>
-          </li>
-        </ul>
+					<li
+						:class="[
+							displayMode === 'list' && 'display-mode__list--active',
+							'display-mode__list',
+						]"
+						@click="setListMode()"
+					>
+						<LineIcon
+							:color="
+								displayMode === 'list'
+									? '#ffffff'
+									: '#727272'
+							"
+						/>
+					</li>
+				</ul>
+				<ul class="order"
+					ref="$order">
+					<li
+						:class="[order === 'byName' && 'order-name--active', 'order-name']"
+					>
+						<button @click="setOrder('name')">Name</button>
+					</li>
+					<li
+						:class="[order === 'byDate' && 'order-date--active', 'order-date']"
+					>
+						<button @click="setOrder('date')">Date</button>
+					</li>
+					<li
+						:class="[
+							order === 'selection' && 'order-selection--active',
+							'order-selection',
+						]"
+					>
+						<button @click="setOrder('selection')">Selection</button>
+					</li>
+				</ul>
 
-        <ul class="filters">
-          <li class="filters__all">
-            <button @click="toggleAll()" :class="[all && 'toggled', 'all']">
-              <span class="all__label">All&nbsp;</span>
-              <span class="all__length">{{ projects.length }}</span>
-            </button>
-          </li>
-          <li class="filters__category" v-for="category in categories">
-            <button
-              class="category"
-              @click="toggle($event)"
-              ref="$filters"
-              v-if="category.projectsInside.length > 0"
-            >
-              <span class="category__label">{{ category.title }}&nbsp;</span>
-              <span class="category__length">
-                {{ category.projectsInside.length }}
-              </span>
-            </button>
-          </li>
-        </ul>
-      </GridContainer>
-    </div>
-  </div>
+				<ul class="filters">
+					<li class="filters__all">
+						<button @click="toggleAll()"
+							:class="[all && 'toggled', 'all']">
+							<span class="all__label">All&nbsp;</span>
+							<span class="all__length">{{ projects.length }}</span>
+						</button>
+					</li>
+					<li class="filters__category"
+						v-for="(category, i) in categories"
+						:key="i">
+						>
+						<button
+							class="category"
+							@click="toggle($event)"
+							ref="$filters"
+							v-if="category.projectsInside.length > 0"
+						>
+							<span class="category__label">{{ category.title }}&nbsp;</span>
+							<span class="category__length">
+								{{ category.projectsInside.length }}
+							</span>
+						</button>
+					</li>
+				</ul>
+			</GridContainer>
+		</div>
+	</div>
 </template>
 
 <style lang="scss" scoped>

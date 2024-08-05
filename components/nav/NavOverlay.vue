@@ -1,13 +1,14 @@
 <script setup>
-const isNavActive = useState('isNavActive')
+	const isNavActive = useState("isNavActive")
 
-function closeNav() {
-  isNavActive.value = false
-}
+	function closeNav() {
+		isNavActive.value = false
+	}
 </script>
 
 <template>
-  <div class="NavOverlay" @mouseover="closeNav"></div>
+	<div class="NavOverlay"
+		@mouseover="closeNav"></div>
 </template>
 
 <style lang="scss">

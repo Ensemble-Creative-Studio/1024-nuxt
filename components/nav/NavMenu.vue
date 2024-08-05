@@ -1,79 +1,98 @@
 <script setup>
-const props = defineProps({
-  navMenu: Object,
-})
+	const props = defineProps({
+		navMenu: Object,
+	})
 
-const isNavActive = useState('isNavActive')
+	const isNavActive = useState("isNavActive")
 
-function closeNav() {
-  isNavActive.value = false
-}
+	function closeNav() {
+		isNavActive.value = false
+	}
 </script>
 
 <template>
-  <nav :class="[isNavActive && 'NavMenu--active', 'NavMenu']">
-    <div :class="[isNavActive && 'NavMenu__background--active', 'NavMenu__background']"></div>
-    <div :class="[isNavActive && 'NavMenu__main--active', 'NavMenu__main']">
-      <ul class="nav">
-        <li class="nav__item">
-          <NuxtLink class="main__link" to="/projects" @click="closeNav()">Projects</NuxtLink>
-        </li>
-           <li class="nav__item">
-          <NuxtLink class="main__link" to="/mad" @click="closeNav()">MadMapper</NuxtLink>
-        </li>
-        <li class="nav__item">
-          <NuxtLink class="main__link" to="/about" @click="closeNav()">About</NuxtLink>
-        </li>
-     
-        <li class="nav__item">
-          <NuxtLink class="main__link" to="/blog?page=1" @click="closeNav()">Blog</NuxtLink>
-        </li>
-      </ul>
-    </div>
-    <div :class="[isNavActive && 'NavMenu__secondary--active', 'NavMenu__secondary']">
-      <ul class="address">
-        <li class="address__item">{{ navMenu.address.label }}</li>
-        <li class="address__item">{{ navMenu.address.streetNo }}</li>
-        <li class="address__item">{{ navMenu.address.city }}</li>
-      </ul>
-      <ul class="annex">
-            <li class="annex__item">
-    <a class="annex__link" :href="'mailto:' + navMenu.externalLinks.requests" >Contact</a>
-        </li>
-        <li class="annex__item">
-    <a class="annex__link" :href="'mailto:' + navMenu.externalLinks.press">Press</a>
-        </li>
-        <li class="annex__item">
-    <a class="annex__link" :href="'mailto:' + navMenu.externalLinks.jobs" >Jobs / Internships
-          </a>
-        </li>
-        <li class="annex__item">
-          <NuxtLink class="annex__link" to="/cookies">Cookies</NuxtLink>
-        </li>
-        <li class="annex__item">
-          <NuxtLink class="annex__link" to="/legal">Legal Notice</NuxtLink>
-        </li>
-      </ul>
-      <ul class="social-media">
-        <li class="social-media__item">
-          <a :href="navMenu.instagram" target="blank">
-                    <img src="@/assets/img/vimeo-icon.svg" alt="" />
-          </a>
-        </li>
-        <li class="social-media__item">
-          <a :href="navMenu.vimeo" target="blank">
+	<nav :class="[isNavActive && 'NavMenu--active', 'NavMenu']">
+		<div :class="[isNavActive && 'NavMenu__background--active', 'NavMenu__background']"></div>
+		<div :class="[isNavActive && 'NavMenu__main--active', 'NavMenu__main']">
+			<ul class="nav">
+				<li class="nav__item">
+					<NuxtLink class="main__link"
+						to="/projects"
+						@click="closeNav()">Projects</NuxtLink>
+				</li>
+				<li class="nav__item">
+					<NuxtLink class="main__link"
+						to="/mad"
+						@click="closeNav()">MadMapper</NuxtLink>
+				</li>
+				<li class="nav__item">
+					<NuxtLink class="main__link"
+						to="/about"
+						@click="closeNav()">About</NuxtLink>
+				</li>
 
-            <img src="@/assets/img/facebook-icon.svg" alt="" />
-          </a>
-        </li>
-        <li class="social-media__item">
-          <a :href="navMenu.facebook" target="blank">
-                <img src="@/assets/img/instagram-icon.svg" alt="" />
-          </a>
-        </li>
-      </ul>
-    </div>
-  </nav>
+				<li class="nav__item">
+					<NuxtLink class="main__link"
+						to="/blog?page=1"
+						@click="closeNav()">Blog</NuxtLink>
+				</li>
+			</ul>
+		</div>
+		<div :class="[isNavActive && 'NavMenu__secondary--active', 'NavMenu__secondary']">
+			<ul class="address">
+				<li class="address__item">{{ navMenu.address.label }}</li>
+				<li class="address__item">{{ navMenu.address.streetNo }}</li>
+				<li class="address__item">{{ navMenu.address.city }}</li>
+			</ul>
+			<ul class="annex">
+				<li class="annex__item">
+					<a class="annex__link"
+						:href="'mailto:' + navMenu.externalLinks.requests" >Contact</a>
+				</li>
+				<li class="annex__item">
+					<a class="annex__link"
+						:href="'mailto:' + navMenu.externalLinks.press">Press</a>
+				</li>
+				<li class="annex__item">
+					<a class="annex__link"
+						:href="'mailto:' + navMenu.externalLinks.jobs" >Jobs / Internships
+					</a>
+				</li>
+				<li class="annex__item">
+					<NuxtLink class="annex__link"
+						to="/cookies">Cookies</NuxtLink>
+				</li>
+				<li class="annex__item">
+					<NuxtLink class="annex__link"
+						to="/legal">Legal Notice</NuxtLink>
+				</li>
+			</ul>
+			<ul class="social-media">
+				<li class="social-media__item">
+					<a :href="navMenu.instagram"
+						target="blank">
+						<img src="@/assets/img/vimeo-icon.svg"
+							alt="" />
+					</a>
+				</li>
+				<li class="social-media__item">
+					<a :href="navMenu.vimeo"
+						target="blank">
+
+						<img src="@/assets/img/facebook-icon.svg"
+							alt="" />
+					</a>
+				</li>
+				<li class="social-media__item">
+					<a :href="navMenu.facebook"
+						target="blank">
+						<img src="@/assets/img/instagram-icon.svg"
+							alt="" />
+					</a>
+				</li>
+			</ul>
+		</div>
+	</nav>
 </template>
 
 <style lang="scss">
@@ -197,12 +216,12 @@ $cubic: cubic-bezier(0.16, 1, 0.3, 1);
         &:not(:first-child) {
           margin-top: 0.3rem;
         }
-         &:nth-child(4) 
+         &:nth-child(4)
         {
           margin-top: 2rem;
           font-size:1.2rem
         }
-         &:nth-child(5) 
+         &:nth-child(5)
         {
                margin-top: 0.3rem;
           font-size:1.2rem

@@ -1,7 +1,7 @@
 <template>
-  <div class="BottomAnchors">
-    <slot />
-  </div>
+	<div class="BottomAnchors">
+		<slot />
+	</div>
 </template>
 
 <style lang="scss">

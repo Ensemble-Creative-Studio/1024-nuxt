@@ -1,157 +1,166 @@
 <script setup>
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+	import gsap from "gsap"
+	import { ScrollTrigger } from "gsap/ScrollTrigger"
 
-const { isMobile } = useDevice()
+	const { isMobile } = useDevice()
 
-const props = defineProps({
-  firstProject: [Object],
-  projects: [Object],
-  baseline: [String],
-})
+	const props = defineProps({
+		firstProject: [ Object ],
+		projects: [ Object ],
+		baseline: [ String ],
+	})
 
-const handleScroll = () => {
-  let scrollTop = window.scrollY
+	const handleScroll = () => {
+		let scrollTop = window.scrollY
 
-  if (scrollTop < window.innerHeight) {
-    $hero.value.style.opacity = 1 - (scrollTop / window.innerHeight) * 5
-  }
-}
+		if (scrollTop < window.innerHeight) {
+			$hero.value.style.opacity = 1 - (scrollTop / window.innerHeight) * 5
+		}
+	}
 
-const splitBaseline = computed(() => {
-  return props.baseline.split(' ')
-})
+	const splitBaseline = computed(() => {
+		return props.baseline.split(" ")
+	})
 
-const $featuredProjects = ref()
-const $ctx = ref(null)
-const $baseline = ref(null)
+	const $featuredProjects = ref()
+	const $ctx = ref(null)
+	const $baseline = ref(null)
 
-const tl = gsap.timeline()
-const allProjectFooter = ref(null);
+	const tl = gsap.timeline()
+	const allProjectFooter = ref(null)
 
-onMounted(() => {
-  // You can directly access the DOM element via allProjectFooter.value now
-      setTimeout(() => {
-  if (allProjectFooter.value) {
-    ScrollTrigger.create({
-      trigger: allProjectFooter.value,
-      start: "top bottom",
-      end: "bottom top",
-      onEnter: () => {
-        const backgroundBlack = document.querySelector('.backgroundBlack');
-        if (backgroundBlack) {
-          gsap.to(backgroundBlack, { opacity: 1, duration:0.1 });
-        }
-           setTimeout(() => {
-              if (window.scrollY + window.innerHeight >= allProjectFooter.value.offsetTop + allProjectFooter.value.offsetHeight) {
-          window.location.href = '/projects';
-        }
-         }, 800)
-      },
-      onLeaveBack: () => {
-        const backgroundBlack = document.querySelector('.backgroundBlack');
-        if (backgroundBlack) {
-          gsap.to(backgroundBlack, { opacity: 0, duration:0.1 });
-        }
-      },
-      onEnterBack: () => { // When entering back from the bottom
-        // If the footer is 100% visible, navigate to /projects
-  
-      }
-    });
-  }
-      }, 500)
-});
+	onMounted(() => {
+		// You can directly access the DOM element via allProjectFooter.value now
+		setTimeout(() => {
+			if (allProjectFooter.value) {
+				ScrollTrigger.create({
+					trigger: allProjectFooter.value,
+					start: "top bottom",
+					end: "bottom top",
+					onEnter: () => {
+						const backgroundBlack = document.querySelector(".backgroundBlack")
+						if (backgroundBlack) {
+							gsap.to(backgroundBlack, { opacity: 1, duration: 0.1 })
+						}
+						setTimeout(() => {
+							if (window.scrollY + window.innerHeight >= allProjectFooter.value.offsetTop + allProjectFooter.value.offsetHeight) {
+								window.location.href = "/projects"
+							}
+						}, 800)
+					},
+					onLeaveBack: () => {
+						const backgroundBlack = document.querySelector(".backgroundBlack")
+						if (backgroundBlack) {
+							gsap.to(backgroundBlack, { opacity: 0, duration: 0.1 })
+						}
+					},
+					onEnterBack: () => { // When entering back from the bottom
+						// If the footer is 100% visible, navigate to /projects
+
+					}
+				})
+			}
+		}, 500)
+	})
 
 
-onMounted(() => {
-  $ctx.value = gsap.context((self) => {
-    const panels = self.selector('.FeaturedProject')
-    const panelTitles = self.selector('.FeaturedProject__title')
+	onMounted(() => {
+		$ctx.value = gsap.context((self) => {
+			const panels = self.selector(".FeaturedProject")
+			const panelTitles = self.selector(".FeaturedProject__title")
 
-    // REFACTOR
-    setTimeout(() => {
-      panels.forEach((panel, i) => {
-        ScrollTrigger.create({
-          trigger: panel,
-          pin: true,
-          pinSpacing: false,
-          id: `pin-${i}`,
-          onUpdate: (self) => {
-            if (self.progress > 0.5) {
-              panel.classList.add('off')
-            } else {
-              panel.classList.remove('off')
-            }
-          },
-        })
+			// REFACTOR
+			setTimeout(() => {
+				panels.forEach((panel, i) => {
+					ScrollTrigger.create({
+						trigger: panel,
+						pin: true,
+						pinSpacing: false,
+						id: `pin-${i}`,
+						onUpdate: (self) => {
+							if (self.progress > 0.5) {
+								panel.classList.add("off")
+							} else {
+								panel.classList.remove("off")
+							}
+						},
+					})
 
-        ScrollTrigger.create({
-          trigger: panel,
-          top: '100% 100%',
-          id: `title-${i}`,
-          onEnter: () => {
-            if (panelTitles[i]) panelTitles[i].classList.add('FeaturedProject__title--active')
-          },
-        })
+					ScrollTrigger.create({
+						trigger: panel,
+						top: "100% 100%",
+						id: `title-${i}`,
+						onEnter: () => {
+							if (panelTitles[i]) panelTitles[i].classList.add("FeaturedProject__title--active")
+						},
+					})
 
-        ScrollTrigger.create({
-          trigger: $baseline.value,
-          top: '100% 200%',
-          onEnter: () => {
-            if (!isMobile) {
-              const chunks = self.selector('.title__chunk')
-              for (let i = chunks.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1))
-                ;[chunks[i], chunks[j]] = [chunks[j], chunks[i]]
-              }
-              tl.to(chunks, {
-                duration: 2.5,
-                autoAlpha: 1,
-                ease: 'power2.out',
-                stagger: 0.03,
-              })
-            }
-          },
-        })
-      })
-    }, 500)
-  }, $featuredProjects.value)
-  
-})
+					ScrollTrigger.create({
+						trigger: $baseline.value,
+						top: "100% 200%",
+						onEnter: () => {
+							if (!isMobile) {
+								const chunks = self.selector(".title__chunk")
+								for (let i = chunks.length - 1; i > 0; i--) {
+									const j = Math.floor(Math.random() * (i + 1))
+									;[ chunks[i], chunks[j] ] = [ chunks[j], chunks[i] ]
+								}
+								tl.to(chunks, {
+									duration: 2.5,
+									autoAlpha: 1,
+									ease: "power2.out",
+									stagger: 0.03,
+								})
+							}
+						},
+					})
+				})
+			}, 500)
+		}, $featuredProjects.value)
 
-onBeforeUnmount(() => {
-  ScrollTrigger.getAll().forEach((trigger) => {
-    trigger.kill()
-  })
+	})
 
-  $ctx.value.revert()
+	onBeforeUnmount(() => {
+		ScrollTrigger.getAll().forEach((trigger) => {
+			trigger.kill()
+		})
 
-  removeEventListener('scroll', handleScroll)
-})
+		$ctx.value.revert()
+
+		removeEventListener("scroll", handleScroll)
+	})
 </script>
 
 <template>
-  <div class="FeaturedProjects" ref="$featuredProjects">
-    <FeaturedProject :project="firstProject" />
-    <div class="FeaturedProject hero" v-if="!isMobile" ref="$baseline">
-      <GridContainer>
-        <h1 class="title">
-          <span class="title__chunk" v-for="(word, index) in splitBaseline" :key="index">
-            {{ word }}{{ index !== splitBaseline.length - 1 ? ' ' : '' }}
-          </span>
-        </h1>
-      </GridContainer>
-    </div>
-    <FeaturedProject :project="project" v-for="project in projects" :key="project._id" />
-    <div  class='FeaturedProject footer' ref="allProjectFooter">
-    <div class='backgroundBlack'> </div>
+	<div class="FeaturedProjects"
+		ref="$featuredProjects">
+		<FeaturedProject :project="firstProject" />
+		<div class="FeaturedProject hero"
+			v-if="!isMobile"
+			ref="$baseline">
+			<GridContainer>
+				<h1 class="title">
+					<span class="title__chunk"
+						v-for="(word, index) in splitBaseline"
+						:key="index">
+						{{ word }}{{ index !== splitBaseline.length - 1 ? ' ' : '' }}
+					</span>
+				</h1>
+			</GridContainer>
+		</div>
+		<FeaturedProject :project="project"
+			v-for="project in projects"
+			:key="project._id" />
+		<div  class='FeaturedProject footer'
+			ref="allProjectFooter">
+			<div class='backgroundBlack'> </div>
 
-    <a href='/projects' class='FeaturedProject__title'> 
-    <div class='FeaturedProject__footer'>    All Projects</div>
-    </a>
-       </div>
-  </div>
+			<a href='/projects'
+				class='FeaturedProject__title'>
+				<div class='FeaturedProject__footer'>    All Projects</div>
+			</a>
+		</div>
+	</div>
 </template>
 
 <style lang="scss">

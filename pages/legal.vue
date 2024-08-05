@@ -1,20 +1,22 @@
 <script setup>
-const query = groq`*[_type == "legal"][0]`
-const sanity = useSanity()
-const { data } = await useAsyncData('legal', () => sanity.fetch(query))
-const legal = data.value
+	const query = groq`*[_type == "legal"][0]`
+	const sanity = useSanity()
+	const { data } = await useAsyncData("legal", () => sanity.fetch(query))
+	const legal = data.value
 </script>
 
 <template>
-  <div class="legal">
-    <Head>
-      <Title>1024 | Legal</Title>
-      <Meta name="description" content="Legal page description" />
-    </Head>
-    <section class="content" v-if="legal.content">
-      <SanityContent :blocks="legal.content" />
-    </section>
-  </div>
+	<div class="legal">
+		<Head>
+			<Title>1024 | Legal</Title>
+			<Meta name="description"
+				content="Legal page description" />
+		</Head>
+		<section class="content"
+			v-if="legal.content">
+			<SanityContent :blocks="legal.content" />
+		</section>
+	</div>
 </template>
 
 <style lang="scss">

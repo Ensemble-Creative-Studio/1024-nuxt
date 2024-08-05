@@ -1,13 +1,14 @@
 <template>
-  <button class="GoBackButton" @click="goBack()">Back</button>
+	<button class="GoBackButton"
+		@click="goBack()">Back</button>
 </template>
 
 <script setup>
-const router = useRouter()
+	const router = useRouter()
 
-function goBack() {
-  router.go(-1)
-}
+	function goBack() {
+		router.go(-1)
+	}
 </script>
 
 <style lang="scss">

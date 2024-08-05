@@ -1,7 +1,7 @@
 <template>
-  <div class="GridContainer">
-    <slot />
-  </div>
+	<div class="GridContainer">
+		<slot />
+	</div>
 </template>
 
 <style lang="scss">

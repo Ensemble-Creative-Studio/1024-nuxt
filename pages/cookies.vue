@@ -1,20 +1,22 @@
 <script setup>
-const query = groq`*[_type == "cookies"][0]`
-const sanity = useSanity()
-const { data } = await useAsyncData('cookies', () => sanity.fetch(query))
-const cookies = data.value
+	const query = groq`*[_type == "cookies"][0]`
+	const sanity = useSanity()
+	const { data } = await useAsyncData("cookies", () => sanity.fetch(query))
+	const cookies = data.value
 </script>
 
 <template>
-  <div class="cookies">
-    <Head>
-      <Title>1024 | Cookies</Title>
-      <Meta name="description" content="Cookies page description" />
-    </Head>
-    <section class="content" v-if="cookies.content">
-      <SanityContent :blocks="cookies.content" />
-    </section>
-  </div>
+	<div class="cookies">
+		<Head>
+			<Title>1024 | Cookies</Title>
+			<Meta name="description"
+				content="Cookies page description" />
+		</Head>
+		<section class="content"
+			v-if="cookies.content">
+			<SanityContent :blocks="cookies.content" />
+		</section>
+	</div>
 </template>
 
 <style lang="scss">

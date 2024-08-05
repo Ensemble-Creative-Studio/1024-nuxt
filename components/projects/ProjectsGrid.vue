@@ -1,195 +1,201 @@
 <script setup>
-import gsap from 'gsap'
-import ScrollTrigger from 'gsap/ScrollTrigger';
+	import gsap from "gsap"
+	import ScrollTrigger from "gsap/ScrollTrigger"
 
-gsap.registerPlugin(ScrollTrigger) 
-const props = defineProps({
-  projects: [Object],
-  order: String,
-  displayMode: String,
-  gridModeCols: Number,
-})
+	gsap.registerPlugin(ScrollTrigger)
+	const props = defineProps({
+		projects: [ Object ],
+		order: String,
+		displayMode: String,
+		gridModeCols: Number,
+	})
 
-const $projectsGrid = ref()
-const $tl = ref()
-const $ctx = ref()
+	const $projectsGrid = ref()
+	const $tl = ref()
+	const $ctx = ref()
 
-// Define GSAP animations
-const showProjects = () => {
-  $ctx.value = gsap.context((self) => {
-    const projects = self.selector('.ProjectsGrid .item')
+	// Define GSAP animations
+	const showProjects = () => {
+		$ctx.value = gsap.context((self) => {
+			const projects = self.selector(".ProjectsGrid .item")
 
-    $tl.value = gsap.to(projects, {
-      y: 0,
-      delay: 0.5,
-      duration: 1.5,
-      autoAlpha: 1,
-      ease: 'power3.out',
-      stagger: 0.1,
-    })
-  }, $projectsGrid.value)
-}
+			$tl.value = gsap.to(projects, {
+				y: 0,
+				delay: 0.5,
+				duration: 1.5,
+				autoAlpha: 1,
+				ease: "power3.out",
+				stagger: 0.1,
+			})
+		}, $projectsGrid.value)
+	}
 
-const updateProjects = () => {
-  window.scrollTo(0, 0)
+	const updateProjects = () => {
+		window.scrollTo(0, 0)
 
-  const projects = $projectsGrid.value.querySelectorAll('.ProjectsGrid .item')
-  projects.forEach((project) => {
-    project.style.opacity = '1'
-    project.style.transform = 'translateY(0)'
-  })
-}
+		const projects = $projectsGrid.value.querySelectorAll(".ProjectsGrid .item")
+		projects.forEach((project) => {
+			project.style.opacity = "1"
+			project.style.transform = "translateY(0)"
+		})
+	}
 
-const hideProjects = () => {
-  $ctx.value = gsap.context((self) => {
-    const projects = self.selector('.ProjectsGrid .item')
+	const hideProjects = () => {
+		$ctx.value = gsap.context((self) => {
+			const projects = self.selector(".ProjectsGrid .item")
 
-    $tl.value = gsap.to(projects, {
-      y: 30,
-      autoAlpha: 0,
-      ease: 'none',
-      onComplete: () => {
-        // $ctx.value = null
-      },
-    })
-  }, $projectsGrid.value)
-}
-const addVideoHoverListeners = () => {
+			$tl.value = gsap.to(projects, {
+				y: 30,
+				autoAlpha: 0,
+				ease: "none",
+				onComplete: () => {
+					// $ctx.value = null
+				},
+			})
+		}, $projectsGrid.value)
+	}
+	const addVideoHoverListeners = () => {
 
-  const items = $projectsGrid.value.querySelectorAll('.item');
+		const items = $projectsGrid.value.querySelectorAll(".item")
 
-  items.forEach((item) => {
-    const video = item.querySelector('video');
+		items.forEach((item) => {
+			const video = item.querySelector("video")
 
-    item.addEventListener('mouseenter', () => {
-     if (video) {
-        video.play();
-      }
-    });
+			item.addEventListener("mouseenter", () => {
+				if (video) {
+					video.play()
+				}
+			})
 
-    item.addEventListener('mouseleave', () => {
-   
-          if (video) {
-        video.pause();
-        setTimeout(() => {
-          video.currentTime = 0;
-        }, 200);
-    
-      }
-    });
-  });
-};
-const addVideoScrollTriggers = () => {
-  if (window.innerWidth <= 768) { // Assuming 768px as a breakpoint for mobile devices
-    const items = $projectsGrid.value.querySelectorAll('.item');
+			item.addEventListener("mouseleave", () => {
 
-    items.forEach((item) => {
-      const video = item.querySelector('video');
+				if (video) {
+					video.pause()
+					setTimeout(() => {
+						video.currentTime = 0
+					}, 200)
 
-      if (video) {
-        // Set initial opacity to 0
-        video.style.opacity = '0';
+				}
+			})
+		})
+	}
+	const addVideoScrollTriggers = () => {
+		if (window.innerWidth <= 768) { // Assuming 768px as a breakpoint for mobile devices
+			const items = $projectsGrid.value.querySelectorAll(".item")
 
-        ScrollTrigger.create({
-          trigger: item,
-    
-          start: "top center+=100", 
-          end: "top center-=400",
-          onEnter: () => { 
-            video.play();
-            video.style.opacity = '1';
-             video.style.visibility = 'visible'
-          },
-          onLeave: () => {
-            video.pause();
-            video.style.opacity = '0'; // Set opacity to 0 when video is not playing
-                  video.style.visibility = 'hidden'
-          },
-          onEnterBack: () => { 
-            video.play(); 
-            video.style.opacity = '1';
-                  video.style.visibility = 'visible'
-          },
-          onLeaveBack: () => {
-            video.pause();
-            video.style.opacity = '0';
-                      video.style.visibility = 'hidden'
-          },
-        });
-      }
-    });
-  }
-};
+			items.forEach((item) => {
+				const video = item.querySelector("video")
 
+				if (video) {
+					// Set initial opacity to 0
+					video.style.opacity = "0"
 
+					ScrollTrigger.create({
+						trigger: item,
+
+						start: "top center+=100",
+						end: "top center-=400",
+						onEnter: () => {
+							video.play()
+							video.style.opacity = "1"
+							video.style.visibility = "visible"
+						},
+						onLeave: () => {
+							video.pause()
+							video.style.opacity = "0" // Set opacity to 0 when video is not playing
+							video.style.visibility = "hidden"
+						},
+						onEnterBack: () => {
+							video.play()
+							video.style.opacity = "1"
+							video.style.visibility = "visible"
+						},
+						onLeaveBack: () => {
+							video.pause()
+							video.style.opacity = "0"
+							video.style.visibility = "hidden"
+						},
+					})
+				}
+			})
+		}
+	}
 
 
 
-onMounted(() => {
-  showProjects();
-  // Add video hover listeners after the projects are displayed
-  addVideoHoverListeners();
-    // addVideoScrollTriggers();
-});
 
 
-onBeforeUnmount(() => {
-  hideProjects()
-   ScrollTrigger.getAll().forEach((trigger) => {
-    trigger.kill(); // Remove the trigger and animation
-  });
-})
+	onMounted(() => {
+		showProjects()
+		// Add video hover listeners after the projects are displayed
+		addVideoHoverListeners()
+		// addVideoScrollTriggers();
+	})
 
-watch(
-  () => props.projects,
-  () => {
-    setTimeout(() => {
-      updateProjects()
-    }, 0)
-  }
-)
+
+	onBeforeUnmount(() => {
+		hideProjects()
+		ScrollTrigger.getAll().forEach((trigger) => {
+			trigger.kill() // Remove the trigger and animation
+		})
+	})
+
+	watch(
+		() => props.projects,
+		() => {
+			setTimeout(() => {
+				updateProjects()
+			}, 0)
+		}
+	)
 </script>
 
 <template>
-  <ul
-    :class="[
-      gridModeCols === 6 ? 'ProjectsGrid--six-items' : 'ProjectsGrid--four-items',
-      'ProjectsGrid',
-    ]"
-    ref="$projectsGrid"
-    v-if="projects.length > 0"
-  >
-    <template v-for="item in projects">
-      <li class="item">
-        <NuxtLink
-          class="item__link"
-          :to="{ name: 'projects-slug', params: { slug: item.slug.current } }"
-          :key="item._id"
-        >
-          <div class="item__thumbnail">
-            <SanityImage
-              v-if="item.thumbnailImage || item.mainImage"
-              :asset-id="
-                item.thumbnailImage ? item.thumbnailImage.asset._ref : item.mainImage.asset._ref
-              "
-              auto="format"
-            />
-            <video
-              v-if="item.thumbnailVideoUrl"
-              :src="item.thumbnailVideoUrl"
-              muted
-              loop
-           
-              playsinline
-              webkit-playsinline
-            ></video>
-          </div>
-          <h3 class="item__title">{{ item.title }}</h3>
-        </NuxtLink>
-      </li>
-    </template>
-  </ul>
-  <div v-else class="ProjectsGrid--empty">No project matching your filters</div>
+	<ul
+		:class="[
+			gridModeCols === 6 ? 'ProjectsGrid--six-items' : 'ProjectsGrid--four-items',
+			'ProjectsGrid',
+		]"
+		ref="$projectsGrid"
+		v-if="projects.length > 0"
+	>
+		<template
+			v-for="item in projects"
+			:key="item._id"
+		>
+			<li class="item">
+				<NuxtLink
+					class="item__link"
+					:to="{ name: 'projects-slug', params: { slug: item.slug.current } }"
+					:key="item._id"
+				>
+					<div class="item__thumbnail">
+						<SanityImage
+							v-if="item.thumbnailImage || item.mainImage"
+							:asset-id="
+								item.thumbnailImage
+									? item.thumbnailImage.asset._ref
+									: item.mainImage.asset._ref
+							"
+							auto="format"
+						/>
+						<video
+							v-if="item.thumbnailVideoUrl"
+							:src="item.thumbnailVideoUrl"
+							muted
+							loop
+
+							playsinline
+							webkit-playsinline
+						></video>
+					</div>
+					<h3 class="item__title">{{ item.title }}</h3>
+				</NuxtLink>
+			</li>
+		</template>
+	</ul>
+	<div v-else
+		class="ProjectsGrid--empty">No project matching your filters</div>
 </template>
 
 <style lang="scss">

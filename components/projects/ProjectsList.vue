@@ -1,197 +1,223 @@
 <script setup>
-import gsap from 'gsap'
-import ScrollTrigger from 'gsap/ScrollTrigger';
+	import gsap from "gsap"
+	import ScrollTrigger from "gsap/ScrollTrigger"
 
-gsap.registerPlugin(ScrollTrigger) 
-const props = defineProps({
-  projects: [Object],
-  categories: [Object],
-  order: String,
-  displayMode: String,
-})
+	gsap.registerPlugin(ScrollTrigger)
+	const props = defineProps({
+		projects: [ Object ],
+		categories: [ Object ],
+		order: String,
+		displayMode: String,
+	})
 
-// Animations
-const $tl = ref()
-const $ctx = ref()
-const $projectsList = ref()
+	// Animations
+	const $tl = ref()
+	const $ctx = ref()
+	const $projectsList = ref()
 
-const showProjects = () => {
-  $ctx.value = gsap.context((self) => {
-    const projects = self.selector('.ProjectsList .item')
+	const showProjects = () => {
+		$ctx.value = gsap.context((self) => {
+			const projects = self.selector(".ProjectsList .item")
 
-    $tl.value = gsap.to(projects, {
-      delay: 0.5,
-      duration: 1,
-      autoAlpha: 1,
-      ease: 'power3.out',
-      stagger: 0.1,
-    })
-  }, $projectsList.value)
-}
+			$tl.value = gsap.to(projects, {
+				delay: 0.5,
+				duration: 1,
+				autoAlpha: 1,
+				ease: "power3.out",
+				stagger: 0.1,
+			})
+		}, $projectsList.value)
+	}
 
-const updateProjects = () => {
-  window.scrollTo(0, 0)
+	const updateProjects = () => {
+		window.scrollTo(0, 0)
 
-  const projects = $projectsList.value.querySelectorAll('.ProjectsList .item')
-  projects.forEach((project) => {
-    project.style.opacity = '1'
-  })
-}
+		const projects = $projectsList.value.querySelectorAll(".ProjectsList .item")
+		projects.forEach((project) => {
+			project.style.opacity = "1"
+		})
+	}
 
-const hideProjects = () => {
-  $ctx.value = gsap.context((self) => {
-    const projects = self.selector('.ProjectsList .item')
+	const hideProjects = () => {
+		$ctx.value = gsap.context((self) => {
+			const projects = self.selector(".ProjectsList .item")
 
-    $tl.value = gsap.to(projects, {
-      duration: 0.5,
-      autoAlpha: 0,
-      ease: 'power3.out',
-      stagger: 0.1,
-      onComplete: () => {
-        // $ctx.value = null
-      },
-    })
-  }, $projectsList.value)
-}
+			$tl.value = gsap.to(projects, {
+				duration: 0.5,
+				autoAlpha: 0,
+				ease: "power3.out",
+				stagger: 0.1,
+				onComplete: () => {
+					// $ctx.value = null
+				},
+			})
+		}, $projectsList.value)
+	}
 
-const addVideoHoverListeners = () => {
-  const items = $projectsList.value.querySelectorAll('.item');
+	const addVideoHoverListeners = () => {
+		const items = $projectsList.value.querySelectorAll(".item")
 
-  items.forEach((item) => {
-    const video = item.querySelector('video');
+		items.forEach((item) => {
+			const video = item.querySelector("video")
 
-    item.addEventListener('mouseenter', () => {
-     if (video) {
-        video.play();
-      }
-    });
+			item.addEventListener("mouseenter", () => {
+				if (video) {
+					video.play()
+				}
+			})
 
-    item.addEventListener('mouseleave', () => {
-   
-          if (video) {
-        video.pause();
-        setTimeout(() => {
-          video.currentTime = 0;
-        }, 200);
-    
-      }
-    });
-  });
-};
-const addVideoScrollTriggers = () => {
-  if (window.innerWidth <= 768) { // Assuming 768px as a breakpoint for mobile devices
-    const items = $projectsList.value.querySelectorAll('.item');
+			item.addEventListener("mouseleave", () => {
+				if (video) {
+					video.pause()
+					setTimeout(() => {
+						video.currentTime = 0
+					}, 200)
+				}
+			})
+		})
+	}
+	const addVideoScrollTriggers = () => {
+		if (window.innerWidth <= 768) { // Assuming 768px as a breakpoint for mobile devices
+			const items = $projectsList.value.querySelectorAll(".item")
 
-    items.forEach((item) => {
-      const video = item.querySelector('video');
+			items.forEach((item) => {
+				const video = item.querySelector("video")
 
-      if (video) {
-        // Set initial opacity to 0
-        video.style.opacity = '0';
+				if (video) {
+					// Set initial opacity to 0
+					video.style.opacity = "0"
 
-        ScrollTrigger.create({
-          trigger: item,
-    
-          start: "top center+=100", 
-          end: "top center-=400",
-          onEnter: () => { 
-            video.play();
-            video.style.opacity = '1';
-             video.style.visibility = 'visible'
-          },
-          onLeave: () => {
-            video.pause();
-            video.style.opacity = '0'; // Set opacity to 0 when video is not playing
-                  video.style.visibility = 'hidden'
-          },
-          onEnterBack: () => { 
-            video.play(); 
-            video.style.opacity = '1';
-                  video.style.visibility = 'visible'
-          },
-          onLeaveBack: () => {
-            video.pause();
-            video.style.opacity = '0';
-                      video.style.visibility = 'hidden'
-          },
-        });
-      }
-    });
-  }
-};
-onMounted(() => {
-  showProjects();
-  // Add video hover listeners after the projects are displayed
-  addVideoHoverListeners();
-      // addVideoScrollTriggers();
-});
+					ScrollTrigger.create({
+						trigger: item,
+
+						start: "top center+=100",
+						end: "top center-=400",
+						onEnter: () => {
+							video.play()
+							video.style.opacity = "1"
+							video.style.visibility = "visible"
+						},
+						onLeave: () => {
+							video.pause()
+							video.style.opacity = "0" // Set opacity to 0 when video is not playing
+							video.style.visibility = "hidden"
+						},
+						onEnterBack: () => {
+							video.play()
+							video.style.opacity = "1"
+							video.style.visibility = "visible"
+						},
+						onLeaveBack: () => {
+							video.pause()
+							video.style.opacity = "0"
+							video.style.visibility = "hidden"
+						},
+					})
+				}
+			})
+		}
+	}
+	onMounted(() => {
+		showProjects()
+		// Add video hover listeners after the projects are displayed
+		addVideoHoverListeners()
+		// addVideoScrollTriggers();
+	})
 
 
-onBeforeUnmount(() => {
-  hideProjects()
-   ScrollTrigger.getAll().forEach((trigger) => {
-    trigger.kill(); // Remove the trigger and animation
-  });
-})
+	onBeforeUnmount(() => {
+		hideProjects()
+		ScrollTrigger.getAll().forEach((trigger) => {
+			trigger.kill() // Remove the trigger and animation
+		})
+	})
 
-watch(
-  () => props.projects,
-  () => {
-    setTimeout(() => {
-      updateProjects()
-    }, 0)
-  }
-)
+	watch(
+		() => props.projects,
+		() => {
+			setTimeout(() => {
+				updateProjects()
+			}, 0)
+		}
+	)
 </script>
 
 <template>
-  <ul class="ProjectsList" ref="$projectsList" v-if="projects.length > 0">
-    <template v-for="item in projects">
-      <li class="item">
-        <NuxtLink
-          class="item__link"
-          :to="{ name: 'projects-slug', params: { slug: item.slug.current } }"
-          :key="item._id"
-        >
-          <div class="item__container">
-            <div class="item__thumbnail">
-              <SanityImage
-                v-if="item.mainImage"
-                :asset-id="item.mainImage.asset._ref"
-                auto="format"
-              />
-              <video
-                v-if="item.thumbnailVideoUrl"
-                :src="item.thumbnailVideoUrl"
-                muted
-                loop
-                
-                playsinline
-                webkit-playsinline
-              ></video>
-            </div>
-            <div class="item__meta">
-              <h3 class="item__title" v-if="item.title">{{ item.title }}</h3>
-              <ul class="item__categories item__categories--mobile" v-if="item.categories">
-                <li class="item__category" v-for="category in item.categories">
-                  {{ category.title }}
-                </li>
-              </ul>
-            </div>
-            <div class="item__date" v-if="item.releaseDate">
-              {{ item.releaseDate.slice(0, 4) }}
-            </div>
-            <ul class="item__categories" v-if="item.categories">
-              <li class="item__category" v-for="category in item.categories">
-                {{ category.title }}
-              </li>
-            </ul>
-          </div>
-        </NuxtLink>
-      </li>
-    </template>
-  </ul>
-  <div v-else class="ProjectsList--empty">No project matching your filters</div>
+	<ul class="ProjectsList"
+		ref="$projectsList"
+		v-if="projects.length > 0"
+	>
+		<template
+			v-for="item in projects"
+			:key="item._id"
+		>
+			<li class="item">
+				<NuxtLink
+					class="item__link"
+					:to="{ name: 'projects-slug', params: { slug: item.slug.current } }"
+					:key="item._id"
+				>
+					<div class="item__container">
+						<div class="item__thumbnail">
+							<SanityImage
+								v-if="item.mainImage"
+								:asset-id="item.mainImage.asset._ref"
+								auto="format"
+							/>
+							<video
+								v-if="item.thumbnailVideoUrl"
+								:src="item.thumbnailVideoUrl"
+								muted
+								loop
+								playsinline
+								webkit-playsinline
+							></video>
+						</div>
+						<div class="item__meta">
+							<h3
+								class="item__title"
+								v-if="item.title"
+							>
+								{{ item.title }}
+							</h3>
+							<ul
+								class="item__categories item__categories--mobile"
+								v-if="item.categories"
+							>
+								<li
+									class="item__category"
+									v-for="category in item.categories"
+									:key="category._id"
+								>
+									{{ category.title }}
+								</li>
+							</ul>
+						</div>
+						<div
+							class="item__date"
+							v-if="item.releaseDate"
+						>
+							{{ item.releaseDate.slice(0, 4) }}
+						</div>
+						<ul
+							class="item__categories"
+							v-if="item.categories"
+						>
+							<li
+								class="item__category"
+								v-for="category in item.categories"
+								:key="category._id"
+							>
+								{{ category.title }}
+							</li>
+						</ul>
+					</div>
+				</NuxtLink>
+			</li>
+		</template>
+	</ul>
+	<div v-else
+		class="ProjectsList--empty">No project matching your filters</div>
 </template>
 
 <style lang="scss">
@@ -210,7 +236,7 @@ watch(
     font-size: $desktop-list;
     border-top: 0.1rem solid $dark-grey;
     transition: background-color 0.2s ease-in-out;
-    opacity: 0;
+    // opacity: 0;
     // height: 16rem;
 
     @include viewport-768 {

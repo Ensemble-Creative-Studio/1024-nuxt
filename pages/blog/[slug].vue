@@ -1,9 +1,9 @@
 <script setup>
-const sanity = useSanity()
-const route = useRoute()
-const router = useRouter()
+	const sanity = useSanity()
+	const route = useRoute()
+	const router = useRouter()
 
-const GET_SINGLE_ARTICLE = groq`*[_type == "blog" && slug.current == "${route.params.slug}"][0]
+	const GET_SINGLE_ARTICLE = groq`*[_type == "blog" && slug.current == "${route.params.slug}"][0]
   {
     ...,
     relatedProjects[] -> {
@@ -20,60 +20,57 @@ const GET_SINGLE_ARTICLE = groq`*[_type == "blog" && slug.current == "${route.pa
   }
 `
 
-const { data } = await useAsyncData(`blog/${route.params.slug}`, () =>
-  sanity.fetch(GET_SINGLE_ARTICLE)
-)
-if (Object.keys(data.value).length === 0) {
-  router.push('/404')
-  throw createError({ statusCode: 404, statusMessage: 'Article not found' })
-}
+	const { data } = await useAsyncData(`blog/${route.params.slug}`, () =>
+		sanity.fetch(GET_SINGLE_ARTICLE)
+	)
+	if (Object.keys(data.value).length === 0) {
+		router.push("/404")
+		throw createError({ statusCode: 404, statusMessage: "Article not found" })
+	}
 
-const article = data.value
+	const article = data.value
 
-// const serializers = {
-//   marks: {
-//     internalLink: 'a',
-//   },
-// }
-
-const { isMobile } = useDevice()
+	const { isMobile } = useDevice()
 </script>
 
 <template>
-  <div class="article-page">
-    <Head>
-      <Title>{{ article.title }}</Title>
-      <Meta name="description" content="Project description" />
-    </Head>
-    <div class="main">
-      <GridContainer>
-        <section class="infos">
-          <GoBackButton />
-          <div class="infos__meta">
-            <h1 class="infos__title">{{ article.title }}</h1>
-            <p class="infos__excerpt">{{ article.excerpt }}</p>
-          </div>
-        </section>
-        <section class="content">
-          <VideoPlayer
-            v-if="article.mainVideo"
-            :vimeoUrl="article.mainVideoUrl"
-            :downloadUrl="article.mainVideoDownloadUrl"
-            :quality="isMobile ? 'sd' : 'hd'"
-          />
-          <div class="content__gallery" v-if="article?.gallery?.medias">
-            <SanityImage
-              class="image"
-              v-for="media in article?.gallery?.medias"
-              :asset-id="media.asset._ref"
-              auto="format"
-              :q="75"
-            />
-          </div>
-        </section>
-      </GridContainer>
-    </div>
-  </div>
+	<div class="article-page">
+		<Head>
+			<Title>{{ article.title }}</Title>
+			<Meta name="description"
+				content="Project description" />
+		</Head>
+		<div class="main">
+			<GridContainer>
+				<section class="infos">
+					<GoBackButton />
+					<div class="infos__meta">
+						<h1 class="infos__title">{{ article.title }}</h1>
+						<p class="infos__excerpt">{{ article.excerpt }}</p>
+					</div>
+				</section>
+				<section class="content">
+					<VideoPlayer
+						v-if="article.mainVideo"
+						:vimeoUrl="article.mainVideoUrl"
+						:downloadUrl="article.mainVideoDownloadUrl"
+						:quality="isMobile ? 'sd' : 'hd'"
+					/>
+					<div class="content__gallery"
+						v-if="article?.gallery?.medias">
+						<SanityImage
+							class="image"
+							v-for="media in article?.gallery?.medias"
+							:key="media._key"
+							:asset-id="media.asset._ref"
+							auto="format"
+							:q="75"
+						/>
+					</div>
+				</section>
+			</GridContainer>
+		</div>
+	</div>
 </template>
 
 <style lang="scss">

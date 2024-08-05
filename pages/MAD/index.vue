@@ -1,14 +1,14 @@
 <script setup>
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+	import gsap from "gsap"
+	import { ScrollTrigger } from "gsap/ScrollTrigger"
 
-const { isMobile } = useDevice();
+	const { isMobile } = useDevice()
 
-const sanity = useSanity();
-const route = useRoute();
-const router = useRouter();
+	const sanity = useSanity()
+	const route = useRoute()
+	const router = useRouter()
 
-const GET_SINGLE_PROJECT = groq`*[_type == "MAD"][0]
+	const GET_SINGLE_PROJECT = groq`*[_type == "MAD"][0]
   {
     ...,
     relatedProjects[] -> {
@@ -32,271 +32,292 @@ const GET_SINGLE_PROJECT = groq`*[_type == "MAD"][0]
       }
     },
   }
-`;
+`
 
 
-const { data } = await useAsyncData(`projects/${route.params.slug}`, () =>
-  sanity.fetch(GET_SINGLE_PROJECT)
-);
-if (Object.keys(data.value).length === 0) {
-  router.push("/404");
-  throw createError({ statusCode: 404, statusMessage: "Project not found" });
-}
+	const { data } = await useAsyncData(`projects/${route.params.slug}`, () =>
+		sanity.fetch(GET_SINGLE_PROJECT)
+	)
+	if (Object.keys(data.value).length === 0) {
+		router.push("/404")
+		throw createError({ statusCode: 404, statusMessage: "Project not found" })
+	}
 
-const project = data.value;
+	const project = data.value
 
-const $hero = ref();
-const $galleryMedia = ref([]);
-const $anchors = ref();
+	const $hero = ref()
+	const $galleryMedia = ref([])
+	const $anchors = ref()
 
-const $projectPage = ref();
-const trigger = ref();
+	const $projectPage = ref()
+	const trigger = ref()
 
-const $description = ref();
-const $gallery = ref();
-const $credits = ref();
+	const $description = ref()
+	const $gallery = ref()
+	const $credits = ref()
 
-function scrollToSection(section) {
-  let offset;
+	function scrollToSection(section) {
+		let offset
 
-  if (section.classList.contains("hero")) {
-    offset = isMobile ? 0 : 0;
-  } else {
-    offset = isMobile ? window.innerHeight - 100 : window.innerHeight - 100;
-  }
+		if (section.classList.contains("hero")) {
+			offset = isMobile ? 0 : 0
+		} else {
+			offset = isMobile ? window.innerHeight - 100 : window.innerHeight - 100
+		}
 
-  gsap.to(window, {
-    scrollTo: {
-      y: section.offsetTop + offset,
-      autoKill: false,
-    },
-    duration: 1.5,
-    ease: "power3.out",
-  });
-}
+		gsap.to(window, {
+			scrollTo: {
+				y: section.offsetTop + offset,
+				autoKill: false,
+			},
+			duration: 1.5,
+			ease: "power3.out",
+		})
+	}
 
-onMounted(() => {
-  setTimeout(() => {
-    let mm = gsap.matchMedia();
+	onMounted(() => {
+		setTimeout(() => {
+			let mm = gsap.matchMedia()
 
-    mm.add("(min-width: 481px)", () => {
-      trigger.value = ScrollTrigger.create({
-        start: "50%",
-        trigger: $hero.value,
-        onEnter: () => {
-          gsap.to($anchors.value.$el, {
-            y: 0,
-            duration: 0.5,
-          });
-        },
-        onLeaveBack: () => {
-          gsap.to($anchors.value.$el, {
-            y: 50,
-            duration: 0.5,
-          });
-        },
-      });
-    });
-  }, 1000);
-setTimeout(() => {
-  const itemTextElements = document.querySelectorAll('.item__text');
+			mm.add("(min-width: 481px)", () => {
+				trigger.value = ScrollTrigger.create({
+					start: "50%",
+					trigger: $hero.value,
+					onEnter: () => {
+						gsap.to($anchors.value.$el, {
+							y: 0,
+							duration: 0.5,
+						})
+					},
+					onLeaveBack: () => {
+						gsap.to($anchors.value.$el, {
+							y: 50,
+							duration: 0.5,
+						})
+					},
+				})
+			})
+		}, 1000)
+		setTimeout(() => {
+			const itemTextElements = document.querySelectorAll(".item__text")
 
-// Loop through each .item__text element
-itemTextElements.forEach((element) => {
-  // Get all <a> elements within the current .item__text element
-  const linksInItemText = element.querySelectorAll('a');
+			// Loop through each .item__text element
+			itemTextElements.forEach((element) => {
+				// Get all <a> elements within the current .item__text element
+				const linksInItemText = element.querySelectorAll("a")
 
-  // Loop through each <a> element within the .item__text element
-  linksInItemText.forEach((link) => {
-    // Add target="_blank" attribute to the <a> element
-    link.setAttribute('target', '_blank');
-  });
-});
+				// Loop through each <a> element within the .item__text element
+				linksInItemText.forEach((link) => {
+					// Add target="_blank" attribute to the <a> element
+					link.setAttribute("target", "_blank")
+				})
+			})
 
-// Get all elements with class .content__description
-const contentDescriptionElements = document.querySelectorAll('.content__description');
+			// Get all elements with class .content__description
+			const contentDescriptionElements = document.querySelectorAll(".content__description")
 
-// Loop through each .content__description element
-contentDescriptionElements.forEach((element) => {
-  // Get all <a> elements within the current .content__description element
-  const linksInContentDescription = element.querySelectorAll('a');
+			// Loop through each .content__description element
+			contentDescriptionElements.forEach((element) => {
+				// Get all <a> elements within the current .content__description element
+				const linksInContentDescription = element.querySelectorAll("a")
 
-  // Loop through each <a> element within the .content__description element
-  linksInContentDescription.forEach((link) => {
-    // Add target="_blank" attribute to the <a> element
-    link.setAttribute('target', '_blank');
-  });
-});
-}, 1000);
-  window.addEventListener("resize", handleResize);
+				// Loop through each <a> element within the .content__description element
+				linksInContentDescription.forEach((link) => {
+					// Add target="_blank" attribute to the <a> element
+					link.setAttribute("target", "_blank")
+				})
+			})
+		}, 1000)
+		window.addEventListener("resize", handleResize)
 
-});
+	})
 
-const handleResize = () => {
-  if (trigger.value !== null) {
-    trigger.value.refresh();
-  }
-};
+	const handleResize = () => {
+		if (trigger.value !== null) {
+			trigger.value.refresh()
+		}
+	}
 
-onBeforeUnmount(() => {
-  gsap.to($anchors.value.$el, {
-    y: 50,
-    duration: 0.5,
-  });
+	onBeforeUnmount(() => {
+		gsap.to($anchors.value.$el, {
+			y: 50,
+			duration: 0.5,
+		})
 
-  ScrollTrigger.getAll().forEach((trigger) => {
-    trigger.kill();
-  });
+		ScrollTrigger.getAll().forEach((trigger) => {
+			trigger.kill()
+		})
 
-  removeEventListener("resize", handleResize);
-});
+		removeEventListener("resize", handleResize)
+	})
 </script>
 
 <template>
-  <div class="project-page" ref="$projectPage">
-    <Head>
-      <Title>{{ project.title }}</Title>
-      <Meta name="description" content="Project description" />
-    </Head>
-    <section class="hero" ref="$hero">
-      <video
-        class="hero__video"
-        v-if="project.mainVideoUrl"
-        :src="project.mainVideoUrl"
-        autoplay
-        muted
-        loop
-        playsinline
-        webkit-playsinline
-      ></video>
-      <SanityImage
-        v-else
-        class="hero__banner"
-        :asset-id="project.mainImage.asset._ref"
-        auto="format"
-        :q="75"
-      />
-      <h1 class="hero__title">{{ project.title }}</h1>
-    </section>
-    <div class="main">
-      <section class="content">
-        <GridContainer>
-          <div class="content__claim">
-            {{ project.claim }}
-          </div>
-          <div class="content__details">
-             <span class="content__date">{{
-              project.releaseDate.slice(0, 4)
-            }}</span>
-            <span class="content__type">{{ project.field }}</span>
-          </div>
-          <div
-            class="content__description"
-            ref="$description"
-            v-if="project.description"
-          >
-    <SanityContent :blocks="project.description"  />
-          </div>
-        </GridContainer>
-      </section>
-      <section class="gallery" ref="$gallery" v-if="project?.gallery">
-        <GridContainer>
-          <div class="gallery__title-container">
-            <h2 class="gallery__title">{{ project.galleryName }}</h2>
-           
-          </div>
-          <ul class="gallery__wrapper">
-            <li
-              :class="[
-                item._type === 'galleryMedia'
-                  ? 'item--media'
-                  : item._type === 'galleryVideo'
-                  ? 'item--video'
-                  : 'item--text',
-                'item',
-              ]"
-              v-if="project?.gallery"
-              v-for="(item, index) in project?.gallery"
-              :key="index"
-            >
-              <ul class="item__inner" v-if="item._type === 'galleryMedia'">
-                <li
-                  v-for="image in item.images"
-                  ref="$galleryMedia"
-                  :class="{
-                    vertical:
-                      image.assetRef.metadata.dimensions.aspectRatio < 1,
-                  }"
-                >
-                  <div class="item__image">
-                    <SanityImage :asset-id="image.asset._ref" auto="format" />
-                  </div>
-                </li>
-              </ul>
+	<div class="project-page"
+		ref="$projectPage">
+		<Head>
+			<Title>{{ project.title }}</Title>
+			<Meta name="description"
+				content="Project description" />
+		</Head>
+		<section class="hero"
+			ref="$hero">
+			<video
+				class="hero__video"
+				v-if="project.mainVideoUrl"
+				:src="project.mainVideoUrl"
+				autoplay
+				muted
+				loop
+				playsinline
+				webkit-playsinline
+			></video>
+			<SanityImage
+				v-else
+				class="hero__banner"
+				:asset-id="project.mainImage.asset._ref"
+				auto="format"
+				:q="75"
+			/>
+			<h1 class="hero__title">{{ project.title }}</h1>
+		</section>
+		<div class="main">
+			<section class="content">
+				<GridContainer>
+					<div class="content__claim">
+						{{ project.claim }}
+					</div>
+					<div class="content__details">
+						<span class="content__date">{{
+							project.releaseDate.slice(0, 4)
+						}}</span>
+						<span class="content__type">{{ project.field }}</span>
+					</div>
+					<div
+						class="content__description"
+						ref="$description"
+						v-if="project.description"
+					>
+						<SanityContent :blocks="project.description"  />
+					</div>
+				</GridContainer>
+			</section>
+			<section class="gallery"
+				ref="$gallery"
+				v-if="project?.gallery">
+				<GridContainer>
+					<div class="gallery__title-container">
+						<h2 class="gallery__title">{{ project.galleryName }}</h2>
 
-              <div class="item__text" v-if="item._type === 'galleryText'">
-                <SanityContent :blocks="item.text" />
-              </div>
-              <div class="item__video" v-if="item._type === 'galleryVideo'">
-                <VideoPlayer
-          :poster="item.posterImageUrl"
+					</div>
+					<ul class="gallery__wrapper"
+						v-if="project?.gallery">
+						<li
+							:class="[
+								item._type === 'galleryMedia'
+									? 'item--media'
+									: item._type === 'galleryVideo'
+										? 'item--video'
+										: 'item--text',
+								'item',
+							]"
+							v-for="(item, index) in project?.gallery"
+							:key="index"
+						>
+							<ul class="item__inner"
+								v-if="item._type === 'galleryMedia'">
+								<li
+									v-for="image in item.images"
+									:key="image.asset._ref"
+									ref="$galleryMedia"
+									:class="{
+										vertical:
+											image.assetRef.metadata.dimensions.aspectRatio < 1,
+									}"
+								>
+									<div class="item__image">
+										<SanityImage :asset-id="image.asset._ref"
+											auto="format" />
+									</div>
+								</li>
+							</ul>
 
-                  :vimeoUrl="item.url"
-                  :downloadUrl="item.downloadUrl"
-                  :quality="isMobile ? 'sd' : 'hd'"
-                />
-              </div>
-            </li>
-          </ul>
-        </GridContainer>
-      </section>
-      <section class="credits" ref="$credits">
-        <GridContainer>
-          <header
-            class="credits__header"
-            :class="[!project.credits && 'credits__header--is-empty']"
-          >
-            <div>{{ project.title }}</div>
-            <span>1024 architecture</span>
-          </header>
-          <ul class="credits__wrapper" v-if="project.credits">
-            <li class="item" v-for="item in project?.credits?.list">
-              <h3 class="item__label">{{ item.role }}</h3>
-              <p class="item__text">
-                {{ item.text }}
-              </p>
-            </li>
-          </ul>
-        </GridContainer>
-      </section>
-      <section class="related-projects" v-if="project.relatedProjects">
-        <GridContainer>
-          <h2 class="related-projects__title">Related projects</h2>
-        </GridContainer>
-        <ProjectsList
-          :projects="project.relatedProjects ? project.relatedProjects : []"
-        />
-      </section>
-      <BottomAnchors ref="$anchors">
-        <ul class="BottomAnchors__list">
-          <li class="BottomAnchors__item">
-            <button @click="scrollToSection($hero)">Top</button>
-          </li>
-          <li class="BottomAnchors__item" v-if="project.description">
-            <button @click="scrollToSection($description)">Description</button>
-          </li>
-          <li class="BottomAnchors__item">
-            <button @click="scrollToSection($gallery)" v-if="project.gallery">
-              Gallery
-            </button>
-          </li>
-          <li class="BottomAnchors__item" v-if="project.credits">
-            <button @click="scrollToSection($credits)">Credits</button>
-          </li>
-        </ul>
-      </BottomAnchors>
-    </div>
-  </div>
+							<div class="item__text"
+								v-if="item._type === 'galleryText'">
+								<SanityContent :blocks="item.text" />
+							</div>
+							<div class="item__video"
+								v-if="item._type === 'galleryVideo'">
+								<VideoPlayer
+									:poster="item.posterImageUrl"
+
+									:vimeoUrl="item.url"
+									:downloadUrl="item.downloadUrl"
+									:quality="isMobile ? 'sd' : 'hd'"
+								/>
+							</div>
+						</li>
+					</ul>
+				</GridContainer>
+			</section>
+			<section class="credits"
+				ref="$credits">
+				<GridContainer>
+					<header
+						class="credits__header"
+						:class="[!project.credits && 'credits__header--is-empty']"
+					>
+						<div>{{ project.title }}</div>
+						<span>1024 architecture</span>
+					</header>
+					<ul class="credits__wrapper"
+						v-if="project.credits">
+						<li
+							class="item"
+							v-for="item in project?.credits?.list"
+							:key="item._key"
+						>
+							>
+							<h3 class="item__label">{{ item.role }}</h3>
+							<p class="item__text">
+								{{ item.text }}
+							</p>
+						</li>
+					</ul>
+				</GridContainer>
+			</section>
+			<section class="related-projects"
+				v-if="project.relatedProjects">
+				<GridContainer>
+					<h2 class="related-projects__title">Related projects</h2>
+				</GridContainer>
+				<ProjectsList
+					:projects="project.relatedProjects ? project.relatedProjects : []"
+				/>
+			</section>
+			<BottomAnchors ref="$anchors">
+				<ul class="BottomAnchors__list">
+					<li class="BottomAnchors__item">
+						<button @click="scrollToSection($hero)">Top</button>
+					</li>
+					<li class="BottomAnchors__item"
+						v-if="project.description">
+						<button @click="scrollToSection($description)">Description</button>
+					</li>
+					<li class="BottomAnchors__item">
+						<button @click="scrollToSection($gallery)"
+							v-if="project.gallery">
+							Gallery
+						</button>
+					</li>
+					<li class="BottomAnchors__item"
+						v-if="project.credits">
+						<button @click="scrollToSection($credits)">Credits</button>
+					</li>
+				</ul>
+			</BottomAnchors>
+		</div>
+	</div>
 </template>
 
 <style lang="scss">
@@ -412,7 +433,7 @@ margin-top:12rem;
       margin-left: 1rem;
       text-decoration: none;
       display: inline-block;
-   
+
       text-decoration-thickness: from-font;
       text-underline-offset: 0.5rem;
     }
