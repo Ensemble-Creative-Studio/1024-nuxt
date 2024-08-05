@@ -76,54 +76,11 @@
 			})
 		})
 	}
-	const addVideoScrollTriggers = () => {
-		if (window.innerWidth <= 768) { // Assuming 768px as a breakpoint for mobile devices
-			const items = $projectsList.value.querySelectorAll(".item")
 
-			items.forEach((item) => {
-				const video = item.querySelector("video")
-
-				if (video) {
-					// Set initial opacity to 0
-					video.style.opacity = "0"
-
-					ScrollTrigger.create({
-						trigger: item,
-
-						start: "top center+=100",
-						end: "top center-=400",
-						onEnter: () => {
-							video.play()
-							video.style.opacity = "1"
-							video.style.visibility = "visible"
-						},
-						onLeave: () => {
-							video.pause()
-							video.style.opacity = "0" // Set opacity to 0 when video is not playing
-							video.style.visibility = "hidden"
-						},
-						onEnterBack: () => {
-							video.play()
-							video.style.opacity = "1"
-							video.style.visibility = "visible"
-						},
-						onLeaveBack: () => {
-							video.pause()
-							video.style.opacity = "0"
-							video.style.visibility = "hidden"
-						},
-					})
-				}
-			})
-		}
-	}
 	onMounted(() => {
 		showProjects()
-		// Add video hover listeners after the projects are displayed
 		addVideoHoverListeners()
-		// addVideoScrollTriggers();
 	})
-
 
 	onBeforeUnmount(() => {
 		hideProjects()
@@ -132,14 +89,7 @@
 		})
 	})
 
-	watch(
-		() => props.projects,
-		() => {
-			setTimeout(() => {
-				updateProjects()
-			}, 0)
-		}
-	)
+	watch(() => props.projects, updateProjects)
 </script>
 
 <template>
@@ -236,8 +186,11 @@
     font-size: $desktop-list;
     border-top: 0.1rem solid $dark-grey;
     transition: background-color 0.2s ease-in-out;
-    // opacity: 0;
     // height: 16rem;
+
+	.projects & {
+		opacity: 0;
+	}
 
     @include viewport-768 {
       font-size: $tablet-list;
