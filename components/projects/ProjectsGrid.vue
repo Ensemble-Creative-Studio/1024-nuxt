@@ -14,8 +14,6 @@
 	const $tl = ref()
 	const $ctx = ref()
 
-	let timeout
-
 	// Define GSAP animations
 	const showProjects = () => {
 		$ctx.value = gsap.context((self) => {

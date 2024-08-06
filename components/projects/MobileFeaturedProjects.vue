@@ -66,8 +66,6 @@
 	const activeSlideIndex = ref(-1)
 	const totalOffsetWidth = ref(0)
 
-	let timeout
-
 	const onSwiper = ($event) => {
 		$swiper.value = $event
 	}
@@ -127,7 +125,6 @@
 
 	onBeforeUnmount(() => {
 		$ctx.value.revert()
-		clearTimeout(timeout)
 	})
 </script>
 

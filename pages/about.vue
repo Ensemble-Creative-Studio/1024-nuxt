@@ -39,8 +39,6 @@
 		})
 	}
 
-	let timeout
-
 	onMounted(() => {
 		$ctx.value = gsap.context((self) => {
 			const chunks = self.selector(".title__chunk")
@@ -124,7 +122,6 @@
 		})
 
 		removeEventListener("resize", handleResize)
-		clearTimeout(timeout)
 		$ctx.value.revert()
 	})
 </script>

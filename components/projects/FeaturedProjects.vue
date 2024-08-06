@@ -29,8 +29,6 @@
 	const tl = gsap.timeline()
 	const allProjectFooter = ref(null)
 
-	let timeout
-
 	onMounted(() => {
 		$ctx.value = gsap.context(async (self) => {
 			const panels = self.selector(".FeaturedProject")
@@ -114,7 +112,6 @@
 
 		$ctx.value.revert()
 		removeEventListener("scroll", handleScroll)
-		clearTimeout(timeout)
 	})
 </script>
 

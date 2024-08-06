@@ -52,8 +52,6 @@
 	const $gallery = ref()
 	const $credits = ref()
 
-	let timeout
-
 	function scrollToSection(section) {
 		let offset
 
@@ -131,7 +129,6 @@
 		})
 
 		removeEventListener("resize", handleResize)
-		clearTimeout(timeout)
 	})
 </script>
 
