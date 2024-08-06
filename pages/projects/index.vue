@@ -1,8 +1,6 @@
 <script setup>
 	const $projects = ref(null)
 
-	const sanity = useSanity()
-
 	const GET_PROJECTS = groq`*[_type == "projects"
 	&& (hideProject == false
 	|| !defined(hideProject))] | order(orderRank)
@@ -17,20 +15,18 @@
 	}
 `
 
-	let projects = await useAsyncData("projects", () => sanity.fetch(GET_PROJECTS))
+	let projects = await useSanityQuery(GET_PROJECTS)
 	projects = projects.data.value.filter((project) => {
 		return project.releaseDate && project.categories
 	})
 
 	const GET_CATEGORIES = groq`*[_type == "categories"]
-  {
-    title,
-    "projectsInside": *[_type == "projects" && references(^._id)]
-  }
+	{
+		title,
+		"projectsInside": *[_type == "projects" && references(^._id)]
+	}
 `
-	let categories = await useAsyncData("categories", () =>
-		sanity.fetch(GET_CATEGORIES)
-	)
+	let categories = await useSanityQuery(GET_CATEGORIES)
 	categories = categories.data.value
 	categories.forEach((category) => {
 		category.projectsInside = category.projectsInside.filter((project) => {
@@ -160,8 +156,10 @@
 		ref="$projects">
 		<Head>
 			<Title>1024 | Work</Title>
-			<Meta name="description"
-				content="1024 architecture website" />
+			<Meta
+				name="description"
+				content="1024 architecture website"
+			/>
 		</Head>
 		<ProjectsList
 			v-if="displayMode === 'list'"
@@ -209,40 +207,24 @@
 		<div :class="[showMobileFilters && 'container--active', 'container']">
 			<GridContainer>
 				<ul class="display-mode">
-					<!-- <li
-            :class="[displayMode === 'grid' && 'display-mode__grid--active', 'display-mode__grid']"
-            @click="setGridMode(4)"
-          >
-
-          </li> -->
 					<li
 						:class="[
-							displayMode === 'grid' &&
-								gridModeCols === 6 &&
-								'display-mode__three-grid--active',
+							displayMode === 'grid'
+								&& gridModeCols === 6
+								&& 'display-mode__three-grid--active',
 							'display-mode__three-grid',
 						]"
 						@click="setGridMode(6)"
 					>
 						<SixItemsGridIcon
 							:color="
-								displayMode === 'grid' && gridModeCols === 6
+								displayMode === 'grid'
+									&& gridModeCols === 6
 									? '#ffffff'
 									: '#727272'
 							"
 						/>
 					</li>
-					<!-- <li
-            :class="[
-              displayMode === 'grid' && gridModeCols === 4 && 'display-mode__four-grid--active',
-              'display-mode__four-grid',
-            ]"
-            @click="setGridMode(4)"
-          >
-            <FourItemsGridIcon
-              :color="displayMode === 'grid' && gridModeCols === 4 ? '#ffffff' : '#727272'"
-            />
-          </li> -->
 					<li
 						:class="[
 							displayMode === 'list' && 'display-mode__list--active',
@@ -289,9 +271,11 @@
 							<span class="all__length">{{ projects.length }}</span>
 						</button>
 					</li>
-					<li class="filters__category"
+					<li
+						class="filters__category"
 						v-for="(category, i) in categories"
-						:key="i">
+						:key="i"
+					>
 						>
 						<button
 							class="category"
@@ -312,252 +296,256 @@
 </template>
 
 <style lang="scss" scoped>
-    .display-mode__list svg {
-    stroke: #727272;
-  }
-  .display-mode__list--active.display-mode__list svg{
-stroke: white;
-  }
-.projects {
-  min-height: 100vh;
-  height: calc(100% - 5rem);
+	.display-mode__list svg {
+		stroke: #727272;
+	}
 
-  .ProjectsGrid {
-    padding-top: 30rem;
-    padding-bottom: 7rem;
+	.display-mode__list--active.display-mode__list svg {
+		stroke: white;
+	}
 
-    @include viewport-480 {
-      padding-top: 15rem;
-    }
-  }
-  .ProjectsList {
-    padding-top: 30rem;
-    padding-bottom: 5rem;
+	.projects {
+		height: calc(100% - 5rem);
+		min-height: 100vh;
 
-    @include viewport-480 {
-      padding-top: 15rem;
-    }
-  }
+		.ProjectsGrid {
+			padding-bottom: 7rem;
+			padding-top: 30rem;
 
-  .container {
-    height: 5rem;
-    padding: 1rem 0;
-    display: flex;
-    justify-content: space-between;
-    position: fixed;
-    bottom: 0;
-    z-index: 10;
-    background-color: $black;
-    font-size: 1.8rem;
-    color: $medium-grey;
-    width: 100%;
-    border-top: 0.1rem solid $dark-grey;
+			@include viewport-480 {
+				padding-top: 15rem;
+			}
+		}
 
-    @include viewport-1024 {
-      height: auto;
-      background-color: $black;
-      justify-content: flex-start;
-      align-items: flex-start;
-      padding: 3rem 1rem;
-      transform: translateY(calc(100% - 41px));
-      transition: 0.6s cubic-bezier(0.1, 0.82, 0.76, 0.965);
-      transition-property: opacity transform;
+		.ProjectsList {
+			padding-bottom: 5rem;
+			padding-top: 30rem;
 
-      &--active {
-        transform: translateY(-4rem);
-      }
-    }
+			@include viewport-480 {
+				padding-top: 15rem;
+			}
+		}
 
-    @include viewport-480 {
-      font-size: 1.6rem;
-    }
-  }
+		.container {
+			background-color: $black;
+			border-top: 0.1rem solid $dark-grey;
+			bottom: 0;
+			color: $medium-grey;
+			display: flex;
+			font-size: 1.8rem;
+			height: 5rem;
+			justify-content: space-between;
+			padding: 1rem 0;
+			position: fixed;
+			width: 100%;
+			z-index: 10;
 
-  .mobile-bar {
-    height: 4rem;
-    z-index: 20;
-    background-color: $black;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem;
-    display: none;
+			@include viewport-1024 {
+				align-items: flex-start;
+				background-color: $black;
+				height: auto;
+				justify-content: flex-start;
+				padding: 3rem 1rem;
+				transform: translateY(calc(100% - 41px));
+				transition: 0.6s cubic-bezier(0.1, 0.82, 0.76, 0.965);
+				transition-property: opacity transform;
 
-    &__filters {
-      color: $medium-grey;
-    }
+				&--active {
+					transform: translateY(-4rem);
+				}
+			}
 
-    &__display-mode {
-      button:not(:first-child) {
-        margin-left: 2rem;
-      }
-    }
+			@include viewport-480 {
+				font-size: 1.6rem;
+			}
+		}
 
-    @include viewport-1024 {
-      display: flex;
-    }
+		.mobile-bar {
+			align-items: center;
+			background-color: $black;
+			bottom: 0;
+			display: flex;
+			display: none;
+			height: 4rem;
+			justify-content: space-between;
+			padding: 1rem;
+			position: fixed;
+			width: 100%;
+			z-index: 20;
 
-    &__grid,
-    &__list {
-      color: $medium-grey;
+			&__filters {
+				color: $medium-grey;
+			}
 
-      &--active {
-        color: $white;
-        text-decoration: underline;
-        text-decoration-thickness: from-font;
-        text-underline-offset: 0.5rem;
-      }
-    }
-  }
+			&__display-mode {
+				button:not(:first-child) {
+					margin-left: 2rem;
+				}
+			}
 
-  .order {
-    display: flex;
-    align-items: center;
-    grid-column: auto / span 4;
+			@include viewport-1024 {
+				display: flex;
+			}
 
-    @include viewport-1024 {
-      display: block;
-      order: 2;
-      flex: 1;
-    }
+			&__grid,
+			&__list {
+				color: $medium-grey;
 
-    &-name,
-    &-date,
-    &-selection {
-      flex: 0.25;
-      transition: 0.3s ease-in-out;
-      transition-property: text-decoration, color;
+				&--active {
+					color: $white;
+					text-decoration: underline;
+					text-decoration-thickness: from-font;
+					text-underline-offset: 0.5rem;
+				}
+			}
+		}
 
-      &--active {
-        color: $white;
+		.order {
+			align-items: center;
+			display: flex;
+			grid-column: auto / span 4;
 
-        button {
-          text-decoration: underline;
-          text-decoration-thickness: from-font;
-          text-underline-offset: 0.5rem;
-        }
-      }
-    }
+			@include viewport-1024 {
+				display: block;
+				flex: 1;
+				order: 2;
+			}
 
-    & > li {
-      button {
-        cursor: pointer;
-      }
+			&-name,
+			&-date,
+			&-selection {
+				flex: 0.25;
+				transition: 0.3s ease-in-out;
+				transition-property: text-decoration, color;
 
-      &:not(:first-child) {
-        margin-left: 1rem;
+				&--active {
+					color: $white;
 
-        @include viewport-1024 {
-          margin-left: 0;
-          // margin-top: 2rem;
-        }
-      }
-    }
-    > li {
-      &:not(:first-child) {
-        @include viewport-1024 {
-          margin: 2rem 0;
-        }
-      }
-    }
-  }
+					button {
+						text-decoration: underline;
+						text-decoration-thickness: from-font;
+						text-underline-offset: 0.5rem;
+					}
+				}
+			}
 
-  .filters {
-    display: flex;
-    align-items: center;
-    grid-column: auto / span 6;
+			& > li {
+				button {
+					cursor: pointer;
+				}
 
-    @include viewport-1024 {
-      display: block;
-      flex: 1;
-    }
+				&:not(:first-child) {
+					margin-left: 1rem;
 
-    > li {
-      &:not(:first-child) {
-        @include viewport-1024 {
-          margin: 2rem 0;
-        }
-      }
-    }
+					@include viewport-1024 {
+						margin-left: 0;
 
-    .all,
-    .category {
-      cursor: pointer;
-      margin-right: 2rem;
+						// margin-top: 2rem;
+					}
+				}
+			}
 
-      @include viewport-1024 {
-        margin-left: 0;
-      }
+			> li {
+				&:not(:first-child) {
+					@include viewport-1024 {
+						margin: 2rem 0;
+					}
+				}
+			}
+		}
 
-      .all__label,
-      .category__label {
-        transition: 0.3s ease-in-out;
-        transition-property: text-decoration, color;
-      }
+		.filters {
+			align-items: center;
+			display: flex;
+			grid-column: auto / span 6;
 
-      &.toggled {
-        color: $white;
+			@include viewport-1024 {
+				display: block;
+				flex: 1;
+			}
 
-        .all__label,
-        .category__label {
-          text-decoration: underline;
-          text-decoration-thickness: from-font;
-          text-underline-offset: 0.5rem;
-        }
-      }
+			> li {
+				&:not(:first-child) {
+					@include viewport-1024 {
+						margin: 2rem 0;
+					}
+				}
+			}
 
-      span {
-        pointer-events: none;
-      }
+			.all,
+			.category {
+				cursor: pointer;
+				margin-right: 2rem;
 
-      &__length {
-        color: $dark-grey;
-        margin-left: 0.6rem;
-      }
-    }
-  }
+				@include viewport-1024 {
+					margin-left: 0;
+				}
 
-  .display-mode {
-    display: flex;
-    align-items: center;
-    grid-column: auto / span 2;
+				.all__label,
+				.category__label {
+					transition: 0.3s ease-in-out;
+					transition-property: text-decoration, color;
+				}
 
-    @include viewport-1024 {
-      display: none;
-    }
+				&.toggled {
+					color: $white;
 
-    & > li {
-      cursor: pointer;
+					.all__label,
+					.category__label {
+						text-decoration: underline;
+						text-decoration-thickness: from-font;
+						text-underline-offset: 0.5rem;
+					}
+				}
 
-      &:not(:first-child) {
-        margin-left: 2rem;
-      }
-    }
+				span {
+					pointer-events: none;
+				}
 
-    &__four-grid,
-    &__three-grid {
-      line-height: 0;
+				&__length {
+					color: $dark-grey;
+					margin-left: 0.6rem;
+				}
+			}
+		}
 
-      &--active {
-        pointer-events: none;
-      }
-    }
+		.display-mode {
+			align-items: center;
+			display: flex;
+			grid-column: auto / span 2;
 
-    &__list,
-    &__grid {
-      cursor: pointer;
-      border-bottom: 0.1rem solid $black;
-      transition: border-bottom 0.3s ease-in-out;
+			@include viewport-1024 {
+				display: none;
+			}
 
-      &--active {
-        color: $white;
-        pointer-events: none;
-      }
-    }
-  }
+			& > li {
+				cursor: pointer;
 
-}
+				&:not(:first-child) {
+					margin-left: 2rem;
+				}
+			}
+
+			&__four-grid,
+			&__three-grid {
+				line-height: 0;
+
+				&--active {
+					pointer-events: none;
+				}
+			}
+
+			&__list,
+			&__grid {
+				border-bottom: 0.1rem solid $black;
+				cursor: pointer;
+				transition: border-bottom 0.3s ease-in-out;
+
+				&--active {
+					color: $white;
+					pointer-events: none;
+				}
+			}
+		}
+	}
 </style>

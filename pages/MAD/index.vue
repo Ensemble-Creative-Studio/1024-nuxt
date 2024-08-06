@@ -4,7 +4,6 @@
 
 	const { isMobile } = useDevice()
 
-	const sanity = useSanity()
 	const route = useRoute()
 	const router = useRouter()
 
@@ -35,15 +34,13 @@
 `
 
 
-	const { data } = await useAsyncData(`projects/${route.params.slug}`, () =>
-		sanity.fetch(GET_SINGLE_PROJECT)
-	)
-	if (Object.keys(data.value).length === 0) {
+	const { data: project } = await useSanityQuery(GET_SINGLE_PROJECT, {
+		params: { slug: route.params.slug },
+	})
+	if (Object.keys(project.value).length === 0) {
 		router.push("/404")
 		throw createError({ statusCode: 404, statusMessage: "Project not found" })
 	}
-
-	const project = data.value
 
 	const $hero = ref()
 	const $galleryMedia = ref([])
@@ -157,8 +154,10 @@
 		ref="$projectPage">
 		<Head>
 			<Title>{{ project.title }}</Title>
-			<Meta name="description"
-				content="Project description" />
+			<Meta
+				name="description"
+				content="Project description"
+			/>
 		</Head>
 		<section class="hero"
 			ref="$hero">
@@ -321,328 +320,331 @@
 </template>
 
 <style lang="scss">
-.project-page {
-  position: relative;
+	.project-page {
+		position: relative;
 
-  .hero {
-    height: 100vh;
-    position: relative;
-    background-color: transparent;
+		.hero {
+			background-color: transparent;
+			height: 100vh;
+			position: relative;
 
-    &__banner,
-    &__video {
-      height: 100%;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100vh;
-      z-index: -1;
-      object-fit: cover;
-    }
+			&__banner,
+			&__video {
+				height: 100%;
+				height: 100vh;
+				left: 0;
+				object-fit: cover;
+				position: fixed;
+				top: 0;
+				width: 100%;
+				z-index: -1;
+			}
 
-    &__title {
-      font-size: $desktop-h4;
-      // font-weight: $extra-light;
-      position: fixed;
-      bottom: 1.5rem;
-      left: 2rem;
+			&__title {
+				bottom: 1.5rem;
+				font-size: $desktop-h4;
+				left: 2rem;
 
-      @include viewport-480 {
-        font-size: $mobile-h2;
-        left: 1rem;
-        bottom: 6rem;
-      }
-    }
-  }
+				// font-weight: $extra-light;
+				position: fixed;
 
-  .main {
-    background-color: $black;
-    z-index: 10;
-    position: relative;
-  }
-  .item__inner {
-    display: flex;
-    flex-direction: row; /* default flex-direction but making it explicit */
-    flex-wrap: wrap; /* allows items to wrap to the next line */
-    justify-content: center;
-  }
+				@include viewport-480 {
+					bottom: 6rem;
+					font-size: $mobile-h2;
+					left: 1rem;
+				}
+			}
+		}
 
-  .item__inner li {
-  }
+		.main {
+			background-color: $black;
+			position: relative;
+			z-index: 10;
+		}
 
-  .item__inner li.vertical {
-    display: flex;
-    flex: 0 0 50%; /* flex-grow | flex-shrink | flex-basis */
-    padding: 2rem;
-    @include viewport-480 {
-      padding: 1rem;
-    }
-  }
-  .item__inner li.vertical:nth-child(1) {
-margin-top:12rem;
-    @include viewport-480 {
-      padding: 1rem;
-    }
-  }
+		.item__inner {
+			display: flex;
+			flex-flow: row wrap; /* default flex-direction but making it explicit */ /* allows items to wrap to the next line */
+			justify-content: center;
+		}
 
-  .content {
-    &__claim {
-      grid-column: 2 / span 5;
-      font-size: $desktop-h4;
-      // font-weight: $extra-light;
-      margin-top: 6rem;
+		.item__inner li {
+		}
 
-      @include viewport-1200 {
-        grid-column: 2 / span 8;
-      }
+		.item__inner li.vertical {
+			display: flex;
+			flex: 0 0 50%; /* flex-grow | flex-shrink | flex-basis */
+			padding: 2rem;
+			@include viewport-480 {
+				padding: 1rem;
+			}
+		}
 
-      @include viewport-768 {
-        grid-column: 1 / -1;
-      }
+		.item__inner li.vertical:nth-child(1) {
+			margin-top: 12rem;
+			@include viewport-480 {
+				padding: 1rem;
+			}
+		}
 
-      @include viewport-480 {
-        font-size: $mobile-h4; // $mobile-h2 on Figma
-        margin-top: 4rem;
-      }
-    }
+		.content {
+			&__claim {
+				font-size: $desktop-h4;
+				grid-column: 2 / span 5;
 
-    &__details {
-      grid-column: 1 / -1;
-      margin-top: 6rem;
+				// font-weight: $extra-light;
+				margin-top: 6rem;
 
-      @include viewport-768 {
-        grid-column: 2 / span 10;
-      }
-    }
+				@include viewport-1200 {
+					grid-column: 2 / span 8;
+				}
 
-    &__description {
-      grid-column: 2 / span 5;
+				@include viewport-768 {
+					grid-column: 1 / -1;
+				}
 
-      @include viewport-1200 {
-        grid-column: 2 / span 8;
-      }
+				@include viewport-480 {
+					font-size: $mobile-h4; // $mobile-h2 on Figma
+					margin-top: 4rem;
+				}
+			}
 
-      @include viewport-480 {
-        grid-column: 2 / -1;
-        font-size: $mobile-text-read;
-      }
-    }
+			&__details {
+				grid-column: 1 / -1;
+				margin-top: 6rem;
 
-    &__type {
-      margin-left: 1rem;
-      text-decoration: none;
-      display: inline-block;
+				@include viewport-768 {
+					grid-column: 2 / span 10;
+				}
+			}
 
-      text-decoration-thickness: from-font;
-      text-underline-offset: 0.5rem;
-    }
+			&__description {
+				grid-column: 2 / span 5;
 
-    &__description {
-      margin-top: 6rem;
+				@include viewport-1200 {
+					grid-column: 2 / span 8;
+				}
 
-      a {
-        display: inline-block;
-        text-decoration: underline;
-        text-decoration: underline;
-        text-decoration-thickness: from-font;
-        text-underline-offset: 0.5rem;
-      }
+				@include viewport-480 {
+					font-size: $mobile-text-read;
+					grid-column: 2 / -1;
+				}
+			}
 
-      p {
-        &:not(:first-child) {
-          margin-top: 4rem;
-        }
-      }
-    }
-  }
+			&__type {
+				display: inline-block;
+				margin-left: 1rem;
+				text-decoration: none;
+				text-decoration-thickness: from-font;
+				text-underline-offset: 0.5rem;
+			}
 
-  .gallery {
-    margin-top: 12rem;
+			&__description {
+				margin-top: 6rem;
 
-    &__title-container {
-      grid-column: 1 / -1;
-      display: flex;
-      align-items: flex-start;
-    }
+				a {
+					display: inline-block;
+					text-decoration: underline;
+					text-decoration-thickness: from-font;
+					text-underline-offset: 0.5rem;
+				}
 
-    &__title {
-      font-size: $desktop-h4;
-      // font-weight: $extra-light;
-      grid-column: 1 / -1;
+				p {
+					&:not(:first-child) {
+						margin-top: 4rem;
+					}
+				}
+			}
+		}
 
-      @include viewport-480 {
-        font-size: $mobile-h4;
-      }
-    }
+		.gallery {
+			margin-top: 12rem;
 
-    &__counter {
-      margin-left: 1rem;
-      font-size: 2.6rem;
-      color: $medium-grey;
+			&__title-container {
+				align-items: flex-start;
+				display: flex;
+				grid-column: 1 / -1;
+			}
 
-      @include viewport-480 {
-        transform: scale(0.7);
-        transform-origin: top left;
-      }
-    }
+			&__title {
+				font-size: $desktop-h4;
 
-    &__wrapper {
-      grid-column: 1 / -1;
-      @include grid(12, 1fr, 1, 0);
-      margin-top: 6rem;
+				// font-weight: $extra-light;
+				grid-column: 1 / -1;
 
-      .item {
-        &--media,
-        &--video {
-          grid-column: 3 / span 8;
+				@include viewport-480 {
+					font-size: $mobile-h4;
+				}
+			}
 
-          @include viewport-768 {
-            grid-column: 2 / span 10;
-          }
+			&__counter {
+				color: $medium-grey;
+				font-size: 2.6rem;
+				margin-left: 1rem;
 
-          @include viewport-480 {
-            grid-column: 1 / -1;
-          }
-        }
+				@include viewport-480 {
+					transform: scale(0.7);
+					transform-origin: top left;
+				}
+			}
 
-        &--text {
-          grid-column: 2 / span 6;
+			&__wrapper {
+				grid-column: 1 / -1;
+				margin-top: 6rem;
+				@include grid(12, 1fr, 1, 0);
 
-          a {
-            display: inline-block;
-            text-decoration: underline;
-            text-decoration: underline;
-            text-decoration-thickness: from-font;
-            text-underline-offset: 0.5rem;
-          }
+				.item {
+					&--media,
+					&--video {
+						grid-column: 3 / span 8;
 
-          @include viewport-480 {
-            font-size: $mobile-text-read;
-            grid-column: 2 / -1;
-          }
-        }
+						@include viewport-768 {
+							grid-column: 2 / span 10;
+						}
 
-        &:not(:first-child) {
-          margin-top: 12rem;
+						@include viewport-480 {
+							grid-column: 1 / -1;
+						}
+					}
 
-          @include viewport-480 {
-            margin-top: 6rem;
-          }
-        }
+					&--text {
+						grid-column: 2 / span 6;
 
-        &__inner {
-          li {
-            &:not(:first-child) {
-              margin-top: 12rem;
+						a {
+							display: inline-block;
+							text-decoration: underline;
+							text-decoration-thickness: from-font;
+							text-underline-offset: 0.5rem;
+						}
 
-              @include viewport-768 {
-                margin-top: 9rem;
-              }
+						@include viewport-480 {
+							font-size: $mobile-text-read;
+							grid-column: 2 / -1;
+						}
+					}
 
-              @include viewport-480 {
-                margin-top: 6rem;
-              }
-            }
-          }
-        }
-      }
-    }
-  }
+					&:not(:first-child) {
+						margin-top: 12rem;
 
-  .credits {
-    margin-top: 9rem;
-    padding-bottom: 9rem;
+						@include viewport-480 {
+							margin-top: 6rem;
+						}
+					}
 
-    @include viewport-480 {
-      font-size: $mobile-text-read;
-      margin-top: 6rem;
-      padding-bottom: 0;
-    }
+					&__inner {
+						li {
+							&:not(:first-child) {
+								margin-top: 12rem;
 
-    &__header {
-      grid-column: 2 / -1;
+								@include viewport-768 {
+									margin-top: 9rem;
+								}
 
-      &--is-empty {
-        padding-bottom: 6rem;
+								@include viewport-480 {
+									margin-top: 6rem;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
 
-        @include viewport-480 {
-          padding-bottom: 12rem;
-        }
-      }
+		.credits {
+			margin-top: 9rem;
+			padding-bottom: 9rem;
 
-      @include viewport-480 {
-        grid-column: 1 / -1;
-      }
-    }
+			@include viewport-480 {
+				font-size: $mobile-text-read;
+				margin-top: 6rem;
+				padding-bottom: 0;
+			}
 
-    &__wrapper {
-      grid-column: 3 / span 9;
-      @include grid(9, 1fr, 1, 3);
-      margin-top: 6rem;
+			&__header {
+				grid-column: 2 / -1;
 
-      @include viewport-768 {
-        @include grid(10, 1fr, 1, 3);
-        grid-column: 2 / span 10;
-      }
+				&--is-empty {
+					padding-bottom: 6rem;
 
-      @include viewport-480 {
-        grid-column: 2 / span 10;
-        @include grid(12, 1fr, 1, 0);
-      }
+					@include viewport-480 {
+						padding-bottom: 12rem;
+					}
+				}
 
-      .item {
-        grid-column: auto / span 3;
-        @include grid(3, 1fr, 1, 0);
+				@include viewport-480 {
+					grid-column: 1 / -1;
+				}
+			}
 
-        @include viewport-768 {
-          grid-column: auto / span 5;
-        }
+			&__wrapper {
+				grid-column: 3 / span 9;
+				margin-top: 6rem;
+				@include grid(9, 1fr, 1, 3);
 
-        @include viewport-480 {
-          grid-column: 1 / -1;
+				@include viewport-768 {
+					@include grid(10, 1fr, 1, 3);
 
-          &:not(:first-child) {
-            margin-top: 3rem;
-          }
-        }
+					grid-column: 2 / span 10;
+				}
 
-        &__label {
-          color: $medium-grey;
-          grid-column: 1 / span 2;
+				@include viewport-480 {
+					grid-column: 2 / span 10;
+					@include grid(12, 1fr, 1, 0);
+				}
 
-          @include viewport-480 {
-            grid-column: 1 / -1;
-          }
-        }
+				.item {
+					grid-column: auto / span 3;
+					@include grid(3, 1fr, 1, 0);
 
-        &__text {
-          grid-column: 1 / span 2;
+					@include viewport-768 {
+						grid-column: auto / span 5;
+					}
 
-          @include viewport-480 {
-            grid-column: 1 / -1;
-          }
-        }
-      }
-    }
-  }
+					@include viewport-480 {
+						grid-column: 1 / -1;
 
-  .related-projects {
-    margin-top: 6rem;
+						&:not(:first-child) {
+							margin-top: 3rem;
+						}
+					}
 
-    &__title {
-      grid-column: 1 / -1;
-      font-size: $desktop-h4;
-      // font-weight: $extra-light;
+					&__label {
+						color: $medium-grey;
+						grid-column: 1 / span 2;
 
-      @include viewport-480 {
-        font-size: $mobile-h2;
-      }
-    }
+						@include viewport-480 {
+							grid-column: 1 / -1;
+						}
+					}
 
-    .ProjectsList {
-      margin-top: 6rem;
-    }
-  }
-}
+					&__text {
+						grid-column: 1 / span 2;
+
+						@include viewport-480 {
+							grid-column: 1 / -1;
+						}
+					}
+				}
+			}
+		}
+
+		.related-projects {
+			margin-top: 6rem;
+
+			&__title {
+				font-size: $desktop-h4;
+				grid-column: 1 / -1;
+
+				// font-weight: $extra-light;
+
+				@include viewport-480 {
+					font-size: $mobile-h2;
+				}
+			}
+
+			.ProjectsList {
+				margin-top: 6rem;
+			}
+		}
+	}
 </style>

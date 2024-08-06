@@ -1,22 +1,22 @@
 <script setup>
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
+	import gsap from "gsap"
+	import { ScrollTrigger } from "gsap/ScrollTrigger"
+	import { ScrollToPlugin } from "gsap/ScrollToPlugin"
 
-gsap.registerPlugin(ScrollTrigger, ScrollToPlugin)
+	gsap.registerPlugin(ScrollTrigger, ScrollToPlugin)
 </script>
 
 <template>
-  <div class="App">
-    <NuxtLayout>
-      <NuxtPage
-        :transition="{
-          name: 'page',
-          mode: 'out-in',
-        }"
-      />
-    </NuxtLayout>
-  </div>
+	<div class="App">
+		<NuxtLayout>
+			<NuxtPage
+				:transition="{
+					name: 'page',
+					mode: 'out-in',
+				}"
+			/>
+		</NuxtLayout>
+	</div>
 </template>
 
 <style lang="scss">

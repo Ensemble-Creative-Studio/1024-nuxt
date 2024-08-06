@@ -3,7 +3,7 @@
 </template>
 
 <style>
-.SiteFooter {
-  padding: 1.5rem 0;
-}
+	.SiteFooter {
+		padding: 1.5rem 0;
+	}
 </style>

@@ -12,24 +12,24 @@
 </script>
 
 <style lang="scss">
-.GoBackButton {
-  cursor: pointer;
-  text-decoration: underline;
-  text-decoration-thickness: from-font;
-  text-underline-offset: 0.5rem;
+	.GoBackButton {
+		cursor: pointer;
+		text-decoration: underline;
+		text-decoration-thickness: from-font;
+		text-underline-offset: 0.5rem;
 
-  @include viewport-480 {
-    position: fixed;
-    width: 100%;
-    height: 4rem;
-    bottom: 0;
-    left: 0;
-    background-color: $black;
-    border-top: .1rem solid $medium-grey;
-    color: $medium-grey;
-    text-align: left;
-    padding: 1rem;
-    line-height: 1;
-  }
-}
+		@include viewport-480 {
+			background-color: $black;
+			border-top: 0.1rem solid $medium-grey;
+			bottom: 0;
+			color: $medium-grey;
+			height: 4rem;
+			left: 0;
+			line-height: 1;
+			padding: 1rem;
+			position: fixed;
+			text-align: left;
+			width: 100%;
+		}
+	}
 </style>

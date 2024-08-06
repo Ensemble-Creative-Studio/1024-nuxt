@@ -318,127 +318,129 @@
 </template>
 
 <style lang="scss">
-.VideoPlayer {
-  position: relative;
-  background-color: $black;
-.flex{
-  display: flex;
-}
-  .controls {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    font-size: $desktop-player;
-    padding: 0 1.2rem 1.2rem 1.2rem;
+	.VideoPlayer {
+		background-color: $black;
+		position: relative;
 
-    @include viewport-480 {
-      font-size: $mobile-player;
-      padding: 0.4rem 0.6rem;
-       justify-content: flex-start;
-    }
+		.flex {
+			display: flex;
+		}
 
-    button {
-      text-transform: uppercase;
-      cursor: pointer;
-      display: block;
+		.controls {
+			align-items: center;
+			bottom: 0;
+			display: flex;
+			flex-wrap: wrap;
+			font-size: $desktop-player;
+			justify-content: space-between;
+			padding: 0 1.2rem 1.2rem;
+			position: absolute;
+			width: 100%;
 
-      svg {
-        margin: 0 auto;
-        display: block;
-      }
-    }
+			@include viewport-480 {
+				font-size: $mobile-player;
+				justify-content: flex-start;
+				padding: 0.4rem 0.6rem;
+			}
 
-    &__play-pause {
-      order: 0;
-    }
+			button {
+				cursor: pointer;
+				display: block;
+				text-transform: uppercase;
 
-    &__time {
-      order: 1;
-      display: flex;
-      margin-left: 1.2rem;
-    }
+				svg {
+					display: block;
+					margin: 0 auto;
+				}
+			}
 
-    &__total-time {
-      margin-left: 1.2rem;
-    }
+			&__play-pause {
+				order: 0;
+			}
 
-    &__mute {
-      order: 2;
-      margin-left: 1.2rem;
-    }
+			&__time {
+				display: flex;
+				margin-left: 1.2rem;
+				order: 1;
+			}
 
-    &__download {
-      margin-left: 1.2rem;
-      order: 4;
+			&__total-time {
+				margin-left: 1.2rem;
+			}
 
-      @include viewport-480 {
-        order: 5;
-      }
+			&__mute {
+				margin-left: 1.2rem;
+				order: 2;
+			}
 
-      @include viewport-320 {
-        display: none;
-      }
-    }
+			&__download {
+				margin-left: 1.2rem;
+				order: 4;
 
-    &__fullscreen {
-      order: 3;
-      margin-left: 1.2rem;
+				@include viewport-480 {
+					order: 5;
+				}
 
-      @include viewport-480 {
-        order: 4;
-      }
-    }
+				@include viewport-320 {
+					display: none;
+				}
+			}
 
-    &__timeline {
-      overflow: hidden;
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 1rem;
-      display: flex;
-      align-items: center;
-      cursor: pointer;
+			&__fullscreen {
+				margin-left: 1.2rem;
+				order: 3;
 
-      @include viewport-480 {
-        position: relative;
-        width: 5rem;
-        order: 4;
-        margin-left: 1.2rem;
-      }
+				@include viewport-480 {
+					order: 4;
+				}
+			}
 
-      &-background {
-        position: absolute;
-        bottom: 0;
-        height: 0.1rem;
-        background-color: #737373;
-        opacity: 0.8;
-        width: 100%;
+			&__timeline {
+				align-items: center;
+				bottom: 0;
+				cursor: pointer;
+				display: flex;
+				height: 1rem;
+				left: 0;
+				overflow: hidden;
+				position: absolute;
+				width: 100%;
 
-        @include viewport-480 {
-          bottom: 50%;
-          transform: translateY(calc(50% + 0.1rem));
-        }
-      }
+				@include viewport-480 {
+					margin-left: 1.2rem;
+					order: 4;
+					position: relative;
+					width: 5rem;
+				}
 
-      &-current {
-        height: 0.2rem;
-        background-color: $white;
-        position: absolute;
-        bottom: 0;
-        width: 100%;
-        transform: scaleX(0);
-        transform-origin: left;
+				&-background {
+					background-color: #737373;
+					bottom: 0;
+					height: 0.1rem;
+					opacity: 0.8;
+					position: absolute;
+					width: 100%;
 
-        @include viewport-480 {
-          bottom: 0.35rem;
-        }
-      }
-    }
-  }
-}
+					@include viewport-480 {
+						bottom: 50%;
+						transform: translateY(calc(50% + 0.1rem));
+					}
+				}
+
+				&-current {
+					background-color: $white;
+					bottom: 0;
+					height: 0.2rem;
+					position: absolute;
+					transform: scaleX(0);
+					transform-origin: left;
+					width: 100%;
+
+					@include viewport-480 {
+						bottom: 0.35rem;
+					}
+				}
+			}
+		}
+	}
 </style>

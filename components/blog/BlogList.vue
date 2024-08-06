@@ -69,79 +69,80 @@
 </template>
 
 <style lang="scss">
-.BlogList {
-  @include grid(12, 1fr, 1, 0);
-  padding: 0 2rem;
-  padding-top: 12rem;
-  overflow: hidden;
+	.BlogList {
+		@include grid(12, 1fr, 1, 0);
 
-  @include viewport-480 {
-    padding: 0 1rem;
-    padding-top: 15rem;
-  }
+		overflow: hidden;
+		padding: 0 2rem;
+		padding-top: 12rem;
 
-  .item {
-    grid-column: 3 / span 8;
+		@include viewport-480 {
+			padding: 0 1rem;
+			padding-top: 15rem;
+		}
 
-    @include viewport-480 {
-      grid-column: 1 / -1;
-    }
+		.item {
+			grid-column: 3 / span 8;
 
-    &:not(:first-child) {
-      margin-top: 12rem;
-    }
+			@include viewport-480 {
+				grid-column: 1 / -1;
+			}
 
-    &__container {
-      .swiper {
-        overflow: visible;
-        aspect-ratio: 110 / 62;
+			&:not(:first-child) {
+				margin-top: 12rem;
+			}
 
-        &-wrapper {
-          height: 100%;
-        }
+			&__container {
+				.swiper {
+					aspect-ratio: 110 / 62;
+					overflow: visible;
 
-        &-slide {
-          height: 100%;
+					&-wrapper {
+						height: 100%;
+					}
 
-          img {
-            height: 100%;
-          }
-        }
-      }
-    }
+					&-slide {
+						height: 100%;
 
-    &__meta {
-      margin-top: 2rem;
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
+						img {
+							height: 100%;
+						}
+					}
+				}
+			}
 
-      @include viewport-480 {
-        @include grid(12, 1fr, 1, 0);
-      }
-    }
+			&__meta {
+				align-items: flex-start;
+				display: flex;
+				justify-content: space-between;
+				margin-top: 2rem;
 
-    &__title {
-      flex: 1;
-      text-decoration: underline;
-      text-decoration-thickness: from-font;
-      text-underline-offset: 0.5rem;
+				@include viewport-480 {
+					@include grid(12, 1fr, 1, 0);
+				}
+			}
 
-      @include viewport-480 {
-        grid-column: 1 / -1;
-      }
-    }
+			&__title {
+				flex: 1;
+				text-decoration: underline;
+				text-decoration-thickness: from-font;
+				text-underline-offset: 0.5rem;
 
-    &__excerpt {
-      flex: 1;
-      margin-left: 1rem;
+				@include viewport-480 {
+					grid-column: 1 / -1;
+				}
+			}
 
-      @include viewport-480 {
-        margin-left: 0;
-        margin-top: 2rem;
-        grid-column: 2 / span 10;
-      }
-    }
-  }
-}
+			&__excerpt {
+				flex: 1;
+				margin-left: 1rem;
+
+				@include viewport-480 {
+					grid-column: 2 / span 10;
+					margin-left: 0;
+					margin-top: 2rem;
+				}
+			}
+		}
+	}
 </style>

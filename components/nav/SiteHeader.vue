@@ -24,118 +24,111 @@
 </template>
 
 <style lang="scss">
-.SiteHeader {
-  position: fixed;
-  top: 0;
-  left: 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 6rem;
-  padding: 2rem;
-  width: 100%;
-  z-index: 40;
-background-color:black;
+	.SiteHeader {
+		align-items: center;
+		background-color: black;
+		display: flex;
+		height: 6rem;
+		justify-content: space-between;
+		left: 0;
+		padding: 2rem;
+		position: fixed;
+		top: 0;
+		width: 100%;
+		z-index: 40;
 
-  @include viewport-480 {
-    padding: 1rem;
-    height: 4rem;
-  }
+		@include viewport-480 {
+			height: 4rem;
+			padding: 1rem;
+		}
 
-  .SiteLogo {
-    svg {
-      width: 9rem;
-    }
-  }
-}
+		.SiteLogo {
+			svg {
+				width: 9rem;
+			}
+		}
+	}
 
-.menu-icon {
-  position: relative;
-  width: 29px;
-  height: 20px;
-  cursor: pointer;
+	.menu-icon {
+		cursor: pointer;
+		height: 20px;
+		position: relative;
+		width: 29px;
 
-  .menu-icon__checkbox {
-    display: block;
-    width: 100%;
-    height: 100%;
-    position: relative;
-    pointer-events: none;
-    z-index: 2;
-    -webkit-touch-callout: none;
-    position: absolute;
-    opacity: 0;
-  }
+		.menu-icon__checkbox {
+			display: block;
+			height: 100%;
+			opacity: 0;
+			pointer-events: none;
+			position: relative;
+			position: absolute;
+			-webkit-touch-callout: none;
+			width: 100%;
+			z-index: 2;
+		}
 
-  .burger {
-    pointer-events: none;
-    margin: auto;
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
-    bottom: 0;
-    width: 20px;
-    height: 20px;
+		.burger {
+			inset: 0;
+			height: 20px;
+			margin: auto;
+			pointer-events: none;
+			position: absolute;
+			width: 20px;
 
-    &__bar {
-      position: absolute;
-      display: block;
-      width: 100%;
-      height: 2.4px;
-      background-color: $white;
-      transition: all 0.5s cubic-bezier(0.1, 0.82, 0.76, 0.965);
+			&__bar {
+				background-color: $white;
+				display: block;
+				height: 2.4px;
+				position: absolute;
+				transition: all 0.5s cubic-bezier(0.1, 0.82, 0.76, 0.965);
+				width: 100%;
 
-      &--top {
-        top: 0;
-     transform: translateY(8.5px);
-      }
+				&--top {
+					top: 0;
+					transform: translateY(8.5px);
+				}
 
-      &--right {
-        top: 50%;
+				&--right {
+					right: -50%;
+					top: 50%;
+					transform: translateY(-50%) translateX(-10px) rotate(90deg);
+				}
 
-                  transform: translateY(-50%) translateX(-10px) rotate(90deg);
-        right: -50%;
-      }
+				&--bottom {
+					bottom: 0;
+					transform: translateY(-8.5px);
+				}
 
-      &--bottom {
-        bottom: 0;
-                  transform: translateY(-8.5px);
+				&--left {
+					left: -50%;
+					top: 50%;
+					transform: translateY(-50%) translateX(10px) rotate(90deg);
+				}
+			}
+		}
 
-      }
+		&--active {
+			.burger {
+				&__bar {
+					&--top {
+						transform: translateY(0);
+					}
 
-      &--left {
-        top: 50%;
-        left: -50%;
+					&--right {
+						right: -45%;
+						transform: translateY(-50%) rotate(90deg);
+					}
 
-                  transform: translateY(-50%) translateX(10px) rotate(90deg);
-      }
-    }
-  }
+					&--bottom {
+						transform: translateY(0);
+					}
 
-  &--active {
-    .burger {
-      &__bar {
-        &--top {
-
-                 transform: translateY(0);
-        }
-
-        &--right {
-        transform: translateY(-50%) rotate(90deg);
-            right: -45%;
-        }
-
-        &--bottom {
-        transform: translateY(0);
-        }
-
-        &--left {
-        transform: translateY(-50%) rotate(90deg);
-            left: -45%;
-        }
-      }
-    }
-  }
-}
+					&--left {
+						left: -45%;
+						transform: translateY(-50%) rotate(90deg);
+					}
+				}
+			}
+		}
+	}
 </style>

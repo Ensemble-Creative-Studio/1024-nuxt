@@ -1,5 +1,4 @@
 <script setup>
-	const sanity = useSanity()
 	const route = useRoute()
 	const router = useRouter()
 
@@ -20,15 +19,11 @@
   }
 `
 
-	const { data } = await useAsyncData(`blog/${route.params.slug}`, () =>
-		sanity.fetch(GET_SINGLE_ARTICLE)
-	)
-	if (Object.keys(data.value).length === 0) {
+	const { data: article } = await useSanityQuery(GET_SINGLE_ARTICLE)
+	if (Object.keys(article.value).length === 0) {
 		router.push("/404")
 		throw createError({ statusCode: 404, statusMessage: "Article not found" })
 	}
-
-	const article = data.value
 
 	const { isMobile } = useDevice()
 </script>
@@ -37,8 +32,10 @@
 	<div class="article-page">
 		<Head>
 			<Title>{{ article.title }}</Title>
-			<Meta name="description"
-				content="Project description" />
+			<Meta
+				name="description"
+				content="Project description"
+			/>
 		</Head>
 		<div class="main">
 			<GridContainer>
@@ -54,10 +51,11 @@
 						v-if="article.mainVideo"
 						:vimeoUrl="article.mainVideoUrl"
 						:downloadUrl="article.mainVideoDownloadUrl"
-						:quality="isMobile ? 'sd' : 'hd'"
 					/>
-					<div class="content__gallery"
-						v-if="article?.gallery?.medias">
+					<div
+						class="content__gallery"
+						v-if="article?.gallery?.medias"
+					>
 						<SanityImage
 							class="image"
 							v-for="media in article?.gallery?.medias"
@@ -74,107 +72,107 @@
 </template>
 
 <style lang="scss">
-.article-page {
-  .main {
-    position: relative;
-    margin-top: 12rem;
+	.article-page {
+		.main {
+			margin-top: 12rem;
+			position: relative;
 
-    .GridContainer {
-      @include viewport-1200 {
-        display: block;
-      }
-    }
+			.GridContainer {
+				@include viewport-1200 {
+					display: block;
+				}
+			}
 
-    .infos {
-      grid-column: 1 / span 3;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: space-between;
-      height: calc(100vh - 12rem);
-      position: sticky;
-      padding-bottom: 2rem;
-      top: 12rem;
+			.infos {
+				align-items: flex-start;
+				display: flex;
+				flex-direction: column;
+				grid-column: 1 / span 3;
+				height: calc(100vh - 12rem);
+				justify-content: space-between;
+				padding-bottom: 2rem;
+				position: sticky;
+				top: 12rem;
 
-      @include viewport-1200 {
-        position: relative;
-        top: 0;
-        height: auto;
-      }
+				@include viewport-1200 {
+					height: auto;
+					position: relative;
+					top: 0;
+				}
 
-      @include viewport-480 {
-        grid-column: 1 / -1;
-        position: relative;
-        top: 0;
-        height: auto;
-        padding-bottom: 0;
-        margin-bottom: 6rem;
-      }
+				@include viewport-480 {
+					grid-column: 1 / -1;
+					height: auto;
+					margin-bottom: 6rem;
+					padding-bottom: 0;
+					position: relative;
+					top: 0;
+				}
 
-      .GoBackButton {
-        @include viewport-1200 {
-          margin-bottom: 6rem;
-        }
+				.GoBackButton {
+					@include viewport-1200 {
+						margin-bottom: 6rem;
+					}
 
-        @include viewport-480 {
-          margin-bottom: 0;
-        }
-      }
+					@include viewport-480 {
+						margin-bottom: 0;
+					}
+				}
 
-      &__meta {
-        max-width: 70rem;
+				&__meta {
+					max-width: 70rem;
 
-        @include viewport-480 {
-          @include grid(12, 1fr, 1, 0);
-        }
-      }
+					@include viewport-480 {
+						@include grid(12, 1fr, 1, 0);
+					}
+				}
 
-      &__title {
-        text-decoration: underline;
-        text-decoration-thickness: from-font;
-        text-underline-offset: 0.5rem;
+				&__title {
+					text-decoration: underline;
+					text-decoration-thickness: from-font;
+					text-underline-offset: 0.5rem;
 
-        @include viewport-480 {
-          grid-column: 1 / -1;
-        }
-      }
+					@include viewport-480 {
+						grid-column: 1 / -1;
+					}
+				}
 
-      &__excerpt {
-        margin-top: 1rem;
+				&__excerpt {
+					margin-top: 1rem;
 
-        @include viewport-480 {
-          margin-top: 2rem;
-          grid-column: 2 / span 10;
-        }
-      }
-    }
+					@include viewport-480 {
+						grid-column: 2 / span 10;
+						margin-top: 2rem;
+					}
+				}
+			}
 
-    .content {
-      grid-column: 4 / -1;
-      margin-bottom: 12rem;
+			.content {
+				grid-column: 4 / -1;
+				margin-bottom: 12rem;
 
-      @include viewport-480 {
-        grid-column: 1 / -1;
-      }
+				@include viewport-480 {
+					grid-column: 1 / -1;
+				}
 
-      .VideoPlayer {
-        margin-bottom: 6rem;
-      }
+				.VideoPlayer {
+					margin-bottom: 6rem;
+				}
 
-      &__gallery {
-        .image {
-          &:first-child {
-            @include viewport-480 {
-              margin-top: 6rem;
-            }
-          }
+				&__gallery {
+					.image {
+						&:first-child {
+							@include viewport-480 {
+								margin-top: 6rem;
+							}
+						}
 
-          &:not(:first-child) {
-            margin-top: 6rem;
-          }
-        }
-      }
-    }
-  }
-}
+						&:not(:first-child) {
+							margin-top: 6rem;
+						}
+					}
+				}
+			}
+		}
+	}
 </style>

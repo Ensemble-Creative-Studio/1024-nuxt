@@ -2,35 +2,35 @@
 	const { isMobile } = useDevice()
 
 	const query = groq`*[_type == "home"][0]
-  {
-    baseline,
-    firstProject -> {
-      ...,
-      categories[] -> {
-        title,
-        slug
-      }
-    },
-    featuredProjects[] -> {
-      ...,
-      categories[] -> {
-        title,
-        slug
-      }
-    }
-  }
+	{
+		baseline,
+		firstProject -> {
+			...,
+			categories[] -> {
+			title,
+			slug
+			}
+		},
+		featuredProjects[] -> {
+			...,
+			categories[] -> {
+			title,
+			slug
+			}
+		}
+	}
 `
-	const sanity = useSanity()
-	const { data } = await useAsyncData("home", () => sanity.fetch(query))
-	const home = data.value
+	const { data: home } = await useSanityQuery(query)
 </script>
 
 <template>
 	<div class="index">
 		<Head>
 			<Title>1024</Title>
-			<Meta name="description"
-				content="1024 architecture website" />
+			<Meta
+				name="description"
+				content="1024 architecture website"
+			/>
 		</Head>
 		<FeaturedProjects
 			:baseline="home.baseline"

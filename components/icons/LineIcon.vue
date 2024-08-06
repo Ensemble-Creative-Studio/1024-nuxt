@@ -5,7 +5,7 @@
 </script>
 
 <template>
-	<svg style='position:relative; top:2px;'
+	<svg style='position: relative; top: 2px;'
 		width="17"
 		height="16"
 		viewBox="0 0 17 16"

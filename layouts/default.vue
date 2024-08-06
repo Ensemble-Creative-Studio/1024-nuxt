@@ -33,11 +33,11 @@
 </template>
 
 <style lang="scss">
-.layout {
-  position: relative;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
+	.layout {
+		height: 100%;
+		left: 0;
+		position: relative;
+		top: 0;
+		width: 100%;
+	}
 </style>
