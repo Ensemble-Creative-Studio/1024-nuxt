@@ -1,12 +1,7 @@
 <script setup>
-	import { Swiper, SwiperSlide } from 'swiper/vue'
-	import { EffectCreative } from 'swiper'
 	import { wait } from '@/utils/wait'
 
 	import gsap from 'gsap'
-
-	import 'swiper/css'
-	import 'swiper/css/effect-creative'
 
 	const router = useRouter()
 
@@ -18,11 +13,7 @@
 		projects: {
 			type: Array,
 			required: true,
-		},
-		firstProject: {
-			type: Object,
-			required: true,
-		},
+		}
 	})
 
 	// Animations
@@ -54,74 +45,8 @@
 		return props.baseline.split(' ')
 	})
 
-	const modules = [ EffectCreative ]
-
-	const projectTitles = computed(() => {
-		const temp = props.projects.map((project) => project.title)
-		temp.unshift(props.firstProject.title)
-		return temp
-	})
-
-	const $swiper = ref()
-	const activeSlideIndex = ref(-1)
-	const totalOffsetWidth = ref(0)
-
-	const onSwiper = ($event) => {
-		$swiper.value = $event
-	}
-
-	const onSlideChange = () => {
-		activeSlideIndex.value = $swiper.value.activeIndex - 1
-	}
-
-	let previousSlideIndex = 0
-
-	watch(activeSlideIndex, (newValue) => {
-		const currentTitle = document.querySelectorAll(
-			'.MobileFeaturedProjects__title')[ newValue - 1 ]
-
-		if (currentTitle !== undefined && newValue !== 0) {
-			if (newValue > previousSlideIndex) {
-				totalOffsetWidth.value += currentTitle.offsetWidth + 70
-			} else if (newValue < previousSlideIndex) {
-				const prevTitle = document.querySelectorAll('.MobileFeaturedProjects__title')[
-					previousSlideIndex - 1
-				]
-				totalOffsetWidth.value -= prevTitle.offsetWidth + 70
-			}
-		} else {
-			totalOffsetWidth.value = 0
-		}
-
-		previousSlideIndex = newValue
-
-		if (newValue === projectTitles.value.length) {
-			$swiper.value.allowTouchMove = false
-
-			$ctx.value = gsap.context(async (self) => {
-				const projectsLabel = self.selector('.MobileFeaturedProjects__title:last-child')
-
-				$tl.value = gsap.to(projectsLabel, {
-					y: -200,
-					duration: 1,
-					autoAlpha: 0,
-					delay: 1,
-					ease: 'power3.out',
-				})
-
-				await wait(800)
-				router.push('/projects')
-			}, $mobileFeaturedProjects.value)
-		}
-	})
-
-	const footerTransform = computed(() => {
-		if (activeSlideIndex.value === -1) {
-			return 'translateX(calc(50%))'
-		} else {
-			return `translateX(calc(-${ totalOffsetWidth.value }px + 10px))`
-		}
-	})
+	// TODO! - Create a var that holds the first project + the rest of the projects
+	// not reactive
 
 	onBeforeUnmount(() => {
 		$ctx.value.revert()
@@ -133,251 +58,114 @@
 		ref="$mobileFeaturedProjects"
 		class="MobileFeaturedProjects"
 	>
-		<swiper
-			:prevent-interaction-on-transition="true"
-			class="MobileFeaturedProjects__slider"
-			:space-between="10"
-			:grab-cursor="true"
-			:slides-per-view="'auto'"
-			:speed="600"
-			:effect="'creative'"
-			:creative-effect="{
-				prev: {
-					translate: ['-100%', 0, -300],
-				},
-				next: {
-					translate: ['100%', 0, 0],
-				},
+		<h1 class="title">
+			<span
+				v-for="(word, index) in splitBaseline"
+				:key="index"
+				class="title__chunk"
+			>
+				{{ word }}{{ index !== splitBaseline.length - 1 ? ' ' : '' }}
+			</span>
+		</h1>
+		<NuxtLink
+			v-for="project in projects"
+			:key="project._id"
+			:to="{
+				name: 'projects-slug',
+				params: { slug: project.slug.current },
 			}"
-			:modules="modules"
-			@swiper="onSwiper($event)"
-			@slide-change="onSlideChange($event)"
+			class="MobileFeaturedProject"
 		>
-			<swiper-slide class="baseline">
-				<GridContainer>
-					<h1 class="title">
-						<span
-							v-for="(word, index) in splitBaseline"
-							:key="index"
-							class="title__chunk"
-						>
-							{{ word }}{{ index !== splitBaseline.length - 1 ? ' ' : '' }}
-						</span>
-					</h1>
-				</GridContainer>
-			</swiper-slide>
-			<swiper-slide>
-				<NuxtLink
-					:to="{
-						name: 'projects-slug',
-						params: { slug: firstProject.slug.current },
-					}"
-					:class="[
-						activeSlideIndex === 1 && 'MobileFeaturedProject--previous',
-						'MobileFeaturedProject',
-					]"
-				>
-					<div class="MobileFeaturedProject__overlay" />
-					<div class="MobileFeaturedProject__thumbnail">
-						<video
-							v-if="firstProject.mainVideoUrl"
-							:src="firstProject.mainVideoUrl"
-							autoplay
-							muted
-							loop
-							playsinline
-							webkit-playsinline
-						/>
-						<SanityImage
-							v-else
-							:asset-id="firstProject.mainImage.asset._ref"
-							auto="format"
-							:q="75"
-						/>
-					</div>
-				</NuxtLink>
-			</swiper-slide>
-			<swiper-slide
-				v-for="(project, index) in projects"
-				:key="project._id"
-			>
-				<NuxtLink
-					:key="project._id"
-					:to="{
-						name: 'projects-slug',
-						params: { slug: project.slug.current },
-					}"
-					:class="[
-						index === activeSlideIndex - 2 && 'MobileFeaturedProject--previous',
-						'MobileFeaturedProject',
-					]"
-				>
-					<div class="MobileFeaturedProject__overlay" />
-					<div class="MobileFeaturedProject__thumbnail">
-						<video
-							v-if="project.mainVideoUrl"
-							:src="project.mainVideoUrl"
-							autoplay
-							muted
-							loop
-							playsinline
-							webkit-playsinline
-						/>
-						<SanityImage
-							v-else
-							:asset-id="project.mainImage.asset._ref"
-							auto="format"
-							:q="75"
-						/>
-					</div>
-				</NuxtLink>
-			</swiper-slide>
-			<swiper-slide class="empty" />
-		</swiper>
-		<div class="MobileFeaturedProjects__footer">
-			<div
-				class="MobileFeaturedProjects__inner-footer"
-				:style="{ transform: footerTransform }"
-			>
-				<h2
-					v-for="(title, index) in projectTitles"
-					:key="title"
-					:class="[
-						index === activeSlideIndex && 'MobileFeaturedProjects__title--active',
-						'MobileFeaturedProjects__title',
-					]"
-				>
-					{{ title }}
-				</h2>
-				<h2
-					:class="[
-						projectTitles.length === activeSlideIndex
-							&& 'MobileFeaturedProjects__title--active',
-						'MobileFeaturedProjects__title',
-					]"
-					class="MobileFeaturedProjects__title--all-projects"
-				>
-					All projects
-				</h2>
+			<div class="MobileFeaturedProject__overlay" />
+			<div class="MobileFeaturedProject__thumbnail">
+				<video
+					v-if="project.mainVideoUrl"
+					:src="project.mainVideoUrl"
+					autoplay
+					muted
+					loop
+					playsinline
+					webkit-playsinline
+				/>
+				<SanityImage
+					v-else
+					:asset-id="project.mainImage.asset._ref"
+					auto="format"
+					:q="75"
+				/>
 			</div>
-		</div>
+		</NuxtLink>
 	</div>
 </template>
 
 <style lang="scss">
 	.MobileFeaturedProjects {
-		height: 100%;
-		position: fixed;
-		width: 100%;
+		padding: 0 1rem;
 
-		&__slider {
-			height: inherit;
-			z-index: 0;
-
-			.swiper-slide {
-				&.baseline {
-					width: 85% !important;
-				}
-
-				width: 100% !important;
-
-				.empty {
-					background-color: $black;
-				}
-			}
-
-			.baseline {
-				background-color: $black;
-				height: 100%;
-
-				.GridContainer {
-					align-items: center;
-					height: inherit;
-				}
-
-				.title {
-					font-size: $mobile-h4;
-					grid-column: 1 / span 10;
-
-					&__chunk {
-						opacity: 0;
-
-						&:first-child {
-							margin-left: 0;
-						}
-					}
-				}
-			}
-
-			.MobileFeaturedProject {
-				background-color: $black;
-				height: 100%;
-				padding: 0 1rem;
-				position: relative;
-
-				&__overlay {
-					background-color: $black;
-					height: 100%;
-					left: 0;
-					opacity: 0;
-					position: absolute;
-					top: 0;
-					transition: ease-in-out 0.5s;
-					visibility: hidden;
-					width: 100%;
-					z-index: 10;
-				}
-
-				&--previous {
-					.MobileFeaturedProject__overlay {
-						opacity: 1;
-						visibility: visible;
-					}
-				}
-
-				&__thumbnail {
-					height: 100%;
-
-					img,
-					video {
-						height: 100%;
-						object-fit: cover;
-					}
-				}
-
-				&__title {
-					bottom: 0;
-					font-size: $mobile-h2;
-					padding: 1rem;
-					position: absolute;
-				}
-			}
-		}
-
-		&__footer {
+		.baseline {
+			height: 100%;
 			background-color: $black;
-			bottom: 0;
-			height: 7rem;
-			justify-content: flex-start;
-			left: 0;
-			pointer-events: none;
-			position: fixed;
-			z-index: 10;
+
+			.GridContainer {
+				align-items: center;
+				height: inherit;
+			}
+
+			.title {
+				grid-column: 1 / span 10;
+				font-size: $mobile-h4;
+
+				&__chunk {
+					opacity: 0;
+
+					&:first-child {
+						margin-left: 0;
+					}
+				}
+			}
 		}
 
-		&__inner-footer {
-			align-items: center;
-			display: flex;
-			height: 7rem;
-			transition: transform 0.5s ease-in-out;
-			will-change: transform;
+		.MobileFeaturedProject {
+			position: relative;
+			height: 100%;
+			background-color: $black;
+
+			&__overlay {
+				position: absolute;
+				top: 0;
+				left: 0;
+				z-index: 10;
+				width: 100%;
+				height: 100%;
+				visibility: hidden;
+				background-color: $black;
+				opacity: 0;
+				transition: ease-in-out 0.5s;
+			}
+
+			&__thumbnail {
+				height: 100%;
+
+				img,
+				video {
+					height: 100%;
+					object-fit: cover;
+				}
+			}
+
+			&__title {
+				position: absolute;
+				bottom: 0;
+				padding: 1rem;
+				font-size: $mobile-h2;
+			}
 		}
 
 		&__title {
-			color: $medium-grey;
 			font-size: $mobile-h2;
-			transition: color 0.5s ease-in-out;
+			color: $medium-grey;
 			white-space: nowrap;
+			transition: color 0.5s ease-in-out;
 
 			&:not(:last-child) {
 				margin-right: 7rem;
