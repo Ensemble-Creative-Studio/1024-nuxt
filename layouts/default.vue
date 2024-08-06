@@ -1,5 +1,5 @@
 <script setup>
-	const isNavActive = useState("isNavActive", () => false)
+	const isNavActive = useState('isNavActive', () => false)
 
 	function closeMenu() {
 		isNavActive.value = false
@@ -9,7 +9,7 @@
 
 	const query = groq`*[_type == "navMenu"][0]`
 	const sanity = useSanity()
-	const { data } = await useAsyncData("navMenu", () => sanity.fetch(query))
+	const { data } = await useAsyncData('navMenu', () => sanity.fetch(query))
 	const navMenu = data._rawValue
 
 	watch(
@@ -24,8 +24,10 @@
 <template>
 	<div class="layout">
 		<SiteHeader />
-		<NavMenu :isNavActive="isNavActive"
-			:navMenu="navMenu" />
+		<NavMenu
+			:is-nav-active="isNavActive"
+			:nav-menu="navMenu"
+		/>
 		<main class="content-wrapper">
 			<slot />
 		</main>

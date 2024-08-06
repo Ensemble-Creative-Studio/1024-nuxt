@@ -1,6 +1,6 @@
 <script setup>
-	import screenfull from "screenfull"
-	import { useNuxtApp } from "#app"
+	import screenfull from 'screenfull'
+	import { useNuxtApp } from '#app'
 
 	// Assuming you have the urlFor function provided via a Nuxt plugin
 	const { urlFor } = useNuxtApp() // Access the urlFor function
@@ -55,7 +55,7 @@
 	}
 
 	function onVisualClick() {
-		console.log("onVisualClick")
+		console.log('onVisualClick')
 		isPlaying.value = !isPlaying.value
 
 		if (isPlaying.value === true) {
@@ -88,7 +88,7 @@
 	}
 
 	onMounted(() => {
-		screenfull.on("change", onScreenfullChange)
+		screenfull.on('change', onScreenfullChange)
 
 		if (!isLoaded) {
 			setVideoData()
@@ -106,9 +106,9 @@
 	function formatTime(time) {
 		const minutes = Math.floor(time / 60)
 		const seconds = Math.floor(time % 60)
-		const formatedSeconds = seconds < 10 ? `0${seconds}` : seconds
+		const formatedSeconds = seconds < 10 ? `0${ seconds }` : seconds
 
-		return `${minutes}:${formatedSeconds}`
+		return `${ minutes }:${ formatedSeconds }`
 	}
 
 	function onTimelineClick(event) {
@@ -137,14 +137,15 @@
 </script>
 
 <template>
-	<div class="VideoPlayer"
-		ref="$main">
-
+	<div
+		ref="$main"
+		class="VideoPlayer"
+	>
 		<video
+			ref="$video"
 			:src="vimeoUrl"
 			:poster="poster"
 			class="video"
-			ref="$video"
 			crossorigin="anonymous"
 			playsinline
 			webkit-playsinline
@@ -152,15 +153,16 @@
 			@loadedmetadata="setVideoData"
 			@timeupdate="onVideoTimeUpdate"
 			@ended="onVideoEnded"
-		></video>
+		/>
 		<div class="controls">
 			<div class="flex">
-
 				<div class="controls__play-pause">
-					<button class="controls__play"
-						@click="onPlayBtnClick"
+					<button
+						v-show="!isPlaying"
+						class="controls__play"
 						type="button"
-						v-show="!isPlaying">
+						@click="onPlayBtnClick"
+					>
 						<svg
 							width="17"
 							height="16"
@@ -168,14 +170,18 @@
 							fill="none"
 							xmlns="http://www.w3.org/2000/svg"
 						>
-							<path d="M3 12.5V3.5H4.35441L14 7.35125V8.71169L4.35586 12.5H3Z"
-								stroke="white" />
+							<path
+								d="M3 12.5V3.5H4.35441L14 7.35125V8.71169L4.35586 12.5H3Z"
+								stroke="white"
+							></path>
 						</svg>
 					</button>
-					<button class="controls__pause"
-						@click="onPauseBtnClick"
+					<button
+						v-show="isPlaying"
+						class="controls__pause"
 						type="button"
-						v-show="isPlaying">
+						@click="onPauseBtnClick"
+					>
 						<svg
 							width="17"
 							height="16"
@@ -183,16 +189,20 @@
 							fill="none"
 							xmlns="http://www.w3.org/2000/svg"
 						>
-							<rect x="4"
+							<rect
+								x="4"
 								y="3.5"
 								width="3"
 								height="9"
-								stroke="white" />
-							<rect x="10"
+								stroke="white"
+							></rect>
+							<rect
+								x="10"
 								y="3.5"
 								width="3"
 								height="9"
-								stroke="white" />
+								stroke="white"
+							></rect>
 						</svg>
 					</button>
 				</div>
@@ -200,14 +210,18 @@
 					<div class="controls__current-time">
 						{{ videoFormatedCurrentTime }}
 					</div>
-					<div class="controls__total-time">{{ videoFormatedDuration }}</div>
+					<div class="controls__total-time">
+						{{ videoFormatedDuration }}
+					</div>
 				</div>
 			</div>
 			<div class="flex">
 				<div class="controls__mute">
-					<button @click="onToggleMuteBtnClick"
+					<button
+						v-show="!isMuted"
 						type="button"
-						v-show="!isMuted">
+						@click="onToggleMuteBtnClick"
+					>
 						<svg
 							width="17"
 							height="16"
@@ -215,25 +229,31 @@
 							fill="none"
 							xmlns="http://www.w3.org/2000/svg"
 						>
-							<rect x="2"
+							<rect
+								x="2"
 								y="8.5"
 								width="3"
 								height="5"
-								stroke="white" />
-							<rect x="12"
+								stroke="white"
+							></rect>
+							<rect
+								x="12"
 								y="8.5"
 								width="3"
 								height="5"
-								stroke="white" />
+								stroke="white"
+							></rect>
 							<path
 								d="M15 8C15 4.41015 12.0899 1.5 8.5 1.5C4.91015 1.5 2 4.41015 2 8"
 								stroke="white"
-							/>
+							></path>
 						</svg>
 					</button>
-					<button @click="onToggleMuteBtnClick"
+					<button
+						v-show="isMuted"
 						type="button"
-						v-show="isMuted">
+						@click="onToggleMuteBtnClick"
+					>
 						<svg
 							width="17"
 							height="16"
@@ -241,27 +261,33 @@
 							fill="none"
 							xmlns="http://www.w3.org/2000/svg"
 						>
-							<rect x="2"
+							<rect
+								x="2"
 								y="8.5"
 								width="3"
 								height="5"
-								stroke="#727272" />
-							<rect x="12"
+								stroke="#727272"
+							></rect>
+							<rect
+								x="12"
 								y="8.5"
 								width="3"
 								height="5"
-								stroke="#727272" />
+								stroke="#727272"
+							></rect>
 							<path
 								d="M15 8C15 4.41015 12.0899 1.5 8.5 1.5C4.91015 1.5 2 4.41015 2 8"
 								stroke="#727272"
-							/>
+							></path>
 						</svg>
 					</button>
 				</div>
 				<div class="controls__fullscreen">
-					<button @click="onFullscreenBtnClick"
+					<button
+						v-show="!isFullscreen"
 						type="button"
-						v-show="!isFullscreen">
+						@click="onFullscreenBtnClick"
+					>
 						<svg
 							width="17"
 							height="16"
@@ -269,15 +295,21 @@
 							fill="none"
 							xmlns="http://www.w3.org/2000/svg"
 						>
-							<path d="M2.5 9V14H9.5V9H2.5ZM8.5 13H3.5V10H8.5V13Z"
-								fill="white" />
-							<path d="M2.5 2V8H3.5V3H13.5V13H10.5V14H14.5V2H2.5Z"
-								fill="white" />
+							<path
+								d="M2.5 9V14H9.5V9H2.5ZM8.5 13H3.5V10H8.5V13Z"
+								fill="white"
+							></path>
+							<path
+								d="M2.5 2V8H3.5V3H13.5V13H10.5V14H14.5V2H2.5Z"
+								fill="white"
+							></path>
 						</svg>
 					</button>
-					<button @click="onMinimizeBtnClick"
+					<button
+						v-show="isFullscreen"
 						type="button"
-						v-show="isFullscreen">
+						@click="onMinimizeBtnClick"
+					>
 						<svg
 							width="17"
 							height="16"
@@ -290,7 +322,7 @@
 								clip-rule="evenodd"
 								d="M2.5 14V2H14.5V14H2.5ZM8.5 9H3.5V13H8.5V9Z"
 								fill="white"
-							/>
+							></path>
 						</svg>
 					</button>
 				</div>
@@ -298,20 +330,20 @@
 
 
 			<div
-				class="controls__timeline"
 				ref="$timeline"
+				class="controls__timeline"
 				@click="onTimelineClick"
 				@mousedown="onTimelineMousedown"
 				@mouseup="onTimelineMouseup"
 				@touchstart="onTimelineTouchstart"
 			>
-				<div class="controls__timeline-background"></div>
+				<div class="controls__timeline-background" />
 				<div
 					class="controls__timeline-current"
 					:style="{
 						transform: `translate3d(-${100 - (videoCurrentTime / videoDuration) * 100}%, 0, 0)`,
 					}"
-				></div>
+				/>
 			</div>
 		</div>
 	</div>

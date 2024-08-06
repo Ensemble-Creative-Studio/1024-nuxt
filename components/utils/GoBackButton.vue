@@ -1,6 +1,10 @@
 <template>
-	<button class="GoBackButton"
-		@click="goBack()">Back</button>
+	<button
+		class="GoBackButton"
+		@click="goBack()"
+	>
+		Back
+	</button>
 </template>
 
 <script setup>

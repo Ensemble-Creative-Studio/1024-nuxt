@@ -45,7 +45,7 @@
 
 		// Remove filters styles
 		$filters.value.map((element) => {
-			element.classList.remove("toggled")
+			element.classList.remove('toggled')
 		})
 	}
 
@@ -56,11 +56,11 @@
 
 		// Add or remove it in the tags array
 		if (!tags.value.includes(text)) {
-			element.classList.add("toggled")
+			element.classList.add('toggled')
 			tags.value.push(text)
 		} else {
 			tags.value.splice(tags.value.indexOf(text), 1)
-			element.classList.remove("toggled")
+			element.classList.remove('toggled')
 		}
 
 		// Set 'all' to true if there is no tags left in the array
@@ -82,20 +82,20 @@
 	}
 
 	// Display mode
-	const displayMode = ref("grid")
+	const displayMode = ref('grid')
 	const gridModeCols = ref(6)
 	const $projectsGrid = ref(null)
 	const $projectsList = ref(null)
 
 	function setGridMode(value) {
 		window.scrollTo(0, 0)
-		displayMode.value = "grid"
+		displayMode.value = 'grid'
 		gridModeCols.value = value
 	}
 
 	function setListMode() {
 		window.scrollTo(0, 0)
-		displayMode.value = "list"
+		displayMode.value = 'list'
 		gridModeCols.value = 4
 	}
 
@@ -106,22 +106,22 @@
 	}
 
 	// Sorting
-	const order = ref("selection") // Setting default to 'selection'
+	const order = ref('selection') // Setting default to 'selection'
 
 	function setOrder(value) {
 		// Directly set the order based on the button clicked
 		switch (value) {
-		case "date":
-			order.value = "byDate"
+		case 'date':
+			order.value = 'byDate'
 			break
-		case "name":
-			order.value = "byName"
+		case 'name':
+			order.value = 'byName'
 			break
-		case "selection":
-			order.value = "selection"
+		case 'selection':
+			order.value = 'selection'
 			break
 		default:
-			order.value = "selection"
+			order.value = 'selection'
 			break
 		}
 	}
@@ -130,15 +130,15 @@
 		let sortedProjects = [ ...filteredProjects.value ] // Create a copy to avoid mutating the original array
 
 		switch (order.value) {
-		case "byName":
+		case 'byName':
 			sortedProjects.sort((a, b) => a.title.localeCompare(b.title))
 			break
-		case "byDate":
+		case 'byDate':
 			sortedProjects.sort(
 				(a, b) => parseInt(b.releaseDate) - parseInt(a.releaseDate)
 			)
 			break
-		case "selection":
+		case 'selection':
 			// Reapply the default sorting logic, assuming it's based on orderRank
 			sortedProjects.sort((a, b) => a.orderRank - b.orderRank)
 			break
@@ -152,8 +152,10 @@
 </script>
 
 <template>
-	<div class="projects"
-		ref="$projects">
+	<div
+		ref="$projects"
+		class="projects"
+	>
 		<Head>
 			<Title>1024 | Work</Title>
 			<Meta
@@ -163,24 +165,26 @@
 		</Head>
 		<ProjectsList
 			v-if="displayMode === 'list'"
+			ref="$projectsList"
 			:projects="finalProjects"
 			:categories="categories"
-			:displayMode="displayMode"
+			:display-mode="displayMode"
 			:order="order"
-			ref="$projectsList"
 		/>
 		<ProjectsGrid
 			v-if="displayMode === 'grid'"
+			ref="$projectsGrid"
 			:projects="finalProjects"
 			:categories="categories"
-			:displayMode="displayMode"
-			:gridModeCols="gridModeCols"
+			:display-mode="displayMode"
+			:grid-mode-cols="gridModeCols"
 			:order="order"
-			ref="$projectsGrid"
 		/>
 		<div class="mobile-bar">
-			<button class="mobile-bar__filters"
-				@click="toggleFilters()">
+			<button
+				class="mobile-bar__filters"
+				@click="toggleFilters()"
+			>
 				{{ showMobileFilters ? "Close" : "Filter" }}
 			</button>
 			<div class="mobile-bar__display-mode">
@@ -241,17 +245,23 @@
 						/>
 					</li>
 				</ul>
-				<ul class="order"
-					ref="$order">
+				<ul
+					ref="$order"
+					class="order"
+				>
 					<li
 						:class="[order === 'byName' && 'order-name--active', 'order-name']"
 					>
-						<button @click="setOrder('name')">Name</button>
+						<button @click="setOrder('name')">
+							Name
+						</button>
 					</li>
 					<li
 						:class="[order === 'byDate' && 'order-date--active', 'order-date']"
 					>
-						<button @click="setOrder('date')">Date</button>
+						<button @click="setOrder('date')">
+							Date
+						</button>
 					</li>
 					<li
 						:class="[
@@ -259,28 +269,32 @@
 							'order-selection',
 						]"
 					>
-						<button @click="setOrder('selection')">Selection</button>
+						<button @click="setOrder('selection')">
+							Selection
+						</button>
 					</li>
 				</ul>
 
 				<ul class="filters">
 					<li class="filters__all">
-						<button @click="toggleAll()"
-							:class="[all && 'toggled', 'all']">
+						<button
+							:class="[all && 'toggled', 'all']"
+							@click="toggleAll()"
+						>
 							<span class="all__label">All&nbsp;</span>
 							<span class="all__length">{{ projects.length }}</span>
 						</button>
 					</li>
 					<li
-						class="filters__category"
 						v-for="(category, i) in categories"
 						:key="i"
+						class="filters__category"
 					>
 						<button
+							v-if="category.projectsInside.length > 0"
+							ref="$filters"
 							class="category"
 							@click="toggle($event)"
-							ref="$filters"
-							v-if="category.projectsInside.length > 0"
 						>
 							<span class="category__label">{{ category.title }}&nbsp;</span>
 							<span class="category__length">

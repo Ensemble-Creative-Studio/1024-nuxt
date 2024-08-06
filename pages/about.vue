@@ -1,8 +1,8 @@
 <script setup>
-	import gsap from "gsap"
-	import { ScrollTrigger } from "gsap/ScrollTrigger"
-	import { Swiper, SwiperSlide } from "swiper/vue"
-	import "swiper/css"
+	import gsap from 'gsap'
+	import { ScrollTrigger } from 'gsap/ScrollTrigger'
+	import { Swiper, SwiperSlide } from 'swiper/vue'
+	import 'swiper/css'
 
 	const { isMobile } = useDevice()
 	const query = groq`*[_type == "about"][0]`
@@ -18,7 +18,7 @@
 
 	const $introduction = about.value.introduction
 	const splitIntroduction = computed(() => {
-		return $introduction.split(" ")
+		return $introduction.split(' ')
 	})
 
 	const $description = ref()
@@ -35,39 +35,39 @@
 				autoKill: false,
 			},
 			duration: 1.5,
-			ease: "power3.out",
+			ease: 'power3.out',
 		})
 	}
 
 	onMounted(() => {
 		$ctx.value = gsap.context((self) => {
-			const chunks = self.selector(".title__chunk")
-			const slides = self.selector(".swiper-slide")
+			const chunks = self.selector('.title__chunk')
+			const slides = self.selector('.swiper-slide')
 
 			for (let i = chunks.length - 1; i > 0; i--) {
 				const j = Math.floor(Math.random() * (i + 1))
-				;[ chunks[i], chunks[j] ] = [ chunks[j], chunks[i] ]
+				;[ chunks[ i ], chunks[ j ] ] = [ chunks[ j ], chunks[ i ] ]
 			}
 
 			tl.to(chunks, {
 				duration: 2.5,
 				autoAlpha: 1,
-				ease: "power2.out",
+				ease: 'power2.out',
 				stagger: 0.03,
 			}).to(slides, {
 				y: 0,
 				delay: -1,
 				duration: 1,
 				autoAlpha: 1,
-				ease: "power3.out",
+				ease: 'power3.out',
 				stagger: 0.25,
 			})
 
 			let mm = gsap.matchMedia()
 
-			mm.add("(min-width: 481px)", () => {
+			mm.add('(min-width: 481px)', () => {
 				trigger.value = ScrollTrigger.create({
-					start: "50%",
+					start: '50%',
 					trigger: $hero.value,
 					onEnter: () => {
 						gsap.to($anchors.value.$el, {
@@ -83,24 +83,23 @@
 					},
 				})
 			})
-
 		}, $aboutPage.value)
 
-		window.addEventListener("resize", handleResize)
+		window.addEventListener('resize', handleResize)
 
-		const itemTextElements = document.querySelectorAll(".item__text")
+		const itemTextElements = document.querySelectorAll('.item__text')
 		itemTextElements.forEach((element) => {
-			const linksInItemText = element.querySelectorAll("a")
+			const linksInItemText = element.querySelectorAll('a')
 			linksInItemText.forEach((link) => {
-				link.setAttribute("target", "_blank")
+				link.setAttribute('target', '_blank')
 			})
 		})
 
-		const contentDescriptionElements = document.querySelectorAll(".content__description")
+		const contentDescriptionElements = document.querySelectorAll('.content__description')
 		contentDescriptionElements.forEach((element) => {
-			const linksInContentDescription = element.querySelectorAll("a")
+			const linksInContentDescription = element.querySelectorAll('a')
 			linksInContentDescription.forEach((link) => {
-				link.setAttribute("target", "_blank")
+				link.setAttribute('target', '_blank')
 			})
 		})
 	})
@@ -121,15 +120,15 @@
 			trigger.kill()
 		})
 
-		removeEventListener("resize", handleResize)
+		removeEventListener('resize', handleResize)
 		$ctx.value.revert()
 	})
 </script>
 
 <template>
 	<div
-		class="about"
 		ref="$aboutPage"
+		class="about"
 	>
 		<Head>
 			<Title>1024 | About</Title>
@@ -140,15 +139,15 @@
 		</Head>
 
 		<section
-			class="hero"
 			ref="$hero"
+			class="hero"
 		>
 			<GridContainer>
 				<h1 class="title">
 					<span
-						class="title__chunk"
 						v-for="(word, index) in splitIntroduction"
 						:key="index"
+						class="title__chunk"
 					>
 						{{ word }}{{ index !== splitIntroduction.length - 1 ? ' ' : '' }}
 					</span>
@@ -173,18 +172,19 @@
 					:key="item._id"
 					class="slider__item"
 				>
-					<SanityImage :asset-id="item.asset._ref"
+					<SanityImage
+						:key="item._id"
+						:asset-id="item.asset._ref"
 						auto="format"
 						:q="75"
-						:key="item._id"
 					/>
 				</swiper-slide>
 			</swiper>
 		</section>
 
 		<section
-			class="description"
 			ref="$description"
+			class="description"
 		>
 			<GridContainer>
 				<p>{{ about.description }}</p>
@@ -195,9 +195,9 @@
 			<GridContainer>
 				<ul class="in-between__content">
 					<li
-						class="in-between__text"
 						v-for="item in about.inBetweenText"
 						:key="item._id"
+						class="in-between__text"
 					>
 						{{ item.text }}
 					</li>
@@ -216,9 +216,9 @@
 		<section class="team">
 			<ul class="team__wrapper">
 				<li
-					class="item"
-					:key="item._id"
 					v-for="item in about.teamMembers"
+					:key="item._id"
+					class="item"
 				>
 					<div class="item__image">
 						<SanityImage
@@ -229,7 +229,9 @@
 						/>
 					</div>
 					<div class="item__meta">
-						<h3 class="item__name">{{ item.name }}</h3>
+						<h3 class="item__name">
+							{{ item.name }}
+						</h3>
 						<div class="item__roles">
 							<p>{{ item.roles }}</p>
 						</div>
@@ -247,24 +249,30 @@
 		</section>
 
 		<section
-			class="exhibitions"
 			ref="$exhibitions"
+			class="exhibitions"
 		>
 			<GridContainer>
-				<h2 class="exhibitions__title">Exhibitions and festivals</h2>
+				<h2 class="exhibitions__title">
+					Exhibitions and festivals
+				</h2>
 				<div class="content__description">
 					<SanityContent :blocks="about.exFest" />
 				</div>
 			</GridContainer>
 			<ul class="exhibitions__list">
 				<li
-					class="item"
-					:key="item._id"
 					v-for="item in about.exhibitions"
+					:key="item._id"
+					class="item"
 				>
 					<div class="item__container">
-						<div class="item__date">{{ item.date?.slice(0, 4) }}</div>
-						<h3 class="item__title">{{ item.title }}</h3>
+						<div class="item__date">
+							{{ item.date?.slice(0, 4) }}
+						</div>
+						<h3 class="item__title">
+							{{ item.title }}
+						</h3>
 						<p class="item__localization">
 							{{ item.localization }}
 						</p>
@@ -276,11 +284,15 @@
 		<BottomAnchors ref="$anchors">
 			<ul class="BottomAnchors__list">
 				<li class="BottomAnchors__item">
-					<button @click="scrollToSection($description)">About</button>
+					<button @click="scrollToSection($description)">
+						About
+					</button>
 				</li>
 				<li class="BottomAnchors__item">
 					<button
-						@click="scrollToSection($exhibitions)">Exhibitions and festivals
+						@click="scrollToSection($exhibitions)"
+					>
+						Exhibitions and festivals
 					</button>
 				</li>
 			</ul>

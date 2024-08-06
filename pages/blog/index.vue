@@ -1,6 +1,6 @@
 <script setup>
-	import gsap from "gsap"
-	import { wait } from "@/utils/wait"
+	import gsap from 'gsap'
+	import { wait } from '@/utils/wait'
 
 	const router = useRouter()
 
@@ -68,8 +68,10 @@
 </script>
 
 <template>
-	<div class="blog"
-		ref="$blogPage">
+	<div
+		ref="$blogPage"
+		class="blog"
+	>
 		<Head>
 			<Title>1024 | Blog</Title>
 			<Meta
@@ -81,26 +83,28 @@
 			:blog="blog"
 			:page="currentPage"
 		/>
-		<section class="pagination"
-			ref="$pagination">
+		<section
+			ref="$pagination"
+			class="pagination"
+		>
 			<GridContainer>
 				<div class="pagination__container">
 					<button
-						class="pagination__button pagination__button--previous"
 						v-if="currentPage !== 1"
+						class="pagination__button pagination__button--previous"
 						@click="changePage(currentPage - 1)"
 					>
 						Previous
 					</button>
 					<span
-						class="pagination__separator"
 						v-if="currentPage !== totalPages && currentPage !== 1"
+						class="pagination__separator"
 					>
 						-
 					</span>
 					<button
-						class="pagination__button pagination__button--next"
 						v-if="currentPage !== totalPages"
+						class="pagination__button pagination__button--next"
 						@click="changePage(currentPage + 1)"
 					>
 						Next
@@ -108,8 +112,8 @@
 					<span class="pagination__separator">/</span>
 					<div class="pagination__pages">
 						<button
-							class="pagination__page"
 							v-if="currentPage - 1 > 0"
+							class="pagination__page"
 							@click="changePage(currentPage - 1)"
 						>
 							{{ currentPage - 1 < 10 ? `0${currentPage - 1}` : currentPage - 1 }}
@@ -118,22 +122,22 @@
 							{{ currentPage < 10 ? `0${currentPage}` : currentPage }}
 						</button>
 						<button
-							class="pagination__page"
 							v-if="currentPage !== totalPages"
+							class="pagination__page"
 							@click="changePage(currentPage + 1)"
 						>
 							{{ currentPage + 1 < 10 ? `0${currentPage + 1}` : currentPage + 1 }}
 						</button>
 						<button
-							class="pagination__page"
 							v-if="currentPage + 1 < totalPages"
+							class="pagination__page"
 							@click="changePage(currentPage + 1)"
 						>
 							...
 						</button>
 						<button
-							class="pagination__page"
 							v-if="currentPage + 1 < totalPages"
+							class="pagination__page"
 							@click="changePage(totalPages)"
 						>
 							{{ totalPages < 10 ? `0${totalPages}` : totalPages }}

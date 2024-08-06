@@ -2,7 +2,7 @@
 	const route = useRoute()
 	const router = useRouter()
 
-	const GET_SINGLE_ARTICLE = groq`*[_type == "blog" && slug.current == "${route.params.slug}"][0]
+	const GET_SINGLE_ARTICLE = groq`*[_type == "blog" && slug.current == "${ route.params.slug }"][0]
   {
     ...,
     relatedProjects[] -> {
@@ -21,8 +21,8 @@
 
 	const { data: article } = await useSanityQuery(GET_SINGLE_ARTICLE)
 	if (Object.keys(article.value).length === 0) {
-		router.push("/404")
-		throw createError({ statusCode: 404, statusMessage: "Article not found" })
+		router.push('/404')
+		throw createError({ statusCode: 404, statusMessage: 'Article not found' })
 	}
 
 	const { isMobile } = useDevice()
@@ -42,24 +42,28 @@
 				<section class="infos">
 					<GoBackButton />
 					<div class="infos__meta">
-						<h1 class="infos__title">{{ article.title }}</h1>
-						<p class="infos__excerpt">{{ article.excerpt }}</p>
+						<h1 class="infos__title">
+							{{ article.title }}
+						</h1>
+						<p class="infos__excerpt">
+							{{ article.excerpt }}
+						</p>
 					</div>
 				</section>
 				<section class="content">
 					<VideoPlayer
 						v-if="article.mainVideo"
-						:vimeoUrl="article.mainVideoUrl"
-						:downloadUrl="article.mainVideoDownloadUrl"
+						:vimeo-url="article.mainVideoUrl"
+						:download-url="article.mainVideoDownloadUrl"
 					/>
 					<div
-						class="content__gallery"
 						v-if="article?.gallery?.medias"
+						class="content__gallery"
 					>
 						<SanityImage
-							class="image"
 							v-for="media in article?.gallery?.medias"
 							:key="media._key"
+							class="image"
 							:asset-id="media.asset._ref"
 							auto="format"
 							:q="75"

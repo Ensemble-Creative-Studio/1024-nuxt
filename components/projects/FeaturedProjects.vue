@@ -1,6 +1,6 @@
 <script setup>
-	import gsap from "gsap"
-	import { ScrollTrigger } from "gsap/ScrollTrigger"
+	import gsap from 'gsap'
+	import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 	const { isMobile } = useDevice()
 
@@ -19,7 +19,7 @@
 	}
 
 	const splitBaseline = computed(() => {
-		return props.baseline.split(" ")
+		return props.baseline.split(' ')
 	})
 
 	const $featuredProjects = ref()
@@ -31,47 +31,47 @@
 
 	onMounted(() => {
 		$ctx.value = gsap.context(async (self) => {
-			const panels = self.selector(".FeaturedProject")
-			const panelTitles = self.selector(".FeaturedProject__title")
+			const panels = self.selector('.FeaturedProject')
+			const panelTitles = self.selector('.FeaturedProject__title')
 
 			panels.forEach((panel, i) => {
 				ScrollTrigger.create({
 					trigger: panel,
 					pin: true,
 					pinSpacing: false,
-					id: `pin-${i}`,
+					id: `pin-${ i }`,
 					onUpdate: (self) => {
 						if (self.progress > 0.5) {
-							panel.classList.add("off")
+							panel.classList.add('off')
 						} else {
-							panel.classList.remove("off")
+							panel.classList.remove('off')
 						}
 					},
 				})
 
 				ScrollTrigger.create({
 					trigger: panel,
-					top: "100% 100%",
-					id: `title-${i}`,
+					top: '100% 100%',
+					id: `title-${ i }`,
 					onEnter: () => {
-						if (panelTitles[i]) panelTitles[i].classList.add("FeaturedProject__title--active")
+						if (panelTitles[ i ]) panelTitles[ i ].classList.add('FeaturedProject__title--active')
 					},
 				})
 
 				ScrollTrigger.create({
 					trigger: $baseline.value,
-					top: "100% 200%",
+					top: '100% 200%',
 					onEnter: () => {
 						if (!isMobile) {
-							const chunks = self.selector(".title__chunk")
+							const chunks = self.selector('.title__chunk')
 							for (let i = chunks.length - 1; i > 0; i--) {
 								const j = Math.floor(Math.random() * (i + 1))
-								;[ chunks[i], chunks[j] ] = [ chunks[j], chunks[i] ]
+								;[ chunks[ i ], chunks[ j ] ] = [ chunks[ j ], chunks[ i ] ]
 							}
 							tl.to(chunks, {
 								duration: 2.5,
 								autoAlpha: 1,
-								ease: "power2.out",
+								ease: 'power2.out',
 								stagger: 0.03,
 							})
 						}
@@ -83,20 +83,20 @@
 		if (allProjectFooter.value) {
 			ScrollTrigger.create({
 				trigger: allProjectFooter.value,
-				start: "top bottom",
-				end: "bottom top",
+				start: 'top bottom',
+				end: 'bottom top',
 				onEnter: () => {
-					const backgroundBlack = document.querySelector(".backgroundBlack")
+					const backgroundBlack = document.querySelector('.backgroundBlack')
 					if (backgroundBlack) {
 						gsap.to(backgroundBlack, { opacity: 1, duration: 0.1 })
 					}
 					if (window.scrollY + window.innerHeight
 						>= allProjectFooter.value.offsetTop + allProjectFooter.value.offsetHeight) {
-						window.location.href = "/projects"
+						window.location.href = '/projects'
 					}
 				},
 				onLeaveBack: () => {
-					const backgroundBlack = document.querySelector(".backgroundBlack")
+					const backgroundBlack = document.querySelector('.backgroundBlack')
 					if (backgroundBlack) {
 						gsap.to(backgroundBlack, { opacity: 0, duration: 0.1 })
 					}
@@ -111,37 +111,49 @@
 		})
 
 		$ctx.value.revert()
-		removeEventListener("scroll", handleScroll)
+		removeEventListener('scroll', handleScroll)
 	})
 </script>
 
 <template>
-	<div class="FeaturedProjects"
-		ref="$featuredProjects">
+	<div
+		ref="$featuredProjects"
+		class="FeaturedProjects"
+	>
 		<FeaturedProject :project="firstProject" />
-		<div class="FeaturedProject hero"
+		<div
 			v-if="!isMobile"
-			ref="$baseline">
+			ref="$baseline"
+			class="FeaturedProject hero"
+		>
 			<GridContainer>
 				<h1 class="title">
-					<span class="title__chunk"
+					<span
 						v-for="(word, index) in splitBaseline"
-						:key="index">
+						:key="index"
+						class="title__chunk"
+					>
 						{{ word }}{{ index !== splitBaseline.length - 1 ? ' ' : '' }}
 					</span>
 				</h1>
 			</GridContainer>
 		</div>
-		<FeaturedProject :project="project"
+		<FeaturedProject
 			v-for="project in projects"
-			:key="project._id" />
-		<div  class='FeaturedProject footer'
-			ref="allProjectFooter">
-			<div class='backgroundBlack'> </div>
+			:key="project._id"
+			:project="project"
+		/>
+		<div
+			ref="allProjectFooter"
+			class="FeaturedProject footer"
+		>
+			<div class="backgroundBlack" />
 
-			<a href='/projects'
-				class='FeaturedProject__title'>
-				<div class='FeaturedProject__footer'>    All Projects</div>
+			<a
+				href="/projects"
+				class="FeaturedProject__title"
+			>
+				<div class="FeaturedProject__footer">    All Projects</div>
 			</a>
 		</div>
 	</div>

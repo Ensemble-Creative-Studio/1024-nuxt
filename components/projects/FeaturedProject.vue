@@ -22,7 +22,7 @@
 				loop
 				playsinline
 				webkit-playsinline
-			></video>
+			/>
 			<SanityImage
 				v-else
 				:asset-id="project.mainImage.asset._ref"
@@ -31,7 +31,9 @@
 			/>
 		</div>
 		<footer class="FeaturedProject__footer">
-			<h2 class="FeaturedProject__title">{{ project.title }}</h2>
+			<h2 class="FeaturedProject__title">
+				{{ project.title }}
+			</h2>
 		</footer>
 	</NuxtLink>
 </template>

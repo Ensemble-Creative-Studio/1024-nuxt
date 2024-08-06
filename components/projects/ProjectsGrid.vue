@@ -1,7 +1,7 @@
 <script setup>
-	import gsap from "gsap"
-	import ScrollTrigger from "gsap/ScrollTrigger"
-	import { wait } from "@/utils/wait"
+	import gsap from 'gsap'
+	import ScrollTrigger from 'gsap/ScrollTrigger'
+	import { wait } from '@/utils/wait'
 
 	const props = defineProps({
 		projects: [ Object ],
@@ -17,14 +17,14 @@
 	// Define GSAP animations
 	const showProjects = () => {
 		$ctx.value = gsap.context((self) => {
-			const projects = self.selector(".ProjectsGrid .item")
+			const projects = self.selector('.ProjectsGrid .item')
 
 			$tl.value = gsap.to(projects, {
 				y: 0,
 				delay: 0.5,
 				duration: 1.5,
 				autoAlpha: 1,
-				ease: "power3.out",
+				ease: 'power3.out',
 				stagger: 0.1,
 			})
 		}, $projectsGrid.value)
@@ -33,38 +33,38 @@
 	const updateProjects = () => {
 		window.scrollTo(0, 0)
 
-		const projects = $projectsGrid.value.querySelectorAll(".ProjectsGrid .item")
+		const projects = $projectsGrid.value.querySelectorAll('.ProjectsGrid .item')
 		projects.forEach((project) => {
-			project.style.opacity = "1"
-			project.style.transform = "translateY(0)"
+			project.style.opacity = '1'
+			project.style.transform = 'translateY(0)'
 		})
 	}
 
 	const hideProjects = () => {
 		$ctx.value = gsap.context((self) => {
-			const projects = self.selector(".ProjectsGrid .item")
+			const projects = self.selector('.ProjectsGrid .item')
 
 			$tl.value = gsap.to(projects, {
 				y: 30,
 				autoAlpha: 0,
-				ease: "none",
+				ease: 'none',
 			})
 		}, $projectsGrid.value)
 	}
 
 	const addVideoHoverListeners = () => {
-		const items = $projectsGrid.value.querySelectorAll(".item")
+		const items = $projectsGrid.value.querySelectorAll('.item')
 
 		items.forEach((item) => {
-			const video = item.querySelector("video")
+			const video = item.querySelector('video')
 
-			item.addEventListener("mouseenter", () => {
+			item.addEventListener('mouseenter', () => {
 				if (video) {
 					video.play()
 				}
 			})
 
-			item.addEventListener("mouseleave", async () => {
+			item.addEventListener('mouseleave', async () => {
 				if (video) {
 					video.pause()
 					await wait(200)
@@ -95,12 +95,12 @@
 
 <template>
 	<ul
+		v-if="projects.length > 0"
+		ref="$projectsGrid"
 		:class="[
 			gridModeCols === 6 ? 'ProjectsGrid--six-items' : 'ProjectsGrid--four-items',
 			'ProjectsGrid',
 		]"
-		ref="$projectsGrid"
-		v-if="projects.length > 0"
 	>
 		<template
 			v-for="item in projects"
@@ -108,9 +108,9 @@
 		>
 			<li class="item">
 				<NuxtLink
+					:key="item._id"
 					class="item__link"
 					:to="{ name: 'projects-slug', params: { slug: item.slug.current } }"
-					:key="item._id"
 				>
 					<div class="item__thumbnail">
 						<SanityImage
@@ -130,15 +130,21 @@
 
 							playsinline
 							webkit-playsinline
-						></video>
+						/>
 					</div>
-					<h3 class="item__title">{{ item.title }}</h3>
+					<h3 class="item__title">
+						{{ item.title }}
+					</h3>
 				</NuxtLink>
 			</li>
 		</template>
 	</ul>
-	<div v-else
-		class="ProjectsGrid--empty">No project matching your filters</div>
+	<div
+		v-else
+		class="ProjectsGrid--empty"
+	>
+		No project matching your filters
+	</div>
 </template>
 
 <style lang="scss">

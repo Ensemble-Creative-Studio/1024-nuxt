@@ -1,5 +1,5 @@
 <script setup>
-	const isNavActive = useState("isNavActive")
+	const isNavActive = useState('isNavActive')
 
 	function toggleNav() {
 		isNavActive.value = !isNavActive.value
@@ -9,15 +9,19 @@
 <template>
 	<header class="SiteHeader">
 		<SiteLogo />
-		<div :class="[isNavActive && 'menu-icon--active', 'menu-icon']"
-			@click="toggleNav()">
-			<input class="menu-icon__checkbox"
-				type="checkbox" />
+		<div
+			:class="[isNavActive && 'menu-icon--active', 'menu-icon']"
+			@click="toggleNav()"
+		>
+			<input
+				class="menu-icon__checkbox"
+				type="checkbox"
+			>
 			<div class="burger">
-				<span class="burger__bar burger__bar--top"></span>
-				<span class="burger__bar burger__bar--right"></span>
-				<span class="burger__bar burger__bar--bottom"></span>
-				<span class="burger__bar burger__bar--left"></span>
+				<span class="burger__bar burger__bar--top" />
+				<span class="burger__bar burger__bar--right" />
+				<span class="burger__bar burger__bar--bottom" />
+				<span class="burger__bar burger__bar--left" />
 			</div>
 		</div>
 	</header>
@@ -68,8 +72,8 @@
 		}
 
 		.burger {
-			inset: 0;
 			height: 20px;
+			inset: 0;
 			margin: auto;
 			pointer-events: none;
 			position: absolute;

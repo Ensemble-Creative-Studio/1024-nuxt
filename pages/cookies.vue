@@ -13,8 +13,8 @@
 			/>
 		</Head>
 		<section
-			class="content"
 			v-if="cookies.content"
+			class="content"
 		>
 			<SanityContent :blocks="cookies.content" />
 		</section>

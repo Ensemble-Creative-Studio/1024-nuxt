@@ -35,13 +35,13 @@
 		<FeaturedProjects
 			v-if="!isMobile"
 			:baseline="home.baseline"
-			:firstProject="home.firstProject"
+			:first-project="home.firstProject"
 			:projects="home.featuredProjects"
 		/>
 		<MobileFeaturedProjects
 			v-else
 			:baseline="home.baseline"
-			:firstProject="home.firstProject"
+			:first-project="home.firstProject"
 			:projects="home.featuredProjects"
 		/>
 	</div>

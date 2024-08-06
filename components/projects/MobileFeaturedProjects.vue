@@ -1,12 +1,12 @@
 <script setup>
-	import { Swiper, SwiperSlide } from "swiper/vue"
-	import { EffectCreative } from "swiper"
-	import { wait } from "@/utils/wait"
+	import { Swiper, SwiperSlide } from 'swiper/vue'
+	import { EffectCreative } from 'swiper'
+	import { wait } from '@/utils/wait'
 
-	import gsap from "gsap"
+	import gsap from 'gsap'
 
-	import "swiper/css"
-	import "swiper/css/effect-creative"
+	import 'swiper/css'
+	import 'swiper/css/effect-creative'
 
 	const router = useRouter()
 
@@ -34,24 +34,24 @@
 
 	onMounted(() => {
 		$ctx.value = gsap.context((self) => {
-			const chunks = self.selector(".title__chunk")
+			const chunks = self.selector('.title__chunk')
 
 			for (let i = chunks.length - 1; i > 0; i--) {
 				const j = Math.floor(Math.random() * (i + 1))
-				;[ chunks[i], chunks[j] ] = [ chunks[j], chunks[i] ]
+				;[ chunks[ i ], chunks[ j ] ] = [ chunks[ j ], chunks[ i ] ]
 			}
 
 			tl.to(chunks, {
 				duration: 2.5,
 				autoAlpha: 1,
-				ease: "power2.out",
+				ease: 'power2.out',
 				stagger: 0.03,
 			})
 		}, $mobileFeaturedProjects.value)
 	})
 
 	const splitBaseline = computed(() => {
-		return props.baseline.split(" ")
+		return props.baseline.split(' ')
 	})
 
 	const modules = [ EffectCreative ]
@@ -78,13 +78,13 @@
 
 	watch(activeSlideIndex, (newValue) => {
 		const currentTitle = document.querySelectorAll(
-			".MobileFeaturedProjects__title")[newValue - 1]
+			'.MobileFeaturedProjects__title')[ newValue - 1 ]
 
 		if (currentTitle !== undefined && newValue !== 0) {
 			if (newValue > previousSlideIndex) {
 				totalOffsetWidth.value += currentTitle.offsetWidth + 70
 			} else if (newValue < previousSlideIndex) {
-				const prevTitle = document.querySelectorAll(".MobileFeaturedProjects__title")[
+				const prevTitle = document.querySelectorAll('.MobileFeaturedProjects__title')[
 					previousSlideIndex - 1
 				]
 				totalOffsetWidth.value -= prevTitle.offsetWidth + 70
@@ -99,27 +99,27 @@
 			$swiper.value.allowTouchMove = false
 
 			$ctx.value = gsap.context(async (self) => {
-				const projectsLabel = self.selector(".MobileFeaturedProjects__title:last-child")
+				const projectsLabel = self.selector('.MobileFeaturedProjects__title:last-child')
 
 				$tl.value = gsap.to(projectsLabel, {
 					y: -200,
 					duration: 1,
 					autoAlpha: 0,
 					delay: 1,
-					ease: "power3.out",
+					ease: 'power3.out',
 				})
 
 				await wait(800)
-				router.push("/projects")
+				router.push('/projects')
 			}, $mobileFeaturedProjects.value)
 		}
 	})
 
 	const footerTransform = computed(() => {
 		if (activeSlideIndex.value === -1) {
-			return "translateX(calc(50%))"
+			return 'translateX(calc(50%))'
 		} else {
-			return `translateX(calc(-${totalOffsetWidth.value}px + 10px))`
+			return `translateX(calc(-${ totalOffsetWidth.value }px + 10px))`
 		}
 	})
 
@@ -130,20 +130,18 @@
 
 <template>
 	<div
-		class="MobileFeaturedProjects"
 		ref="$mobileFeaturedProjects"
+		class="MobileFeaturedProjects"
 	>
 		<swiper
-			@swiper="onSwiper($event)"
-			@slideChange="onSlideChange($event)"
 			:prevent-interaction-on-transition="true"
 			class="MobileFeaturedProjects__slider"
 			:space-between="10"
-			:grabCursor="true"
+			:grab-cursor="true"
 			:slides-per-view="'auto'"
 			:speed="600"
 			:effect="'creative'"
-			:creativeEffect="{
+			:creative-effect="{
 				prev: {
 					translate: ['-100%', 0, -300],
 				},
@@ -152,13 +150,17 @@
 				},
 			}"
 			:modules="modules"
+			@swiper="onSwiper($event)"
+			@slide-change="onSlideChange($event)"
 		>
 			<swiper-slide class="baseline">
 				<GridContainer>
 					<h1 class="title">
-						<span class="title__chunk"
+						<span
 							v-for="(word, index) in splitBaseline"
-							:key="index">
+							:key="index"
+							class="title__chunk"
+						>
 							{{ word }}{{ index !== splitBaseline.length - 1 ? ' ' : '' }}
 						</span>
 					</h1>
@@ -175,7 +177,7 @@
 						'MobileFeaturedProject',
 					]"
 				>
-					<div class="MobileFeaturedProject__overlay"></div>
+					<div class="MobileFeaturedProject__overlay" />
 					<div class="MobileFeaturedProject__thumbnail">
 						<video
 							v-if="firstProject.mainVideoUrl"
@@ -185,7 +187,7 @@
 							loop
 							playsinline
 							webkit-playsinline
-						></video>
+						/>
 						<SanityImage
 							v-else
 							:asset-id="firstProject.mainImage.asset._ref"
@@ -210,7 +212,7 @@
 						'MobileFeaturedProject',
 					]"
 				>
-					<div class="MobileFeaturedProject__overlay"></div>
+					<div class="MobileFeaturedProject__overlay" />
 					<div class="MobileFeaturedProject__thumbnail">
 						<video
 							v-if="project.mainVideoUrl"
@@ -220,15 +222,17 @@
 							loop
 							playsinline
 							webkit-playsinline
-						></video>
-						<SanityImage v-else
+						/>
+						<SanityImage
+							v-else
 							:asset-id="project.mainImage.asset._ref"
 							auto="format"
-							:q="75" />
+							:q="75"
+						/>
 					</div>
 				</NuxtLink>
 			</swiper-slide>
-			<swiper-slide class="empty"></swiper-slide>
+			<swiper-slide class="empty" />
 		</swiper>
 		<div class="MobileFeaturedProjects__footer">
 			<div
@@ -236,12 +240,12 @@
 				:style="{ transform: footerTransform }"
 			>
 				<h2
+					v-for="(title, index) in projectTitles"
+					:key="title"
 					:class="[
 						index === activeSlideIndex && 'MobileFeaturedProjects__title--active',
 						'MobileFeaturedProjects__title',
 					]"
-					v-for="(title, index) in projectTitles"
-					:key="title"
 				>
 					{{ title }}
 				</h2>

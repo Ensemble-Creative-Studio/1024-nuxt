@@ -1,7 +1,7 @@
 <script setup>
-	import gsap from "gsap"
-	import ScrollTrigger from "gsap/ScrollTrigger"
-	import { wait } from "@/utils/wait"
+	import gsap from 'gsap'
+	import ScrollTrigger from 'gsap/ScrollTrigger'
+	import { wait } from '@/utils/wait'
 
 	const props = defineProps({
 		projects: [ Object ],
@@ -17,13 +17,13 @@
 
 	const showProjects = () => {
 		$ctx.value = gsap.context((self) => {
-			const projects = self.selector(".ProjectsList .item")
+			const projects = self.selector('.ProjectsList .item')
 
 			$tl.value = gsap.to(projects, {
 				delay: 0.5,
 				duration: 1,
 				autoAlpha: 1,
-				ease: "power3.out",
+				ease: 'power3.out',
 				stagger: 0.1,
 			})
 		}, $projectsList.value)
@@ -32,38 +32,38 @@
 	const updateProjects = () => {
 		window.scrollTo(0, 0)
 
-		const projects = $projectsList.value.querySelectorAll(".ProjectsList .item")
+		const projects = $projectsList.value.querySelectorAll('.ProjectsList .item')
 		projects.forEach((project) => {
-			project.style.opacity = "1"
+			project.style.opacity = '1'
 		})
 	}
 
 	const hideProjects = () => {
 		$ctx.value = gsap.context((self) => {
-			const projects = self.selector(".ProjectsList .item")
+			const projects = self.selector('.ProjectsList .item')
 
 			$tl.value = gsap.to(projects, {
 				duration: 0.5,
 				autoAlpha: 0,
-				ease: "power3.out",
+				ease: 'power3.out',
 				stagger: 0.1,
 			})
 		}, $projectsList.value)
 	}
 
 	const addVideoHoverListeners = () => {
-		const items = $projectsList.value.querySelectorAll(".item")
+		const items = $projectsList.value.querySelectorAll('.item')
 
 		items.forEach((item) => {
-			const video = item.querySelector("video")
+			const video = item.querySelector('video')
 
-			item.addEventListener("mouseenter", () => {
+			item.addEventListener('mouseenter', () => {
 				if (video) {
 					video.play()
 				}
 			})
 
-			item.addEventListener("mouseleave", async () => {
+			item.addEventListener('mouseleave', async () => {
 				if (video) {
 					video.pause()
 					await wait(200)
@@ -93,9 +93,10 @@
 </script>
 
 <template>
-	<ul class="ProjectsList"
-		ref="$projectsList"
+	<ul
 		v-if="projects.length > 0"
+		ref="$projectsList"
+		class="ProjectsList"
 	>
 		<template
 			v-for="item in projects"
@@ -103,9 +104,9 @@
 		>
 			<li class="item">
 				<NuxtLink
+					:key="item._id"
 					class="item__link"
 					:to="{ name: 'projects-slug', params: { slug: item.slug.current } }"
-					:key="item._id"
 				>
 					<div class="item__container">
 						<div class="item__thumbnail">
@@ -121,42 +122,42 @@
 								loop
 								playsinline
 								webkit-playsinline
-							></video>
+							/>
 						</div>
 						<div class="item__meta">
 							<h3
-								class="item__title"
 								v-if="item.title"
+								class="item__title"
 							>
 								{{ item.title }}
 							</h3>
 							<ul
-								class="item__categories item__categories--mobile"
 								v-if="item.categories"
+								class="item__categories item__categories--mobile"
 							>
 								<li
-									class="item__category"
 									v-for="category in item.categories"
 									:key="category._id"
+									class="item__category"
 								>
 									{{ category.title }}
 								</li>
 							</ul>
 						</div>
 						<div
-							class="item__date"
 							v-if="item.releaseDate"
+							class="item__date"
 						>
 							{{ item.releaseDate.slice(0, 4) }}
 						</div>
 						<ul
-							class="item__categories"
 							v-if="item.categories"
+							class="item__categories"
 						>
 							<li
-								class="item__category"
 								v-for="category in item.categories"
 								:key="category._id"
+								class="item__category"
 							>
 								{{ category.title }}
 							</li>
@@ -166,8 +167,12 @@
 			</li>
 		</template>
 	</ul>
-	<div v-else
-		class="ProjectsList--empty">No project matching your filters</div>
+	<div
+		v-else
+		class="ProjectsList--empty"
+	>
+		No project matching your filters
+	</div>
 </template>
 
 <style lang="scss">

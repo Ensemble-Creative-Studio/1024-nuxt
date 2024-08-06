@@ -3,7 +3,7 @@
 		navMenu: Object,
 	})
 
-	const isNavActive = useState("isNavActive")
+	const isNavActive = useState('isNavActive')
 
 	function closeNav() {
 		isNavActive.value = false
@@ -56,9 +56,15 @@
 		</div>
 		<div :class="[isNavActive && 'NavMenu__secondary--active', 'NavMenu__secondary']">
 			<ul class="address">
-				<li class="address__item">{{ navMenu.address.label }}</li>
-				<li class="address__item">{{ navMenu.address.streetNo }}</li>
-				<li class="address__item">{{ navMenu.address.city }}</li>
+				<li class="address__item">
+					{{ navMenu.address.label }}
+				</li>
+				<li class="address__item">
+					{{ navMenu.address.streetNo }}
+				</li>
+				<li class="address__item">
+					{{ navMenu.address.city }}
+				</li>
 			</ul>
 			<ul class="annex">
 				<li class="annex__item">
@@ -106,13 +112,14 @@
 			</ul>
 			<ul class="social-media">
 				<li class="social-media__item">
-					<a :href="navMenu.instagram"
+					<a
+						:href="navMenu.instagram"
 						target="blank"
 					>
 						<img
 							src="@/assets/img/vimeo-icon.svg"
 							alt=""
-						/>
+						>
 					</a>
 				</li>
 				<li class="social-media__item">
@@ -123,7 +130,7 @@
 						<img
 							src="@/assets/img/facebook-icon.svg"
 							alt=""
-						/>
+						>
 					</a>
 				</li>
 				<li class="social-media__item">
@@ -134,7 +141,7 @@
 						<img
 							src="@/assets/img/instagram-icon.svg"
 							alt=""
-						/>
+						>
 					</a>
 				</li>
 			</ul>

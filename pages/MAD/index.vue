@@ -1,6 +1,6 @@
 <script setup>
-	import gsap from "gsap"
-	import { ScrollTrigger } from "gsap/ScrollTrigger"
+	import gsap from 'gsap'
+	import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 	const { isMobile } = useDevice()
 
@@ -38,8 +38,8 @@
 		params: { slug: route.params.slug },
 	})
 	if (Object.keys(project.value).length === 0) {
-		router.push("/404")
-		throw createError({ statusCode: 404, statusMessage: "Project not found" })
+		router.push('/404')
+		throw createError({ statusCode: 404, statusMessage: 'Project not found' })
 	}
 
 	const $hero = ref()
@@ -56,7 +56,7 @@
 	function scrollToSection(section) {
 		let offset
 
-		if (section.classList.contains("hero")) {
+		if (section.classList.contains('hero')) {
 			offset = isMobile ? 0 : 0
 		} else {
 			offset = isMobile ? window.innerHeight - 100 : window.innerHeight - 100
@@ -68,16 +68,16 @@
 				autoKill: false,
 			},
 			duration: 1.5,
-			ease: "power3.out",
+			ease: 'power3.out',
 		})
 	}
 
 	onMounted(() => {
 		let mm = gsap.matchMedia()
 
-		mm.add("(min-width: 481px)", () => {
+		mm.add('(min-width: 481px)', () => {
 			trigger.value = ScrollTrigger.create({
-				start: "50%",
+				start: '50%',
 				trigger: $hero.value,
 				onEnter: () => {
 					gsap.to($anchors.value.$el, {
@@ -94,37 +94,36 @@
 			})
 		})
 
-		const itemTextElements = document.querySelectorAll(".item__text")
+		const itemTextElements = document.querySelectorAll('.item__text')
 
 		// Loop through each .item__text element
 		itemTextElements.forEach((element) => {
 			// Get all <a> elements within the current .item__text element
-			const linksInItemText = element.querySelectorAll("a")
+			const linksInItemText = element.querySelectorAll('a')
 
 			// Loop through each <a> element within the .item__text element
 			linksInItemText.forEach((link) => {
 				// Add target="_blank" attribute to the <a> element
-				link.setAttribute("target", "_blank")
+				link.setAttribute('target', '_blank')
 			})
 		})
 
 		// Get all elements with class .content__description
-		const contentDescriptionElements = document.querySelectorAll(".content__description")
+		const contentDescriptionElements = document.querySelectorAll('.content__description')
 
 		// Loop through each .content__description element
 		contentDescriptionElements.forEach((element) => {
 			// Get all <a> elements within the current .content__description element
-			const linksInContentDescription = element.querySelectorAll("a")
+			const linksInContentDescription = element.querySelectorAll('a')
 
 			// Loop through each <a> element within the .content__description element
 			linksInContentDescription.forEach((link) => {
 				// Add target="_blank" attribute to the <a> element
-				link.setAttribute("target", "_blank")
+				link.setAttribute('target', '_blank')
 			})
 		})
 
-		window.addEventListener("resize", handleResize)
-
+		window.addEventListener('resize', handleResize)
 	})
 
 	const handleResize = () => {
@@ -143,13 +142,15 @@
 			trigger.kill()
 		})
 
-		removeEventListener("resize", handleResize)
+		removeEventListener('resize', handleResize)
 	})
 </script>
 
 <template>
-	<div class="project-page"
-		ref="$projectPage">
+	<div
+		ref="$projectPage"
+		class="project-page"
+	>
 		<Head>
 			<Title>{{ project.title }}</Title>
 			<Meta
@@ -157,18 +158,20 @@
 				content="Project description"
 			/>
 		</Head>
-		<section class="hero"
-			ref="$hero">
+		<section
+			ref="$hero"
+			class="hero"
+		>
 			<video
-				class="hero__video"
 				v-if="project.mainVideoUrl"
+				class="hero__video"
 				:src="project.mainVideoUrl"
 				autoplay
 				muted
 				loop
 				playsinline
 				webkit-playsinline
-			></video>
+			/>
 			<SanityImage
 				v-else
 				class="hero__banner"
@@ -176,7 +179,9 @@
 				auto="format"
 				:q="75"
 			/>
-			<h1 class="hero__title">{{ project.title }}</h1>
+			<h1 class="hero__title">
+				{{ project.title }}
+			</h1>
 		</section>
 		<div class="main">
 			<section class="content">
@@ -191,25 +196,32 @@
 						<span class="content__type">{{ project.field }}</span>
 					</div>
 					<div
-						class="content__description"
-						ref="$description"
 						v-if="project.description"
+						ref="$description"
+						class="content__description"
 					>
-						<SanityContent :blocks="project.description"  />
+						<SanityContent :blocks="project.description" />
 					</div>
 				</GridContainer>
 			</section>
-			<section class="gallery"
+			<section
+				v-if="project?.gallery"
 				ref="$gallery"
-				v-if="project?.gallery">
+				class="gallery"
+			>
 				<GridContainer>
 					<div class="gallery__title-container">
-						<h2 class="gallery__title">{{ project.galleryName }}</h2>
-
+						<h2 class="gallery__title">
+							{{ project.galleryName }}
+						</h2>
 					</div>
-					<ul class="gallery__wrapper"
-						v-if="project?.gallery">
+					<ul
+						v-if="project?.gallery"
+						class="gallery__wrapper"
+					>
 						<li
+							v-for="(item, index) in project?.gallery"
+							:key="index"
 							:class="[
 								item._type === 'galleryMedia'
 									? 'item--media'
@@ -218,11 +230,11 @@
 										: 'item--text',
 								'item',
 							]"
-							v-for="(item, index) in project?.gallery"
-							:key="index"
 						>
-							<ul class="item__inner"
-								v-if="item._type === 'galleryMedia'">
+							<ul
+								v-if="item._type === 'galleryMedia'"
+								class="item__inner"
+							>
 								<li
 									v-for="image in item.images"
 									:key="image.asset._ref"
@@ -233,23 +245,29 @@
 									}"
 								>
 									<div class="item__image">
-										<SanityImage :asset-id="image.asset._ref"
-											auto="format" />
+										<SanityImage
+											:asset-id="image.asset._ref"
+											auto="format"
+										/>
 									</div>
 								</li>
 							</ul>
 
-							<div class="item__text"
-								v-if="item._type === 'galleryText'">
+							<div
+								v-if="item._type === 'galleryText'"
+								class="item__text"
+							>
 								<SanityContent :blocks="item.text" />
 							</div>
-							<div class="item__video"
-								v-if="item._type === 'galleryVideo'">
+							<div
+								v-if="item._type === 'galleryVideo'"
+								class="item__video"
+							>
 								<VideoPlayer
 									:poster="item.posterImageUrl"
 
-									:vimeoUrl="item.url"
-									:downloadUrl="item.downloadUrl"
+									:vimeo-url="item.url"
+									:download-url="item.downloadUrl"
 									:quality="isMobile ? 'sd' : 'hd'"
 								/>
 							</div>
@@ -257,8 +275,10 @@
 					</ul>
 				</GridContainer>
 			</section>
-			<section class="credits"
-				ref="$credits">
+			<section
+				ref="$credits"
+				class="credits"
+			>
 				<GridContainer>
 					<header
 						class="credits__header"
@@ -267,15 +287,19 @@
 						<div>{{ project.title }}</div>
 						<span>1024 architecture</span>
 					</header>
-					<ul class="credits__wrapper"
-						v-if="project.credits">
+					<ul
+						v-if="project.credits"
+						class="credits__wrapper"
+					>
 						<li
-							class="item"
 							v-for="item in project?.credits?.list"
 							:key="item._key"
+							class="item"
 						>
 							>
-							<h3 class="item__label">{{ item.role }}</h3>
+							<h3 class="item__label">
+								{{ item.role }}
+							</h3>
 							<p class="item__text">
 								{{ item.text }}
 							</p>
@@ -283,10 +307,14 @@
 					</ul>
 				</GridContainer>
 			</section>
-			<section class="related-projects"
-				v-if="project.relatedProjects">
+			<section
+				v-if="project.relatedProjects"
+				class="related-projects"
+			>
 				<GridContainer>
-					<h2 class="related-projects__title">Related projects</h2>
+					<h2 class="related-projects__title">
+						Related projects
+					</h2>
 				</GridContainer>
 				<ProjectsList
 					:projects="project.relatedProjects ? project.relatedProjects : []"
@@ -295,21 +323,33 @@
 			<BottomAnchors ref="$anchors">
 				<ul class="BottomAnchors__list">
 					<li class="BottomAnchors__item">
-						<button @click="scrollToSection($hero)">Top</button>
+						<button @click="scrollToSection($hero)">
+							Top
+						</button>
 					</li>
-					<li class="BottomAnchors__item"
-						v-if="project.description">
-						<button @click="scrollToSection($description)">Description</button>
+					<li
+						v-if="project.description"
+						class="BottomAnchors__item"
+					>
+						<button @click="scrollToSection($description)">
+							Description
+						</button>
 					</li>
 					<li class="BottomAnchors__item">
-						<button @click="scrollToSection($gallery)"
-							v-if="project.gallery">
+						<button
+							v-if="project.gallery"
+							@click="scrollToSection($gallery)"
+						>
 							Gallery
 						</button>
 					</li>
-					<li class="BottomAnchors__item"
-						v-if="project.credits">
-						<button @click="scrollToSection($credits)">Credits</button>
+					<li
+						v-if="project.credits"
+						class="BottomAnchors__item"
+					>
+						<button @click="scrollToSection($credits)">
+							Credits
+						</button>
 					</li>
 				</ul>
 			</BottomAnchors>
