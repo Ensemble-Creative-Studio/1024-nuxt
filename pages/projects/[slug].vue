@@ -36,10 +36,10 @@
 
 	const { data: project } = await useSanityQuery(GET_SINGLE_PROJECT)
 
-	// if (Object.keys(project.value).length === 0) {
-	// 	router.push("/404")
-	// 	throw createError({ statusCode: 404, statusMessage: "Project not found" })
-	// }
+	if (Object.keys(project.value).length === 0) {
+		router.push("/404")
+		throw createError({ statusCode: 404, statusMessage: "Project not found" })
+	}
 
 	const $hero = ref()
 	const $galleryMedia = ref([])
@@ -51,6 +51,8 @@
 	const $description = ref()
 	const $gallery = ref()
 	const $credits = ref()
+
+	let timeout
 
 	function scrollToSection(section) {
 		let offset
@@ -72,60 +74,44 @@
 	}
 
 	onMounted(() => {
-		setTimeout(() => {
-			let mm = gsap.matchMedia()
+		let mm = gsap.matchMedia()
 
-			mm.add("(min-width: 481px)", () => {
-				trigger.value = ScrollTrigger.create({
-					start: "50%",
-					trigger: $hero.value,
-					onEnter: () => {
-						gsap.to($anchors.value.$el, {
-							y: 0,
-							duration: 0.5,
-						})
-					},
-					onLeaveBack: () => {
-						gsap.to($anchors.value.$el, {
-							y: 50,
-							duration: 0.5,
-						})
-					},
-				})
+		mm.add("(min-width: 481px)", () => {
+			trigger.value = ScrollTrigger.create({
+				start: "50%",
+				trigger: $hero.value,
+				onEnter: () => {
+					gsap.to($anchors.value.$el, {
+						y: 0,
+						duration: 0.5,
+					})
+				},
+				onLeaveBack: () => {
+					gsap.to($anchors.value.$el, {
+						y: 50,
+						duration: 0.5,
+					})
+				},
 			})
-		}, 1000)
+		})
 
 		window.addEventListener("resize", handleResize)
-		setTimeout(() => {
-			const itemTextElements = document.querySelectorAll(".item__text")
 
-			// Loop through each .item__text element
-			itemTextElements.forEach((element) => {
-				// Get all <a> elements within the current .item__text element
-				const linksInItemText = element.querySelectorAll("a")
-
-				// Loop through each <a> element within the .item__text element
-				linksInItemText.forEach((link) => {
-					// Add target="_blank" attribute to the <a> element
-					link.setAttribute("target", "_blank")
-				})
+		const itemTextElements = document.querySelectorAll(".item__text")
+		itemTextElements.forEach((element) => {
+			const linksInItemText = element.querySelectorAll("a")
+			linksInItemText.forEach((link) => {
+				link.setAttribute("target", "_blank")
 			})
+		})
 
-			// Get all elements with class .content__description
-			const contentDescriptionElements = document.querySelectorAll(".content__description")
-
-			// Loop through each .content__description element
-			contentDescriptionElements.forEach((element) => {
-				// Get all <a> elements within the current .content__description element
-				const linksInContentDescription = element.querySelectorAll("a")
-
-				// Loop through each <a> element within the .content__description element
-				linksInContentDescription.forEach((link) => {
-					// Add target="_blank" attribute to the <a> element
-					link.setAttribute("target", "_blank")
-				})
+		const contentDescriptionElements = document.querySelectorAll(".content__description")
+		contentDescriptionElements.forEach((element) => {
+			const linksInContentDescription = element.querySelectorAll("a")
+			linksInContentDescription.forEach((link) => {
+				link.setAttribute("target", "_blank")
 			})
-		}, 1000)
+		})
 	})
 
 	const handleResize = () => {
@@ -145,6 +131,7 @@
 		})
 
 		removeEventListener("resize", handleResize)
+		clearTimeout(timeout)
 	})
 </script>
 

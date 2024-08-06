@@ -1,8 +1,8 @@
 <script setup>
 	import gsap from "gsap"
 	import ScrollTrigger from "gsap/ScrollTrigger"
+	import { wait } from "@/utils/wait"
 
-	gsap.registerPlugin(ScrollTrigger)
 	const props = defineProps({
 		projects: [ Object ],
 		categories: [ Object ],
@@ -47,9 +47,6 @@
 				autoAlpha: 0,
 				ease: "power3.out",
 				stagger: 0.1,
-				onComplete: () => {
-					// $ctx.value = null
-				},
 			})
 		}, $projectsList.value)
 	}
@@ -66,12 +63,11 @@
 				}
 			})
 
-			item.addEventListener("mouseleave", () => {
+			item.addEventListener("mouseleave", async () => {
 				if (video) {
 					video.pause()
-					setTimeout(() => {
-						video.currentTime = 0
-					}, 200)
+					await wait(200)
+					video.currentTime = 0
 				}
 			})
 		})
@@ -87,9 +83,13 @@
 		ScrollTrigger.getAll().forEach((trigger) => {
 			trigger.kill() // Remove the trigger and animation
 		})
+		$ctx.value.revert()
 	})
 
-	watch(() => props.projects, updateProjects)
+	watch(() => props.projects, async () => {
+		await wait(0)
+		updateProjects()
+	})
 </script>
 
 <template>
@@ -171,156 +171,158 @@
 </template>
 
 <style lang="scss">
-.ProjectsList {
-  grid-column: 1 / -1;
-  padding-bottom: 5rem;
+	.ProjectsList {
+		grid-column: 1 / -1;
+		padding-bottom: 5rem;
 
-  &--empty {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-  }
+		&--empty {
+			align-items: center;
+			display: flex;
+			height: 100vh;
+			justify-content: center;
+		}
 
-  .item {
-    font-size: $desktop-list;
-    border-top: 0.1rem solid $dark-grey;
-    transition: background-color 0.2s ease-in-out;
-    // height: 16rem;
+		.item {
+			border-top: 0.1rem solid $dark-grey;
+			font-size: $desktop-list;
+			transition: background-color 0.2s ease-in-out;
 
-	.projects & {
-		opacity: 0;
+			// height: 16rem;
+
+			.projects & {
+				opacity: 0;
+			}
+
+			@include viewport-768 {
+				font-size: $tablet-list;
+				height: auto;
+				padding: 2rem 0;
+			}
+
+			@include viewport-480 {
+				font-size: $mobile-list;
+			}
+
+			&:hover {
+				background-color: $dark-dark-grey;
+			}
+
+			&__link {
+				height: 100%;
+			}
+
+			&__container {
+				@include grid(12, 1fr, 1, 0);
+
+				align-items: center;
+				height: 100%;
+				padding: 1rem 2rem;
+				position: relative;
+
+				@include viewport-480 {
+					padding: 0 1rem;
+				}
+			}
+
+			&__date {
+				color: $medium-grey;
+				grid-column: auto / span 2;
+
+				@include viewport-480 {
+					grid-column: 11 / span 2;
+				}
+			}
+
+			&__meta {
+				grid-column: 3 / span 2;
+
+				@include viewport-768 {
+					grid-column: 3 / span 6;
+				}
+
+				@include viewport-480 {
+					grid-column: 6 / span 5;
+				}
+			}
+
+			&__categories {
+				color: $medium-grey;
+				grid-column: auto / span 6;
+
+				// REWORK
+				@include viewport-768 {
+					display: none;
+					flex-direction: column;
+					grid-column: 3 / span 6;
+					grid-row: 2;
+				}
+
+				&--mobile {
+					display: none;
+
+					@include viewport-768 {
+						display: block;
+					}
+				}
+			}
+
+			&__category {
+				display: inline-block;
+
+				&:not(:last-child) {
+					&::after {
+						content: ",\00a0";
+					}
+				}
+			}
+
+			&__thumbnail {
+				grid-column: auto / span 2;
+				margin-left: 0;
+				pointer-events: none;
+				position: relative;
+
+				@include viewport-480 {
+					grid-column: auto / span 4;
+				}
+
+				img {
+					aspect-ratio: 1 / 1;
+					filter: grayscale(100%);
+					object-fit: cover;
+					transition: 0.25s ease-in-out;
+					width: 50%;
+
+					@include viewport-480 {
+						width: 100%;
+					}
+				}
+
+				video {
+					aspect-ratio: 1 / 1;
+					left: 0;
+					object-fit: cover;
+					opacity: 0;
+					position: absolute;
+					top: 0;
+					transition: 0.25s ease-in-out;
+					visibility: hidden;
+					width: 50%;
+
+					@include viewport-480 {
+						width: 100%;
+					}
+				}
+			}
+
+			&:hover img {
+				filter: grayscale(0);
+			}
+
+			&:hover video {
+				opacity: 1;
+				visibility: visible;
+			}
+		}
 	}
-
-    @include viewport-768 {
-      font-size: $tablet-list;
-      height: auto;
-      padding: 2rem 0;
-    }
-
-    @include viewport-480 {
-      font-size: $mobile-list;
-    }
-
-    &:hover {
-      background-color: $dark-dark-grey;
-    }
-
-    &__link {
-      height: 100%;
-    }
-
-    &__container {
-      @include grid(12, 1fr, 1, 0);
-      padding: 1rem 2rem;
-      align-items: center;
-      position: relative;
-      height: 100%;
-
-      @include viewport-480 {
-        padding: 0 1rem;
-      }
-    }
-
-    &__date {
-      grid-column: auto / span 2;
-      color: $medium-grey;
-
-      @include viewport-480 {
-        grid-column: 11 / span 2;
-      }
-    }
-
-    &__meta {
-      grid-column: 3 / span 2;
-
-      @include viewport-768 {
-        grid-column: 3 / span 6;
-      }
-
-      @include viewport-480 {
-        grid-column: 6 / span 5;
-      }
-    }
-
-    &__categories {
-      grid-column: auto / span 6;
-      color: $medium-grey;
-
-      // REWORK
-      @include viewport-768 {
-        display: none;
-        grid-row: 2;
-        grid-column: 3 / span 6;
-        flex-direction: column;
-      }
-
-      &--mobile {
-        display: none;
-
-        @include viewport-768 {
-          display: block;
-        }
-      }
-    }
-
-    &__category {
-      display: inline-block;
-
-      &:not(:last-child) {
-        &::after {
-          content: ',\00a0';
-        }
-      }
-    }
-
-    &__thumbnail {
-      grid-column: auto / span 2;
-      margin-left: 0;
-      position: relative;
-      pointer-events: none;
-
-      @include viewport-480 {
-        grid-column: auto / span 4;
-      }
-
-      img {
-        aspect-ratio: 1 / 1;
-        width: 50%;
-        object-fit: cover;
-        filter: grayscale(100%);
-        transition: 0.25s ease-in-out;
-
-        @include viewport-480 {
-          width: 100%;
-        }
-      }
-
-      video {
-        width: 50%;
-        top: 0;
-        position: absolute;
-        aspect-ratio: 1 / 1;
-        left: 0;
-        object-fit: cover;
-        opacity: 0;
-        visibility: hidden;
-        transition: 0.25s ease-in-out;
-
-        @include viewport-480 {
-          width: 100%;
-        }
-      }
-    }
-
-    &:hover img {
-      filter: grayscale(0);
-    }
-
-    &:hover video {
-      opacity: 1;
-      visibility: visible;
-    }
-  }
-}
 </style>

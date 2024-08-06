@@ -1,8 +1,8 @@
 <script setup>
 	import gsap from "gsap"
 	import ScrollTrigger from "gsap/ScrollTrigger"
+	import { wait } from "@/utils/wait"
 
-	gsap.registerPlugin(ScrollTrigger)
 	const props = defineProps({
 		projects: [ Object ],
 		order: String,
@@ -13,6 +13,8 @@
 	const $projectsGrid = ref()
 	const $tl = ref()
 	const $ctx = ref()
+
+	let timeout
 
 	// Define GSAP animations
 	const showProjects = () => {
@@ -48,14 +50,11 @@
 				y: 30,
 				autoAlpha: 0,
 				ease: "none",
-				onComplete: () => {
-					// $ctx.value = null
-				},
 			})
 		}, $projectsGrid.value)
 	}
-	const addVideoHoverListeners = () => {
 
+	const addVideoHoverListeners = () => {
 		const items = $projectsGrid.value.querySelectorAll(".item")
 
 		items.forEach((item) => {
@@ -67,87 +66,33 @@
 				}
 			})
 
-			item.addEventListener("mouseleave", () => {
-
+			item.addEventListener("mouseleave", async () => {
 				if (video) {
 					video.pause()
-					setTimeout(() => {
-						video.currentTime = 0
-					}, 200)
-
+					await wait(200)
+					video.currentTime = 0
 				}
 			})
 		})
 	}
-	const addVideoScrollTriggers = () => {
-		if (window.innerWidth <= 768) { // Assuming 768px as a breakpoint for mobile devices
-			const items = $projectsGrid.value.querySelectorAll(".item")
-
-			items.forEach((item) => {
-				const video = item.querySelector("video")
-
-				if (video) {
-					// Set initial opacity to 0
-					video.style.opacity = "0"
-
-					ScrollTrigger.create({
-						trigger: item,
-
-						start: "top center+=100",
-						end: "top center-=400",
-						onEnter: () => {
-							video.play()
-							video.style.opacity = "1"
-							video.style.visibility = "visible"
-						},
-						onLeave: () => {
-							video.pause()
-							video.style.opacity = "0" // Set opacity to 0 when video is not playing
-							video.style.visibility = "hidden"
-						},
-						onEnterBack: () => {
-							video.play()
-							video.style.opacity = "1"
-							video.style.visibility = "visible"
-						},
-						onLeaveBack: () => {
-							video.pause()
-							video.style.opacity = "0"
-							video.style.visibility = "hidden"
-						},
-					})
-				}
-			})
-		}
-	}
-
-
-
-
 
 	onMounted(() => {
 		showProjects()
-		// Add video hover listeners after the projects are displayed
 		addVideoHoverListeners()
-		// addVideoScrollTriggers();
 	})
-
 
 	onBeforeUnmount(() => {
 		hideProjects()
 		ScrollTrigger.getAll().forEach((trigger) => {
-			trigger.kill() // Remove the trigger and animation
+			trigger.kill()
 		})
+		$ctx.value.revert()
 	})
 
-	watch(
-		() => props.projects,
-		() => {
-			setTimeout(() => {
-				updateProjects()
-			}, 0)
-		}
-	)
+	watch(() => props.projects, async () => {
+		await wait(0)
+		updateProjects()
+	})
 </script>
 
 <template>
@@ -199,90 +144,88 @@
 </template>
 
 <style lang="scss">
-.ProjectsGrid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  column-gap: 4rem;
-  row-gap: 5rem;
-  padding: 0 2.5rem;
-  overflow: hidden;
+	.ProjectsGrid {
+		display: grid;
+		gap: 5rem 4rem;
+		grid-template-columns: repeat(4, 1fr);
+		overflow: hidden;
+		padding: 0 2.5rem;
 
-  @include viewport-480 {
-    padding: 0 1rem;
-  }
+		@include viewport-480 {
+			padding: 0 1rem;
+		}
 
-  .item {
-    opacity: 0;
-    transform: translateY(3rem);
+		.item {
+			opacity: 0;
+			transform: translateY(3rem);
 
-    @include viewport-768 {
-      grid-column: auto / span 2;
-    }
+			@include viewport-768 {
+				grid-column: auto / span 2;
+			}
 
-    &__thumbnail {
-      aspect-ratio: 1 / 1;
-      position: relative;
-      pointer-events: none;
+			&__thumbnail {
+				aspect-ratio: 1 / 1;
+				pointer-events: none;
+				position: relative;
 
-      img {
-        object-fit: cover;
-        height: 100%;
-        width:100%;
-        aspect-ratio: 1 / 1;
+				img {
+					aspect-ratio: 1 / 1;
+					filter: grayscale(100%);
+					height: 100%;
+					object-fit: cover;
+					transition: 0.25s ease-in-out;
+					width: 100%;
+				}
 
-        filter: grayscale(100%);
-        transition: 0.25s ease-in-out;
-      }
+				video {
+					height: 100%;
+					left: 0;
+					object-fit: cover;
+					opacity: 0;
+					position: absolute;
+					top: 0;
+					transition: 0.25s ease-in-out;
+					visibility: hidden;
+				}
+			}
 
-      video {
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 100%;
-        object-fit: cover;
-        opacity: 0;
-        visibility: hidden;
-        transition: 0.25s ease-in-out;
-      }
-    }
+			&:hover img {
+				filter: grayscale(0);
+			}
 
-    &:hover img {
-      filter: grayscale(0);
-    }
+			&:hover video {
+				opacity: 1;
+				visibility: visible;
+			}
 
-    &:hover video {
-      opacity: 1;
-      visibility: visible;
-    }
+			&__title {
+				margin-top: 1rem;
+			}
+		}
 
-    &__title {
-      margin-top: 1rem;
-    }
-  }
+		&--six-items {
+			grid-template-columns: repeat(6, 1fr);
 
-  &--six-items {
-    grid-template-columns: repeat(6, 1fr);
+			@include viewport-992 {
+				// grid-template-columns: repeat(6, 1fr);
+			}
 
-    @include viewport-992 {
-      // grid-template-columns: repeat(6, 1fr);
-    }
+			.item {
+				@include viewport-768 {
+					grid-column: auto / span 2;
+				}
 
-    .item {
-      @include viewport-768 {
-        grid-column: auto / span 2;
-      }
+				@include viewport-480 {
+					grid-column: auto / span 3;
+				}
+			}
+		}
 
-      @include viewport-480 {
-        grid-column: auto / span 3;
-      }
-    }
-  }
-
-  &--empty {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-  }
-}
+		&--empty {
+			align-items: center;
+			display: flex;
+			height: 100vh;
+			justify-content: center;
+		}
+	}
 </style>

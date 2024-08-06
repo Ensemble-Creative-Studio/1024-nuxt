@@ -2,24 +2,24 @@
 	const { isMobile } = useDevice()
 
 	const query = groq`*[_type == "home"][0]
-	{
-		baseline,
-		firstProject -> {
-			...,
-			categories[] -> {
-			title,
-			slug
-			}
-		},
-		featuredProjects[] -> {
-			...,
-			categories[] -> {
-			title,
-			slug
+		{
+			baseline,
+			firstProject -> {
+				...,
+				categories[] -> {
+				title,
+				slug
+				}
+			},
+			featuredProjects[] -> {
+				...,
+				categories[] -> {
+				title,
+				slug
+				}
 			}
 		}
-	}
-`
+	`
 	const { data: home } = await useSanityQuery(query)
 </script>
 
@@ -33,10 +33,10 @@
 			/>
 		</Head>
 		<FeaturedProjects
+			v-if="!isMobile"
 			:baseline="home.baseline"
 			:firstProject="home.firstProject"
 			:projects="home.featuredProjects"
-			v-if="!isMobile"
 		/>
 		<MobileFeaturedProjects
 			v-else

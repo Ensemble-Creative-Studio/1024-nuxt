@@ -276,7 +276,6 @@
 						v-for="(category, i) in categories"
 						:key="i"
 					>
-						>
 						<button
 							class="category"
 							@click="toggle($event)"

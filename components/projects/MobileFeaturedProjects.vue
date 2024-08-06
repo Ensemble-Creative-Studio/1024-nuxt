@@ -1,6 +1,7 @@
 <script setup>
 	import { Swiper, SwiperSlide } from "swiper/vue"
 	import { EffectCreative } from "swiper"
+	import { wait } from "@/utils/wait"
 
 	import gsap from "gsap"
 
@@ -65,6 +66,8 @@
 	const activeSlideIndex = ref(-1)
 	const totalOffsetWidth = ref(0)
 
+	let timeout
+
 	const onSwiper = ($event) => {
 		$swiper.value = $event
 	}
@@ -97,7 +100,7 @@
 		if (newValue === projectTitles.value.length) {
 			$swiper.value.allowTouchMove = false
 
-			$ctx.value = gsap.context((self) => {
+			$ctx.value = gsap.context(async (self) => {
 				const projectsLabel = self.selector(".MobileFeaturedProjects__title:last-child")
 
 				$tl.value = gsap.to(projectsLabel, {
@@ -108,9 +111,8 @@
 					ease: "power3.out",
 				})
 
-				setTimeout(() => {
-					router.push("/projects")
-				}, 800)
+				await wait(800)
+				router.push("/projects")
 			}, $mobileFeaturedProjects.value)
 		}
 	})
@@ -123,14 +125,17 @@
 		}
 	})
 
-// onBeforeUnmount(() => {
-//   $ctx.value = null
-// })
+	onBeforeUnmount(() => {
+		$ctx.value.revert()
+		clearTimeout(timeout)
+	})
 </script>
 
 <template>
-	<div class="MobileFeaturedProjects"
-		ref="$mobileFeaturedProjects">
+	<div
+		class="MobileFeaturedProjects"
+		ref="$mobileFeaturedProjects"
+	>
 		<swiper
 			@swiper="onSwiper($event)"
 			@slideChange="onSlideChange($event)"
@@ -229,8 +234,10 @@
 			<swiper-slide class="empty"></swiper-slide>
 		</swiper>
 		<div class="MobileFeaturedProjects__footer">
-			<div class="MobileFeaturedProjects__inner-footer"
-				:style="{ transform: footerTransform }">
+			<div
+				class="MobileFeaturedProjects__inner-footer"
+				:style="{ transform: footerTransform }"
+			>
 				<h2
 					:class="[
 						index === activeSlideIndex && 'MobileFeaturedProjects__title--active',
@@ -257,134 +264,133 @@
 </template>
 
 <style lang="scss">
-.MobileFeaturedProjects {
-  height: 100%;
-  width: 100%;
-  position: fixed;
+	.MobileFeaturedProjects {
+		height: 100%;
+		position: fixed;
+		width: 100%;
 
-  &__slider {
-    height: inherit;
-    z-index: 0;
+		&__slider {
+			height: inherit;
+			z-index: 0;
 
-    .swiper-slide {
-      &.baseline {
-        width: 85% !important;
-      }
+			.swiper-slide {
+				&.baseline {
+					width: 85% !important;
+				}
 
-      width: 100% !important;
+				width: 100% !important;
 
-      .empty {
-        background-color: $black;
-      }
-    }
+				.empty {
+					background-color: $black;
+				}
+			}
 
-    .baseline {
-      height: 100%;
-      background-color: $black;
+			.baseline {
+				background-color: $black;
+				height: 100%;
 
-      .GridContainer {
-        height: inherit;
-        align-items: center;
-      }
+				.GridContainer {
+					align-items: center;
+					height: inherit;
+				}
 
-      .title {
-        grid-column: 1 / span 10;
-        font-size: $mobile-h4;
+				.title {
+					font-size: $mobile-h4;
+					grid-column: 1 / span 10;
 
-        &__chunk {
-          opacity: 0;
+					&__chunk {
+						opacity: 0;
 
-          &:first-child {
-            margin-left: 0;
-          }
-        }
-      }
-    }
+						&:first-child {
+							margin-left: 0;
+						}
+					}
+				}
+			}
 
-    .MobileFeaturedProject {
-      position: relative;
-      padding: 0 1rem;
-      background-color: $black;
-      height: 100%;
+			.MobileFeaturedProject {
+				background-color: $black;
+				height: 100%;
+				padding: 0 1rem;
+				position: relative;
 
-      &__overlay {
-        z-index: 10;
-        background-color: $black;
-        opacity: 1;
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
-        opacity: 0;
-        visibility: hidden;
-        transition: ease-in-out 0.5s;
-      }
+				&__overlay {
+					background-color: $black;
+					height: 100%;
+					left: 0;
+					opacity: 0;
+					position: absolute;
+					top: 0;
+					transition: ease-in-out 0.5s;
+					visibility: hidden;
+					width: 100%;
+					z-index: 10;
+				}
 
-      &--previous {
-        .MobileFeaturedProject__overlay {
-          opacity: 1;
-          visibility: visible;
-        }
-      }
+				&--previous {
+					.MobileFeaturedProject__overlay {
+						opacity: 1;
+						visibility: visible;
+					}
+				}
 
-      &__thumbnail {
-        height: 100%;
+				&__thumbnail {
+					height: 100%;
 
-        img,
-        video {
-          height: 100%;
-          object-fit: cover;
-        }
-      }
+					img,
+					video {
+						height: 100%;
+						object-fit: cover;
+					}
+				}
 
-      &__title {
-        position: absolute;
-        bottom: 0;
-        font-size: $mobile-h2;
-        padding: 1rem;
-      }
-    }
-  }
+				&__title {
+					bottom: 0;
+					font-size: $mobile-h2;
+					padding: 1rem;
+					position: absolute;
+				}
+			}
+		}
 
-  &__footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    height: 7rem;
-    z-index: 10;
-    pointer-events: none;
-    justify-content: flex-start;
-    background-color: $black;
-  }
+		&__footer {
+			background-color: $black;
+			bottom: 0;
+			height: 7rem;
+			justify-content: flex-start;
+			left: 0;
+			pointer-events: none;
+			position: fixed;
+			z-index: 10;
+		}
 
-  &__inner-footer {
-    height: 7rem;
-    display: flex;
-    align-items: center;
-    will-change: transform;
-    transition: transform 0.5s ease-in-out;
-  }
+		&__inner-footer {
+			align-items: center;
+			display: flex;
+			height: 7rem;
+			transition: transform 0.5s ease-in-out;
+			will-change: transform;
+		}
 
-  &__title {
-    font-size: $mobile-h2;
-    white-space: nowrap;
-    color: $medium-grey;
-    transition: color 0.5s ease-in-out;
+		&__title {
+			color: $medium-grey;
+			font-size: $mobile-h2;
+			transition: color 0.5s ease-in-out;
+			white-space: nowrap;
 
-    &:not(:last-child) {
-      margin-right: 7rem;
-    }
+			&:not(:last-child) {
+				margin-right: 7rem;
+			}
 
-    &--active {
-      color: $white;
-    }
+			&--active {
+				color: $white;
+			}
 
-    &--all-projects {
-      text-decoration: underline;
-      text-decoration-thickness: from-font;
-      text-underline-offset: 0.5rem;
-    }
-  }
-}
+			&--all-projects {
+				text-decoration: underline;
+				text-decoration-thickness: from-font;
+				text-underline-offset: 0.5rem;
+			}
+		}
+	}
 </style>

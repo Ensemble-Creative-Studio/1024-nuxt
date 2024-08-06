@@ -1,15 +1,16 @@
 <script setup>
 	import gsap from "gsap"
-	import { wait } from "./../../utils/wait"
+	import { wait } from "@/utils/wait"
 
 	const router = useRouter()
 
-	const $ctx = ref()
+	const blog = ref()
 	const $blogPage = ref()
 	const $pagination = ref()
 
+	const sanity = useSanity()
+
 	const tl = gsap.timeline()
-	const blog = ref([])
 
 	const itemsPerPage = 3
 	const currentPage = ref(1)
@@ -31,7 +32,8 @@
 	}
 	`
 
-	blog.value = await sanity.fetch(GET_BLOG, { offset: offset.value, limit: itemsPerPage })
+	let result = await useSanityQuery(GET_BLOG, { offset: offset.value, limit: itemsPerPage })
+	blog.value = result.data.value
 
 	watch(() => currentPage.value, async (data) => {
 		tl.to($pagination.value, { opacity: 0, duration: 0 })
@@ -60,7 +62,8 @@
 		currentPage.value = index
 		router.push({ query: { page: index } })
 
-		blog.value = await sanity.fetch(GET_BLOG, { offset: offset.value, limit: itemsPerPage })
+		let result = await sanity.fetch(GET_BLOG, { offset: offset.value, limit: itemsPerPage })
+		blog.value = result
 	}
 </script>
 

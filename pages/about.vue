@@ -5,7 +5,6 @@
 	import "swiper/css"
 
 	const { isMobile } = useDevice()
-
 	const query = groq`*[_type == "about"][0]`
 	const { data: about } = await useSanityQuery(query)
 
@@ -17,7 +16,7 @@
 	const tl = gsap.timeline()
 	const trigger = ref()
 
-	const $introduction = about.introduction
+	const $introduction = about.value.introduction
 	const splitIntroduction = computed(() => {
 		return $introduction.split(" ")
 	})
@@ -66,62 +65,46 @@
 				stagger: 0.25,
 			})
 
-			timeout = setTimeout(() => {
-				let mm = gsap.matchMedia()
+			let mm = gsap.matchMedia()
 
-				mm.add("(min-width: 481px)", () => {
-					trigger.value = ScrollTrigger.create({
-						start: "50%",
-						trigger: $hero.value,
-						onEnter: () => {
-							gsap.to($anchors.value.$el, {
-								y: 0,
-								duration: 0.5,
-							})
-						},
-						onLeaveBack: () => {
-							gsap.to($anchors.value.$el, {
-								y: 50,
-								duration: 0.5,
-							})
-						},
-					})
+			mm.add("(min-width: 481px)", () => {
+				trigger.value = ScrollTrigger.create({
+					start: "50%",
+					trigger: $hero.value,
+					onEnter: () => {
+						gsap.to($anchors.value.$el, {
+							y: 0,
+							duration: 0.5,
+						})
+					},
+					onLeaveBack: () => {
+						gsap.to($anchors.value.$el, {
+							y: 50,
+							duration: 0.5,
+						})
+					},
 				})
-			}, 1000)
+			})
+
 		}, $aboutPage.value)
 
 		window.addEventListener("resize", handleResize)
 
-		timeout = setTimeout(() => {
-			const itemTextElements = document.querySelectorAll(".item__text")
-
-			// Loop through each .item__text element
-			itemTextElements.forEach((element) => {
-				// Get all <a> elements within the current .item__text element
-				const linksInItemText = element.querySelectorAll("a")
-
-				// Loop through each <a> element within the .item__text element
-				linksInItemText.forEach((link) => {
-					// Add target="_blank" attribute to the <a> element
-					link.setAttribute("target", "_blank")
-				})
+		const itemTextElements = document.querySelectorAll(".item__text")
+		itemTextElements.forEach((element) => {
+			const linksInItemText = element.querySelectorAll("a")
+			linksInItemText.forEach((link) => {
+				link.setAttribute("target", "_blank")
 			})
+		})
 
-			// Get all elements with class .content__description
-			const contentDescriptionElements = document.querySelectorAll(".content__description")
-
-			// Loop through each .content__description element
-			contentDescriptionElements.forEach((element) => {
-				// Get all <a> elements within the current .content__description element
-				const linksInContentDescription = element.querySelectorAll("a")
-
-				// Loop through each <a> element within the .content__description element
-				linksInContentDescription.forEach((link) => {
-					// Add target="_blank" attribute to the <a> element
-					link.setAttribute("target", "_blank")
-				})
+		const contentDescriptionElements = document.querySelectorAll(".content__description")
+		contentDescriptionElements.forEach((element) => {
+			const linksInContentDescription = element.querySelectorAll("a")
+			linksInContentDescription.forEach((link) => {
+				link.setAttribute("target", "_blank")
 			})
-		}, 1000)
+		})
 	})
 
 	const handleResize = () => {
@@ -142,6 +125,7 @@
 
 		removeEventListener("resize", handleResize)
 		clearTimeout(timeout)
+		$ctx.value.revert()
 	})
 </script>
 
@@ -264,6 +248,7 @@
 				</p>
 			</GridContainer>
 		</section>
+
 		<section
 			class="exhibitions"
 			ref="$exhibitions"
