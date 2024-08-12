@@ -5,7 +5,7 @@ const sanityConfig = {
 }
 
 const config: NuxtConfig & { sanity: typeof sanityConfig } = {
-  modules: ['@nuxtjs/sanity', 'nuxt-lazy-load'],
+  modules: ['@nuxtjs/sanity', '@nuxtjs/device', 'nuxt-lazy-load'],
   plugins: [
     '~/plugins/sanity-image-builder.js',
   ],

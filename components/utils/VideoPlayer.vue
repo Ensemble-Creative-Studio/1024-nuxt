@@ -1,10 +1,5 @@
 <script setup>
 	import screenfull from 'screenfull'
-	import { useNuxtApp } from '#app'
-
-	// Assuming you have the urlFor function provided via a Nuxt plugin
-	const { urlFor } = useNuxtApp() // Access the urlFor function
-
 
 	const { isTouch, isSafari, isAndroid, isIos, isSamsung } = useDevice()
 
@@ -13,7 +8,6 @@
 		downloadUrl: String,
 		poster: String, // Expect an asset reference for the poster image
 	})
-
 
 	const $main = ref(null)
 	const $video = ref(null)
@@ -351,34 +345,34 @@
 
 <style lang="scss">
 	.VideoPlayer {
-		background-color: $black;
 		position: relative;
+		background-color: $black;
 
 		.flex {
 			display: flex;
 		}
 
 		.controls {
-			align-items: center;
+			position: absolute;
 			bottom: 0;
 			display: flex;
 			flex-wrap: wrap;
-			font-size: $desktop-player;
+			align-items: center;
 			justify-content: space-between;
-			padding: 0 1.2rem 1.2rem;
-			position: absolute;
 			width: 100%;
+			padding: 0 1.2rem 1.2rem;
+			font-size: $desktop-player;
 
 			@include viewport-480 {
-				font-size: $mobile-player;
 				justify-content: flex-start;
 				padding: 0.4rem 0.6rem;
+				font-size: $mobile-player;
 			}
 
 			button {
-				cursor: pointer;
 				display: block;
 				text-transform: uppercase;
+				cursor: pointer;
 
 				svg {
 					display: block;
@@ -392,8 +386,8 @@
 
 			&__time {
 				display: flex;
-				margin-left: 1.2rem;
 				order: 1;
+				margin-left: 1.2rem;
 			}
 
 			&__total-time {
@@ -401,13 +395,13 @@
 			}
 
 			&__mute {
-				margin-left: 1.2rem;
 				order: 2;
+				margin-left: 1.2rem;
 			}
 
 			&__download {
-				margin-left: 1.2rem;
 				order: 4;
+				margin-left: 1.2rem;
 
 				@include viewport-480 {
 					order: 5;
@@ -419,8 +413,8 @@
 			}
 
 			&__fullscreen {
-				margin-left: 1.2rem;
 				order: 3;
+				margin-left: 1.2rem;
 
 				@include viewport-480 {
 					order: 4;
@@ -428,30 +422,30 @@
 			}
 
 			&__timeline {
-				align-items: center;
-				bottom: 0;
-				cursor: pointer;
-				display: flex;
-				height: 1rem;
-				left: 0;
-				overflow: hidden;
 				position: absolute;
+				bottom: 0;
+				left: 0;
+				display: flex;
+				align-items: center;
 				width: 100%;
+				height: 1rem;
+				overflow: hidden;
+				cursor: pointer;
 
 				@include viewport-480 {
-					margin-left: 1.2rem;
-					order: 4;
 					position: relative;
+					order: 4;
 					width: 5rem;
+					margin-left: 1.2rem;
 				}
 
 				&-background {
-					background-color: #737373;
-					bottom: 0;
-					height: 0.1rem;
-					opacity: 0.8;
 					position: absolute;
+					bottom: 0;
 					width: 100%;
+					height: 0.1rem;
+					background-color: #737373;
+					opacity: 0.8;
 
 					@include viewport-480 {
 						bottom: 50%;
@@ -460,13 +454,13 @@
 				}
 
 				&-current {
-					background-color: $white;
-					bottom: 0;
-					height: 0.2rem;
 					position: absolute;
+					bottom: 0;
+					width: 100%;
+					height: 0.2rem;
+					background-color: $white;
 					transform: scaleX(0);
 					transform-origin: left;
-					width: 100%;
 
 					@include viewport-480 {
 						bottom: 0.35rem;
