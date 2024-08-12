@@ -83,7 +83,7 @@
 			:blog="blog"
 			:page="currentPage"
 		/>
-		<section
+		<!-- <section
 			ref="$pagination"
 			class="pagination"
 		>
@@ -145,27 +145,27 @@
 					</div>
 				</div>
 			</GridContainer>
-		</section>
+		</section> -->
 	</div>
 </template>
 
 <style lang="scss" scoped>
 	.blog {
 		.pagination {
-			font-size: $desktop-list;
-			padding-bottom: 12rem;
 			padding-top: 12rem;
+			padding-bottom: 12rem;
+			font-size: $desktop-list;
 
 			@include viewport-480 {
-				font-size: $mobile-list;
-				margin-top: 9rem;
 				padding-bottom: 4rem;
+				margin-top: 9rem;
+				font-size: $mobile-list;
 			}
 
 			&__container {
-				align-items: center;
 				display: flex;
 				grid-column: 3 / span 8;
+				align-items: center;
 
 				@include viewport-480 {
 					display: block;
@@ -178,15 +178,15 @@
 			}
 
 			&__button {
-				cursor: pointer;
 				text-decoration: underline;
 				text-decoration-thickness: from-font;
 				text-underline-offset: 0.5rem;
+				cursor: pointer;
 			}
 
 			&__pages {
-				align-items: center;
 				display: flex;
+				align-items: center;
 
 				@include viewport-480 {
 					margin-top: 2rem;
