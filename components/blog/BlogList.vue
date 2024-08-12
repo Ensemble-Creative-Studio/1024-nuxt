@@ -6,8 +6,6 @@
 		blog: [ Object ],
 		page: [ Number ],
 	})
-
-	const { isMobile } = useDevice()
 </script>
 
 <template>
@@ -77,9 +75,9 @@
 	.BlogList {
 		@include grid(12, 1fr, 1, 0);
 
-		overflow: hidden;
 		padding: 0 2rem;
 		padding-top: 12rem;
+		overflow: hidden;
 
 		@include viewport-480 {
 			padding: 0 1rem;
@@ -117,8 +115,8 @@
 			}
 
 			&__meta {
-				align-items: flex-start;
 				display: flex;
+				align-items: flex-start;
 				justify-content: space-between;
 				margin-top: 2rem;
 
@@ -144,8 +142,8 @@
 
 				@include viewport-480 {
 					grid-column: 2 / span 10;
-					margin-left: 0;
 					margin-top: 2rem;
+					margin-left: 0;
 				}
 			}
 		}

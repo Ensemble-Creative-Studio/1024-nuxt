@@ -4,9 +4,30 @@
 	import { Swiper, SwiperSlide } from 'swiper/vue'
 	import 'swiper/css'
 
-	const { isMobile } = useDevice()
 	const query = groq`*[_type == "about"][0]`
 	const { data: about } = await useSanityQuery(query)
+
+	const isMobile = shallowRef(false)
+
+	onMounted(() => {
+		if (matchMedia('(hover: none)').matches) {
+			isMobile.value = true
+		}
+
+		window.addEventListener('resize', onResize)
+	})
+
+	function onResize() {
+		if (matchMedia('(hover: none)').matches) {
+			isMobile.value = true
+		} else {
+			isMobile.value = false
+		}
+	}
+
+	onBeforeUnmount(() => {
+		window.removeEventListener('resize', onResize)
+	})
 
 	const $hero = ref()
 	const $anchors = ref()
@@ -22,12 +43,10 @@
 	})
 
 	const $description = ref()
-	const $festivals = ref()
 	const $exhibitions = ref()
-	const $awards = ref()
 
 	function scrollToSection(section) {
-		const offset = isMobile ? 50 : 50
+		const offset = isMobile.value ? 50 : 50
 
 		gsap.to(window, {
 			scrollTo: {
@@ -120,7 +139,7 @@
 			trigger.kill()
 		})
 
-		removeEventListener('resize', handleResize)
+		window.removeEventListener('resize', handleResize)
 		$ctx.value.revert()
 	})
 </script>
@@ -314,11 +333,11 @@
 
 		.hero {
 			.title {
-				font-size: $desktop-h4;
 				grid-column: 2 / span 5;
 
 				// font-weight: $extra-light;
 				max-width: 70rem;
+				font-size: $desktop-h4;
 
 				&__chunk {
 					opacity: 0;
@@ -329,8 +348,8 @@
 				}
 
 				@include viewport-480 {
-					font-size: $mobile-h4;
 					grid-column: 1 / -1;
+					font-size: $mobile-h4;
 				}
 			}
 		}
@@ -367,8 +386,8 @@
 				}
 
 				@include viewport-480 {
-					font-size: $mobile-text-read;
 					grid-column: 2 / -1;
+					font-size: $mobile-text-read;
 				}
 			}
 		}
@@ -385,8 +404,8 @@
 				}
 
 				@include viewport-480 {
-					font-size: $mobile-text-read;
 					grid-column: 2 / -1;
+					font-size: $mobile-text-read;
 				}
 			}
 
@@ -401,11 +420,11 @@
 
 		.content {
 			&__claim {
-				font-size: $desktop-h4;
 				grid-column: 2 / span 5;
 
 				// font-weight: $extra-light;
 				margin-top: 6rem;
+				font-size: $desktop-h4;
 
 				@include viewport-1200 {
 					grid-column: 2 / span 8;
@@ -416,8 +435,8 @@
 				}
 
 				@include viewport-480 {
-					font-size: $mobile-h4; // $mobile-h2 on Figma
 					margin-top: 4rem;
+					font-size: $mobile-h4; // $mobile-h2 on Figma
 				}
 			}
 
@@ -438,8 +457,8 @@
 				}
 
 				@include viewport-480 {
-					font-size: $mobile-text-read;
 					grid-column: 2 / -1;
+					font-size: $mobile-text-read;
 				}
 			}
 
@@ -485,8 +504,8 @@
 				}
 
 				@include viewport-480 {
-					font-size: $mobile-text-read;
 					grid-column: 2 / -1;
+					font-size: $mobile-text-read;
 				}
 			}
 		}
@@ -506,8 +525,8 @@
 				padding: 0 2rem;
 
 				@include viewport-480 {
-					padding: 0 1rem;
 					row-gap: 6rem;
+					padding: 0 1rem;
 				}
 
 				.item {
@@ -533,15 +552,15 @@
 		}
 
 		.conclusion {
-			font-size: $desktop-h4;
 			margin-top: 12rem;
+			font-size: $desktop-h4;
 
 			// font-weight: $extra-light;
 
 			@include viewport-480 {
-				font-size: $mobile-h4;
 				grid-column: 1 / -1;
 				margin-top: 6rem;
+				font-size: $mobile-h4;
 			}
 
 			p {
@@ -553,8 +572,8 @@
 				}
 
 				@include viewport-480 {
-					font-size: $mobile-h4;
 					grid-column: 1 / -1;
+					font-size: $mobile-h4;
 				}
 			}
 		}
@@ -562,25 +581,25 @@
 		.exhibitions,
 		.awards,
 		.festivals {
-			margin-top: 12rem;
 			padding-bottom: 10rem;
+			margin-top: 12rem;
 
 			// font-weight: $extra-light;
 
 			@include viewport-480 {
-				font-weight: $light;
 				margin-top: 6rem;
+				font-weight: $light;
 			}
 
 			&__title {
-				font-size: $desktop-h4;
 				grid-column: 2 / -1;
+				font-size: $desktop-h4;
 
 				// font-weight: $extra-light;
 
 				@include viewport-480 {
-					font-size: $mobile-h4;
 					grid-column: 1 / -1;
+					font-size: $mobile-h4;
 				}
 			}
 
@@ -592,20 +611,20 @@
 				}
 
 				.item {
-					border-top: 0.1rem solid $dark-grey;
 					font-size: $desktop-list;
+					border-top: 0.1rem solid $dark-grey;
 
 					@include viewport-480 {
-						border-top: none;
 						font-size: $mobile-list;
+						border-top: none;
 					}
 
 					&__container {
 						@include grid(12, 1fr, 1, 0);
 
+						position: relative;
 						align-items: center;
 						padding: 1.5rem 2rem;
-						position: relative;
 
 						@include viewport-480 {
 							padding: 0.75rem 1rem;
@@ -613,8 +632,8 @@
 					}
 
 					&__date {
-						color: $medium-grey;
 						grid-column: 2 / span 1;
+						color: $medium-grey;
 
 						// padding: 3rem 0;
 
@@ -636,14 +655,14 @@
 					}
 
 					&__localization {
-						color: $medium-grey;
 						grid-column: 7 / -1;
+						color: $medium-grey;
 
 						// padding: 3rem 0;
 
 						@include viewport-480 {
-							grid-column: 3 / -1;
 							grid-row: 2;
+							grid-column: 3 / -1;
 							padding: 0;
 						}
 					}

@@ -2,7 +2,15 @@
 	import gsap from 'gsap'
 	import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-	const { isMobile } = useDevice()
+	const isMobile = shallowRef(false)
+
+	function onResize() {
+		if (matchMedia('(hover: none)').matches) {
+			isMobile.value = true
+		} else {
+			isMobile.value = false
+		}
+	}
 
 	const props = defineProps({
 		firstProject: [ Object ],
@@ -30,6 +38,12 @@
 	const allProjectFooter = ref(null)
 
 	onMounted(() => {
+		if (matchMedia('(hover: none)').matches) {
+			isMobile.value = true
+		}
+
+		window.addEventListener('resize', onResize)
+
 		$ctx.value = gsap.context(async (self) => {
 			const panels = self.selector('.FeaturedProject')
 			const panelTitles = self.selector('.FeaturedProject__title')
@@ -62,7 +76,7 @@
 					trigger: $baseline.value,
 					top: '100% 200%',
 					onEnter: () => {
-						if (!isMobile) {
+						if (!isMobile.value) {
 							const chunks = self.selector('.title__chunk')
 							for (let i = chunks.length - 1; i > 0; i--) {
 								const j = Math.floor(Math.random() * (i + 1))
@@ -111,7 +125,8 @@
 		})
 
 		$ctx.value.revert()
-		removeEventListener('scroll', handleScroll)
+		window.removeEventListener('scroll', handleScroll)
+		window.removeEventListener('resize', onResize)
 	})
 </script>
 
@@ -143,17 +158,12 @@
 			:key="project._id"
 			:project="project"
 		/>
-		<div
-			ref="allProjectFooter"
-			class="FeaturedProject footer"
-		>
+		<div ref="allProjectFooter" class="FeaturedProject footer">
 			<div class="backgroundBlack" />
-
-			<a
-				href="/projects"
-				class="FeaturedProject__title"
-			>
-				<div class="FeaturedProject__footer">    All Projects</div>
+			<a href="/projects" class="FeaturedProject__title">
+				<div class="FeaturedProject__footer">
+					All Projects
+				</div>
 			</a>
 		</div>
 	</div>
@@ -161,65 +171,61 @@
 
 <style lang="scss">
 	.FeaturedProject.footer {
-		background-color: black;
+		position: relative;
+		z-index: 1;
 		height: 40vh !important;
-		position: relative; /* This ensures z-index works correctly */
-		z-index: 1; /* Make sure this is above the black background */
+		background-color: black;
 	}
 
 	.FeaturedProject.footer a {
-		align-items: center;
 		display: flex;
+		align-items: center;
 		height: 100%;
 		padding-left: 10rem;
 	}
 
 	.backgroundBlack {
-		background-color: black;
-		bottom: 0; /* Adjust this value to control how much it overflows */
-		height: 10rem;
-		left: 0;
-		opacity: 0;
 		position: fixed; /* Added this */
 		right: 0;
+		bottom: 0; /* Adjust this value to control how much it overflows */
+		left: 0;
 		z-index: -1; /* Put it behind other content */
+		height: 10rem;
+		background-color: black;
+		opacity: 0;
 	}
 
 	.FeaturedProjects {
 		.FeaturedProject {
-			height: 120vh;
 			position: relative;
+			height: 120vh;
 			transition: filter 0.5s ease-in-out;
-
-			/* &.off {
-      filter: invert(1) grayscale(1);
-    } */
 
 			@include viewport-480 {
 				margin-top: 0;
 			}
 
 			&__footer {
-				bottom: 0;
-				display: flex;
-				left: 0;
-				padding: 1.5rem 2rem;
 				position: sticky;
+				bottom: 0;
+				left: 0;
+				display: flex;
 				width: 100%;
+				padding: 1.5rem 2rem;
 
 				@include viewport-480 {
 					bottom: 1rem;
-					font-size: $mobile-h2;
 					left: 1rem;
+					font-size: $mobile-h2;
 				}
 			}
 
 			&__title {
 				font-size: $desktop-h4;
 				opacity: 0;
-				transform: translateY(10rem);
 				transition: 1s cubic-bezier(0.16, 1, 0.3, 1);
 				transition-property: opacity, transform;
+				transform: translateY(10rem);
 
 				&--active {
 					opacity: 1;
@@ -239,28 +245,28 @@
 		}
 
 		.hero {
-			background-color: $black;
+			inset: 0;
+			z-index: auto;
 			box-sizing: border-box;
 			display: block;
 			float: none;
 			height: 120vh;
-			inset: 0;
+			padding: 0;
 			margin: 0;
 			overflow: visible;
-			padding: 0;
-			z-index: auto;
+			background-color: $black;
 
 			@include viewport-480 {
 				display: none;
 			}
 
 			.title {
-				bottom: 50%;
-				font-size: $desktop-h4;
-				grid-column: 2 / span 8;
-				margin-top: 28rem;
-				max-width: 110rem;
 				position: sticky;
+				bottom: 50%;
+				grid-column: 2 / span 8;
+				max-width: 110rem;
+				margin-top: 28rem;
+				font-size: $desktop-h4;
 
 				@include viewport-1200 {
 					grid-column: 1 / -1;

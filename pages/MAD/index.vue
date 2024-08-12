@@ -2,7 +2,27 @@
 	import gsap from 'gsap'
 	import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-	const { isMobile } = useDevice()
+	const isMobile = shallowRef(false)
+
+	onMounted(() => {
+		if (matchMedia('(hover: none)').matches) {
+			isMobile.value = true
+		}
+
+		window.addEventListener('resize', onResize)
+	})
+
+	function onResize() {
+		if (matchMedia('(hover: none)').matches) {
+			isMobile.value = true
+		} else {
+			isMobile.value = false
+		}
+	}
+
+	onBeforeUnmount(() => {
+		window.removeEventListener('resize', onResize)
+	})
 
 	const route = useRoute()
 	const router = useRouter()
@@ -56,9 +76,9 @@
 		let offset
 
 		if (section.classList.contains('hero')) {
-			offset = isMobile ? 0 : 0
+			offset = isMobile.value ? 0 : 0
 		} else {
-			offset = isMobile ? window.innerHeight - 100 : window.innerHeight - 100
+			offset = isMobile.value ? window.innerHeight - 100 : window.innerHeight - 100
 		}
 
 		gsap.to(window, {
@@ -141,7 +161,7 @@
 			trigger.kill()
 		})
 
-		removeEventListener('resize', handleResize)
+		window.removeEventListener('resize', handleResize)
 	})
 </script>
 
