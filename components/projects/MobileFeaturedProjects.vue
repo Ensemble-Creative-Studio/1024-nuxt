@@ -1,11 +1,12 @@
 <script setup>
-	import { wait } from '@/utils/wait'
-
 	import gsap from 'gsap'
-
-	const router = useRouter()
+	import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 	const props = defineProps({
+		firstProject: {
+			type: Object,
+			required: true,
+		},
 		baseline: {
 			type: String,
 			required: true,
@@ -18,7 +19,6 @@
 
 	// Animations
 	const $ctx = ref()
-	const $tl = ref()
 	const $mobileFeaturedProjects = ref()
 
 	const tl = gsap.timeline()
@@ -38,6 +38,24 @@
 				ease: 'power2.out',
 				stagger: 0.03,
 			})
+
+			const panels = self.selector('.MobileFeaturedProject')
+
+			panels.forEach((panel, i) => {
+				ScrollTrigger.create({
+					trigger: panel,
+					id: `panel-${ i }`,
+					onUpdate: (self) => {
+						if (self.progress > 0.3) {
+							panel.classList.add('visible')
+						}
+
+						if (self.progress > 0.8 || self.progress < 0.3) {
+							panel.classList.remove('visible')
+						}
+					},
+				})
+			})
 		}, $mobileFeaturedProjects.value)
 	})
 
@@ -45,11 +63,11 @@
 		return props.baseline.split(' ')
 	})
 
-	// TODO! - Create a var that holds the first project + the rest of the projects
-	// TODO! - not reactive
+	const totalProjects = [ props.firstProject, ...props.projects ]
 
 	onBeforeUnmount(() => {
 		$ctx.value.revert()
+		ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
 	})
 </script>
 
@@ -68,7 +86,7 @@
 			</span>
 		</h1>
 		<NuxtLink
-			v-for="project in projects"
+			v-for="project in totalProjects"
 			:key="project._id"
 			:to="{
 				name: 'projects-slug',
@@ -128,6 +146,16 @@
 			height: 100%;
 			margin-top: 4rem;
 			background-color: $black;
+			filter: grayscale(100%);
+			transition: filter 0.3s ease-in-out;
+
+			&.visible {
+				filter: none;
+
+				.MobileFeaturedProject__title {
+					opacity: 1;
+				}
+			}
 
 			&__overlay {
 				position: absolute;
@@ -163,6 +191,8 @@
 			&__title {
 				margin: 1rem 0;
 				font-size: $mobile-h2;
+				opacity: 0.35;
+				transition: opacity 0.3s ease-in-out;
 			}
 		}
 

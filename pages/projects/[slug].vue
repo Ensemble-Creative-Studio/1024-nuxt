@@ -66,11 +66,11 @@
 	const $anchors = ref()
 
 	const $projectPage = ref()
-	const trigger = ref()
-
 	const $description = ref()
 	const $gallery = ref()
 	const $credits = ref()
+
+	let trigger
 
 	function scrollToSection(section) {
 		let offset
@@ -95,7 +95,7 @@
 		let mm = gsap.matchMedia()
 
 		mm.add('(min-width: 481px)', () => {
-			trigger.value = ScrollTrigger.create({
+			trigger = ScrollTrigger.create({
 				start: '50%',
 				trigger: $hero.value,
 				onEnter: () => {
@@ -133,8 +133,8 @@
 	})
 
 	const handleResize = () => {
-		if (trigger.value !== null) {
-			trigger.value.refresh()
+		if (trigger !== null) {
+			trigger.refresh()
 		}
 	}
 
@@ -254,13 +254,12 @@
 								>
 									<div class="item__image">
 										<SanityImage
-											:asset-id="image.asset._ref"
 											auto="format"
+											:asset-id="image.asset._ref"
 										/>
 									</div>
 								</li>
 							</ul>
-
 							<div
 								v-if="item._type === 'galleryText'"
 								class="item__text"
@@ -273,7 +272,6 @@
 							>
 								<VideoPlayer
 									:poster="item.posterImageUrl"
-
 									:vimeo-url="item.url"
 									:download-url="item.downloadUrl"
 								/>
@@ -386,7 +384,6 @@
 			}
 
 			&__title {
-				// font-weight: $extra-light;
 				position: fixed;
 				bottom: 1.5rem;
 				left: 2rem;
@@ -414,7 +411,7 @@
 
 		.item__inner li.vertical {
 			display: flex;
-			flex: 0 0 50%; /* flex-grow | flex-shrink | flex-basis */
+			flex: 0 0 50%;
 			padding: 2rem;
 			@include viewport-480 {
 				padding: 1rem;
@@ -431,8 +428,6 @@
 		.content {
 			&__claim {
 				grid-column: 2 / span 5;
-
-				// font-weight: $extra-light;
 				margin-top: 6rem;
 				font-size: $desktop-h4;
 
@@ -446,7 +441,7 @@
 
 				@include viewport-480 {
 					margin-top: 4rem;
-					font-size: $mobile-h4; // $mobile-h2 on Figma
+					font-size: $mobile-h4;
 				}
 			}
 
@@ -508,7 +503,6 @@
 			}
 
 			&__title {
-				// font-weight: $extra-light;
 				grid-column: 1 / -1;
 				font-size: $desktop-h4;
 
@@ -674,8 +668,6 @@
 			&__title {
 				grid-column: 1 / -1;
 				font-size: $desktop-h4;
-
-				// font-weight: $extra-light;
 
 				@include viewport-480 {
 					font-size: $mobile-h2;

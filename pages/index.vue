@@ -61,6 +61,7 @@
 		<MobileFeaturedProjects
 			v-else
 			:baseline="home.baseline"
+			:first-project="home.firstProject"
 			:projects="home.featuredProjects"
 		/>
 	</div>

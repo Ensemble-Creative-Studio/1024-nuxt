@@ -13,9 +13,18 @@
 	}
 
 	const props = defineProps({
-		firstProject: [ Object ],
-		projects: [ Object ],
-		baseline: [ String ],
+		firstProject: {
+			type: Object,
+			required: true,
+		},
+		baseline: {
+			type: String,
+			required: true,
+		},
+		projects: {
+			type: Array,
+			required: true,
+		}
 	})
 
 	const handleScroll = () => {
@@ -48,6 +57,26 @@
 			const panels = self.selector('.FeaturedProject')
 			const panelTitles = self.selector('.FeaturedProject__title')
 
+			ScrollTrigger.create({
+				trigger: $baseline.value,
+				top: '100% 200%',
+				onEnter: () => {
+					if (!isMobile.value) {
+						const chunks = self.selector('.title__chunk')
+						for (let i = chunks.length - 1; i > 0; i--) {
+							const j = Math.floor(Math.random() * (i + 1))
+							;[ chunks[ i ], chunks[ j ] ] = [ chunks[ j ], chunks[ i ] ]
+						}
+						tl.to(chunks, {
+							duration: 2.5,
+							autoAlpha: 1,
+							ease: 'power2.out',
+							stagger: 0.03,
+						})
+					}
+				},
+			})
+
 			panels.forEach((panel, i) => {
 				ScrollTrigger.create({
 					trigger: panel,
@@ -69,26 +98,6 @@
 					id: `title-${ i }`,
 					onEnter: () => {
 						if (panelTitles[ i ]) panelTitles[ i ].classList.add('FeaturedProject__title--active')
-					},
-				})
-
-				ScrollTrigger.create({
-					trigger: $baseline.value,
-					top: '100% 200%',
-					onEnter: () => {
-						if (!isMobile.value) {
-							const chunks = self.selector('.title__chunk')
-							for (let i = chunks.length - 1; i > 0; i--) {
-								const j = Math.floor(Math.random() * (i + 1))
-								;[ chunks[ i ], chunks[ j ] ] = [ chunks[ j ], chunks[ i ] ]
-							}
-							tl.to(chunks, {
-								duration: 2.5,
-								autoAlpha: 1,
-								ease: 'power2.out',
-								stagger: 0.03,
-							})
-						}
 					},
 				})
 			})
