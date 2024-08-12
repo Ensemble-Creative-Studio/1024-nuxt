@@ -4,7 +4,7 @@
 
 	const router = useRouter()
 
-	const currentPage = ref(1)
+	const currentPage = ref()
 	provide('currentPage', currentPage)
 
 	const $$base = ref()
@@ -19,6 +19,10 @@
 		"videoUrl": video.asset->url,
 	}
 	`
+
+	router.currentRoute.value.query.page
+		? currentPage.value = parseInt(router.currentRoute.value.query.page)
+		: currentPage.value = 1
 
 	const tl = gsap.timeline()
 
