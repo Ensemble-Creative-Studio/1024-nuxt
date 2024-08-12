@@ -46,7 +46,7 @@
 	})
 
 	// TODO! - Create a var that holds the first project + the rest of the projects
-	// not reactive
+	// TODO! - not reactive
 
 	onBeforeUnmount(() => {
 		$ctx.value.revert()
@@ -94,6 +94,7 @@
 					:q="75"
 				/>
 			</div>
+			<h2 class="MobileFeaturedProject__title" v-html="project.title" />
 		</NuxtLink>
 	</div>
 </template>
@@ -102,25 +103,22 @@
 	.MobileFeaturedProjects {
 		padding: 0 1rem;
 
-		.baseline {
-			height: 100%;
-			background-color: $black;
+		.GridContainer {
+			align-items: center;
+			height: inherit;
+		}
 
-			.GridContainer {
-				align-items: center;
-				height: inherit;
-			}
+		.title {
+			grid-column: 1 / span 10;
+			max-width: 22ch;
+			padding-top: 6rem;
+			font-size: $mobile-h4;
 
-			.title {
-				grid-column: 1 / span 10;
-				font-size: $mobile-h4;
+			&__chunk {
+				opacity: 0;
 
-				&__chunk {
-					opacity: 0;
-
-					&:first-child {
-						margin-left: 0;
-					}
+				&:first-child {
+					margin-left: 0;
 				}
 			}
 		}
@@ -128,6 +126,7 @@
 		.MobileFeaturedProject {
 			position: relative;
 			height: 100%;
+			margin-top: 4rem;
 			background-color: $black;
 
 			&__overlay {
@@ -144,19 +143,25 @@
 			}
 
 			&__thumbnail {
+				position: relative;
+				width: 100%;
 				height: 100%;
+				height: 0;
+				padding-top: calc(4.4 / 3.6 * 100%);
 
 				img,
 				video {
+					position: absolute;
+					top: 0;
+					left: 0;
+					width: 100%;
 					height: 100%;
 					object-fit: cover;
 				}
 			}
 
 			&__title {
-				position: absolute;
-				bottom: 0;
-				padding: 1rem;
+				margin: 1rem 0;
 				font-size: $mobile-h2;
 			}
 		}
