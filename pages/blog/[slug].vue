@@ -24,8 +24,6 @@
 		router.push('/404')
 		throw createError({ statusCode: 404, statusMessage: 'Article not found' })
 	}
-
-	const { isMobile } = useDevice()
 </script>
 
 <template>
@@ -78,8 +76,8 @@
 <style lang="scss">
 	.article-page {
 		.main {
-			margin-top: 12rem;
 			position: relative;
+			margin-top: 12rem;
 
 			.GridContainer {
 				@include viewport-1200 {
@@ -88,29 +86,29 @@
 			}
 
 			.infos {
-				align-items: flex-start;
+				position: sticky;
+				top: 12rem;
 				display: flex;
 				flex-direction: column;
 				grid-column: 1 / span 3;
-				height: calc(100vh - 12rem);
+				align-items: flex-start;
 				justify-content: space-between;
+				height: calc(100vh - 12rem);
 				padding-bottom: 2rem;
-				position: sticky;
-				top: 12rem;
 
 				@include viewport-1200 {
-					height: auto;
 					position: relative;
 					top: 0;
+					height: auto;
 				}
 
 				@include viewport-480 {
-					grid-column: 1 / -1;
-					height: auto;
-					margin-bottom: 6rem;
-					padding-bottom: 0;
 					position: relative;
 					top: 0;
+					grid-column: 1 / -1;
+					height: auto;
+					padding-bottom: 0;
+					margin-bottom: 6rem;
 				}
 
 				.GoBackButton {

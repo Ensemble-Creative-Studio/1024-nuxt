@@ -9,30 +9,30 @@
 
 	const GET_SINGLE_PROJECT = groq`*[_type == "projects"
 	&& slug.current == "${ route.params.slug }"][0]
-  {
-    ...,
-    relatedProjects[] -> {
-      ...,
-      categories[] -> {
-        title,
-        slug
-      }
-    },
-    gallery[] {
-      ...,
-      images[] {
-        ...,
-        "assetRef": asset->{
-          metadata,
-          "url": url
-        }
-      },
-    _type == "galleryVideo" => {
-        "posterImageUrl": posterImage.asset->url
-      }
-    },
-  }
-`
+	{
+		...,
+		relatedProjects[] -> {
+		...,
+		categories[] -> {
+			title,
+			slug
+		}
+		},
+		gallery[] {
+		...,
+		images[] {
+			...,
+			"assetRef": asset->{
+			metadata,
+			"url": url
+			}
+		},
+		_type == "galleryVideo" => {
+			"posterImageUrl": posterImage.asset->url
+		}
+		},
+	}
+	`
 
 	const { data: project } = await useSanityQuery(GET_SINGLE_PROJECT)
 
@@ -349,42 +349,42 @@
 		position: relative;
 
 		.hero {
-			background-color: transparent;
-			height: 100vh;
 			position: relative;
+			height: 100vh;
+			background-color: transparent;
 
 			&__banner,
 			&__video {
-				height: 100%;
-				height: 100vh;
-				left: 0;
-				object-fit: cover;
 				position: fixed;
 				top: 0;
-				width: 100%;
+				left: 0;
 				z-index: -1;
+				width: 100%;
+				height: 100%;
+				height: 100vh;
+				object-fit: cover;
 			}
 
 			&__title {
-				bottom: 1.5rem;
-				font-size: $desktop-h4;
-				left: 2rem;
 
 				// font-weight: $extra-light;
 				position: fixed;
+				bottom: 1.5rem;
+				left: 2rem;
+				font-size: $desktop-h4;
 
 				@include viewport-480 {
 					bottom: 6rem;
-					font-size: $mobile-h2;
 					left: 1rem;
+					font-size: $mobile-h2;
 				}
 			}
 		}
 
 		.main {
-			background-color: $black;
 			position: relative;
 			z-index: 10;
+			background-color: $black;
 		}
 
 		.item__inner {
@@ -411,11 +411,11 @@
 
 		.content {
 			&__claim {
-				font-size: $desktop-h4;
 				grid-column: 2 / span 5;
 
 				// font-weight: $extra-light;
 				margin-top: 6rem;
+				font-size: $desktop-h4;
 
 				@include viewport-1200 {
 					grid-column: 2 / span 8;
@@ -426,8 +426,8 @@
 				}
 
 				@include viewport-480 {
-					font-size: $mobile-h4; // $mobile-h2 on Figma
 					margin-top: 4rem;
+					font-size: $mobile-h4; // $mobile-h2 on Figma
 				}
 			}
 
@@ -448,8 +448,8 @@
 				}
 
 				@include viewport-480 {
-					font-size: $mobile-text-read;
 					grid-column: 2 / -1;
+					font-size: $mobile-text-read;
 				}
 			}
 
@@ -483,16 +483,16 @@
 			margin-top: 12rem;
 
 			&__title-container {
-				align-items: flex-start;
 				display: flex;
 				grid-column: 1 / -1;
+				align-items: flex-start;
 			}
 
 			&__title {
-				font-size: $desktop-h4;
 
 				// font-weight: $extra-light;
 				grid-column: 1 / -1;
+				font-size: $desktop-h4;
 
 				@include viewport-480 {
 					font-size: $mobile-h4;
@@ -500,9 +500,9 @@
 			}
 
 			&__counter {
-				color: $medium-grey;
-				font-size: 2.6rem;
 				margin-left: 1rem;
+				font-size: 2.6rem;
+				color: $medium-grey;
 
 				@include viewport-480 {
 					transform: scale(0.7);
@@ -540,8 +540,8 @@
 						}
 
 						@include viewport-480 {
-							font-size: $mobile-text-read;
 							grid-column: 2 / -1;
+							font-size: $mobile-text-read;
 						}
 					}
 
@@ -573,13 +573,13 @@
 		}
 
 		.credits {
-			margin-top: 9rem;
 			padding-bottom: 9rem;
+			margin-top: 9rem;
 
 			@include viewport-480 {
-				font-size: $mobile-text-read;
-				margin-top: 6rem;
 				padding-bottom: 0;
+				margin-top: 6rem;
+				font-size: $mobile-text-read;
 			}
 
 			&__header {
@@ -631,8 +631,8 @@
 					}
 
 					&__label {
-						color: $medium-grey;
 						grid-column: 1 / span 2;
+						color: $medium-grey;
 
 						@include viewport-480 {
 							grid-column: 1 / -1;
@@ -654,8 +654,8 @@
 			margin-top: 6rem;
 
 			&__title {
-				font-size: $desktop-h4;
 				grid-column: 1 / -1;
+				font-size: $desktop-h4;
 
 				// font-weight: $extra-light;
 

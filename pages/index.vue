@@ -1,5 +1,25 @@
 <script setup>
-	const { isMobile } = useDevice()
+	const isMobile = shallowRef(false)
+
+	onMounted(() => {
+		if (matchMedia('(hover: none)').matches) {
+			isMobile.value = true
+		}
+
+		window.addEventListener('resize', onResize)
+	})
+
+	function onResize() {
+		if (matchMedia('(hover: none)').matches) {
+			isMobile.value = true
+		} else {
+			isMobile.value = false
+		}
+	}
+
+	onBeforeUnmount(() => {
+		window.removeEventListener('resize', onResize)
+	})
 
 	const query = groq`*[_type == "home"][0]
 		{
