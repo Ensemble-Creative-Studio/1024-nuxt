@@ -150,10 +150,10 @@
 <style lang="scss">
 	.ProjectsGrid {
 		display: grid;
-		gap: 5rem 4rem;
 		grid-template-columns: repeat(4, 1fr);
-		overflow: hidden;
+		gap: 5rem 4rem;
 		padding: 0 2.5rem;
+		overflow: hidden;
 
 		@include viewport-480 {
 			padding: 0 1rem;
@@ -168,28 +168,28 @@
 			}
 
 			&__thumbnail {
+				position: relative;
 				aspect-ratio: 1 / 1;
 				pointer-events: none;
-				position: relative;
 
 				img {
-					aspect-ratio: 1 / 1;
-					filter: grayscale(100%);
-					height: 100%;
-					object-fit: cover;
-					transition: 0.25s ease-in-out;
 					width: 100%;
+					height: 100%;
+					aspect-ratio: 1 / 1;
+					object-fit: cover;
+					filter: grayscale(100%);
+					transition: 0.25s ease-in-out;
 				}
 
 				video {
-					height: 100%;
-					left: 0;
-					object-fit: cover;
-					opacity: 0;
 					position: absolute;
 					top: 0;
-					transition: 0.25s ease-in-out;
+					left: 0;
+					height: 100%;
 					visibility: hidden;
+					object-fit: cover;
+					opacity: 0;
+					transition: 0.25s ease-in-out;
 				}
 			}
 
@@ -198,8 +198,8 @@
 			}
 
 			&:hover video {
-				opacity: 1;
 				visibility: visible;
+				opacity: 1;
 			}
 
 			&__title {
@@ -226,10 +226,10 @@
 		}
 
 		&--empty {
-			align-items: center;
 			display: flex;
-			height: 100vh;
+			align-items: center;
 			justify-content: center;
+			height: 100vh;
 		}
 	}
 </style>

@@ -3,8 +3,7 @@
 	import 'swiper/css'
 
 	const props = defineProps({
-		blog: [ Object ],
-		page: [ Number ],
+		blog: Array,
 	})
 </script>
 
@@ -75,8 +74,7 @@
 	.BlogList {
 		@include grid(12, 1fr, 1, 0);
 
-		padding: 0 2rem;
-		padding-top: 12rem;
+		padding: 12rem 2rem;
 		overflow: hidden;
 
 		@include viewport-480 {

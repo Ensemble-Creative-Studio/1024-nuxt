@@ -4,74 +4,67 @@
 
 	const router = useRouter()
 
-	const blog = ref()
-	const $blogPage = ref()
-	const $pagination = ref()
-
-	const sanity = useSanity()
-
-	const tl = gsap.timeline()
-
-	const itemsPerPage = 3
 	const currentPage = ref(1)
+	provide('currentPage', currentPage)
 
-	const GET_BLOG_COUNT = groq`count(*[_type == 'blog'])`
-	const { data: blogCount } = await useSanityQuery(GET_BLOG_COUNT)
+	const $$base = ref()
+	const $$pagination = ref()
 
-	const totalPages = blogCount.value / itemsPerPage
+	const ITEMS_PER_PAGE = 3
+	provide('ITEMS_PER_PAGE', ITEMS_PER_PAGE)
 
-	// Calculate offset and limit based on current page
-	const offset = computed(() => {
-		return (currentPage.value - 1) * itemsPerPage
-	})
-
-	const GET_BLOG = groq`*[_type == "blog"]|order(_createdAt desc)[$offset...$limit]
+	const GET_BLOG = groq`*[_type == "blog"]|order(_createdAt desc)
 	{
 		...,
 		"videoUrl": video.asset->url,
 	}
 	`
 
-	let result = await useSanityQuery(GET_BLOG, { offset: offset.value, limit: itemsPerPage })
-	blog.value = result.data.value
+	const tl = gsap.timeline()
+
+	const { data: blog } = await useSanityQuery(GET_BLOG)
+
+	const currentBlog = computed(() => {
+		const start = (currentPage.value - 1) * ITEMS_PER_PAGE
+		const end = start + ITEMS_PER_PAGE
+		return blog.value.slice(start, end)
+	})
+
+	const totalPages = computed(() => {
+		return Math.ceil(blog.value.length / ITEMS_PER_PAGE)
+	})
+	provide('totalPages', totalPages)
 
 	watch(() => currentPage.value, async (data) => {
-		tl.to($pagination.value, { opacity: 0, duration: 0 })
+		tl.to($$pagination.value, { opacity: 0, duration: 0 })
 
-		tl.to($blogPage.value,
+		tl.to($$base.value,
 			{
 				opacity: 0,
 				duration: 0.5,
 				onComplete: async () => {
 					goToPage(data)
 					await wait(500)
-					tl.to($blogPage.value, { opacity: 1, duration: 0.5 })
+					tl.to($$base.value, { opacity: 1, duration: 0.5 })
 				}
 			}
 		)
 
-		tl.to($pagination.value, { opacity: 1, duration: 0.5 })
+		tl.to($$pagination.value, { opacity: 1, duration: 0.5 })
 	})
 
-	const changePage = (index) => {
-		currentPage.value = index
-	}
-
-	const goToPage = async (index) => {
+	async function goToPage(page) {
+		await router.push({ query: { page: page } })
+		currentPage.value = page // TODO! - Fix the layout shift during transition (use a temp ref?)
+		await wait(500)
 		window.scrollTo(0, 0)
-		currentPage.value = index
-		router.push({ query: { page: index } })
-
-		let result = await sanity.fetch(GET_BLOG, { offset: offset.value, limit: itemsPerPage })
-		blog.value = result
 	}
+
+	provide('goToPage', goToPage)
 </script>
 
 <template>
-	<div
-		ref="$blogPage"
-		class="blog"
-	>
+	<div ref="$$base" class="blog">
 		<Head>
 			<Title>1024 | Blog</Title>
 			<Meta
@@ -79,132 +72,11 @@
 				content="Contact page description"
 			/>
 		</Head>
-		<BlogList
-			:blog="blog"
-			:page="currentPage"
-		/>
-		<!-- <section
-			ref="$pagination"
-			class="pagination"
-		>
-			<GridContainer>
-				<div class="pagination__container">
-					<button
-						v-if="currentPage !== 1"
-						class="pagination__button pagination__button--previous"
-						@click="changePage(currentPage - 1)"
-					>
-						Previous
-					</button>
-					<span
-						v-if="currentPage !== totalPages && currentPage !== 1"
-						class="pagination__separator"
-					>
-						-
-					</span>
-					<button
-						v-if="currentPage !== totalPages"
-						class="pagination__button pagination__button--next"
-						@click="changePage(currentPage + 1)"
-					>
-						Next
-					</button>
-					<span class="pagination__separator">/</span>
-					<div class="pagination__pages">
-						<button
-							v-if="currentPage - 1 > 0"
-							class="pagination__page"
-							@click="changePage(currentPage - 1)"
-						>
-							{{ currentPage - 1 < 10 ? `0${currentPage - 1}` : currentPage - 1 }}
-						</button>
-						<button class="pagination__page pagination__page--active">
-							{{ currentPage < 10 ? `0${currentPage}` : currentPage }}
-						</button>
-						<button
-							v-if="currentPage !== totalPages"
-							class="pagination__page"
-							@click="changePage(currentPage + 1)"
-						>
-							{{ currentPage + 1 < 10 ? `0${currentPage + 1}` : currentPage + 1 }}
-						</button>
-						<button
-							v-if="currentPage + 1 < totalPages"
-							class="pagination__page"
-							@click="changePage(currentPage + 1)"
-						>
-							...
-						</button>
-						<button
-							v-if="currentPage + 1 < totalPages"
-							class="pagination__page"
-							@click="changePage(totalPages)"
-						>
-							{{ totalPages < 10 ? `0${totalPages}` : totalPages }}
-						</button>
-					</div>
-				</div>
-			</GridContainer>
-		</section> -->
+		<BlogList :blog="currentBlog" />
+		<BlogPagination />
 	</div>
 </template>
 
 <style lang="scss" scoped>
-	.blog {
-		.pagination {
-			padding-top: 12rem;
-			padding-bottom: 12rem;
-			font-size: $desktop-list;
-
-			@include viewport-480 {
-				padding-bottom: 4rem;
-				margin-top: 9rem;
-				font-size: $mobile-list;
-			}
-
-			&__container {
-				display: flex;
-				grid-column: 3 / span 8;
-				align-items: center;
-
-				@include viewport-480 {
-					display: block;
-					grid-column: 1 / -1;
-				}
-			}
-
-			&__separator {
-				margin: 0 2rem;
-			}
-
-			&__button {
-				text-decoration: underline;
-				text-decoration-thickness: from-font;
-				text-underline-offset: 0.5rem;
-				cursor: pointer;
-			}
-
-			&__pages {
-				display: flex;
-				align-items: center;
-
-				@include viewport-480 {
-					margin-top: 2rem;
-				}
-			}
-
-			&__page {
-				color: $medium-grey;
-				cursor: pointer;
-
-				&:not(:first-child) {
-					margin-left: 2rem;
-				}
-
-				&--active {
-					color: $white;
-				}
-			}
-		}
-	}
+	// ...
 </style>

@@ -140,10 +140,7 @@
 </script>
 
 <template>
-	<div
-		ref="$featuredProjects"
-		class="FeaturedProjects"
-	>
+	<div ref="$featuredProjects" class="FeaturedProjects">
 		<FeaturedProject :project="firstProject" />
 		<div
 			v-if="!isMobile"

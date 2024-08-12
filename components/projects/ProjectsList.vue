@@ -93,66 +93,39 @@
 </script>
 
 <template>
-	<ul
-		v-if="projects.length > 0"
-		ref="$projectsList"
-		class="ProjectsList"
-	>
-		<template
-			v-for="item in projects"
-			:key="item._id"
-		>
-			<li class="item">
-				<NuxtLink
-					:key="item._id"
-					class="item__link"
-					:to="{ name: 'projects-slug', params: { slug: item.slug.current } }"
-				>
-					<div class="item__container">
-						<div class="item__thumbnail">
-							<SanityImage
-								v-if="item.mainImage"
-								:asset-id="item.mainImage.asset._ref"
-								auto="format"
-							/>
-							<video
-								v-if="item.thumbnailVideoUrl"
-								:src="item.thumbnailVideoUrl"
-								muted
-								loop
-								playsinline
-								webkit-playsinline
-							/>
-						</div>
-						<div class="item__meta">
-							<h3
-								v-if="item.title"
-								class="item__title"
-							>
-								{{ item.title }}
-							</h3>
-							<ul
-								v-if="item.categories"
-								class="item__categories item__categories--mobile"
-							>
-								<li
-									v-for="category in item.categories"
-									:key="category._id"
-									class="item__category"
-								>
-									{{ category.title }}
-								</li>
-							</ul>
-						</div>
-						<div
-							v-if="item.releaseDate"
-							class="item__date"
+	<ul v-if="projects.length > 0" ref="$projectsList" class="ProjectsList">
+		<li v-for="item in projects" :key="item._id" class="item">
+			<NuxtLink
+				:key="item._id"
+				class="item__link"
+				:to="{ name: 'projects-slug', params: { slug: item.slug.current } }"
+			>
+				<div class="item__container">
+					<div class="item__thumbnail">
+						<SanityImage
+							v-if="item.mainImage"
+							:asset-id="item.mainImage.asset._ref"
+							auto="format"
+						/>
+						<video
+							v-if="item.thumbnailVideoUrl"
+							:src="item.thumbnailVideoUrl"
+							muted
+							loop
+							playsinline
+							webkit-playsinline
+						/>
+					</div>
+					<div class="item__meta">
+						<h3
+							v-if="item.title"
+							class="item__title"
 						>
-							{{ item.releaseDate.slice(0, 4) }}
-						</div>
+							{{ item.title }}
+						</h3>
 						<ul
 							v-if="item.categories"
-							class="item__categories"
+							class="item__categories item__categories--mobile"
 						>
 							<li
 								v-for="category in item.categories"
@@ -163,9 +136,27 @@
 							</li>
 						</ul>
 					</div>
-				</NuxtLink>
-			</li>
-		</template>
+					<div
+						v-if="item.releaseDate"
+						class="item__date"
+					>
+						{{ item.releaseDate.slice(0, 4) }}
+					</div>
+					<ul
+						v-if="item.categories"
+						class="item__categories"
+					>
+						<li
+							v-for="category in item.categories"
+							:key="category._id"
+							class="item__category"
+						>
+							{{ category.title }}
+						</li>
+					</ul>
+				</div>
+			</NuxtLink>
+		</li>
 	</ul>
 	<div
 		v-else
@@ -181,15 +172,15 @@
 		padding-bottom: 5rem;
 
 		&--empty {
-			align-items: center;
 			display: flex;
-			height: 100vh;
+			align-items: center;
 			justify-content: center;
+			height: 100vh;
 		}
 
 		.item {
-			border-top: 0.1rem solid $dark-grey;
 			font-size: $desktop-list;
+			border-top: 0.1rem solid $dark-grey;
 			transition: background-color 0.2s ease-in-out;
 
 			// height: 16rem;
@@ -199,9 +190,9 @@
 			}
 
 			@include viewport-768 {
-				font-size: $tablet-list;
 				height: auto;
 				padding: 2rem 0;
+				font-size: $tablet-list;
 			}
 
 			@include viewport-480 {
@@ -219,10 +210,10 @@
 			&__container {
 				@include grid(12, 1fr, 1, 0);
 
+				position: relative;
 				align-items: center;
 				height: 100%;
 				padding: 1rem 2rem;
-				position: relative;
 
 				@include viewport-480 {
 					padding: 0 1rem;
@@ -230,8 +221,8 @@
 			}
 
 			&__date {
-				color: $medium-grey;
 				grid-column: auto / span 2;
+				color: $medium-grey;
 
 				@include viewport-480 {
 					grid-column: 11 / span 2;
@@ -251,15 +242,15 @@
 			}
 
 			&__categories {
-				color: $medium-grey;
 				grid-column: auto / span 6;
+				color: $medium-grey;
 
 				// REWORK
 				@include viewport-768 {
 					display: none;
 					flex-direction: column;
-					grid-column: 3 / span 6;
 					grid-row: 2;
+					grid-column: 3 / span 6;
 				}
 
 				&--mobile {
@@ -282,21 +273,21 @@
 			}
 
 			&__thumbnail {
+				position: relative;
 				grid-column: auto / span 2;
 				margin-left: 0;
 				pointer-events: none;
-				position: relative;
 
 				@include viewport-480 {
 					grid-column: auto / span 4;
 				}
 
 				img {
-					aspect-ratio: 1 / 1;
-					filter: grayscale(100%);
-					object-fit: cover;
-					transition: 0.25s ease-in-out;
 					width: 50%;
+					aspect-ratio: 1 / 1;
+					object-fit: cover;
+					filter: grayscale(100%);
+					transition: 0.25s ease-in-out;
 
 					@include viewport-480 {
 						width: 100%;
@@ -304,15 +295,15 @@
 				}
 
 				video {
-					aspect-ratio: 1 / 1;
-					left: 0;
-					object-fit: cover;
-					opacity: 0;
 					position: absolute;
 					top: 0;
-					transition: 0.25s ease-in-out;
-					visibility: hidden;
+					left: 0;
 					width: 50%;
+					aspect-ratio: 1 / 1;
+					visibility: hidden;
+					object-fit: cover;
+					opacity: 0;
+					transition: 0.25s ease-in-out;
 
 					@include viewport-480 {
 						width: 100%;
@@ -325,8 +316,8 @@
 			}
 
 			&:hover video {
-				opacity: 1;
 				visibility: visible;
+				opacity: 1;
 			}
 		}
 	}

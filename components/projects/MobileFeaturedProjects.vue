@@ -72,10 +72,7 @@
 </script>
 
 <template>
-	<div
-		ref="$mobileFeaturedProjects"
-		class="MobileFeaturedProjects"
-	>
+	<div ref="$mobileFeaturedProjects" class="MobileFeaturedProjects">
 		<h1 class="title">
 			<span
 				v-for="(word, index) in splitBaseline"
