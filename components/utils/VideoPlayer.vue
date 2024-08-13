@@ -3,10 +3,12 @@
 
 	const { isTouch, isSafari, isAndroid, isIos, isSamsung } = useDevice()
 
+	const hasPlayed = shallowRef(false)
+
 	const props = defineProps({
 		vimeoUrl: String,
 		downloadUrl: String,
-		poster: String, // Expect an asset reference for the poster image
+		poster: Object,
 	})
 
 	const $main = ref(null)
@@ -32,6 +34,7 @@
 	}
 
 	function onPlayBtnClick() {
+		hasPlayed.value = true
 		isPlaying.value = true
 		$video.value.play()
 		raf = window.requestAnimationFrame(onUpdate)
@@ -49,7 +52,6 @@
 	}
 
 	function onVisualClick() {
-		console.log('onVisualClick')
 		isPlaying.value = !isPlaying.value
 
 		if (isPlaying.value === true) {
@@ -131,20 +133,23 @@
 </script>
 
 <template>
-	<div
-		ref="$main"
-		class="VideoPlayer"
-	>
+	<div ref="$main" class="VideoPlayer">
+		<SanityImage
+			class="poster"
+			:class="{ 'is-hidden': hasPlayed }"
+			:asset-id="poster.asset._ref"
+			auto="format"
+			:q="75"
+		/>
 		<video
 			ref="$video"
 			:src="vimeoUrl"
-			:poster="poster"
 			class="video"
 			crossorigin="anonymous"
 			playsinline
 			webkit-playsinline
 			@click="onVisualClick"
-			@loadedmetadata="setVideoData"
+			@loadeddata="setVideoData"
 			@timeupdate="onVideoTimeUpdate"
 			@ended="onVideoEnded"
 		/>
@@ -346,10 +351,25 @@
 <style lang="scss">
 	.VideoPlayer {
 		position: relative;
+		cursor: pointer;
 		background-color: $black;
 
 		.flex {
 			display: flex;
+		}
+
+		.poster {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			pointer-events: none;
+			object-fit: cover;
+
+			&.is-hidden {
+				opacity: 0;
+			}
 		}
 
 		.controls {

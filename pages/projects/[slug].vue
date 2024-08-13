@@ -48,7 +48,7 @@
 			}
 		},
 		_type == "galleryVideo" => {
-			"posterImageUrl": posterImage.asset->url
+			"posterImageUrl": posterImage
 		}
 		},
 	}

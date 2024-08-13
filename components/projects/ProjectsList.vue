@@ -118,6 +118,8 @@
 							loop
 							playsinline
 							webkit-playsinline
+							preload="none"
+							autobuffer="true"
 						/>
 					</div>
 					<div class="item__meta">

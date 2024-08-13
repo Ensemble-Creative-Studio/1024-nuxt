@@ -27,15 +27,9 @@ const config: NuxtConfig & { sanity: typeof sanityConfig } = {
     '~/components/blog',
     '~/components/icons',
   ],
-  nitro: {
-    prerender: {
-      routes: ['/404.html'],
-    },
-  },
   build: {
     transpile: ['gsap'],
   },
-  generate: { fallback: '404.html' },
 }
 
 export default config
