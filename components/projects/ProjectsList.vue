@@ -103,8 +103,12 @@
 				<div class="item__container">
 					<div class="item__thumbnail">
 						<SanityImage
-							v-if="item.mainImage"
-							:asset-id="item.mainImage.asset._ref"
+							v-if="item.thumbnailImage || item.mainImage"
+							:asset-id="
+								item.thumbnailImage
+									? item.thumbnailImage.asset._ref
+									: item.mainImage.asset._ref
+							"
 							auto="format"
 						/>
 						<video
