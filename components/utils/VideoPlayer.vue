@@ -149,7 +149,7 @@
 			playsinline
 			webkit-playsinline
 			@click="onVisualClick"
-			@loadeddata="setVideoData"
+			@loadedmetadata="setVideoData"
 			@timeupdate="onVideoTimeUpdate"
 			@ended="onVideoEnded"
 		/>
