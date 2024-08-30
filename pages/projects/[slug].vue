@@ -280,10 +280,7 @@
 					</ul>
 				</GridContainer>
 			</section>
-			<section
-				ref="$credits"
-				class="credits"
-			>
+			<section ref="$credits" class="credits">
 				<GridContainer>
 					<header
 						class="credits__header"
@@ -291,6 +288,10 @@
 					>
 						<div>{{ project.title }}</div>
 						<span>1024 architecture</span>
+						<br><br>
+						<p v-if="project.credits">
+							{{ project.credits.text }}
+						</p>
 					</header>
 					<ul
 						v-if="project.credits"
@@ -301,13 +302,14 @@
 							:key="item._key"
 							class="item"
 						>
-							>
-							<h3 class="item__label">
-								{{ item.role }}
-							</h3>
-							<p class="item__text">
-								{{ item.text }}
-							</p>
+							<a :href="item.role">
+								<h3 class="item__label">
+									{{ item.role }}
+								</h3>
+								<p class="item__text">
+									{{ item.text }}
+								</p>
+							</a>
 						</li>
 					</ul>
 				</GridContainer>
