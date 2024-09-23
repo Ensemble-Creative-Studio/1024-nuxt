@@ -1,0 +1,89 @@
+// Screen breakpoints
+$viewport-320: 321px;
+$viewport-375: 376px;
+$viewport-480: 481px;
+$viewport-768: 769px;
+$viewport-992: 993px;
+$viewport-1024: 1025px;
+$viewport-1200: 1201px;
+$viewport-1400: 1401px;
+$viewport-1600: 1601px;
+
+// Mixins
+@mixin resetAppearance() {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  font: inherit;
+}
+
+@mixin btResetAppearance() {
+  @include resetAppearance();
+  border: none;
+  background: none;
+  cursor: pointer;
+  outline: none;
+  border-radius: 0;
+}
+
+@mixin viewport-320 {
+  @media screen and (max-width: $viewport-320) {
+    @content;
+  }
+}
+
+@mixin viewport-480 {
+  @media screen and (max-width: $viewport-480) {
+    @content;
+  }
+}
+
+@mixin viewport-480 {
+  @media screen and (max-width: $viewport-480) {
+    @content;
+  }
+}
+
+@mixin viewport-768 {
+  @media screen and (max-width: $viewport-768) {
+    @content;
+  }
+}
+
+@mixin viewport-992 {
+  @media screen and (max-width: $viewport-992) {
+    @content;
+  }
+}
+
+@mixin viewport-1024 {
+  @media screen and (max-width: $viewport-1024) {
+    @content;
+  }
+}
+
+@mixin viewport-1200 {
+  @media screen and (max-width: $viewport-1200) {
+    @content;
+  }
+}
+
+@mixin viewport-1400 {
+  @media screen and (max-width: $viewport-1400) {
+    @content;
+  }
+}
+
+@mixin viewport-1600 {
+  @media screen and (max-width: $viewport-1600) {
+    @content;
+  }
+}
+
+@mixin grid($columns, $occupation, $cg, $rg) {
+  display: grid;
+  grid-template-columns: repeat($columns, $occupation);
+  column-gap: #{$cg}rem;
+  row-gap: #{$rg}rem;
+  align-items: flex-start;
+}
