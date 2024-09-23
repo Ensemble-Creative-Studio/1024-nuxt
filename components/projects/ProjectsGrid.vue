@@ -132,7 +132,6 @@
 							webkit-playsinline
 							preload="none"
 							autobuffer="true"
-							loading="lazy"
 						/>
 					</div>
 					<h3 class="item__title">
