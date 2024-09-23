@@ -94,10 +94,20 @@
 
 				ScrollTrigger.create({
 					trigger: panel,
-					top: '100% 100%',
+					start: 'top 99%', // Title appear when the panel is 1% visible
+					end: 'bottom 1%', // Title disappear when the panel is 1% visible
 					id: `title-${ i }`,
 					onEnter: () => {
 						if (panelTitles[ i ]) panelTitles[ i ].classList.add('FeaturedProject__title--active')
+					},
+					onLeave: () => {
+						if (panelTitles[ i ]) panelTitles[ i ].classList.remove('FeaturedProject__title--active')
+					},
+					onEnterBack: () => {
+						if (panelTitles[ i ]) panelTitles[ i ].classList.add('FeaturedProject__title--active')
+					},
+					onLeaveBack: () => {
+						if (panelTitles[ i ]) panelTitles[ i ].classList.remove('FeaturedProject__title--active')
 					},
 				})
 			})
@@ -191,11 +201,11 @@
 	}
 
 	.backgroundBlack {
-		position: fixed; /* Added this */
+		position: fixed;
 		right: 0;
-		bottom: 0; /* Adjust this value to control how much it overflows */
+		bottom: 0;
 		left: 0;
-		z-index: -1; /* Put it behind other content */
+		z-index: -1;
 		height: 10rem;
 		background-color: black;
 		opacity: 0;
