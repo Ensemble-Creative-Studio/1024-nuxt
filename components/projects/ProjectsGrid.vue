@@ -3,6 +3,8 @@
 	import ScrollTrigger from 'gsap/ScrollTrigger'
 	import { wait } from '@/utils/wait'
 
+	gsap.registerPlugin(ScrollTrigger)
+
 	const props = defineProps({
 		projects: [ Object ],
 		order: String,
@@ -74,9 +76,57 @@
 		})
 	}
 
+	const applyMobileAnimation = () => {
+		const items = $projectsGrid.value.querySelectorAll('.item')
+		const rows = []
+
+		// Group items into rows of 2
+		for (let i = 0; i < items.length; i += 2) {
+			rows.push([items[i], items[i + 1]])
+		}
+
+		rows.forEach((row, index) => {
+			ScrollTrigger.create({
+				trigger: row,
+				start: 'top center',
+				end: 'bottom center',
+				onEnter: () => {
+					row.forEach((item) => {
+						const video = item.querySelector('video')
+						const img = item.querySelector('img')
+						if (video) {
+							video.style.visibility = 'visible'
+							video.style.opacity = '1'
+							video.play()
+						}
+						if (img) {
+							img.style.filter = 'grayscale(0)'
+						}
+					})
+				},
+				onLeaveBack: () => {
+					row.forEach((item) => {
+						const video = item.querySelector('video')
+						const img = item.querySelector('img')
+						if (video) {
+							video.style.visibility = 'hidden'
+							video.style.opacity = '0'
+							video.pause()
+							video.currentTime = 0
+						}
+						if (img) {
+							img.style.filter = 'grayscale(100%)'
+						}
+					})
+				},
+			})
+		})
+	}
+
 	onMounted(() => {
 		showProjects()
 		addVideoHoverListeners()
+		applyMobileAnimation()
 	})
 
 	onBeforeUnmount(() => {
