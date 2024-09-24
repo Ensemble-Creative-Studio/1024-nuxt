@@ -74,49 +74,9 @@
 		})
 	}
 
-	const addVideoMobileAnimation = () => {
-		const items = $projectsGrid.value.querySelectorAll('.item');
-		const observer = new IntersectionObserver((entries) => {
-			entries.forEach(async entry => {
-				const video = entry.target.querySelector('video');
-				if (entry.isIntersecting) {
-					if (video && video.paused) {
-						try {
-							await video.play();
-							video.style.visibility = 'visible';
-							video.style.opacity = '1';
-							const img = entry.target.querySelector('img');
-							if (img) {
-								img.style.filter = 'grayscale(0)';
-							}
-						} catch (error) {
-							console.error('Error playing video:', error);
-						}
-					}
-				} else {
-					if (video && !video.paused) {
-						video.pause();
-						video.currentTime = 0;
-						video.style.visibility = 'hidden';
-						video.style.opacity = '0';
-						const img = entry.target.querySelector('img');
-						if (img) {
-							img.style.filter = 'grayscale(100%)';
-						}
-					}
-				}
-			});
-		}, { threshold: 0.5 });
-
-		items.forEach(item => {
-			observer.observe(item);
-		});
-	}
-
 	onMounted(() => {
 		showProjects()
 		addVideoHoverListeners()
-		addVideoMobileAnimation()
 	})
 
 	onBeforeUnmount(() => {
@@ -274,7 +234,7 @@
 			}
 
 			@include viewport-480 {
-				grid-template-columns: repeat(4, 1fr); // 2 columns on mobile
+				grid-template-columns: repeat(2, 1fr); // 2 columns on mobile
 			}
 		}
 
@@ -282,7 +242,7 @@
 			grid-template-columns: repeat(4, 1fr);
 
 			@include viewport-480 {
-				grid-template-columns: repeat(4, 1fr); // 2 columns on mobile
+				grid-template-columns: repeat(2, 1fr); // 2 columns on mobile
 			}
 		}
 
