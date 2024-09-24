@@ -215,15 +215,15 @@
 						:class="[
 							displayMode === 'grid'
 								&& gridModeCols === 8
-								&& 'display-mode__eight-grid--active',
-							'display-mode__eight-grid',
+								&& 'display-mode__three-grid--active',
+							'display-mode__three-grid',
 						]"
 						@click="setGridMode(8)"
 					>
-						<EightItemsGridIcon
+						<SixItemsGridIcon
 							:color="
 								displayMode === 'grid'
-									&& gridModeCols === 8
+									&& gridModeCols === 6
 									? '#ffffff'
 									: '#727272'
 							"
