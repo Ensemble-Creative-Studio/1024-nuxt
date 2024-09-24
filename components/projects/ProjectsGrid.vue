@@ -75,22 +75,47 @@
 	}
 
 	const addVideoMobileAnimation = () => {
-		const items = $projectsGrid.value.querySelectorAll('.item video')
+		if (window.innerWidth <= 768) { // Ajustez cette valeur selon votre définition de mobile
+			const items = $projectsGrid.value.querySelectorAll('.item');
 
-		const observer = new IntersectionObserver((entries) => {
-			entries.forEach(entry => {
-				if (entry.isIntersecting) {
-					console.log('Vidéo entre dans le viewport:', entry.target);
-				} else {
-					console.log('Vidéo quitte le viewport:', entry.target);
-				}
+			const observer = new IntersectionObserver((entries) => {
+				entries.forEach(entry => {
+					const item = entry.target;
+					const video = item.querySelector('video');
+					const img = item.querySelector('img');
+
+					if (entry.isIntersecting) {
+						if (video) {
+							video.play();
+							video.style.visibility = 'visible';
+							video.style.opacity = '1';
+						}
+						if (img) {
+							img.style.filter = 'grayscale(0)';
+						}
+					} else {
+						if (video) {
+							video.pause();
+							video.currentTime = 0;
+							video.style.visibility = 'hidden';
+							video.style.opacity = '0';
+						}
+						if (img) {
+							img.style.filter = 'grayscale(100%)';
+						}
+					}
+				});
+			}, {
+				root: null,
+				rootMargin: '-13% 0px -45% 0px',
+				threshold: 0.5
 			});
-		}, { threshold: 0.1 });
 
-		items.forEach(video => {
-			observer.observe(video);
-		});
-	}
+			items.forEach(item => {
+				observer.observe(item);
+			});
+		}
+	};
 
 	onMounted(() => {
 		showProjects()
@@ -113,6 +138,7 @@
 </script>
 
 <template>
+	<!-- <div class="intersection-zone"></div> -->
 	<ul
 		v-if="projects.length > 0"
 		ref="$projectsGrid"
@@ -271,5 +297,16 @@
 			justify-content: center;
 			height: 100vh;
 		}
+	}
+
+	.intersection-zone {
+		position: fixed;
+		top: 15%;
+		left: 0;
+		width: 100%;
+		height: 13%;
+		border: 2px solid red;
+		pointer-events: none;
+		z-index: 9999;
 	}
 </style>
