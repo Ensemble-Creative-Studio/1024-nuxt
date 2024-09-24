@@ -74,9 +74,28 @@
 		})
 	}
 
+	const addVideoMobileAnimation = () => {
+		const items = $projectsGrid.value.querySelectorAll('.item video')
+
+		const observer = new IntersectionObserver((entries) => {
+			entries.forEach(entry => {
+				if (entry.isIntersecting) {
+					console.log('Vidéo entre dans le viewport:', entry.target);
+				} else {
+					console.log('Vidéo quitte le viewport:', entry.target);
+				}
+			});
+		}, { threshold: 0.1 });
+
+		items.forEach(video => {
+			observer.observe(video);
+		});
+	}
+
 	onMounted(() => {
 		showProjects()
 		addVideoHoverListeners()
+		addVideoMobileAnimation()
 	})
 
 	onBeforeUnmount(() => {
