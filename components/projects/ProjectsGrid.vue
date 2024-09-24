@@ -75,7 +75,7 @@
 	}
 
 	const addVideoMobileAnimation = () => {
-		if (window.innerWidth <= 768) { // Ajustez cette valeur selon votre définition de mobile
+		if (window.innerWidth <= 768) {
 			const items = $projectsGrid.value.querySelectorAll('.item');
 
 			const observer = new IntersectionObserver((entries) => {
@@ -138,7 +138,6 @@
 </script>
 
 <template>
-	<!-- <div class="intersection-zone"></div> -->
 	<ul
 		v-if="projects.length > 0"
 		ref="$projectsGrid"
@@ -211,6 +210,10 @@
 			grid-template-columns: repeat(4, 1fr); // 4 columns on intermediate breakpoint
 		}
 
+		@media (max-width: 1285px) {
+			grid-template-columns: repeat(6, 1fr); // 6 columns on intermediate breakpoint under 1285px
+		}
+
 		.item {
 			opacity: 0;
 			transform: translateY(3rem);
@@ -262,12 +265,16 @@
 		&--eight-items {
 			grid-template-columns: repeat(8, 1fr); // 8 columns on desktop
 
+			@media (max-width: 1285px) {
+				grid-template-columns: repeat(6, 1fr); // 6 columns between 1285px and 992px
+			}
+
 			@include viewport-992 {
 				grid-template-columns: repeat(4, 1fr); // 4 columns on intermediate breakpoint
 			}
 
 			@include viewport-480 {
-				grid-template-columns: repeat(4, 1fr); // 2 columns on mobile
+				grid-template-columns: repeat(2, 1fr); // 2 columns on mobile
 			}
 		}
 
@@ -297,16 +304,5 @@
 			justify-content: center;
 			height: 100vh;
 		}
-	}
-
-	.intersection-zone {
-		position: fixed;
-		top: 15%;
-		left: 0;
-		width: 100%;
-		height: 13%;
-		border: 2px solid red;
-		pointer-events: none;
-		z-index: 9999;
 	}
 </style>
