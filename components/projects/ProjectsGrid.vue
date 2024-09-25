@@ -274,7 +274,7 @@
 			}
 
 			@include viewport-480 {
-				grid-template-columns: repeat(2, 1fr); // 2 columns on mobile
+				grid-template-columns: repeat(4, 1fr); // 2 columns on mobile
 			}
 		}
 
@@ -286,7 +286,7 @@
 			}
 
 			@include viewport-480 {
-				grid-template-columns: repeat(2, 1fr); // 2 columns on mobile
+				grid-template-columns: repeat(4, 1fr); // 2 columns on mobile
 			}
 		}
 
@@ -294,7 +294,7 @@
 			grid-template-columns: repeat(4, 1fr);
 
 			@include viewport-480 {
-				grid-template-columns: repeat(2, 1fr); // 2 columns on mobile
+				grid-template-columns: repeat(4, 1fr); // 2 columns on mobile
 			}
 		}
 
