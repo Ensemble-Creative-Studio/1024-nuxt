@@ -399,8 +399,8 @@
 			}
 
 			&__display-mode {
-				button:not(:first-child) {
-					margin-left: 2rem;
+				button {
+					padding: 2rem 0 2rem 2rem;
 				}
 			}
 
