@@ -201,7 +201,7 @@
 
 			&__title {
 				margin: 1rem 0;
-				font-size: $mobile-h2;
+				font-size: 18px;
 				opacity: 0.35;
 				transition: opacity 0.3s ease-in-out;
 			}
