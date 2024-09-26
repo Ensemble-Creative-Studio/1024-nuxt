@@ -164,6 +164,7 @@
 
 				.MobileFeaturedProject__title {
 					opacity: 1;
+					font-size: 18px;
 				}
 			}
 
