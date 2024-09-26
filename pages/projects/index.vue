@@ -193,7 +193,7 @@
 						displayMode === 'grid' && 'mobile-bar__grid--active',
 						'mobile-bar__grid',
 					]"
-					@click.prevent="setGridMode(4)"
+					@touchstart="setGridMode(4)"
 				>
 					Grid
 				</button>
@@ -202,7 +202,7 @@
 						displayMode === 'list' && 'mobile-bar__list--active',
 						'mobile-bar__list',
 					]"
-					@click.prevent="setListMode()"
+					@touchstart="setListMode()"
 				>
 					List
 				</button>
@@ -411,6 +411,9 @@
 			&__grid,
 			&__list {
 				color: $medium-grey;
+				padding: 1rem; // Augmente la zone de clic
+				min-width: 44px; // Taille minimale recommandée pour les éléments interactifs sur mobile
+				min-height: 44px;
 
 				&--active {
 					color: $white;
