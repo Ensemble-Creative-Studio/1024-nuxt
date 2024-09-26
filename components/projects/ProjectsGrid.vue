@@ -74,9 +74,53 @@
 		})
 	}
 
+	const addVideoMobileAnimation = () => {
+		if (window.innerWidth <= 768) {
+			const items = $projectsGrid.value.querySelectorAll('.item');
+
+			const observer = new IntersectionObserver((entries) => {
+				entries.forEach(entry => {
+					const item = entry.target;
+					const video = item.querySelector('video');
+					const img = item.querySelector('img');
+
+					if (entry.isIntersecting) {
+						if (video) {
+							video.play();
+							video.style.visibility = 'visible';
+							video.style.opacity = '1';
+						}
+						if (img) {
+							img.style.filter = 'grayscale(0)';
+						}
+					} else {
+						if (video) {
+							video.pause();
+							video.currentTime = 0;
+							video.style.visibility = 'hidden';
+							video.style.opacity = '0';
+						}
+						if (img) {
+							img.style.filter = 'grayscale(100%)';
+						}
+					}
+				});
+			}, {
+				root: null,
+				rootMargin: '-13% 0px -45% 0px',
+				threshold: 0.5
+			});
+
+			items.forEach(item => {
+				observer.observe(item);
+			});
+		}
+	};
+
 	onMounted(() => {
 		showProjects()
 		addVideoHoverListeners()
+		addVideoMobileAnimation()
 	})
 
 	onBeforeUnmount(() => {
@@ -98,7 +142,7 @@
 		v-if="projects.length > 0"
 		ref="$projectsGrid"
 		:class="[
-			gridModeCols === 6 ? 'ProjectsGrid--six-items' : 'ProjectsGrid--four-items',
+			gridModeCols === 8 ? 'ProjectsGrid--eight-items' : gridModeCols === 6 ? 'ProjectsGrid--six-items' : 'ProjectsGrid--four-items', // Add new class for 8 columns
 			'ProjectsGrid',
 		]"
 	>
@@ -152,13 +196,22 @@
 <style lang="scss">
 	.ProjectsGrid {
 		display: grid;
-		grid-template-columns: repeat(4, 1fr);
+		grid-template-columns: repeat(4, 1fr); // Default to 4 columns
 		gap: 5rem 4rem;
 		padding: 0 2.5rem;
 		overflow: hidden;
 
 		@include viewport-480 {
 			padding: 0 1rem;
+			grid-template-columns: repeat(2, 1fr); // 2 columns on mobile
+		}
+
+		@include viewport-768 {
+			grid-template-columns: repeat(4, 1fr); // 4 columns on intermediate breakpoint
+		}
+
+		@media (max-width: 1285px) {
+			grid-template-columns: repeat(6, 1fr); // 6 columns on intermediate breakpoint under 1285px
 		}
 
 		.item {
@@ -209,21 +262,39 @@
 			}
 		}
 
+		&--eight-items {
+			grid-template-columns: repeat(8, 1fr); // 8 columns on desktop
+
+			@media (max-width: 1285px) {
+				grid-template-columns: repeat(6, 1fr); // 6 columns between 1285px and 992px
+			}
+
+			@include viewport-992 {
+				grid-template-columns: repeat(4, 1fr); // 4 columns on intermediate breakpoint
+			}
+
+			@include viewport-480 {
+				grid-template-columns: repeat(4, 1fr); // 2 columns on mobile
+			}
+		}
+
 		&--six-items {
 			grid-template-columns: repeat(6, 1fr);
 
 			@include viewport-992 {
-				// grid-template-columns: repeat(6, 1fr);
+				grid-template-columns: repeat(4, 1fr); // 4 columns on intermediate breakpoint
 			}
 
-			.item {
-				@include viewport-768 {
-					grid-column: auto / span 2;
-				}
+			@include viewport-480 {
+				grid-template-columns: repeat(4, 1fr); // 2 columns on mobile
+			}
+		}
 
-				@include viewport-480 {
-					grid-column: auto / span 3;
-				}
+		&--four-items {
+			grid-template-columns: repeat(4, 1fr);
+
+			@include viewport-480 {
+				grid-template-columns: repeat(4, 1fr); // 2 columns on mobile
 			}
 		}
 
