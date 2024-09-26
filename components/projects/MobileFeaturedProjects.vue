@@ -1,6 +1,7 @@
 <script setup>
 	import gsap from 'gsap'
 	import { ScrollTrigger } from 'gsap/ScrollTrigger'
+	import { useRouter } from 'vue-router'
 
 	const props = defineProps({
 		firstProject: {
@@ -17,9 +18,10 @@
 		}
 	})
 
-	// Animations
+	const router = useRouter()
 	const $ctx = ref()
 	const $mobileFeaturedProjects = ref()
+	const $bottomAnchor = ref()
 
 	const tl = gsap.timeline()
 
@@ -55,6 +57,15 @@
 						}
 					},
 				})
+			})
+
+			// Redirect to projects page when the bottom anchor is visible
+			ScrollTrigger.create({
+				trigger: $bottomAnchor.value,
+				start: 'top bottom',
+				onEnter: () => {
+					router.push({ name: 'projects' })
+				}
 			})
 		}, $mobileFeaturedProjects.value)
 	})
@@ -111,6 +122,8 @@
 			</div>
 			<h2 class="MobileFeaturedProject__title" v-html="project.title" />
 		</NuxtLink>
+		<!-- Detect the bottom of the page -->
+		<div ref="$bottomAnchor" class="bottom-anchor"></div>
 	</div>
 </template>
 
@@ -151,6 +164,7 @@
 
 				.MobileFeaturedProject__title {
 					opacity: 1;
+					font-size: 18px;
 				}
 			}
 
@@ -187,7 +201,7 @@
 
 			&__title {
 				margin: 1rem 0;
-				font-size: $mobile-h2;
+				font-size: 18px;
 				opacity: 0.35;
 				transition: opacity 0.3s ease-in-out;
 			}
@@ -213,5 +227,10 @@
 				text-underline-offset: 0.5rem;
 			}
 		}
+	}
+
+	.bottom-anchor {
+		height: 1px;
+		width: 100%;
 	}
 </style>

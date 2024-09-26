@@ -83,7 +83,7 @@
 
 	// Display mode
 	const displayMode = ref('grid')
-	const gridModeCols = ref(6)
+	const gridModeCols = ref(8) // Update default to 8 columns
 	const $projectsGrid = ref(null)
 	const $projectsList = ref(null)
 
@@ -193,7 +193,7 @@
 						displayMode === 'grid' && 'mobile-bar__grid--active',
 						'mobile-bar__grid',
 					]"
-					@click="setGridMode(4)"
+					@touchstart="setGridMode(4)"
 				>
 					Grid
 				</button>
@@ -202,7 +202,7 @@
 						displayMode === 'list' && 'mobile-bar__list--active',
 						'mobile-bar__list',
 					]"
-					@click="setListMode()"
+					@touchstart="setListMode()"
 				>
 					List
 				</button>
@@ -214,11 +214,11 @@
 					<li
 						:class="[
 							displayMode === 'grid'
-								&& gridModeCols === 6
+								&& gridModeCols === 8
 								&& 'display-mode__three-grid--active',
 							'display-mode__three-grid',
 						]"
-						@click="setGridMode(6)"
+						@click="setGridMode(8)"
 					>
 						<SixItemsGridIcon
 							:color="
@@ -317,6 +317,14 @@
 		stroke: white;
 	}
 
+	.display-mode__eight-grid svg {
+		stroke: #727272;
+	}
+
+	.display-mode__eight-grid--active.display-mode__eight-grid svg {
+		stroke: white;
+	}
+
 	.projects {
 		height: calc(100% - 5rem);
 		min-height: 100vh;
@@ -391,8 +399,8 @@
 			}
 
 			&__display-mode {
-				button:not(:first-child) {
-					margin-left: 2rem;
+				button {
+					padding: 2rem 0 2rem 2rem;
 				}
 			}
 
@@ -403,6 +411,9 @@
 			&__grid,
 			&__list {
 				color: $medium-grey;
+				padding: 1rem; // Augmente la zone de clic
+				min-width: 44px; // Taille minimale recommandée pour les éléments interactifs sur mobile
+				min-height: 44px;
 
 				&--active {
 					color: $white;
