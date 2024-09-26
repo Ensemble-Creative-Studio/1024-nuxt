@@ -193,7 +193,7 @@
 						displayMode === 'grid' && 'mobile-bar__grid--active',
 						'mobile-bar__grid',
 					]"
-					@click="setGridMode(4)"
+					@click.prevent="setGridMode(4)"
 				>
 					Grid
 				</button>
@@ -202,7 +202,7 @@
 						displayMode === 'list' && 'mobile-bar__list--active',
 						'mobile-bar__list',
 					]"
-					@click="setListMode()"
+					@click.prevent="setListMode()"
 				>
 					List
 				</button>
