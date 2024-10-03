@@ -355,7 +355,7 @@
 		}
 
 		.slider {
-			margin-top: 12rem;
+			margin-top: 6rem;
 
 			@include viewport-480 {
 				margin-top: 6rem;
@@ -372,7 +372,7 @@
 		}
 
 		.description {
-			margin-top: 12rem;
+			margin-top: 6rem;
 
 			@include viewport-480 {
 				margin-top: 6rem;
@@ -393,7 +393,7 @@
 		}
 
 		.in-between {
-			margin-top: 12rem;
+			margin-top: 6rem;
 
 			&__content {
 				grid-column: 2 / span 5;
@@ -489,7 +489,7 @@
 		}
 
 		.history {
-			margin-top: 12rem;
+			margin-top: 6rem;
 
 			@include viewport-480 {
 				margin-top: 6rem;
@@ -511,7 +511,7 @@
 		}
 
 		.team {
-			margin-top: 12rem;
+			margin-top: 6rem;
 
 			// font-weight: $extra-light;
 
@@ -552,7 +552,7 @@
 		}
 
 		.conclusion {
-			margin-top: 12rem;
+			margin-top: 6rem;
 			font-size: $desktop-h4;
 
 			// font-weight: $extra-light;
@@ -582,7 +582,7 @@
 		.awards,
 		.festivals {
 			padding-bottom: 10rem;
-			margin-top: 12rem;
+			margin-top: 6rem;
 
 			// font-weight: $extra-light;
 
