@@ -316,12 +316,25 @@
 				</li>
 			</ul>
 		</BottomAnchors>
+		<GridContainer>
+			<div class="FeaturedProject__footer">
+				<a href="/projects" >
+					All Projects
+				</a>
+			</div>
+		</GridContainer>
 	</div>
 </template>
 
 <style lang="scss" scoped>
 	.exhibitions p {
 		display: none !important;
+	}
+
+	.FeaturedProject__footer {
+		grid-column: 2 / -1;
+		font-size: 4rem;
+		margin-bottom: 200px;
 	}
 
 	.about {
@@ -529,6 +542,10 @@
 					padding: 0 1rem;
 				}
 
+				@include viewport-1200 {
+					grid-template-columns: 1fr;
+				}
+
 				.item {
 					grid-column: auto / span 4;
 
@@ -581,7 +598,7 @@
 		.exhibitions,
 		.awards,
 		.festivals {
-			padding-bottom: 10rem;
+			padding-bottom: 4rem;
 			margin-top: 6rem;
 
 			// font-weight: $extra-light;
