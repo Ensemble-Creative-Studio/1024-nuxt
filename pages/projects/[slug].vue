@@ -74,7 +74,8 @@
 	let trigger
 
 	const $heroTitle = ref(null)
-	const isTitleVisible = useState('isTitleVisible', () => true)
+	const $fixedTitle = ref(null)
+	const isTitleVisible = ref(true)
 	const currentProject = useState('currentProject', () => ({}))
 
 	function scrollToSection(section) {
@@ -139,6 +140,11 @@
 		const observer = new IntersectionObserver(
 			([entry]) => {
 				isTitleVisible.value = entry.isIntersecting
+				if (!isTitleVisible.value) {
+					gsap.to($fixedTitle.value, { opacity: 1, duration: 0.3 })
+				} else {
+					gsap.to($fixedTitle.value, { opacity: 0, duration: 0.3 })
+				}
 			},
 			{ threshold: 0 }
 		)
@@ -182,6 +188,9 @@
 				content="Project description"
 			/>
 		</Head>
+		<h1 ref="$fixedTitle" class="fixed-title">
+			{{ project.title }}
+		</h1>
 		<section
 			ref="$hero"
 			class="hero"
@@ -385,6 +394,18 @@
 <style lang="scss">
 	.project-page {
 		position: relative;
+
+		.fixed-title {
+			position: fixed;
+			top: 2rem;
+			left: 50%;
+			transform: translateX(-50%);
+			font-size: 2rem;
+			color: $white;
+			z-index: 100;
+			opacity: 0;
+			pointer-events: none;
+		}
 
 		.hero {
 			position: relative;
