@@ -544,6 +544,7 @@
 
 				@include viewport-1200 {
 					grid-template-columns: 1fr;
+					padding: 80px;
 				}
 
 				.item {
