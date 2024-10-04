@@ -6,6 +6,8 @@
 	function toggleNav() {
 		isNavActive.value = !isNavActive.value
 	}
+
+
 </script>
 
 <template>
@@ -52,14 +54,6 @@
 			svg {
 				width: 9rem;
 			}
-		}
-
-		.project-title {
-			position: absolute;
-			left: 50%;
-			transform: translateX(-50%);
-			font-size: 2rem;
-			color: $white;
 		}
 	}
 
@@ -144,12 +138,5 @@
 				}
 			}
 		}
-	}
-
-	.fade-enter-active, .fade-leave-active {
-		transition: opacity 0.3s ease;
-	}
-	.fade-enter-from, .fade-leave-to {
-		opacity: 0;
 	}
 </style>
