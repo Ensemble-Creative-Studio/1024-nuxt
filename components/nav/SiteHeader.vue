@@ -2,29 +2,15 @@
 	import { computed, watch } from 'vue'
 
 	const isNavActive = useState('isNavActive')
-	const isTitleVisible = useState('isTitleVisible', () => true)
-	const currentProject = useState('currentProject', () => ({}))
 
 	function toggleNav() {
 		isNavActive.value = !isNavActive.value
 	}
-
-	const showProjectTitle = computed(() => !isTitleVisible.value && currentProject.value.title)
-
-	// Ajoutez un watch pour forcer la mise à jour du composant
-	watch(isTitleVisible, (newValue) => {
-		console.log(`Le titre est maintenant ${newValue ? 'visible' : 'invisible'}`)
-	})
 </script>
 
 <template>
 	<header class="SiteHeader">
 		<SiteLogo />
-		<transition name="fade">
-			<h2 v-if="showProjectTitle" class="project-title">
-				{{ currentProject.title }}
-			</h2>
-		</transition>
 		<div
 			:class="[isNavActive && 'menu-icon--active', 'menu-icon']"
 			@click="toggleNav()"
