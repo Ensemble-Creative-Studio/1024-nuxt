@@ -1,5 +1,5 @@
 <script setup>
-	import { computed } from 'vue'
+	import { computed, watch } from 'vue'
 
 	const isNavActive = useState('isNavActive')
 	const isTitleVisible = useState('isTitleVisible', () => true)
@@ -10,6 +10,11 @@
 	}
 
 	const showProjectTitle = computed(() => !isTitleVisible.value && currentProject.value.title)
+
+	// Ajoutez un watch pour forcer la mise à jour du composant
+	watch(isTitleVisible, (newValue) => {
+		console.log(`Le titre est maintenant ${newValue ? 'visible' : 'invisible'}`)
+	})
 </script>
 
 <template>
