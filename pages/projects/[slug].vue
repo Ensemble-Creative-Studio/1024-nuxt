@@ -1,6 +1,7 @@
 <script setup>
 	import gsap from 'gsap'
 	import { ScrollTrigger } from 'gsap/ScrollTrigger'
+	import { ref, onMounted, onUnmounted } from 'vue'
 
 	const isMobile = shallowRef(false)
 
@@ -72,6 +73,10 @@
 
 	let trigger
 
+	const $heroTitle = ref(null)
+	const isTitleVisible = useState('isTitleVisible', () => true)
+	const currentProject = useState('currentProject', () => ({}))
+
 	function scrollToSection(section) {
 		let offset
 
@@ -130,6 +135,19 @@
 				link.setAttribute('target', '_blank')
 			})
 		})
+
+		const observer = new IntersectionObserver(
+			([entry]) => {
+				isTitleVisible.value = entry.isIntersecting
+			},
+			{ threshold: 0 }
+		)
+
+		if ($heroTitle.value) {
+			observer.observe($heroTitle.value)
+		}
+
+		currentProject.value = project.value
 	})
 
 	const handleResize = () => {
@@ -184,7 +202,7 @@
 				auto="format"
 				:q="75"
 			/>
-			<h1 class="hero__title">
+			<h1 ref="$heroTitle" class="hero__title">
 				{{ project.title }}
 			</h1>
 		</section>
@@ -386,7 +404,7 @@
 			}
 
 			&__title {
-				position: fixed;
+				position: absolute;
 				bottom: 1.5rem;
 				left: 2rem;
 				font-size: $desktop-h4;

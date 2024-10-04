@@ -1,14 +1,25 @@
 <script setup>
+	import { computed } from 'vue'
+
 	const isNavActive = useState('isNavActive')
+	const isTitleVisible = useState('isTitleVisible', () => true)
+	const currentProject = useState('currentProject', () => ({}))
 
 	function toggleNav() {
 		isNavActive.value = !isNavActive.value
 	}
+
+	const showProjectTitle = computed(() => !isTitleVisible.value && currentProject.value.title)
 </script>
 
 <template>
 	<header class="SiteHeader">
 		<SiteLogo />
+		<transition name="fade">
+			<h2 v-if="showProjectTitle" class="project-title">
+				{{ currentProject.title }}
+			</h2>
+		</transition>
 		<div
 			:class="[isNavActive && 'menu-icon--active', 'menu-icon']"
 			@click="toggleNav()"
@@ -50,6 +61,14 @@
 			svg {
 				width: 9rem;
 			}
+		}
+
+		.project-title {
+			position: absolute;
+			left: 50%;
+			transform: translateX(-50%);
+			font-size: 2rem;
+			color: $white;
 		}
 	}
 
@@ -134,5 +153,12 @@
 				}
 			}
 		}
+	}
+
+	.fade-enter-active, .fade-leave-active {
+		transition: opacity 0.3s ease;
+	}
+	.fade-enter-from, .fade-leave-to {
+		opacity: 0;
 	}
 </style>
