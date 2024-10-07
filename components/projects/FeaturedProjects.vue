@@ -85,7 +85,7 @@
 					start: 'top top',
 					end: 'bottom top',
 					pin: true,
-					pinSpacing: false, // Assurez-vous que c'est bien défini sur false
+					pinSpacing: false,
 					id: `pin-${i}`,
 					onUpdate: (self) => {
 						if (self.progress > 0.5) {
@@ -94,19 +94,14 @@
 							panel.classList.remove('off');
 						}
 
-						// Utiliser gsap.set pour une mise à jour immédiate de la position
+						// Title stick to the bottom of the image
 						if (title) {
 							const moveDistance = panel.offsetHeight;
 							gsap.set(title, {
 								y: -moveDistance * self.progress,
-								ease: 'none', // Assurez-vous que l'easing est défini sur 'none'
+								ease: 'none',
 							});
 
-							// // Animer l'opacité du titre pour qu'il apparaisse plus tard
-							// gsap.to(title, {
-							// 	opacity: self.progress > 0.75 ? 1 : 0, // Le titre du nouveau projet devient visible après 75% de progression
-							// 	duration: 0.1, // Durée de la transition d'opacité
-							// });
 						}
 					},
 				});
