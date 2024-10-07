@@ -309,36 +309,12 @@
 			</section>
 			<section ref="$credits" class="credits">
 				<GridContainer>
-					<header
-						class="credits__header"
-						:class="[!project.credits && 'credits__header--is-empty']"
-					>
-						<div>{{ project.title }}</div>
-						<span>1024 architecture</span>
-						<br><br>
-						<p v-if="project.credits">
-							{{ project.credits.text }}
-						</p>
-					</header>
-					<ul
-						v-if="project.credits"
-						class="credits__wrapper"
-					>
-						<li
-							v-for="item in project?.credits?.list"
-							:key="item._key"
-							class="item"
-						>
-							<a :href="item.role">
-								<h3 class="item__label">
-									{{ item.role }}
-								</h3>
-								<p class="item__text">
-									{{ item.text }}
-								</p>
-							</a>
-						</li>
-					</ul>
+				<header class="credits__header">
+					<p>Credits: </p>
+				</header>
+				<div v-if="project.credits" class="credits__content">
+					<SanityContent :blocks="project.credits" />
+				</div>
 				</GridContainer>
 			</section>
 			<section
@@ -636,7 +612,9 @@
 			}
 
 			&__header {
-				grid-column: 2 / -1;
+				grid-column: 2/span 6;
+				font-weight: bold;
+				font-size: 2rem;
 
 				&--is-empty {
 					padding-bottom: 6rem;
@@ -648,6 +626,25 @@
 
 				@include viewport-480 {
 					grid-column: 1 / -1;
+				}
+			}
+
+			&__content {
+				grid-column: 2/span 6;
+				// margin-top: 2rem;
+
+				@include viewport-480 {
+					grid-column: 1 / -1;
+					font-size: $mobile-text-read;
+				}
+
+				p, h4 {
+					margin-bottom: 1rem;
+				}
+
+				a {
+					display: inline;
+					text-decoration: underline;
 				}
 			}
 
