@@ -225,6 +225,7 @@
 				display: flex;
 				width: 100%;
 				padding: 1.5rem 2rem;
+				margin-top: 30px;
 
 				@include viewport-480 {
 					bottom: 1rem;
