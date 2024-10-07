@@ -78,38 +78,32 @@
 			})
 
 			panels.forEach((panel, i) => {
-				ScrollTrigger.create({
-					trigger: panel,
-					pin: true,
-					pinSpacing: false,
-					id: `pin-${ i }`,
-					onUpdate: (self) => {
-						if (self.progress > 0.5) {
-							panel.classList.add('off')
-						} else {
-							panel.classList.remove('off')
-						}
-					},
-				})
+				const title = panel.querySelector('.FeaturedProject__title');
 
 				ScrollTrigger.create({
 					trigger: panel,
-					start: 'top 99%', // Title appear when the panel is 1% visible
-					end: 'bottom 1%', // Title disappear when the panel is 1% visible
-					id: `title-${ i }`,
-					onEnter: () => {
-						if (panelTitles[ i ]) panelTitles[ i ].classList.add('FeaturedProject__title--active')
+					start: 'top top',
+					end: 'bottom top',
+					pin: true,
+					pinSpacing: false, // Assurez-vous que c'est bien défini sur false
+					id: `pin-${i}`,
+					onUpdate: (self) => {
+						if (self.progress > 0.5) {
+							panel.classList.add('off');
+						} else {
+							panel.classList.remove('off');
+						}
+
+						// Use gsap.set for immediate position update
+						if (title) {
+							const moveDistance = panel.offsetHeight;
+							gsap.set(title, {
+								y: -moveDistance * self.progress ,
+								ease: 'none', // Assurez-vous que l'easing est défini sur 'none'
+							});
+						}
 					},
-					onLeave: () => {
-						if (panelTitles[ i ]) panelTitles[ i ].classList.remove('FeaturedProject__title--active')
-					},
-					onEnterBack: () => {
-						if (panelTitles[ i ]) panelTitles[ i ].classList.add('FeaturedProject__title--active')
-					},
-					onLeaveBack: () => {
-						if (panelTitles[ i ]) panelTitles[ i ].classList.remove('FeaturedProject__title--active')
-					},
-				})
+				});
 			})
 		}, $featuredProjects.value)
 
@@ -173,15 +167,17 @@
 			v-for="project in projects"
 			:key="project._id"
 			:project="project"
-		/>
-		<div ref="allProjectFooter" class="FeaturedProject footer">
+		>
+			<h2 class="FeaturedProject__title">{{ project.title }}</h2>
+		</FeaturedProject>
+		<!-- <div ref="allProjectFooter" class="FeaturedProject footer">
 			<div class="backgroundBlack" />
 			<a href="/projects" class="FeaturedProject__title">
 				<div class="FeaturedProject__footer">
 					All Projects
 				</div>
 			</a>
-		</div>
+		</div> -->
 	</div>
 </template>
 
@@ -214,7 +210,7 @@
 	.FeaturedProjects {
 		.FeaturedProject {
 			position: relative;
-			height: 120vh;
+			height: 100vh;
 			transition: filter 0.5s ease-in-out;
 
 			@include viewport-480 {
@@ -237,16 +233,17 @@
 			}
 
 			&__title {
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				width: 100%;
+				padding: 1rem;
+				background-color: rgba(0, 0, 0, 0.5);
+				color: white;
 				font-size: $desktop-h4;
-				opacity: 0;
-				transition: 1s cubic-bezier(0.16, 1, 0.3, 1);
-				transition-property: opacity, transform;
-				transform: translateY(10rem);
-
-				&--active {
-					opacity: 1;
-					transform: translateY(0);
-				}
+				// transition: transform 0.1s ease-out;
+				transition: none;
+				transform: none;
 			}
 
 			&__thumbnail {
