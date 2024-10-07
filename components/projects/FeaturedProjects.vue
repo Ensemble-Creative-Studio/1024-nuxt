@@ -94,13 +94,19 @@
 							panel.classList.remove('off');
 						}
 
-						// Use gsap.set for immediate position update
+						// Utiliser gsap.set pour une mise à jour immédiate de la position
 						if (title) {
 							const moveDistance = panel.offsetHeight;
 							gsap.set(title, {
-								y: -moveDistance * self.progress ,
+								y: -moveDistance * self.progress,
 								ease: 'none', // Assurez-vous que l'easing est défini sur 'none'
 							});
+
+							// // Animer l'opacité du titre pour qu'il apparaisse plus tard
+							// gsap.to(title, {
+							// 	opacity: self.progress > 0.75 ? 1 : 0, // Le titre du nouveau projet devient visible après 75% de progression
+							// 	duration: 0.1, // Durée de la transition d'opacité
+							// });
 						}
 					},
 				});
@@ -238,10 +244,8 @@
 				left: 0;
 				width: 100%;
 				padding: 1rem;
-				background-color: rgba(0, 0, 0, 0.5);
 				color: white;
 				font-size: $desktop-h4;
-				// transition: transform 0.1s ease-out;
 				transition: none;
 				transform: none;
 			}
