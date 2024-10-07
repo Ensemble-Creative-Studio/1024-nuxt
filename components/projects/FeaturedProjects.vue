@@ -176,14 +176,14 @@
 		>
 			<h2 class="FeaturedProject__title">{{ project.title }}</h2>
 		</FeaturedProject>
-		<!-- <div ref="allProjectFooter" class="FeaturedProject footer">
+		<div ref="allProjectFooter" class="FeaturedProject footer">
 			<div class="backgroundBlack" />
 			<a href="/projects" class="FeaturedProject__title">
 				<div class="FeaturedProject__footer">
 					All Projects
 				</div>
 			</a>
-		</div> -->
+		</div>
 	</div>
 </template>
 
