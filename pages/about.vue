@@ -316,25 +316,12 @@
 				</li>
 			</ul>
 		</BottomAnchors>
-		<GridContainer>
-			<div class="FeaturedProject__footer">
-				<a href="/projects" >
-					All Projects
-				</a>
-			</div>
-		</GridContainer>
 	</div>
 </template>
 
 <style lang="scss" scoped>
 	.exhibitions p {
 		display: none !important;
-	}
-
-	.FeaturedProject__footer {
-		grid-column: 2 / -1;
-		font-size: 4rem;
-		margin-bottom: 200px;
 	}
 
 	.about {
@@ -368,7 +355,7 @@
 		}
 
 		.slider {
-			margin-top: 6rem;
+			margin-top: 12rem;
 
 			@include viewport-480 {
 				margin-top: 6rem;
@@ -385,7 +372,7 @@
 		}
 
 		.description {
-			margin-top: 6rem;
+			margin-top: 12rem;
 
 			@include viewport-480 {
 				margin-top: 6rem;
@@ -406,7 +393,7 @@
 		}
 
 		.in-between {
-			margin-top: 6rem;
+			margin-top: 12rem;
 
 			&__content {
 				grid-column: 2 / span 5;
@@ -502,7 +489,7 @@
 		}
 
 		.history {
-			margin-top: 6rem;
+			margin-top: 12rem;
 
 			@include viewport-480 {
 				margin-top: 6rem;
@@ -524,7 +511,7 @@
 		}
 
 		.team {
-			margin-top: 6rem;
+			margin-top: 12rem;
 
 			// font-weight: $extra-light;
 
@@ -540,11 +527,6 @@
 				@include viewport-480 {
 					row-gap: 6rem;
 					padding: 0 1rem;
-				}
-
-				@include viewport-1200 {
-					grid-template-columns: 1fr;
-					padding: 80px;
 				}
 
 				.item {
@@ -570,7 +552,7 @@
 		}
 
 		.conclusion {
-			margin-top: 6rem;
+			margin-top: 12rem;
 			font-size: $desktop-h4;
 
 			// font-weight: $extra-light;
@@ -599,8 +581,8 @@
 		.exhibitions,
 		.awards,
 		.festivals {
-			padding-bottom: 4rem;
-			margin-top: 6rem;
+			padding-bottom: 10rem;
+			margin-top: 12rem;
 
 			// font-weight: $extra-light;
 

@@ -1,13 +1,9 @@
 <script setup>
-	import { computed, watch } from 'vue'
-
 	const isNavActive = useState('isNavActive')
 
 	function toggleNav() {
 		isNavActive.value = !isNavActive.value
 	}
-
-
 </script>
 
 <template>
