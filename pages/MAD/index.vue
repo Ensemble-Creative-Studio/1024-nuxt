@@ -399,7 +399,7 @@
 
 			&__title {
 				// font-weight: $extra-light;
-				position: absolute;
+				position: fixed;
 				bottom: 1.5rem;
 				left: 2rem;
 				font-size: $desktop-h4;
