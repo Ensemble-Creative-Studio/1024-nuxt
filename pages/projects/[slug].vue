@@ -307,14 +307,18 @@
 					</ul>
 				</GridContainer>
 			</section>
-			<section ref="$credits" class="credits">
+			<section
+				v-if="project.credits"
+				ref="$credits"
+				class="credits"
+			>
 				<GridContainer>
-				<header class="credits__header">
-					<p>Credits: </p>
-				</header>
-				<div v-if="project.credits" class="credits__content">
-					<SanityContent :blocks="project.credits" />
-				</div>
+					<header class="credits__header">
+						<p>Credits: </p>
+					</header>
+					<div class="credits__content">
+						<SanityContent :blocks="project.credits" />
+					</div>
 				</GridContainer>
 			</section>
 			<section
@@ -542,6 +546,7 @@
 			&__wrapper {
 				grid-column: 1 / -1;
 				margin-top: 6rem;
+				margin-bottom: 6rem;
 				@include grid(12, 1fr, 1, 0);
 
 				.item {
@@ -602,11 +607,11 @@
 		}
 
 		.credits {
-			padding-bottom: 9rem;
-			margin-top: 9rem;
+			margin-bottom: 9rem;
+			margin-top: 4rem;
 
 			@include viewport-480 {
-				padding-bottom: 0;
+				margin-bottom: 6rem;
 				margin-top: 6rem;
 				font-size: $mobile-text-read;
 			}
@@ -625,7 +630,7 @@
 				}
 
 				@include viewport-480 {
-					grid-column: 1 / -1;
+					grid-column: 2 / -1;
 				}
 			}
 
@@ -634,7 +639,7 @@
 				// margin-top: 2rem;
 
 				@include viewport-480 {
-					grid-column: 1 / -1;
+					grid-column: 2 / -1;
 					font-size: $mobile-text-read;
 				}
 
@@ -673,7 +678,7 @@
 					}
 
 					@include viewport-480 {
-						grid-column: 1 / -1;
+						grid-column: 2 / -1;
 
 						&:not(:first-child) {
 							margin-top: 3rem;
@@ -685,7 +690,7 @@
 						color: $medium-grey;
 
 						@include viewport-480 {
-							grid-column: 1 / -1;
+							grid-column: 2 / -1;
 						}
 					}
 
@@ -693,7 +698,7 @@
 						grid-column: 1 / span 2;
 
 						@include viewport-480 {
-							grid-column: 1 / -1;
+							grid-column: 2 / -1;
 						}
 					}
 				}
