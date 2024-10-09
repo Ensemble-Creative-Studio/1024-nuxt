@@ -46,7 +46,7 @@
 <template>
 	<div class="index">
 		<Head>
-			<Title>1024</Title>
+			<Title>1024 Architecture</Title>
 			<Meta
 				name="description"
 				content="1024 architecture website"
