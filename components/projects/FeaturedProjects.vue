@@ -94,7 +94,7 @@
 							panel.classList.remove('off');
 						}
 
-						// Title stick to the bottom of the image
+						// Title stick to the bottom of the image and go up when scrolling
 						if (title) {
 							const moveDistance = panel.offsetHeight;
 							gsap.set(title, {
