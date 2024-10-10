@@ -117,21 +117,21 @@
 			})
 		})
 
-		const observer = new IntersectionObserver(
-			([entry]) => {
-				isTitleVisible.value = entry.isIntersecting
-				if (!isTitleVisible.value) {
-					gsap.to($fixedTitle.value, { opacity: 1, duration: 0.3 })
-				} else {
-					gsap.to($fixedTitle.value, { opacity: 0, duration: 0.3 })
-				}
-			},
-			{ threshold: 0 }
-		)
+		// const observer = new IntersectionObserver(
+		// 	([entry]) => {
+		// 		isTitleVisible.value = entry.isIntersecting
+		// 		if (!isTitleVisible.value) {
+		// 			gsap.to($fixedTitle.value, { opacity: 1, duration: 0.3 })
+		// 		} else {
+		// 			gsap.to($fixedTitle.value, { opacity: 0, duration: 0.3 })
+		// 		}
+		// 	},
+		// 	{ threshold: 0 }
+		// )
 
-		if ($heroTitle.value) {
-			observer.observe($heroTitle.value)
-		}
+		// if ($heroTitle.value) {
+		// 	observer.observe($heroTitle.value)
+		// }
 
 		currentProject.value = project.value
 	})
@@ -191,13 +191,13 @@
 				auto="format"
 				:q="75"
 			/>
-			<!-- <h1 ref="$heroTitle" class="hero__title">
-				{{ project.title }}
-			</h1> -->
 		</section>
 		<div class="main">
 			<section class="content">
 				<GridContainer>
+					<h1 ref="$heroTitle" class="content__title">
+						{{ project.title }}
+					</h1>
 					<div class="content__claim">
 						{{ project.claim }}
 					</div>
@@ -366,6 +366,7 @@
 			opacity: 100;
 			pointer-events: none;
 
+
 			@include viewport-480 {
 					top: 5px;
 				}
@@ -386,19 +387,6 @@
 				height: 100%;
 				height: 100vh;
 				object-fit: cover;
-			}
-
-			&__title {
-				position: absolute;
-				bottom: 1.5rem;
-				left: 2rem;
-				font-size: $desktop-h4;
-
-				@include viewport-480 {
-					bottom: 6rem;
-					left: 1rem;
-					font-size: $mobile-h2;
-				}
 			}
 		}
 
@@ -431,9 +419,20 @@
 		}
 
 		.content {
+			&__title {
+				grid-column: 1 / span 5;
+				margin-top: 2rem;
+				font-size: $desktop-h4;
+
+				@include viewport-480 {
+					margin-top: 1rem;
+					font-size: $mobile-h2;
+				}
+			}
+
 			&__claim {
 				grid-column: 2 / span 5;
-				margin-top: 6rem;
+				margin-top: 2rem;
 				font-size: $desktop-h4;
 
 				@include viewport-1200 {
