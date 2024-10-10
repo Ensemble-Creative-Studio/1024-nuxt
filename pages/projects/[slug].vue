@@ -411,8 +411,8 @@
 			}
 		}
 
-		.item__inner li.vertical:nth-child(1) {
-			margin-top: 12rem;
+		.item__inner li.vertical {
+			margin-top: 6rem;
 			@include viewport-480 {
 				padding: 1rem;
 			}
@@ -532,6 +532,10 @@
 				margin-bottom: 6rem;
 				@include grid(12, 1fr, 1, 0);
 
+				@include viewport-480 {
+						margin-top: 0;
+					}
+
 				.item {
 					&--media,
 					&--video {
@@ -563,28 +567,26 @@
 					}
 
 					&:not(:first-child) {
-						margin-top: 12rem;
+						margin-top: 6rem;
 
 						@include viewport-480 {
-							margin-top: 6rem;
+							margin-top: 3rem;
 						}
 					}
 
-					&__inner {
-						li {
-							&:not(:first-child) {
-								margin-top: 12rem;
+					// &__inner {
+					// 	li {
+					// 			margin-top: 6rem;
 
-								@include viewport-768 {
-									margin-top: 9rem;
-								}
+					// 			@include viewport-768 {
+					// 				margin-top: 9rem;
+					// 			}
 
-								@include viewport-480 {
-									margin-top: 6rem;
-								}
-							}
-						}
-					}
+					// 			@include viewport-480 {
+					// 				margin-top: 6rem;
+					// 			}
+					// 	}
+					// }
 				}
 			}
 		}
