@@ -98,26 +98,6 @@
 	}
 
 	onMounted(() => {
-		let mm = gsap.matchMedia()
-
-		mm.add('(min-width: 481px)', () => {
-			trigger = ScrollTrigger.create({
-				start: '50%',
-				trigger: $hero.value,
-				onEnter: () => {
-					gsap.to($anchors.value.$el, {
-						y: 0,
-						duration: 0.5,
-					})
-				},
-				onLeaveBack: () => {
-					gsap.to($anchors.value.$el, {
-						y: 50,
-						duration: 0.5,
-					})
-				},
-			})
-		})
 
 		window.addEventListener('resize', handleResize)
 
@@ -211,9 +191,9 @@
 				auto="format"
 				:q="75"
 			/>
-			<h1 ref="$heroTitle" class="hero__title">
+			<!-- <h1 ref="$heroTitle" class="hero__title">
 				{{ project.title }}
-			</h1>
+			</h1> -->
 		</section>
 		<div class="main">
 			<section class="content">
@@ -383,8 +363,12 @@
 			font-size: 2rem;
 			color: $white;
 			z-index: 100;
-			opacity: 0;
+			opacity: 100;
 			pointer-events: none;
+
+			@include viewport-480 {
+					top: 5px;
+				}
 		}
 
 		.hero {
