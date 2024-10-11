@@ -134,6 +134,12 @@
 		// }
 
 		currentProject.value = project.value
+
+		// Sélectionner tous les liens dans la section des crédits
+		const creditsLinks = document.querySelectorAll('.credits__content a')
+		creditsLinks.forEach(link => {
+			link.setAttribute('target', '_blank')
+		})
 	})
 
 	const handleResize = () => {
