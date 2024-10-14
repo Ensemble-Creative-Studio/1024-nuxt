@@ -21,12 +21,11 @@
 	const router = useRouter()
 	const $ctx = ref()
 	const $mobileFeaturedProjects = ref()
-	const $bottomAnchor = ref()
-
 	const tl = gsap.timeline()
 
 	onMounted(() => {
 		setupScrollTriggers()
+		setupScrollRedirection()
 	})
 
 	onBeforeUnmount(() => {
@@ -65,15 +64,28 @@
 				},
 			})
 
-			ScrollTrigger.create({
-				trigger: $bottomAnchor.value,
-				start: 'top bottom',
-				onEnter: () => {
+		}, $mobileFeaturedProjects.value)
+	}
+
+
+	const setupScrollRedirection = () => {
+		const observer = new IntersectionObserver((entries) => {
+			entries.forEach(entry => {
+				if (entry.isIntersecting) {
 					router.push({ name: 'projects' })
 				}
 			})
+		}, {
+			root: null,
+			threshold: 0.1
+		})
 
-		}, $mobileFeaturedProjects.value)
+		const bottomAnchor = $mobileFeaturedProjects.value.querySelector('.bottom-anchor')
+		if (bottomAnchor) {
+			observer.observe(bottomAnchor)
+		} else {
+			console.error('bottom-anchor not found')
+		}
 	}
 
 	watch(() => props.firstProject, () => {
@@ -85,7 +97,6 @@
 		return props.baseline.split(' ')
 	})
 
-	// Suppression de totalProjects
 </script>
 
 <template>
@@ -126,6 +137,7 @@
 				{{ word }}{{ index !== splitBaseline.length - 1 ? ' ' : '' }}
 			</span>
 		</h1>
+
 		<div ref="$bottomAnchor" class="bottom-anchor"></div>
 	</div>
 </template>
@@ -144,7 +156,7 @@
 			max-width: 22ch;
 			padding-top: 1rem;
 			font-size: $mobile-h4;
-			margin-bottom: 40px;
+			margin-bottom: 12rem;
 
 			&__chunk {
 				opacity: 0;
@@ -159,9 +171,9 @@
 			position: relative;
 			height: 100%;
 			margin-top: 4rem;
+			margin-bottom: 4rem;
 			background-color: $black;
 			transition: filter 0.3s ease-in-out;
-			padding-bottom: 40px;
 
 				.MobileFeaturedProject__title {
 					opacity: 1;
@@ -230,7 +242,7 @@
 	}
 
 	.bottom-anchor {
-		height: 1px;
+		height: 10px;
 		width: 100%;
 	}
 </style>
