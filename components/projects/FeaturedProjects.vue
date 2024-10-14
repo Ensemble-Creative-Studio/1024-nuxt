@@ -21,10 +21,6 @@
 			type: String,
 			required: true,
 		},
-		projects: {
-			type: Array,
-			required: true,
-		}
 	})
 
 	const handleScroll = () => {
@@ -164,13 +160,6 @@
 				</h1>
 			</GridContainer>
 		</div>
-		<FeaturedProject
-			v-for="project in projects"
-			:key="project._id"
-			:project="project"
-		>
-			<h2 class="FeaturedProject__title">{{ project.title }}</h2>
-		</FeaturedProject>
 		<div ref="allProjectFooter" class="FeaturedProject footer">
 			<div class="backgroundBlack" />
 			<a href="/projects" class="FeaturedProject__title">

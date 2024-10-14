@@ -3,6 +3,8 @@
 	import { ScrollTrigger } from 'gsap/ScrollTrigger'
 	import { useRouter } from 'vue-router'
 
+	gsap.registerPlugin(ScrollTrigger)
+
 	const props = defineProps({
 		firstProject: {
 			type: Object,
@@ -11,11 +13,8 @@
 		baseline: {
 			type: String,
 			required: true,
-		},
-		projects: {
-			type: Array,
-			required: true,
 		}
+
 	})
 
 	const router = useRouter()
@@ -26,27 +25,26 @@
 	const tl = gsap.timeline()
 
 	onMounted(() => {
-		$ctx.value = gsap.context((self) => {
-			const chunks = self.selector('.title__chunk')
+			$ctx.value = gsap.context((self) => {
+				const chunks = self.selector('.title__chunk')
 
-			for (let i = chunks.length - 1; i > 0; i--) {
-				const j = Math.floor(Math.random() * (i + 1))
-				;[ chunks[ i ], chunks[ j ] ] = [ chunks[ j ], chunks[ i ] ]
-			}
+				for (let i = chunks.length - 1; i > 0; i--) {
+					const j = Math.floor(Math.random() * (i + 1))
+					;[ chunks[ i ], chunks[ j ] ] = [ chunks[ j ], chunks[ i ] ]
+				}
 
-			tl.to(chunks, {
-				duration: 2.5,
-				autoAlpha: 1,
-				ease: 'power2.out',
-				stagger: 0.03,
-			})
+				tl.to(chunks, {
+					duration: 2.5,
+					autoAlpha: 1,
+					ease: 'power2.out',
+					stagger: 0.03,
+				})
 
-			const panels = self.selector('.MobileFeaturedProject')
+				const panel = self.selector('.MobileFeaturedProject')
 
-			panels.forEach((panel, i) => {
 				ScrollTrigger.create({
 					trigger: panel,
-					id: `panel-${ i }`,
+					id: `panel-0`,
 					onUpdate: (self) => {
 						if (self.progress > 0.3) {
 							panel.classList.add('visible')
@@ -57,33 +55,57 @@
 						}
 					},
 				})
-			})
 
-			// Redirect to projects page when the bottom anchor is visible
-			ScrollTrigger.create({
-				trigger: $bottomAnchor.value,
-				start: 'top bottom',
-				onEnter: () => {
-					router.push({ name: 'projects' })
+				// Assurez-vous que $bottomAnchor est bien défini
+				if ($bottomAnchor.value) {
+					// Redirection vers la page /projets lorsque l'ancre du bas est visible
+					ScrollTrigger.create({
+						trigger: $bottomAnchor.value,
+						start: 'top bottom',
+						onEnter: () => {
+							router.push({ name: 'projects' })
+						}
+					})
 				}
-			})
-		}, $mobileFeaturedProjects.value)
+			}, $mobileFeaturedProjects.value)
 	})
 
 	const splitBaseline = computed(() => {
 		return props.baseline.split(' ')
 	})
 
-	const totalProjects = [ props.firstProject, ...props.projects ]
-
-	onBeforeUnmount(() => {
-		$ctx.value.revert()
-		ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
-	})
+	// Suppression de totalProjects
 </script>
 
 <template>
 	<div ref="$mobileFeaturedProjects" class="MobileFeaturedProjects">
+		<NuxtLink
+			:to="{
+				name: 'projects-slug',
+				params: { slug: props.firstProject.slug.current },
+			}"
+			class="MobileFeaturedProject"
+		>
+			<div class="MobileFeaturedProject__overlay" />
+			<div class="MobileFeaturedProject__thumbnail">
+				<video
+					v-if="props.firstProject.mainVideoUrl"
+					:src="props.firstProject.mainVideoUrl"
+					autoplay
+					muted
+					loop
+					playsinline
+					webkit-playsinline
+				/>
+				<SanityImage
+					v-else
+					:asset-id="props.firstProject.mainImage.asset._ref"
+					auto="format"
+					:q="75"
+				/>
+			</div>
+			<h2 class="MobileFeaturedProject__title" v-html="props.firstProject.title" />
+		</NuxtLink>
 		<h1 class="title">
 			<span
 				v-for="(word, index) in splitBaseline"
@@ -93,35 +115,6 @@
 				{{ word }}{{ index !== splitBaseline.length - 1 ? ' ' : '' }}
 			</span>
 		</h1>
-		<NuxtLink
-			v-for="project in totalProjects"
-			:key="project._id"
-			:to="{
-				name: 'projects-slug',
-				params: { slug: project.slug.current },
-			}"
-			class="MobileFeaturedProject"
-		>
-			<div class="MobileFeaturedProject__overlay" />
-			<div class="MobileFeaturedProject__thumbnail">
-				<video
-					v-if="project.mainVideoUrl"
-					:src="project.mainVideoUrl"
-					autoplay
-					muted
-					loop
-					playsinline
-					webkit-playsinline
-				/>
-				<SanityImage
-					v-else
-					:asset-id="project.mainImage.asset._ref"
-					auto="format"
-					:q="75"
-				/>
-			</div>
-			<h2 class="MobileFeaturedProject__title" v-html="project.title" />
-		</NuxtLink>
 		<!-- Detect the bottom of the page -->
 		<div ref="$bottomAnchor" class="bottom-anchor"></div>
 	</div>
@@ -139,7 +132,7 @@
 		.title {
 			grid-column: 1 / span 10;
 			max-width: 22ch;
-			padding-top: 6rem;
+			padding-top: 1rem;
 			font-size: $mobile-h4;
 
 			&__chunk {
@@ -156,17 +149,14 @@
 			height: 100%;
 			margin-top: 4rem;
 			background-color: $black;
-			filter: grayscale(100%);
 			transition: filter 0.3s ease-in-out;
-
-			&.visible {
-				filter: none;
+			padding-bottom: 40px;
 
 				.MobileFeaturedProject__title {
 					opacity: 1;
 					font-size: 18px;
 				}
-			}
+
 
 			&__overlay {
 				position: absolute;
@@ -202,7 +192,6 @@
 			&__title {
 				margin: 1rem 0;
 				font-size: 18px;
-				opacity: 0.35;
 				transition: opacity 0.3s ease-in-out;
 			}
 		}
@@ -230,7 +219,7 @@
 	}
 
 	.bottom-anchor {
-		height: 1px;
+		height: 30px;
 		width: 100%;
 	}
 </style>
