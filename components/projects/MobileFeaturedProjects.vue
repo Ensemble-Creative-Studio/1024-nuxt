@@ -2,6 +2,7 @@
 	import gsap from 'gsap'
 	import { ScrollTrigger } from 'gsap/ScrollTrigger'
 	import { useRouter } from 'vue-router'
+	import { onMounted, onBeforeUnmount, watch } from 'vue'
 
 	gsap.registerPlugin(ScrollTrigger)
 
@@ -25,49 +26,62 @@
 	const tl = gsap.timeline()
 
 	onMounted(() => {
-			$ctx.value = gsap.context((self) => {
-				const chunks = self.selector('.title__chunk')
+		setupScrollTriggers()
+	})
 
-				for (let i = chunks.length - 1; i > 0; i--) {
-					const j = Math.floor(Math.random() * (i + 1))
-					;[ chunks[ i ], chunks[ j ] ] = [ chunks[ j ], chunks[ i ] ]
-				}
+	onBeforeUnmount(() => {
+		ScrollTrigger.getAll().forEach(trigger => trigger.kill())
+	})
 
-				tl.to(chunks, {
-					duration: 2.5,
-					autoAlpha: 1,
-					ease: 'power2.out',
-					stagger: 0.03,
-				})
+	const setupScrollTriggers = () => {
+		$ctx.value = gsap.context((self) => {
+			const chunks = self.selector('.title__chunk')
 
-				const panel = self.selector('.MobileFeaturedProject')
+			for (let i = chunks.length - 1; i > 0; i--) {
+				const j = Math.floor(Math.random() * (i + 1))
+				;[ chunks[ i ], chunks[ j ] ] = [ chunks[ j ], chunks[ i ] ]
+			}
 
+			tl.to(chunks, {
+				duration: 2.5,
+				autoAlpha: 1,
+				ease: 'power2.out',
+				stagger: 0.03,
+			})
+
+			const panel = self.selector('.MobileFeaturedProject')
+
+			ScrollTrigger.create({
+				trigger: panel,
+				id: `panel-0`,
+				onUpdate: (self) => {
+					if (self.progress > 0.3) {
+						panel.classList.add('visible')
+					}
+
+					if (self.progress > 0.8 || self.progress < 0.3) {
+						panel.classList.remove('visible')
+					}
+				},
+			})
+
+			// Assurez-vous que $bottomAnchor est bien défini
+			if ($bottomAnchor.value) {
+				// Redirection vers la page /projets lorsque l'ancre du bas est visible
 				ScrollTrigger.create({
-					trigger: panel,
-					id: `panel-0`,
-					onUpdate: (self) => {
-						if (self.progress > 0.3) {
-							panel.classList.add('visible')
-						}
-
-						if (self.progress > 0.8 || self.progress < 0.3) {
-							panel.classList.remove('visible')
-						}
-					},
+					trigger: $bottomAnchor.value,
+					start: 'top bottom',
+					onEnter: () => {
+						router.push({ name: 'projects' })
+					}
 				})
+			}
+		}, $mobileFeaturedProjects.value)
+	}
 
-				// Assurez-vous que $bottomAnchor est bien défini
-				if ($bottomAnchor.value) {
-					// Redirection vers la page /projets lorsque l'ancre du bas est visible
-					ScrollTrigger.create({
-						trigger: $bottomAnchor.value,
-						start: 'top bottom',
-						onEnter: () => {
-							router.push({ name: 'projects' })
-						}
-					})
-				}
-			}, $mobileFeaturedProjects.value)
+	watch(() => props.firstProject, () => {
+		ScrollTrigger.getAll().forEach(trigger => trigger.kill())
+		setupScrollTriggers()
 	})
 
 	const splitBaseline = computed(() => {
