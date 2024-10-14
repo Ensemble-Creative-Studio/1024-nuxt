@@ -65,17 +65,7 @@
 				},
 			})
 
-			// Assurez-vous que $bottomAnchor est bien défini
-			if ($bottomAnchor.value) {
-				// Redirection vers la page /projets lorsque l'ancre du bas est visible
-				ScrollTrigger.create({
-					trigger: $bottomAnchor.value,
-					start: 'top bottom',
-					onEnter: () => {
-						router.push({ name: 'projects' })
-					}
-				})
-			}
+
 		}, $mobileFeaturedProjects.value)
 	}
 
@@ -129,8 +119,6 @@
 				{{ word }}{{ index !== splitBaseline.length - 1 ? ' ' : '' }}
 			</span>
 		</h1>
-		<!-- Detect the bottom of the page -->
-		<div ref="$bottomAnchor" class="bottom-anchor"></div>
 	</div>
 </template>
 
@@ -148,6 +136,7 @@
 			max-width: 22ch;
 			padding-top: 1rem;
 			font-size: $mobile-h4;
+			margin-bottom: 40px;
 
 			&__chunk {
 				opacity: 0;
@@ -233,7 +222,7 @@
 	}
 
 	.bottom-anchor {
-		height: 30px;
+		height: 1px;
 		width: 100%;
 	}
 </style>
