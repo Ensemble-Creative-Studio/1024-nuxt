@@ -65,6 +65,13 @@
 				},
 			})
 
+			ScrollTrigger.create({
+				trigger: $bottomAnchor.value,
+				start: 'top bottom',
+				onEnter: () => {
+					router.push({ name: 'projects' })
+				}
+			})
 
 		}, $mobileFeaturedProjects.value)
 	}
@@ -119,6 +126,7 @@
 				{{ word }}{{ index !== splitBaseline.length - 1 ? ' ' : '' }}
 			</span>
 		</h1>
+		<div ref="$bottomAnchor" class="bottom-anchor"></div>
 	</div>
 </template>
 
