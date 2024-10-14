@@ -117,10 +117,55 @@
 		}
 	};
 
+	const animateLastTwoVideos = () => {
+		const videos = Array.from($projectsGrid.value.querySelectorAll('.item video')).slice(-2);
+
+		videos.forEach((video, index) => {
+			video.setAttribute('data-id', `video-${index + 1}`);
+		});
+
+		const observer = new IntersectionObserver((entries) => {
+			entries.forEach(entry => {
+				const video = entry.target;
+				const img = video.closest('.item').querySelector('img');
+
+				if (entry.isIntersecting) {
+						if (video) {
+							video.play();
+							video.style.visibility = 'visible';
+							video.style.opacity = '1';
+						}
+						if (img) {
+							img.style.filter = 'grayscale(0)';
+						}
+					} else {
+						if (video) {
+							video.pause();
+							video.currentTime = 0;
+							video.style.visibility = 'hidden';
+							video.style.opacity = '0';
+						}
+						if (img) {
+							img.style.filter = 'grayscale(100%)';
+						}
+					}
+			});
+		}, {
+			root: null,
+			rootMargin: '0px',
+			threshold: 0.5
+		});
+
+		videos.forEach(video => {
+				observer.observe(video);
+			});
+	};
+
 	onMounted(() => {
 		showProjects()
 		addVideoHoverListeners()
 		addVideoMobileAnimation()
+		animateLastTwoVideos()
 	})
 
 	onBeforeUnmount(() => {

@@ -421,6 +421,7 @@
 		.item__inner {
 			display: flex;
 			justify-content: center;
+			row-gap: 20px;
 		}
 
 		.item__inner li {

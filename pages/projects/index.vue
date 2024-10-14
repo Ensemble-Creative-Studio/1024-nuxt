@@ -332,6 +332,7 @@
 		.ProjectsGrid {
 			padding-bottom: 7rem;
 			padding-top: 15rem;
+			padding-bottom: 30rem;
 
 			@include viewport-480 {
 				padding-top: 15rem;
