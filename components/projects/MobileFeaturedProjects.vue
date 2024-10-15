@@ -156,6 +156,7 @@
 			padding-top: 1rem;
 			font-size: $mobile-h4;
 			margin-bottom: 12rem;
+			margin-left: 1rem;
 
 			&__chunk {
 				opacity: 0;
@@ -211,7 +212,7 @@
 			}
 
 			&__title {
-				margin: 1rem 0;
+				margin: 1rem;
 				font-size: 18px;
 				transition: opacity 0.3s ease-in-out;
 			}
