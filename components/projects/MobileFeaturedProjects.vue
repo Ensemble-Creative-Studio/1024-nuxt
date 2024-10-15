@@ -144,7 +144,6 @@
 
 <style lang="scss">
 	.MobileFeaturedProjects {
-		padding: 0 1rem;
 
 		.GridContainer {
 			align-items: center;
@@ -197,8 +196,7 @@
 			&__thumbnail {
 				position: relative;
 				width: 100%;
-				height: 100%;
-				height: 0;
+				height: 100dvh;
 				padding-top: calc(4.4 / 3.6 * 100%);
 
 				img,
@@ -242,7 +240,9 @@
 	}
 
 	.bottom-anchor {
+		margin-top: 180px;
 		height: 10px;
 		width: 100%;
 	}
+
 </style>
