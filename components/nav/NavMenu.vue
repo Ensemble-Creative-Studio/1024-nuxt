@@ -65,6 +65,9 @@
 				<li class="address__item">
 					{{ navMenu.address.city }}
 				</li>
+				<li class="address__item">
+					{{ navMenu.phoneNumber }}
+				</li>
 			</ul>
 			<ul class="annex">
 				<li class="annex__item">
