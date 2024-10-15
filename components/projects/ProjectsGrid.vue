@@ -117,48 +117,39 @@
 		}
 	};
 
+	// Animer les deux dernières vidéos car elles n'iront jamais dans l'IntersectionObserver car trop basse
 	const animateLastTwoVideos = () => {
-		const videos = Array.from($projectsGrid.value.querySelectorAll('.item video')).slice(-2);
+		const items = Array.from($projectsGrid.value.querySelectorAll('.item'));
+		const lastTwoItems = items.slice(-2);
 
-		videos.forEach((video, index) => {
-			video.setAttribute('data-id', `video-${index + 1}`);
+		lastTwoItems.forEach((item, index) => {
+			item.setAttribute('data-id', `item-${index + 1}`);
 		});
 
 		const observer = new IntersectionObserver((entries) => {
 			entries.forEach(entry => {
-				const video = entry.target;
-				const img = video.closest('.item').querySelector('img');
-
+				const img = entry.target.querySelector('img');
 				if (entry.isIntersecting) {
-						if (video) {
-							video.play();
-							video.style.visibility = 'visible';
-							video.style.opacity = '1';
-						}
-						if (img) {
+					const itemId = entry.target.getAttribute('data-id');
+					if (img) {
+						setTimeout(() => {
 							img.style.filter = 'grayscale(0)';
-						}
-					} else {
-						if (video) {
-							video.pause();
-							video.currentTime = 0;
-							video.style.visibility = 'hidden';
-							video.style.opacity = '0';
-						}
-						if (img) {
-							img.style.filter = 'grayscale(100%)';
-						}
+						}, 300); // Délai de 0.3 secondes
 					}
+				} else {
+					if (img) {
+						img.style.filter = 'grayscale(100%)';
+					}
+				}
 			});
 		}, {
 			root: null,
-			rootMargin: '0px',
 			threshold: 0.5
 		});
 
-		videos.forEach(video => {
-				observer.observe(video);
-			});
+		lastTwoItems.forEach(item => {
+			observer.observe(item);
+		});
 	};
 
 	onMounted(() => {
