@@ -145,7 +145,6 @@
 			ref="$video"
 			:src="vimeoUrl"
 			class="video"
-			crossorigin="anonymous"
 			playsinline
 			webkit-playsinline
 			@click="onVisualClick"

@@ -207,7 +207,6 @@
 							:src="item.thumbnailVideoUrl"
 							muted
 							loop
-							crossorigin="anonymous"
 							playsinline
 							webkit-playsinline
 							preload="none"
