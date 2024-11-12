@@ -242,7 +242,7 @@
 		}
 
 		@include viewport-768 {
-			grid-template-columns: repeat(4, 1fr); // 4 columns on intermediate breakpoint
+			grid-template-columns: repeat(4, 1fr); // 4 columns on intermediate breakpoint (tablet)
 		}
 
 		@media (max-width: 1285px) {
