@@ -1,6 +1,7 @@
 <script setup>
 	import gsap from 'gsap'
 	import { ScrollTrigger } from 'gsap/ScrollTrigger'
+	import { ref, onMounted, onUnmounted, computed } from 'vue'
 
 	const isMobile = shallowRef(false)
 
@@ -71,6 +72,9 @@
 	const $description = ref()
 	const $gallery = ref()
 	const $credits = ref()
+	const hasScrolledPastHero = ref(false)
+	const isTitleVisible = ref(true)
+	const $heroTitle = ref()
 
 	function scrollToSection(section) {
 		let offset
@@ -112,6 +116,38 @@
 				},
 			})
 		})
+
+		const observer = new IntersectionObserver(
+			([entry]) => {
+				isTitleVisible.value = entry.isIntersecting
+
+				if (!entry.isIntersecting && hasScrolledPastHero.value) {
+					gsap.to($fixedTitle.value, {
+						opacity: 1,
+						duration: 0.3,
+						delay: 0.1
+					})
+				} else {
+					gsap.to($fixedTitle.value, {
+						opacity: 0,
+						duration: 0.3,
+						delay: 0.1
+					})
+				}
+			},
+			{
+				threshold: 0,
+				rootMargin: "-10% 0px"
+			}
+		)
+
+		window.addEventListener('scroll', () => {
+			hasScrolledPastHero.value = window.scrollY > window.innerHeight
+		})
+
+		if ($heroTitle.value) {
+			observer.observe($heroTitle.value)
+		}
 
 		const itemTextElements = document.querySelectorAll('.item__text')
 
@@ -162,6 +198,9 @@
 		})
 
 		window.removeEventListener('resize', handleResize)
+		window.removeEventListener('scroll', () => {
+			hasScrolledPastHero.value = window.scrollY > window.innerHeight
+		})
 	})
 </script>
 
@@ -177,6 +216,13 @@
 				content="Project description"
 			/>
 		</Head>
+		<h1
+			ref="$fixedTitle"
+			class="fixed-title"
+			:class="{ 'is-visible': !isTitleVisible && hasScrolledPastHero }"
+		>
+			{{ project.title }}
+		</h1>
 		<section
 			ref="$hero"
 			class="hero"
@@ -198,13 +244,13 @@
 				auto="format"
 				:q="75"
 			/>
-			<h1 class="hero__title">
-				{{ project.title }}
-			</h1>
 		</section>
 		<div class="main">
 			<section class="content">
 				<GridContainer>
+					<h1 ref="$heroTitle" class="content__title">
+						{{ project.title }}
+					</h1>
 					<div class="content__claim">
 						{{ project.claim }}
 					</div>
@@ -380,6 +426,26 @@
 	.project-page {
 		position: relative;
 
+		.fixed-title {
+			position: fixed;
+			top: 2rem;
+			left: 50%;
+			transform: translateX(-50%);
+			font-size: 2rem;
+			color: $white;
+			z-index: 100;
+			opacity: 0;
+			pointer-events: none;
+
+			&.is-visible {
+				opacity: 1;
+			}
+
+			@include viewport-480 {
+					top: 5px;
+				}
+		}
+
 		.hero {
 			position: relative;
 			height: 100vh;
@@ -444,12 +510,22 @@
 		// }
 
 		.content {
+			&__title {
+				grid-column: 1 / span 5;
+				margin-top: 2rem;
+				font-size: $desktop-h4;
+
+				@include viewport-480 {
+					margin-top: 1rem;
+					font-size: $mobile-h2;
+				}
+			}
 			&__claim {
 				grid-column: 2 / span 5;
 
 				// font-weight: $extra-light;
 				margin-top: 6rem;
-				font-size: $desktop-h4;
+				font-size: 3rem;
 
 				@include viewport-1200 {
 					grid-column: 2 / span 8;

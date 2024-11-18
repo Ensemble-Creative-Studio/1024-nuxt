@@ -20,6 +20,7 @@ body {
   font-size: $desktop-default-text;
   font-family: $neue-haas-grotesk;
   font-weight: 400;
+  overscroll-behavior: none;
   // font-feature-settings: 'ss02', 'ss06', 'ss07', 'ss08', 'ss09', 'ss11', 'ss12';
 
   @include viewport-480 {

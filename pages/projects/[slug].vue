@@ -1,7 +1,7 @@
 <script setup>
 	import gsap from 'gsap'
 	import { ScrollTrigger } from 'gsap/ScrollTrigger'
-	import { ref, onMounted, onUnmounted } from 'vue'
+	import { ref, onMounted, onUnmounted, computed } from 'vue'
 
 	const isMobile = shallowRef(false)
 
@@ -76,6 +76,7 @@
 	const $heroTitle = ref(null)
 	const $fixedTitle = ref(null)
 	const isTitleVisible = ref(true)
+	const hasScrolledPastHero = ref(false)
 	const currentProject = useState('currentProject', () => ({}))
 
 	function scrollToSection(section) {
@@ -117,21 +118,25 @@
 			})
 		})
 
-		// const observer = new IntersectionObserver(
-		// 	([entry]) => {
-		// 		isTitleVisible.value = entry.isIntersecting
-		// 		if (!isTitleVisible.value) {
-		// 			gsap.to($fixedTitle.value, { opacity: 1, duration: 0.3 })
-		// 		} else {
-		// 			gsap.to($fixedTitle.value, { opacity: 0, duration: 0.3 })
-		// 		}
-		// 	},
-		// 	{ threshold: 0 }
-		// )
+		const observer = new IntersectionObserver(
+			([entry]) => {
+				isTitleVisible.value = entry.isIntersecting
+				if (!isTitleVisible.value && hasScrolledPastHero.value) {
+					gsap.to($fixedTitle.value, { opacity: 1, duration: 0.3 })
+				} else {
+					gsap.to($fixedTitle.value, { opacity: 0, duration: 0.3 })
+				}
+			},
+			{ threshold: 0 }
+		)
 
-		// if ($heroTitle.value) {
-		// 	observer.observe($heroTitle.value)
-		// }
+		window.addEventListener('scroll', () => {
+			hasScrolledPastHero.value = window.scrollY > window.innerHeight
+		})
+
+		if ($heroTitle.value) {
+			observer.observe($heroTitle.value)
+		}
 
 		currentProject.value = project.value
 
@@ -159,6 +164,13 @@
 		})
 
 		window.removeEventListener('resize', handleResize)
+		window.removeEventListener('scroll', () => {
+			hasScrolledPastHero.value = window.scrollY > window.innerHeight
+		})
+	})
+
+	const totalGalleryItems = computed(() => {
+		return $galleryMedia.value ? $galleryMedia.value.length + 1 : 0
 	})
 </script>
 
@@ -174,7 +186,11 @@
 				content="Project description"
 			/>
 		</Head>
-		<h1 ref="$fixedTitle" class="fixed-title">
+		<h1
+			ref="$fixedTitle"
+			class="fixed-title"
+			:class="{ 'is-visible': !isTitleVisible && hasScrolledPastHero }"
+		>
 			{{ project.title }}
 		</h1>
 		<section
@@ -232,9 +248,7 @@
 						<h2 class="gallery__title">
 							Gallery
 						</h2>
-						<span class="gallery__counter">{{
-							$galleryMedia ? $galleryMedia.length : ""
-						}}</span>
+						<span class="gallery__counter">{{ totalGalleryItems }}</span>
 					</div>
 					<ul
 						v-if="project?.gallery"
@@ -369,9 +383,12 @@
 			font-size: 2rem;
 			color: $white;
 			z-index: 100;
-			opacity: 100;
+			opacity: 0;
 			pointer-events: none;
 
+			&.is-visible {
+				opacity: 1;
+			}
 
 			@include viewport-480 {
 					top: 5px;
@@ -439,7 +456,7 @@
 			&__claim {
 				grid-column: 2 / span 5;
 				margin-top: 2rem;
-				font-size: $desktop-h4;
+				font-size: 3rem;
 
 				@include viewport-1200 {
 					grid-column: 2 / span 8;
