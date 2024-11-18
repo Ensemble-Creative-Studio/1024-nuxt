@@ -72,12 +72,26 @@
 		const observer = new IntersectionObserver((entries) => {
 			entries.forEach(entry => {
 				if (entry.isIntersecting) {
-					router.push({ name: 'projects' })
+					gsap.to('.all-projects-wrapper', {
+						opacity: 1,
+						duration: 1,
+						onComplete: () => {
+							gsap.delayedCall(2, () => {
+								gsap.to('.all-projects-wrapper', {
+									opacity: 0,
+									duration: 0.5,
+									onComplete: () => {
+										router.push({ name: 'projects' })
+									}
+								})
+							})
+						}
+					})
 				}
 			})
 		}, {
 			root: null,
-			threshold: 0.1
+			threshold: 0.7
 		})
 
 		const bottomAnchor = $mobileFeaturedProjects.value.querySelector('.bottom-anchor')
@@ -131,6 +145,10 @@
 			</span>
 		</h1>
 
+		<div class="all-projects-wrapper">
+			<h2 class="all-projects-title">All Projects</h2>
+		</div>
+
 		<div ref="$bottomAnchor" class="bottom-anchor"></div>
 	</div>
 </template>
@@ -148,7 +166,7 @@
 			max-width: 22ch;
 			padding-top: 1rem;
 			font-size: $mobile-h4;
-			margin-bottom: 12rem;
+			margin-bottom: 6rem;
 			margin-left: 1rem;
 
 			&__chunk {
@@ -230,6 +248,20 @@
 				text-decoration-thickness: from-font;
 				text-underline-offset: 0.5rem;
 			}
+		}
+
+		.all-projects-wrapper {
+			margin-left: 1rem;
+			margin-bottom: 2rem;
+			opacity: 0;
+		}
+
+		.all-projects-title {
+			font-size: $mobile-h4;
+			color: $white;
+			text-decoration: underline;
+			text-decoration-thickness: from-font;
+			text-underline-offset: 0.5rem;
 		}
 	}
 

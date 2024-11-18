@@ -110,17 +110,31 @@
 				onEnter: () => {
 					const backgroundBlack = document.querySelector('.backgroundBlack')
 					if (backgroundBlack) {
-						gsap.to(backgroundBlack, { opacity: 1, duration: 0.1 })
+						gsap.to(backgroundBlack, {
+							opacity: 1,
+							duration: .7
+						})
 					}
-					if (window.scrollY + window.innerHeight
-						>= allProjectFooter.value.offsetTop + allProjectFooter.value.offsetHeight) {
-						window.location.href = '/projects'
+
+					if (window.scrollY + window.innerHeight >= allProjectFooter.value.offsetTop + (allProjectFooter.value.offsetHeight * 0.8)) {
+						gsap.to('.FeaturedProject.footer', {
+							duration: 1.5,
+							opacity: 1,
+							onComplete: () => {
+								gsap.delayedCall(1, () => {
+									router.push('/projects')
+								})
+							}
+						})
 					}
 				},
 				onLeaveBack: () => {
 					const backgroundBlack = document.querySelector('.backgroundBlack')
 					if (backgroundBlack) {
-						gsap.to(backgroundBlack, { opacity: 0, duration: 0.1 })
+						gsap.to(backgroundBlack, {
+							opacity: 0,
+							duration: .7
+						})
 					}
 				},
 			})
@@ -129,7 +143,7 @@
 
 	onBeforeUnmount(() => {
 		ScrollTrigger.getAll().forEach((trigger) => {
-			trigger.kill()
+				trigger.kill()
 		})
 
 		$ctx.value.revert()
@@ -282,7 +296,7 @@
 				bottom: 50%;
 				grid-column: 2 / span 8;
 				max-width: 110rem;
-				margin-top: 28rem;
+				margin-top: 14rem;
 				font-size: $desktop-h4;
 
 				@include viewport-1200 {
