@@ -59,10 +59,6 @@
 				onEnter: () => {
 					if (!isMobile.value) {
 						const chunks = self.selector('.title__chunk')
-						for (let i = chunks.length - 1; i > 0; i--) {
-							const j = Math.floor(Math.random() * (i + 1))
-							;[ chunks[ i ], chunks[ j ] ] = [ chunks[ j ], chunks[ i ] ]
-						}
 						tl.to(chunks, {
 							duration: 2.5,
 							autoAlpha: 1,
