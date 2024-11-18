@@ -1,8 +1,10 @@
 <script setup>
 	import gsap from 'gsap'
 	import { ScrollTrigger } from 'gsap/ScrollTrigger'
+	import { useRouter } from 'vue-router'
 
 	const isMobile = shallowRef(false)
+	const router = useRouter()
 
 	function onResize() {
 		if (matchMedia('(hover: none)').matches) {
@@ -13,8 +15,8 @@
 	}
 
 	const props = defineProps({
-		firstProject: {
-			type: Object,
+		showreel: {
+			type: String,
 			required: true,
 		},
 		baseline: {
@@ -134,11 +136,28 @@
 		window.removeEventListener('scroll', handleScroll)
 		window.removeEventListener('resize', onResize)
 	})
+
+	const handleVideoClick = () => {
+		router.push({ name: 'projects' })
+	}
 </script>
 
 <template>
 	<div ref="$featuredProjects" class="FeaturedProjects">
-		<FeaturedProject :project="firstProject" />
+		<div
+			class="FeaturedProject showreel"
+			@click="handleVideoClick"
+		>
+			<video
+				:src="showreel"
+				autoplay
+				muted
+				loop
+				playsinline
+				webkit-playsinline
+				class="FeaturedProject__thumbnail"
+			/>
+		</div>
 		<div
 			v-if="!isMobile"
 			ref="$baseline"
@@ -198,6 +217,7 @@
 			position: relative;
 			height: 100vh;
 			transition: filter 0.5s ease-in-out;
+			cursor: pointer;
 
 			@include viewport-480 {
 				margin-top: 0;
@@ -232,7 +252,6 @@
 			}
 
 			&__thumbnail {
-				height: 100%;
 
 				img,
 				video {

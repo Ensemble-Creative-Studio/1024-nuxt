@@ -7,8 +7,8 @@
 	gsap.registerPlugin(ScrollTrigger)
 
 	const props = defineProps({
-		firstProject: {
-			type: Object,
+		showreel: {
+			type: String,
 			required: true,
 		},
 		baseline: {
@@ -88,7 +88,7 @@
 		}
 	}
 
-	watch(() => props.firstProject, () => {
+	watch(() => props.showreel, () => {
 		ScrollTrigger.getAll().forEach(trigger => trigger.kill())
 		setupScrollTriggers()
 	})
@@ -97,37 +97,30 @@
 		return props.baseline.split(' ')
 	})
 
+	const handleVideoClick = () => {
+		router.push({ name: 'projects' })
+	}
+
 </script>
 
 <template>
 	<div ref="$mobileFeaturedProjects" class="MobileFeaturedProjects">
-		<NuxtLink
-			:to="{
-				name: 'projects-slug',
-				params: { slug: props.firstProject.slug.current },
-			}"
+		<div
 			class="MobileFeaturedProject"
+			@click="handleVideoClick"
 		>
 			<div class="MobileFeaturedProject__overlay" />
 			<div class="MobileFeaturedProject__thumbnail">
 				<video
-					v-if="props.firstProject.mainVideoUrl"
-					:src="props.firstProject.mainVideoUrl"
+					:src="showreel"
 					autoplay
 					muted
 					loop
 					playsinline
 					webkit-playsinline
 				/>
-				<SanityImage
-					v-else
-					:asset-id="props.firstProject.mainImage.asset._ref"
-					auto="format"
-					:q="75"
-				/>
 			</div>
-			<h2 class="MobileFeaturedProject__title" v-html="props.firstProject.title" />
-		</NuxtLink>
+		</div>
 		<h1 class="title">
 			<span
 				v-for="(word, index) in splitBaseline"

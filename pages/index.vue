@@ -24,13 +24,7 @@
 	const query = groq`*[_type == "home"][0]
 		{
 			baseline,
-			firstProject -> {
-				...,
-				categories[] -> {
-				title,
-				slug
-				}
-			},
+			showreel,
 			featuredProjects[] -> {
 				...,
 				categories[] -> {
@@ -55,13 +49,13 @@
 		<FeaturedProjects
 			v-if="!isMobile"
 			:baseline="home.baseline"
-			:first-project="home.firstProject"
+			:showreel="home.showreel"
 			:projects="home.featuredProjects"
 		/>
 		<MobileFeaturedProjects
 			v-else
 			:baseline="home.baseline"
-			:first-project="home.firstProject"
+			:showreel="home.showreel"
 			:projects="home.featuredProjects"
 		/>
 	</div>
