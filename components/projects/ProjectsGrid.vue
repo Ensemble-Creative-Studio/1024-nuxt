@@ -19,13 +19,46 @@
 		$ctx.value = gsap.context((self) => {
 			const projects = self.selector('.ProjectsGrid .item')
 
-			$tl.value = gsap.to(projects, {
-				y: 0,
-				delay: 0.5,
-				duration: 1.5,
-				autoAlpha: 1,
-				ease: 'power3.out',
-				stagger: 0.1,
+			const observer = new IntersectionObserver((entries) => {
+				// Grouper les éléments visibles par viewport
+				const visibleItems = entries
+					.filter(entry => entry.isIntersecting)
+					.map(entry => {
+						observer.unobserve(entry.target)
+						return entry.target
+					})
+
+				if (visibleItems.length > 0) {
+					// Créer une nouvelle timeline pour ce groupe d'éléments
+					const tl = gsap.timeline()
+
+					// Calculer la position verticale relative de chaque élément dans le viewport
+					const sortedItems = visibleItems.sort((a, b) => {
+						return a.getBoundingClientRect().top - b.getBoundingClientRect().top
+					})
+
+					// Animer les éléments dans l'ordre de leur position
+					sortedItems.forEach((item, index) => {
+						tl.to(item, {
+							y: 0,
+							duration: 0.8, // Durée réduite pour une animation plus rapide
+							autoAlpha: 1,
+							ease: 'power3.out',
+						}, index * 0.05) // Délai réduit entre les éléments
+					})
+				}
+			}, {
+				threshold: 0.1,
+				rootMargin: '0px 0px -10% 0px'
+			})
+
+			// État initial
+			projects.forEach((project) => {
+				gsap.set(project, {
+					y: 30,
+					autoAlpha: 0
+				})
+				observer.observe(project)
 			})
 		}, $projectsGrid.value)
 	}
