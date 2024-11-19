@@ -35,32 +35,18 @@
 	const setupScrollTriggers = () => {
 		$ctx.value = gsap.context((self) => {
 			const chunks = self.selector('.title__chunk')
-
-			for (let i = chunks.length - 1; i > 0; i--) {
-				const j = Math.floor(Math.random() * (i + 1))
-				;[ chunks[ i ], chunks[ j ] ] = [ chunks[ j ], chunks[ i ] ]
-			}
-
-			tl.to(chunks, {
-				duration: 2.5,
-				autoAlpha: 1,
-				ease: 'power2.out',
-				stagger: 0.03,
-			})
-
-			const panel = self.selector('.MobileFeaturedProject')
+			const title = self.selector('.title')
 
 			ScrollTrigger.create({
-				trigger: panel,
-				id: `panel-0`,
-				onUpdate: (self) => {
-					if (self.progress > 0.3) {
-						panel.classList.add('visible')
-					}
-
-					if (self.progress > 0.8 || self.progress < 0.3) {
-						panel.classList.remove('visible')
-					}
+				trigger: title,
+				start: 'top 80%',
+				onEnter: () => {
+					tl.to(chunks, {
+						duration: 2.5,
+						autoAlpha: 1,
+						ease: 'power2.out',
+						stagger: 0.03,
+					})
 				},
 			})
 

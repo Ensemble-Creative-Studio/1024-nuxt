@@ -57,7 +57,8 @@
 
 			ScrollTrigger.create({
 				trigger: $baseline.value,
-				top: '100% 200%',
+				start: 'top bottom',
+				end: 'bottom top',
 				onEnter: () => {
 					if (!isMobile.value) {
 						const chunks = self.selector('.title__chunk')
