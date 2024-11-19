@@ -152,37 +152,39 @@
 
 	// Animer les deux dernières vidéos car elles n'iront jamais dans l'IntersectionObserver car trop basse
 	const animateLastTwoVideos = () => {
-		const items = Array.from($projectsGrid.value.querySelectorAll('.item'));
-		const lastTwoItems = items.slice(-2);
+		if (window.innerWidth <= 768) {
+			const items = Array.from($projectsGrid.value.querySelectorAll('.item'));
+			const lastTwoItems = items.slice(-2);
 
-		lastTwoItems.forEach((item, index) => {
-			item.setAttribute('data-id', `item-${index + 1}`);
-		});
-
-		const observer = new IntersectionObserver((entries) => {
-			entries.forEach(entry => {
-				const img = entry.target.querySelector('img');
-				if (entry.isIntersecting) {
-					const itemId = entry.target.getAttribute('data-id');
-					if (img) {
-						setTimeout(() => {
-							img.style.filter = 'grayscale(0)';
-						}, 300); // Délai de 0.3 secondes
-					}
-				} else {
-					if (img) {
-						img.style.filter = 'grayscale(100%)';
-					}
-				}
+			lastTwoItems.forEach((item, index) => {
+				item.setAttribute('data-id', `item-${index + 1}`);
 			});
-		}, {
-			root: null,
-			threshold: 0.5
-		});
 
-		lastTwoItems.forEach(item => {
-			observer.observe(item);
-		});
+			const observer = new IntersectionObserver((entries) => {
+				entries.forEach(entry => {
+					const img = entry.target.querySelector('img');
+					if (entry.isIntersecting) {
+						const itemId = entry.target.getAttribute('data-id');
+						if (img) {
+							setTimeout(() => {
+								img.style.filter = 'grayscale(0)';
+							}, 300); // Délai de 0.3 secondes
+						}
+					} else {
+						if (img) {
+							img.style.filter = 'grayscale(100%)';
+						}
+					}
+				});
+			}, {
+				root: null,
+				threshold: 0.5
+			});
+
+			lastTwoItems.forEach(item => {
+				observer.observe(item);
+			});
+		}
 	};
 
 	onMounted(() => {
@@ -285,6 +287,7 @@
 		.item {
 			opacity: 0;
 			transform: translateY(3rem);
+			will-change: transform, opacity;
 
 			@include viewport-768 {
 				grid-column: auto / span 2;
