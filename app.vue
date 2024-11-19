@@ -26,6 +26,7 @@
 		position: relative;
 		top: 0;
 		width: 100%;
+		overscroll-behavior: none;
 	}
 
 	.page-enter-active,
