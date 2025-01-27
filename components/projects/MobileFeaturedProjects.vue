@@ -2,7 +2,7 @@
 	import gsap from 'gsap'
 	import { ScrollTrigger } from 'gsap/ScrollTrigger'
 	import { useRouter } from 'vue-router'
-	import { onMounted, onBeforeUnmount, watch } from 'vue'
+	import { onMounted, onBeforeUnmount, watch, computed } from 'vue'
 
 	gsap.registerPlugin(ScrollTrigger)
 
@@ -11,11 +11,18 @@
 			type: String,
 			required: true,
 		},
+		showreelMobile: {
+			type: String,
+			required: true,
+		},
 		baseline: {
 			type: String,
 			required: true,
-		}
-
+		},
+		projects: {
+			type: Array,
+			required: true,
+		},
 	})
 
 	const router = useRouter()
@@ -23,13 +30,33 @@
 	const $mobileFeaturedProjects = ref()
 	const tl = gsap.timeline()
 
+	const videoSource = computed(() => {
+		if (window.innerWidth <= 768) {
+			return props.showreelMobile || props.showreel
+		}
+		return props.showreel || props.showreelMobile
+	})
+
+	const updateVideoSource = () => {
+		const video = document.querySelector('.MobileFeaturedProject__thumbnail video')
+		if (video) {
+			if (window.innerWidth <= 768) {
+				video.src = props.showreelMobile || props.showreel
+			} else {
+				video.src = props.showreel || props.showreelMobile
+			}
+		}
+	}
+
 	onMounted(() => {
 		setupScrollTriggers()
 		setupScrollRedirection()
+		window.addEventListener('resize', updateVideoSource)
 	})
 
 	onBeforeUnmount(() => {
 		ScrollTrigger.getAll().forEach(trigger => trigger.kill())
+		window.removeEventListener('resize', updateVideoSource)
 	})
 
 	const setupScrollTriggers = () => {
@@ -98,7 +125,12 @@
 	})
 
 	const handleVideoClick = () => {
-		router.push({ name: 'projects' })
+		if (props.projects[0]) {
+			router.push({
+				name: 'projects-slug',
+				params: { slug: props.projects[0].slug.current },
+			})
+		}
 	}
 
 </script>
@@ -112,7 +144,7 @@
 			<div class="MobileFeaturedProject__overlay" />
 			<div class="MobileFeaturedProject__thumbnail">
 				<video
-					:src="showreel"
+					:src="videoSource"
 					autoplay
 					muted
 					loop

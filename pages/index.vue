@@ -25,6 +25,7 @@
 		{
 			baseline,
 			showreel,
+			"showreelMobile": showreelMobile,
 			featuredProjects[] -> {
 				...,
 				categories[] -> {
@@ -56,6 +57,7 @@
 			v-else
 			:baseline="home.baseline"
 			:showreel="home.showreel"
+			:showreel-mobile="home.showreelMobile"
 			:projects="home.featuredProjects"
 		/>
 	</div>

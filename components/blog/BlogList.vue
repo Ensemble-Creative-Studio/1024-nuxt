@@ -1,9 +1,41 @@
 <script setup>
 	import { Swiper, SwiperSlide } from 'swiper/vue'
 	import 'swiper/css'
+	import { computed, onMounted, onBeforeUnmount } from 'vue'
 
 	const props = defineProps({
 		blog: Array,
+	})
+
+	const videoSource = computed(() => (item) => {
+		if (window.innerWidth <= 768) {
+			return item.mainVideoUrlMobile || item.mainVideoUrl
+		}
+		return item.mainVideoUrl || item.mainVideoUrlMobile
+	})
+
+	const updateVideoSources = () => {
+		const videos = document.querySelectorAll('.BlogList .item video')
+		videos.forEach((video) => {
+			const itemId = video.closest('.item').getAttribute('data-item-id')
+			const item = props.blog.find(blogItem => blogItem._id === itemId)
+
+			if (item) {
+				if (window.innerWidth <= 768) {
+					video.src = item.mainVideoUrlMobile || item.mainVideoUrl
+				} else {
+					video.src = item.mainVideoUrl || item.mainVideoUrlMobile
+				}
+			}
+		})
+	}
+
+	onMounted(() => {
+		window.addEventListener('resize', updateVideoSources)
+	})
+
+	onBeforeUnmount(() => {
+		window.removeEventListener('resize', updateVideoSources)
 	})
 </script>
 
@@ -12,12 +44,13 @@
 		<li
 			v-for="item in blog"
 			:key="item._id"
+			:data-item-id="item._id"
 			class="item"
 		>
 			<div class="item__container">
 				<VideoPlayer
-					v-if="item.mainVideoUrl"
-					:vimeo-url="item.mainVideoUrl"
+					v-if="item.mainVideoUrl || item.mainVideoUrlMobile"
+					:vimeo-url="videoSource(item)"
 					:download-url="item.mainVideoDownloadUrl"
 				/>
 				<swiper

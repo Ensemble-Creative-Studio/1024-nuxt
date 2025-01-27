@@ -11,6 +11,7 @@
       releaseDate,
       mainImage,
       mainVideo,
+      mainVideoUrlMobile,
       categories[] -> {
         title,
         slug

@@ -32,6 +32,7 @@
 	&& slug.current == "${ route.params.slug }"][0]
 	{
 		...,
+		"mainVideoUrlMobile": mainVideoUrlMobile,
 		relatedProjects[] -> {
 		...,
 		categories[] -> {
@@ -172,6 +173,37 @@
 	const totalGalleryItems = computed(() => {
 		return $galleryMedia.value ? $galleryMedia.value.length + 1 : 0
 	})
+
+	const videoSource = computed(() => {
+		if (window.innerWidth <= 768) {
+			return project.value.mainVideoUrlMobile || project.value.mainVideoUrl
+		}
+		return project.value.mainVideoUrl || project.value.mainVideoUrlMobile
+	})
+
+	const updateVideoSource = () => {
+		if (window.innerWidth <= 768) {
+			const video = document.querySelector('.hero__video')
+			if (video) {
+				// Utilise mainVideoUrlMobile s'il existe, sinon fallback sur mainVideoUrl
+				video.src = project.value.mainVideoUrlMobile || project.value.mainVideoUrl
+			}
+		} else {
+			const video = document.querySelector('.hero__video')
+			if (video) {
+				// Utilise mainVideoUrl s'il existe, sinon fallback sur mainVideoUrlMobile
+				video.src = project.value.mainVideoUrl || project.value.mainVideoUrlMobile
+			}
+		}
+	}
+
+	onMounted(() => {
+		window.addEventListener('resize', updateVideoSource)
+	})
+
+	onBeforeUnmount(() => {
+		window.removeEventListener('resize', updateVideoSource)
+	})
 </script>
 
 <template>
@@ -198,9 +230,9 @@
 			class="hero"
 		>
 			<video
-				v-if="project.mainVideoUrl"
+				v-if="project.mainVideoUrl || project.mainVideoUrlMobile"
 				class="hero__video"
-				:src="project.mainVideoUrl"
+				:src="videoSource"
 				autoplay
 				muted
 				loop

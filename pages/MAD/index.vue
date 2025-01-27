@@ -31,6 +31,7 @@
 	const GET_SINGLE_PROJECT = groq`*[_type == "MAD"][0]
 	{
 	...,
+	"mainVideoUrlMobile": mainVideoUrlMobile,
 	relatedProjects[] -> {
 		...,
 		categories[] -> {
@@ -75,6 +76,24 @@
 	const hasScrolledPastHero = ref(false)
 	const isTitleVisible = ref(true)
 	const $heroTitle = ref()
+
+	const videoSource = computed(() => {
+		if (window.innerWidth <= 768) {
+			return project.value.mainVideoUrlMobile || project.value.mainVideoUrl
+		}
+		return project.value.mainVideoUrl || project.value.mainVideoUrlMobile
+	})
+
+	const updateVideoSource = () => {
+		const video = document.querySelector('.hero__video')
+		if (video) {
+			if (window.innerWidth <= 768) {
+				video.src = project.value.mainVideoUrlMobile || project.value.mainVideoUrl
+			} else {
+				video.src = project.value.mainVideoUrl || project.value.mainVideoUrlMobile
+			}
+		}
+	}
 
 	function scrollToSection(section) {
 		let offset
@@ -179,6 +198,7 @@
 		})
 
 		window.addEventListener('resize', handleResize)
+		window.addEventListener('resize', updateVideoSource)
 	})
 
 	const handleResize = () => {
@@ -201,6 +221,7 @@
 		window.removeEventListener('scroll', () => {
 			hasScrolledPastHero.value = window.scrollY > window.innerHeight
 		})
+		window.removeEventListener('resize', updateVideoSource)
 	})
 </script>
 
@@ -228,9 +249,9 @@
 			class="hero"
 		>
 			<video
-				v-if="project.mainVideoUrl"
+				v-if="project.mainVideoUrl || project.mainVideoUrlMobile"
 				class="hero__video"
-				:src="project.mainVideoUrl"
+				:src="videoSource"
 				autoplay
 				muted
 				loop
