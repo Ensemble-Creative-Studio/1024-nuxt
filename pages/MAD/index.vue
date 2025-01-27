@@ -77,20 +77,19 @@
 	const isTitleVisible = ref(true)
 	const $heroTitle = ref()
 
+	const currentVideo = ref('')
+
 	const videoSource = computed(() => {
-		if (window.innerWidth <= 768) {
-			return project.value.mainVideoUrlMobile || project.value.mainVideoUrl
-		}
-		return project.value.mainVideoUrl || project.value.mainVideoUrlMobile
+		return currentVideo.value
 	})
 
 	const updateVideoSource = () => {
 		const video = document.querySelector('.hero__video')
 		if (video) {
 			if (window.innerWidth <= 768) {
-				video.src = project.value.mainVideoUrlMobile || project.value.mainVideoUrl
+				currentVideo.value = project.value.mainVideoUrlMobile || project.value.mainVideoUrl
 			} else {
-				video.src = project.value.mainVideoUrl || project.value.mainVideoUrlMobile
+				currentVideo.value = project.value.mainVideoUrl || project.value.mainVideoUrlMobile
 			}
 		}
 	}
@@ -115,6 +114,13 @@
 	}
 
 	onMounted(() => {
+		// Initialize video source
+		if (window.innerWidth <= 768) {
+			currentVideo.value = project.value.mainVideoUrlMobile || project.value.mainVideoUrl
+		} else {
+			currentVideo.value = project.value.mainVideoUrl || project.value.mainVideoUrlMobile
+		}
+
 		let mm = gsap.matchMedia()
 
 		mm.add('(min-width: 481px)', () => {

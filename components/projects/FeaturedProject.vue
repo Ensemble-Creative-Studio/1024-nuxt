@@ -3,28 +3,22 @@
 		project: { type: Object },
 	})
 
+	const currentVideo = ref(props.project.mainVideoUrl)
+
 	const videoSource = computed(() => {
-		if (window.innerWidth <= 768) {
-			return props.project.mainVideoUrlMobile || props.project.mainVideoUrl
-		}
-		return props.project.mainVideoUrl || props.project.mainVideoUrlMobile
+		return currentVideo.value
 	})
 
 	const updateVideoSource = () => {
 		if (window.innerWidth <= 768) {
-			const video = document.querySelector('.FeaturedProject__thumbnail video')
-			if (video) {
-				video.src = props.project.mainVideoUrlMobile || props.project.mainVideoUrl
-			}
+			currentVideo.value = props.project.mainVideoUrlMobile || props.project.mainVideoUrl
 		} else {
-			const video = document.querySelector('.FeaturedProject__thumbnail video')
-			if (video) {
-				video.src = props.project.mainVideoUrl || props.project.mainVideoUrlMobile
-			}
+			currentVideo.value = props.project.mainVideoUrl || props.project.mainVideoUrlMobile
 		}
 	}
 
 	onMounted(() => {
+		updateVideoSource() // Set initial video source
 		window.addEventListener('resize', updateVideoSource)
 	})
 

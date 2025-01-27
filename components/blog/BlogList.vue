@@ -7,11 +7,10 @@
 		blog: Array,
 	})
 
+	const currentVideos = ref(new Map())
+
 	const videoSource = computed(() => (item) => {
-		if (window.innerWidth <= 768) {
-			return item.mainVideoUrlMobile || item.mainVideoUrl
-		}
-		return item.mainVideoUrl || item.mainVideoUrlMobile
+		return currentVideos.value.get(item._id) || item.mainVideoUrl
 	})
 
 	const updateVideoSources = () => {
@@ -22,15 +21,24 @@
 
 			if (item) {
 				if (window.innerWidth <= 768) {
-					video.src = item.mainVideoUrlMobile || item.mainVideoUrl
+					currentVideos.value.set(item._id, item.mainVideoUrlMobile || item.mainVideoUrl)
 				} else {
-					video.src = item.mainVideoUrl || item.mainVideoUrlMobile
+					currentVideos.value.set(item._id, item.mainVideoUrl || item.mainVideoUrlMobile)
 				}
 			}
 		})
 	}
 
 	onMounted(() => {
+		// Initialize video sources
+		props.blog.forEach(item => {
+			if (window.innerWidth <= 768) {
+				currentVideos.value.set(item._id, item.mainVideoUrlMobile || item.mainVideoUrl)
+			} else {
+				currentVideos.value.set(item._id, item.mainVideoUrl || item.mainVideoUrlMobile)
+			}
+		})
+
 		window.addEventListener('resize', updateVideoSources)
 	})
 

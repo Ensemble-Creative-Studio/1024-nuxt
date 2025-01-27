@@ -30,27 +30,24 @@
 	const $mobileFeaturedProjects = ref()
 	const tl = gsap.timeline()
 
+	const currentVideo = ref(props.showreel)
+
 	const videoSource = computed(() => {
-		if (window.innerWidth <= 768) {
-			return props.showreelMobile || props.showreel
-		}
-		return props.showreel || props.showreelMobile
+		return currentVideo.value
 	})
 
 	const updateVideoSource = () => {
-		const video = document.querySelector('.MobileFeaturedProject__thumbnail video')
-		if (video) {
-			if (window.innerWidth <= 768) {
-				video.src = props.showreelMobile || props.showreel
-			} else {
-				video.src = props.showreel || props.showreelMobile
-			}
+		if (window.innerWidth <= 768) {
+			currentVideo.value = props.showreelMobile || props.showreel
+		} else {
+			currentVideo.value = props.showreel || props.showreelMobile
 		}
 	}
 
 	onMounted(() => {
 		setupScrollTriggers()
 		setupScrollRedirection()
+		updateVideoSource()
 		window.addEventListener('resize', updateVideoSource)
 	})
 

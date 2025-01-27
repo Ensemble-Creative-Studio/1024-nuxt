@@ -79,6 +79,7 @@
 	const isTitleVisible = ref(true)
 	const hasScrolledPastHero = ref(false)
 	const currentProject = useState('currentProject', () => ({}))
+	const currentVideo = ref('')
 
 	function scrollToSection(section) {
 		let offset
@@ -100,8 +101,15 @@
 	}
 
 	onMounted(() => {
+		// Initialize video source
+		if (window.innerWidth <= 768) {
+			currentVideo.value = project.value.mainVideoUrlMobile || project.value.mainVideoUrl
+		} else {
+			currentVideo.value = project.value.mainVideoUrl || project.value.mainVideoUrlMobile
+		}
 
 		window.addEventListener('resize', handleResize)
+		window.addEventListener('resize', updateVideoSource)
 
 		const itemTextElements = document.querySelectorAll('.item__text')
 		itemTextElements.forEach((element) => {
@@ -168,6 +176,7 @@
 		window.removeEventListener('scroll', () => {
 			hasScrolledPastHero.value = window.scrollY > window.innerHeight
 		})
+		window.removeEventListener('resize', updateVideoSource)
 	})
 
 	const totalGalleryItems = computed(() => {
@@ -175,35 +184,19 @@
 	})
 
 	const videoSource = computed(() => {
-		if (window.innerWidth <= 768) {
-			return project.value.mainVideoUrlMobile || project.value.mainVideoUrl
-		}
-		return project.value.mainVideoUrl || project.value.mainVideoUrlMobile
+		return currentVideo.value
 	})
 
 	const updateVideoSource = () => {
-		if (window.innerWidth <= 768) {
-			const video = document.querySelector('.hero__video')
-			if (video) {
-				// Utilise mainVideoUrlMobile s'il existe, sinon fallback sur mainVideoUrl
-				video.src = project.value.mainVideoUrlMobile || project.value.mainVideoUrl
-			}
-		} else {
-			const video = document.querySelector('.hero__video')
-			if (video) {
-				// Utilise mainVideoUrl s'il existe, sinon fallback sur mainVideoUrlMobile
-				video.src = project.value.mainVideoUrl || project.value.mainVideoUrlMobile
+		const video = document.querySelector('.hero__video')
+		if (video) {
+			if (window.innerWidth <= 768) {
+				currentVideo.value = project.value.mainVideoUrlMobile || project.value.mainVideoUrl
+			} else {
+				currentVideo.value = project.value.mainVideoUrl || project.value.mainVideoUrlMobile
 			}
 		}
 	}
-
-	onMounted(() => {
-		window.addEventListener('resize', updateVideoSource)
-	})
-
-	onBeforeUnmount(() => {
-		window.removeEventListener('resize', updateVideoSource)
-	})
 </script>
 
 <template>
@@ -237,6 +230,7 @@
 				muted
 				loop
 				playsinline
+				webkit-playsinline
 			/>
 			<SanityImage
 				v-else
