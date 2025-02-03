@@ -72,43 +72,48 @@
 	}
 
 	function onFullscreenBtnClick() {
-		if (!screenfull.isEnabled) {
-			console.warn('Fullscreen is not supported')
-			return
-		}
-
-		try {
-			const $fullscreenNode = (isIos || isAndroid || isSamsung) ? $video.value : $main.value
-
-			if ($fullscreenNode.requestFullscreen) {
-				$fullscreenNode.requestFullscreen()
-			} else if ($fullscreenNode.webkitRequestFullscreen) {
-				$fullscreenNode.webkitRequestFullscreen()
-			} else if ($fullscreenNode.mozRequestFullScreen) {
-				$fullscreenNode.mozRequestFullScreen()
+		if (isIos || isAndroid || isSamsung) {
+			if ($video.value) {
+				try {
+					if ($video.value.webkitEnterFullscreen) {
+						$video.value.webkitEnterFullscreen();
+					} else if ($video.value.enterFullscreen) {
+						$video.value.enterFullscreen();
+					} else if ($video.value.requestFullscreen) {
+						$video.value.requestFullscreen();
+					} else if ($video.value.webkitRequestFullscreen) {
+						$video.value.webkitRequestFullscreen();
+					}
+					isFullscreen.value = true;
+				} catch (error) {
+					console.error('Erreur lors du passage en plein écran:', error);
+				}
 			}
-
-			isFullscreen.value = true
-		} catch (error) {
-			console.error('Erreur lors du passage en plein écran:', error)
+		} else {
+			if (screenfull.isEnabled) {
+				screenfull.request($main.value);
+				isFullscreen.value = true;
+			}
 		}
 	}
 
 	function onMinimizeBtnClick() {
-		if (!screenfull.isEnabled) return
-
-		try {
-			if (document.exitFullscreen) {
-				document.exitFullscreen()
-			} else if (document.webkitExitFullscreen) {
-				document.webkitExitFullscreen()
-			} else if (document.mozCancelFullScreen) {
-				document.mozCancelFullScreen()
+		if (isIos || isAndroid || isSamsung) {
+			try {
+				if ($video.value.webkitExitFullscreen) {
+					$video.value.webkitExitFullscreen();
+				} else if ($video.value.exitFullscreen) {
+					$video.value.exitFullscreen();
+				}
+				isFullscreen.value = false;
+			} catch (error) {
+				console.error('Erreur lors de la sortie du plein écran:', error);
 			}
-
-			isFullscreen.value = false
-		} catch (error) {
-			console.error('Erreur lors de la sortie du plein écran:', error)
+		} else {
+			if (screenfull.isEnabled) {
+				screenfull.exit();
+				isFullscreen.value = false;
+			}
 		}
 	}
 
@@ -179,6 +184,7 @@
 			x5-playsinline
 			x5-video-player-type="h5"
 			x5-video-player-fullscreen="true"
+			controlsList="nodownload"
 			@click="onVisualClick"
 			@loadedmetadata="setVideoData"
 			@timeupdate="onVideoTimeUpdate"

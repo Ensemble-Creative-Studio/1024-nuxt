@@ -6,6 +6,7 @@
 
 <style lang="scss">
 	.BottomAnchors {
+		display: none !important;
 		position: fixed;
 		bottom: 0;
 		z-index: 10;
