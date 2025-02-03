@@ -72,15 +72,44 @@
 	}
 
 	function onFullscreenBtnClick() {
-		const $fullscreenNode = isIos || isAndroid || isSamsung ? $video.value : $main.value
+		if (!screenfull.isEnabled) {
+			console.warn('Fullscreen is not supported')
+			return
+		}
 
-		screenfull.toggle($fullscreenNode)
-		isFullscreen.value = true
+		try {
+			const $fullscreenNode = (isIos || isAndroid || isSamsung) ? $video.value : $main.value
+
+			if ($fullscreenNode.requestFullscreen) {
+				$fullscreenNode.requestFullscreen()
+			} else if ($fullscreenNode.webkitRequestFullscreen) {
+				$fullscreenNode.webkitRequestFullscreen()
+			} else if ($fullscreenNode.mozRequestFullScreen) {
+				$fullscreenNode.mozRequestFullScreen()
+			}
+
+			isFullscreen.value = true
+		} catch (error) {
+			console.error('Erreur lors du passage en plein écran:', error)
+		}
 	}
 
 	function onMinimizeBtnClick() {
-		isFullscreen.value = false
-		screenfull.exit()
+		if (!screenfull.isEnabled) return
+
+		try {
+			if (document.exitFullscreen) {
+				document.exitFullscreen()
+			} else if (document.webkitExitFullscreen) {
+				document.webkitExitFullscreen()
+			} else if (document.mozCancelFullScreen) {
+				document.mozCancelFullScreen()
+			}
+
+			isFullscreen.value = false
+		} catch (error) {
+			console.error('Erreur lors de la sortie du plein écran:', error)
+		}
 	}
 
 	onMounted(() => {
@@ -147,6 +176,9 @@
 			class="video"
 			playsinline
 			webkit-playsinline
+			x5-playsinline
+			x5-video-player-type="h5"
+			x5-video-player-fullscreen="true"
 			@click="onVisualClick"
 			@loadedmetadata="setVideoData"
 			@timeupdate="onVideoTimeUpdate"
