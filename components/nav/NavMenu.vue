@@ -210,6 +210,17 @@
 			&--active {
 				pointer-events: all;
 			}
+
+			&:not(&--active) {
+				.NavMenu__main,
+				.NavMenu__secondary {
+					pointer-events: none;
+
+					a, button {
+						pointer-events: none;
+					}
+				}
+			}
 		}
 
 		&__main {
@@ -308,6 +319,13 @@
 					}
 				}
 			}
+		}
+	}
+
+	.NavMenu__main,
+	.NavMenu__secondary {
+		@include viewport-480 {
+			pointer-events: inherit;
 		}
 	}
 
