@@ -300,6 +300,99 @@
 			</ul>
 		</section>
 
+		<section class="editorial-content">
+			<GridContainer>
+				<div class="editorial-sections">
+					<div
+						v-if="about.editorialContent?.festivals?.length"
+						class="editorial-section festivals"
+					>
+						<h2 class="section-title">Festivals</h2>
+						<div class="content-grid">
+							<div
+								v-for="festival in about.editorialContent.festivals"
+								:key="festival.name"
+								class="content-item"
+							>
+								<div class="content-text">
+									<h3 class="item-name">
+										<a
+											v-if="festival.url"
+											:href="festival.url"
+											target="_blank"
+											rel="noopener noreferrer"
+										>
+											{{ festival.name }}
+										</a>
+										<template v-else>{{ festival.name }}</template>
+									</h3>
+									<p class="item-place">{{ festival.place }}</p>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div
+						v-if="about.editorialContent?.museums?.length"
+						class="editorial-section museums"
+					>
+						<h2 class="section-title">Musées</h2>
+						<div class="content-grid">
+							<div
+								v-for="museum in about.editorialContent.museums"
+								:key="museum.name"
+								class="content-item"
+							>
+								<div class="content-text">
+									<h3 class="item-name">
+										<a
+											v-if="museum.url"
+											:href="museum.url"
+											target="_blank"
+											rel="noopener noreferrer"
+										>
+											{{ museum.name }}
+										</a>
+										<template v-else>{{ museum.name }}</template>
+									</h3>
+									<p class="item-place">{{ museum.place }}</p>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div
+						v-if="about.editorialContent?.publications?.length"
+						class="editorial-section publications"
+					>
+						<h2 class="section-title">Publications</h2>
+						<div class="content-grid">
+							<div
+								v-for="publication in about.editorialContent.publications"
+								:key="publication.name"
+								class="content-item"
+							>
+								<div class="content-text">
+									<h3 class="item-name">
+										<a
+											v-if="publication.url"
+											:href="publication.url"
+											target="_blank"
+											rel="noopener noreferrer"
+										>
+											{{ publication.name }}
+										</a>
+										<template v-else>{{ publication.name }}</template>
+									</h3>
+									<p class="item-place">{{ publication.place }}</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</GridContainer>
+		</section>
+
 		<BottomAnchors ref="$anchors">
 			<ul class="BottomAnchors__list">
 				<li class="BottomAnchors__item">
@@ -600,12 +693,10 @@
 		.awards,
 		.festivals {
 			padding-bottom: 4rem;
-			margin-top: 6rem;
 
 			// font-weight: $extra-light;
 
 			@include viewport-480 {
-				margin-top: 6rem;
 				font-weight: $light;
 			}
 
@@ -693,6 +784,82 @@
 
 			@include viewport-480 {
 				padding-bottom: 6.5rem;
+			}
+		}
+	}
+
+	.editorial-content {
+		margin-top: 6rem;
+		padding-bottom: 4rem;
+
+		.editorial-sections {
+			grid-column: 2 / -1;
+			display: grid;
+			grid-template-columns: repeat(3, 1fr);
+			gap: 2rem;
+
+			@include viewport-1024 {
+				grid-template-columns: 1fr;
+				gap: 4rem;
+			}
+		}
+
+		.editorial-section {
+			@include viewport-1024 {
+				margin-bottom: 0;
+			}
+		}
+
+		.section-title {
+			font-size: $desktop-h4;
+			margin-bottom: 3rem;
+
+			@include viewport-480 {
+				font-size: $mobile-h4;
+				margin-bottom: 2rem;
+			}
+		}
+
+		.content-grid {
+			display: grid;
+			grid-template-columns: 1fr;
+			gap: 1rem;
+		}
+
+		.content-item {
+			.content-text {
+				display: block;
+			}
+
+			.item-name {
+				font-size: 2rem;
+				margin-bottom: 0.5rem;
+				color: $white;
+
+				a {
+					color: inherit;
+					text-decoration: underline;
+					text-decoration-thickness: from-font;
+					text-underline-offset: 0.5rem;
+					transition: opacity 0.3s ease;
+
+					&:hover {
+						opacity: 0.7;
+					}
+				}
+
+				@include viewport-480 {
+					font-size: 1.6rem;
+				}
+			}
+
+			.item-place {
+				font-size: 1.8rem;
+				color: $medium-grey;
+
+				@include viewport-480 {
+					font-size: 1.3rem;
+				}
 			}
 		}
 	}

@@ -26,11 +26,12 @@
 			baseline,
 			showreel,
 			"showreelMobile": showreelMobile,
+			expertises1024,
 			featuredProjects[] -> {
 				...,
 				categories[] -> {
-				title,
-				slug
+					title,
+					slug
 				}
 			}
 		}
@@ -52,6 +53,7 @@
 			:baseline="home.baseline"
 			:showreel="home.showreel"
 			:projects="home.featuredProjects"
+			:expertises="home.expertises1024"
 		/>
 		<MobileFeaturedProjects
 			v-else
@@ -59,6 +61,7 @@
 			:showreel="home.showreel"
 			:showreel-mobile="home.showreelMobile"
 			:projects="home.featuredProjects"
+			:expertises="home.expertises1024"
 		/>
 	</div>
 </template>

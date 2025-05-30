@@ -23,6 +23,10 @@
 			type: Array,
 			required: true,
 		},
+		expertises: {
+			type: Array,
+			required: true,
+		}
 	})
 
 	const router = useRouter()
@@ -150,21 +154,62 @@
 				/>
 			</div>
 		</div>
-		<h1 class="title">
-			<span
-				v-for="(word, index) in splitBaseline"
-				:key="index"
-				class="title__chunk"
-			>
-				{{ word }}{{ index !== splitBaseline.length - 1 ? ' ' : '' }}
-			</span>
-		</h1>
 
-		<div class="all-projects-wrapper">
-			<h2 class="all-projects-title">All Projects</h2>
+		<div class="title-container">
+			<h1 class="title">
+				<span
+					v-for="(word, index) in splitBaseline"
+					:key="index"
+					class="title__chunk"
+				>
+					{{ word }}{{ index !== splitBaseline.length - 1 ? ' ' : '' }}
+				</span>
+			</h1>
 		</div>
 
-		<div ref="$bottomAnchor" class="bottom-anchor"></div>
+		<!-- Project Grid -->
+		<div class="grid-section projects-grid">
+				<h2 class="grid-title">Projets</h2>
+				<div class="grid-container">
+					<div v-for="project in projects" :key="project._id" class="grid-item">
+						<SanityImage
+							:asset-id="project.mainImage.asset._ref"
+							auto="format"
+							:q="75"
+							class="grid-image"
+						/>
+						<h3 class="grid-item-title">{{ project.title }}</h3>
+					</div>
+				</div>
+		</div>
+
+		<!-- Expertises Grid -->
+		<div class="grid-section expertise-grid">
+				<h2 class="grid-title">Expertises</h2>
+				<div class="grid-container">
+					<div v-for="expertise in expertises" :key="expertise._key" class="grid-item">
+						<SanityImage
+							:asset-id="expertise.image.asset._ref"
+							auto="format"
+							:q="75"
+							class="grid-image"
+						/>
+						<h3 class="grid-item-title">{{ expertise.caption }}</h3>
+					</div>
+				</div>
+		</div>
+
+		<div ref="allProjectFooter" class="FeaturedProject footer">
+			<div class="backgroundBlack" />
+			<a href="/projects" class="FeaturedProject__title">
+				<div class="FeaturedProject__footer">
+					All Projects
+				</div>
+			</a>
+		</div>
+
+		<!-- Élément déclencheur pour la navigation automatique -->
+		<div class="bottom-anchor"></div>
 	</div>
 </template>
 
@@ -176,6 +221,12 @@
 			height: inherit;
 		}
 
+		.title-container {
+			position: sticky;
+			top: 0;
+			background-color: black;
+		}
+
 		.title {
 			grid-column: 1 / span 10;
 			max-width: 22ch;
@@ -183,6 +234,10 @@
 			font-size: $mobile-h4;
 			margin-bottom: 6rem;
 			margin-left: 1rem;
+			position: sticky;
+			top: 0;
+			padding-top: 6rem;
+			background-color: black;
 
 			&__chunk {
 				opacity: 0;
@@ -194,8 +249,9 @@
 		}
 
 		.MobileFeaturedProject {
-			position: relative;
-			height: 100%;
+			position: sticky;
+			top: 0;
+			height: 100dvh;
 			margin-top: 4rem;
 			margin-bottom: 4rem;
 			background-color: $black;
@@ -278,10 +334,58 @@
 			text-decoration-thickness: from-font;
 			text-underline-offset: 0.5rem;
 		}
+
+		.grid-section {
+			padding: 4rem 1rem;
+			background-color: $black;
+
+			.grid-title {
+				margin-bottom: 2rem;
+				font-size: $mobile-h2;
+				color: white;
+			}
+
+			.grid-container {
+				display: grid;
+				grid-template-columns: repeat(2, 1fr);
+				gap: 1rem;
+			}
+
+			.grid-item {
+				position: relative;
+
+				.grid-image {
+					width: 100%;
+					height: auto;
+					aspect-ratio: 4/3;
+					object-fit: cover;
+					margin-bottom: 0.5rem;
+				}
+
+				.grid-item-title {
+					font-size: $mobile-h4;
+					color: white;
+				}
+			}
+		}
+
+		.projects-grid {
+			background-color: $black;
+			height: 100vh;
+			position: sticky;
+			top: 0;
+		}
+
+		.expertise-grid {
+			background-color: $black;
+			height: 100vh;
+			position: sticky;
+			top: 0;
+		}
 	}
 
 	.bottom-anchor {
-		margin-top: 180px;
+		margin-top: -10px;
 		height: 10px;
 		width: 100%;
 	}

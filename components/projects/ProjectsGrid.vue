@@ -266,22 +266,15 @@
 <style lang="scss">
 	.ProjectsGrid {
 		display: grid;
-		grid-template-columns: repeat(4, 1fr); // Default to 4 columns
+		grid-template-columns: repeat(4, 1fr);
 		gap: 5rem 4rem;
 		padding: 0 2.5rem;
 		overflow: hidden;
 
 		@include viewport-480 {
 			padding: 0 1rem;
-			grid-template-columns: repeat(2, 1fr); // 2 columns on mobile
-		}
-
-		@include viewport-768 {
-			grid-template-columns: repeat(4, 1fr); // 4 columns on intermediate breakpoint (tablet)
-		}
-
-		@media (max-width: 1285px) {
-			grid-template-columns: repeat(6, 1fr); // 6 columns on intermediate breakpoint under 1285px
+			grid-template-columns: repeat(2, 1fr);
+			gap: 3rem 2rem;
 		}
 
 		.item {
@@ -290,7 +283,7 @@
 			will-change: transform, opacity;
 
 			@include viewport-768 {
-				grid-column: auto / span 2;
+				grid-column: auto / span 1;
 			}
 
 			&__thumbnail {
@@ -334,30 +327,30 @@
 		}
 
 		&--eight-items {
-			grid-template-columns: repeat(8, 1fr); // 8 columns on desktop
-
-			@media (max-width: 1285px) {
-				grid-template-columns: repeat(6, 1fr); // 6 columns between 1285px and 992px
-			}
-
-			@include viewport-992 {
-				grid-template-columns: repeat(4, 1fr); // 4 columns on intermediate breakpoint
-			}
+			grid-template-columns: repeat(4, 1fr);
 
 			@include viewport-480 {
-				grid-template-columns: repeat(4, 1fr); // 2 columns on mobile
+				grid-template-columns: repeat(2, 1fr);
+			}
+
+			.item {
+				@include viewport-768 {
+					grid-column: auto / span 1;
+				}
 			}
 		}
 
 		&--six-items {
-			grid-template-columns: repeat(6, 1fr);
-
-			@include viewport-992 {
-				grid-template-columns: repeat(4, 1fr); // 4 columns on intermediate breakpoint
-			}
+			grid-template-columns: repeat(4, 1fr);
 
 			@include viewport-480 {
-				grid-template-columns: repeat(4, 1fr); // 2 columns on mobile
+				grid-template-columns: repeat(2, 1fr);
+			}
+
+			.item {
+				@include viewport-768 {
+					grid-column: auto / span 1;
+				}
 			}
 		}
 
@@ -365,7 +358,13 @@
 			grid-template-columns: repeat(4, 1fr);
 
 			@include viewport-480 {
-				grid-template-columns: repeat(4, 1fr); // 2 columns on mobile
+				grid-template-columns: repeat(2, 1fr);
+			}
+
+			.item {
+				@include viewport-768 {
+					grid-column: auto / span 1;
+				}
 			}
 		}
 

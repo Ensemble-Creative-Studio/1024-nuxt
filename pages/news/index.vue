@@ -68,16 +68,16 @@
 </script>
 
 <template>
-	<div ref="$$base" class="blog">
+	<div ref="$$base" class="news">
 		<Head>
-			<Title>1024 | Blog</Title>
+			<Title>1024 | News</Title>
 			<Meta
 				name="description"
 				content="Contact page description"
 			/>
 		</Head>
-		<BlogList :blog="currentBlog" />
-		<BlogPagination />
+		<NewsList :blog="currentBlog" />
+		<NewsPagination />
 	</div>
 </template>
 

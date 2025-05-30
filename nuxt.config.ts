@@ -24,7 +24,7 @@ const config: NuxtConfig & { sanity: typeof sanityConfig } = {
     '~/components/nav',
     '~/components/utils',
     '~/components/projects',
-    '~/components/blog',
+    '~/components/news',
     '~/components/icons',
   ],
   build: {

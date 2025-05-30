@@ -3,13 +3,23 @@
 
 	const { isTouch, isSafari, isAndroid, isIos, isSamsung } = useDevice()
 
-	const hasPlayed = shallowRef(false)
-
 	const props = defineProps({
-		vimeoUrl: String,
-		downloadUrl: String,
-		poster: Object,
+		vimeoUrl: {
+			type: String,
+			required: true,
+			default: ''
+		},
+		downloadUrl: {
+			type: String,
+			default: ''
+		},
+		poster: {
+			type: Object,
+			required: true
+		},
 	})
+
+	const hasPlayed = shallowRef(false)
 
 	const $main = ref(null)
 	const $video = ref(null)
@@ -161,6 +171,36 @@
 		isPlaying.value = false
 	}
 
+	function downloadVideo() {
+		const videoUrl = props.downloadUrl || props.vimeoUrl
+		if (!videoUrl) {
+			console.error('Aucune URL de vidéo disponible')
+			return
+		}
+
+		fetch(videoUrl)
+			.then(response => {
+				if (!response.ok) {
+					throw new Error('Erreur réseau lors du téléchargement')
+				}
+				return response.blob()
+			})
+			.then(blob => {
+				const url = window.URL.createObjectURL(blob)
+				const a = document.createElement('a')
+				a.style.display = 'none'
+				a.href = url
+				a.download = `video-${Date.now()}.mp4`
+				document.body.appendChild(a)
+				a.click()
+				window.URL.revokeObjectURL(url)
+				document.body.removeChild(a)
+			})
+			.catch(error => {
+				console.error('Erreur lors du téléchargement:', error)
+			})
+	}
+
 	onBeforeUnmount(() => {
 		window.cancelAnimationFrame(raf)
 	})
@@ -175,6 +215,26 @@
 			auto="format"
 			:q="75"
 		/>
+		<button
+			v-show="!hasPlayed"
+			class="big-play-button"
+			type="button"
+			@click="onPlayBtnClick"
+		>
+			<svg
+				width="80"
+				height="80"
+				viewBox="0 0 17 16"
+				fill="none"
+				xmlns="http://www.w3.org/2000/svg"
+			>
+				<path
+					d="M3 12.5V3.5H4.35441L14 7.35125V8.71169L4.35586 12.5H3Z"
+					stroke="white"
+					stroke-width="1"
+				></path>
+			</svg>
+		</button>
 		<video
 			ref="$video"
 			:src="vimeoUrl"
@@ -362,6 +422,26 @@
 						</svg>
 					</button>
 				</div>
+				<div class="controls__download">
+					<button @click="downloadVideo" class="download-link">
+						<svg
+							width="17"
+							height="16"
+							viewBox="0 0 17 16"
+							fill="none"
+							xmlns="http://www.w3.org/2000/svg"
+						>
+							<path
+								d="M8.5 1.5V10.5M8.5 10.5L5.5 7.5M8.5 10.5L11.5 7.5"
+								stroke="white"
+							/>
+							<path
+								d="M3.5 11.5V13.5H13.5V11.5"
+								stroke="white"
+							/>
+						</svg>
+					</button>
+				</div>
 			</div>
 
 
@@ -390,6 +470,14 @@
 		position: relative;
 		cursor: pointer;
 		background-color: $black;
+
+		.big-play-button {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			z-index: 2;
+		}
 
 		.flex {
 			display: flex;
@@ -459,6 +547,15 @@
 			&__download {
 				order: 4;
 				margin-left: 1.2rem;
+
+				.download-link {
+					display: block;
+
+					svg {
+						display: block;
+						margin: 0 auto;
+					}
+				}
 
 				@include viewport-480 {
 					order: 5;

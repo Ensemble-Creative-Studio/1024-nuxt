@@ -14,7 +14,7 @@
 	})
 
 	const updateVideoSources = () => {
-		const videos = document.querySelectorAll('.BlogList .item video')
+		const videos = document.querySelectorAll('.NewsList .item video')
 		videos.forEach((video) => {
 			const itemId = video.closest('.item').getAttribute('data-item-id')
 			const item = props.blog.find(blogItem => blogItem._id === itemId)
@@ -48,7 +48,7 @@
 </script>
 
 <template>
-	<ul class="BlogList">
+	<ul class="NewsList">
 		<li
 			v-for="item in blog"
 			:key="item._id"
@@ -95,7 +95,7 @@
 				<NuxtLink
 					:key="item._id"
 					class="item__link"
-					:to="{ name: 'blog-slug', params: { slug: item.slug.current } }"
+					:to="{ name: 'news-slug', params: { slug: item.slug.current } }"
 				>
 					<div class="item__meta">
 						<h3 class="item__title">
@@ -112,7 +112,7 @@
 </template>
 
 <style lang="scss">
-	.BlogList {
+	.NewsList {
 		@include grid(12, 1fr, 1, 0);
 
 		padding: 12rem 2rem;

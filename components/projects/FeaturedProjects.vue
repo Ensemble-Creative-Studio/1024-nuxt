@@ -23,6 +23,14 @@
 			type: String,
 			required: true,
 		},
+		projects: {
+			type: Array,
+			required: true,
+		},
+		expertises: {
+			type: Array,
+			required: true,
+		}
 	})
 
 	const handleScroll = () => {
@@ -106,8 +114,7 @@
 		if (allProjectFooter.value) {
 			ScrollTrigger.create({
 				trigger: allProjectFooter.value,
-				start: 'top bottom',
-				end: 'bottom top',
+				start: 'top 80%',
 				onEnter: () => {
 					const backgroundBlack = document.querySelector('.backgroundBlack')
 					if (backgroundBlack) {
@@ -117,17 +124,15 @@
 						})
 					}
 
-					if (window.scrollY + window.innerHeight >= allProjectFooter.value.offsetTop + (allProjectFooter.value.offsetHeight * 0.8)) {
-						gsap.to('.FeaturedProject.footer', {
-							duration: 1.5,
-							opacity: 1,
-							onComplete: () => {
-								gsap.delayedCall(1, () => {
-									router.push('/projects')
-								})
-							}
-						})
-					}
+					gsap.to('.FeaturedProject.footer', {
+						duration: 1.5,
+						opacity: 1,
+						onComplete: () => {
+							gsap.delayedCall(1, () => {
+								router.push('/projects')
+							})
+						}
+					})
 				},
 				onLeaveBack: () => {
 					const backgroundBlack = document.querySelector('.backgroundBlack')
@@ -190,6 +195,43 @@
 				</h1>
 			</GridContainer>
 		</div>
+
+		<!-- Project Grid -->
+		<div class="grid-section projects-grid">
+			<GridContainer>
+				<h2 class="grid-title">Projets</h2>
+				<div class="grid-container">
+					<div v-for="project in projects" :key="project._id" class="grid-item">
+						<SanityImage
+							:asset-id="project.mainImage.asset._ref"
+							auto="format"
+							:q="75"
+							class="grid-image"
+						/>
+						<h3 class="grid-item-title">{{ project.title }}</h3>
+					</div>
+				</div>
+			</GridContainer>
+		</div>
+
+		<!-- Expertises Grid -->
+		<div class="grid-section expertise-grid">
+			<GridContainer>
+				<h2 class="grid-title">Expertises</h2>
+				<div class="grid-container">
+					<div v-for="expertise in expertises" :key="expertise._key" class="grid-item">
+						<SanityImage
+							:asset-id="expertise.image.asset._ref"
+							auto="format"
+							:q="75"
+							class="grid-image"
+						/>
+						<h3 class="grid-item-title">{{ expertise.caption }}</h3>
+					</div>
+				</div>
+			</GridContainer>
+		</div>
+
 		<div ref="allProjectFooter" class="FeaturedProject footer">
 			<div class="backgroundBlack" />
 			<a href="/projects" class="FeaturedProject__title">
@@ -204,8 +246,9 @@
 <style lang="scss">
 	.FeaturedProject.footer {
 		position: relative;
-		z-index: 1;
-		height: 40vh !important;
+		top: 0;
+		z-index: 3;
+		height: 30vh !important;
 		background-color: black;
 	}
 
@@ -214,6 +257,11 @@
 		align-items: center;
 		height: 100%;
 		padding-left: 10rem;
+		font-size: 4rem;
+
+		@include viewport-480 {
+			font-size: 3rem;
+		}
 	}
 
 	.backgroundBlack {
@@ -261,7 +309,6 @@
 				width: 100%;
 				padding: 1rem;
 				color: white;
-				font-size: $desktop-h4;
 				transition: none;
 				transform: none;
 			}
@@ -320,6 +367,76 @@
 					}
 				}
 			}
+		}
+
+		.grid-section {
+			padding: 6rem 0;
+			position: relative;
+			width: 100%;
+
+			.grid-title {
+				grid-column: 1 / -1;
+				margin-bottom: 2rem;
+				font-size: $desktop-h2;
+				color: white;
+
+				@include viewport-480 {
+					font-size: $mobile-h2;
+				}
+			}
+
+			.grid-container {
+				display: grid;
+				grid-template-columns: repeat(4, 1fr);
+				gap: 2rem;
+				grid-column: 1 / -1;
+
+				@include viewport-1024 {
+					grid-template-columns: repeat(2, 1fr);
+				}
+
+				@include viewport-480 {
+					grid-template-columns: 1fr;
+				}
+			}
+
+			.grid-item {
+				position: relative;
+
+				.grid-image {
+					width: 100%;
+					height: auto;
+					aspect-ratio: 4/3;
+					object-fit: cover;
+					margin-bottom: 1rem;
+				}
+
+				.grid-item-title {
+					font-size: $desktop-h4;
+					margin-top: 1rem;
+					color: white;
+
+					@include viewport-480 {
+						font-size: $mobile-h4;
+					}
+				}
+			}
+		}
+
+		.projects-grid {
+			background-color: $black;
+			min-height: 100vh;
+			position: sticky;
+			top: 0;
+			z-index: 1;
+		}
+
+		.expertise-grid {
+			background-color: $black;
+			min-height: 100vh;
+			position: sticky;
+			top: 0;
+			z-index: 2;
 		}
 	}
 </style>

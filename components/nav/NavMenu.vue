@@ -46,10 +46,10 @@
 				<li class="nav__item">
 					<NuxtLink
 						class="main__link"
-						to="/blog?page=1"
+						to="/news?page=1"
 						@click="closeNav()"
 					>
-						Blog
+						News
 					</NuxtLink>
 				</li>
 			</ul>

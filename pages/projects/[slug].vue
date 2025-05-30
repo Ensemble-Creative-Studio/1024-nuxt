@@ -1,5 +1,6 @@
 <script setup>
 	import gsap from 'gsap'
+	import { PortableText } from '@portabletext/vue';
 	import { ScrollTrigger } from 'gsap/ScrollTrigger'
 	import { ref, onMounted, onUnmounted, computed } from 'vue'
 
@@ -343,7 +344,7 @@
 						<p>Credits: </p>
 					</header>
 					<div class="credits__content">
-						<SanityContent :blocks="project.credits" />
+						<PortableText :value="project.credits"/>
 					</div>
 				</GridContainer>
 			</section>
@@ -647,6 +648,7 @@
 				grid-column: 2/span 6;
 				font-weight: bold;
 				font-size: 2rem;
+				margin-bottom: 2rem;
 
 				&--is-empty {
 					padding-bottom: 6rem;
