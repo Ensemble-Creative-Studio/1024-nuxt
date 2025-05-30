@@ -184,7 +184,7 @@
 		</div>
 
 		<!-- Expertises Grid -->
-		<div class="grid-section expertise-grid">
+		<div v-if="expertises && expertises.length > 0" class="grid-section expertise-grid">
 				<h2 class="grid-title">Expertises</h2>
 				<div class="grid-container">
 					<div v-for="expertise in expertises" :key="expertise._key" class="grid-item">

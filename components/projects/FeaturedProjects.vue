@@ -215,7 +215,7 @@
 		</div>
 
 		<!-- Expertises Grid -->
-		<div class="grid-section expertise-grid">
+		<div v-if="expertises && expertises.length > 0" class="grid-section expertise-grid">
 			<GridContainer>
 				<h2 class="grid-title">Expertises</h2>
 				<div class="grid-container">
