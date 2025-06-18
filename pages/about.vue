@@ -336,7 +336,7 @@
 						v-if="about.editorialContent?.museums?.length"
 						class="editorial-section museums"
 					>
-						<h2 class="section-title">Musées</h2>
+						<h2 class="section-title">Cultural spaces</h2>
 						<div class="content-grid">
 							<div
 								v-for="museum in about.editorialContent.museums"

@@ -160,6 +160,10 @@
 	const handleVideoClick = () => {
 		router.push({ name: 'projects' })
 	}
+
+	const navigateToProject = (slug) => {
+		router.push({ path: `/projects/${slug.current}` })
+	}
 </script>
 
 <template>
@@ -201,7 +205,12 @@
 			<GridContainer>
 				<h2 class="grid-title">Projets</h2>
 				<div class="grid-container">
-					<div v-for="project in projects" :key="project._id" class="grid-item">
+					<div
+						v-for="project in projects"
+						:key="project._id"
+						class="grid-item"
+						@click="navigateToProject(project.slug)"
+					>
 						<SanityImage
 							:asset-id="project.mainImage.asset._ref"
 							auto="format"
@@ -402,6 +411,7 @@
 
 			.grid-item {
 				position: relative;
+				cursor: pointer;
 
 				.grid-image {
 					width: 100%;

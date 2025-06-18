@@ -2,6 +2,7 @@
 	import { Swiper, SwiperSlide } from 'swiper/vue'
 	import 'swiper/css'
 	import { computed, onMounted, onBeforeUnmount } from 'vue'
+	import { PortableText } from '@portabletext/vue'
 
 	const props = defineProps({
 		blog: Array,
@@ -102,7 +103,8 @@
 							{{ item.title }}
 						</h3>
 						<p class="item__excerpt">
-							{{ item.excerpt }}
+							<PortableText v-if="typeof item.excerpt === 'object'" :value="item.excerpt" />
+							<template v-else>{{ item.excerpt }}</template>
 						</p>
 					</div>
 				</NuxtLink>
@@ -166,7 +168,6 @@
 
 			&__title {
 				flex: 1;
-				text-decoration: underline;
 				text-decoration-thickness: from-font;
 				text-underline-offset: 0.5rem;
 
@@ -183,6 +184,12 @@
 					grid-column: 2 / span 10;
 					margin-top: 2rem;
 					margin-left: 0;
+				}
+
+				a {
+					text-decoration: underline;
+					text-decoration-thickness: from-font;
+					text-underline-offset: 0.5rem;
 				}
 			}
 		}
