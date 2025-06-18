@@ -20,6 +20,13 @@
         }
       }
     },
+    relatedPosts[] -> {
+      title,
+      slug,
+      releaseDate,
+      excerpt,
+      mainImage
+    },
     relatedProjects[] -> {
       title,
       slug,
@@ -60,6 +67,8 @@
 			<GridContainer>
 				<section class="infos">
 					<GoBackButton />
+				</section>
+				<section class="content">
 					<div class="infos__meta">
 						<h1 class="infos__title">
 							{{ article.title }}
@@ -68,8 +77,6 @@
 						<PortableText :value="article.content" />
 						</div>
 					</div>
-				</section>
-				<section class="content">
 					<VideoPlayer
 						v-if="article.mainVideo"
 						:vimeo-url="article.mainVideoUrl"
@@ -130,6 +137,61 @@
 							</div>
 						</template>
 					</div>
+
+					<!-- Related Posts Section -->
+					<section
+						v-if="article.relatedPosts && article.relatedPosts.length > 0"
+						class="related-posts"
+					>
+						<GridContainer>
+							<h2 class="related-posts__title">
+								Related articles
+							</h2>
+						</GridContainer>
+						<ul class="ArticlesList">
+							<li v-for="post in article.relatedPosts" :key="post._id" class="item">
+								<NuxtLink
+									:key="post._id"
+									class="item__link"
+									:to="{ name: 'news-slug', params: { slug: post.slug.current } }"
+								>
+									<div class="item__container">
+										<div class="item__thumbnail">
+											<SanityImage
+												v-if="post.mainImage"
+												:asset-id="post.mainImage.asset._ref"
+												auto="format"
+											/>
+											<video
+												v-if="post.mainVideoUrl"
+												:src="post.mainVideoUrl"
+												muted
+												loop
+												playsinline
+												webkit-playsinline
+												preload="none"
+												autobuffer="true"
+											/>
+										</div>
+										<div class="item__meta">
+											<h3
+												v-if="post.title"
+												class="item__title"
+											>
+												{{ post.title }}
+											</h3>
+										</div>
+										<div
+											v-if="post.releaseDate"
+											class="item__date"
+										>
+											{{ post.releaseDate.slice(0, 4) }}
+										</div>
+									</div>
+								</NuxtLink>
+							</li>
+						</ul>
+					</section>
 				</section>
 			</GridContainer>
 		</div>
@@ -201,7 +263,6 @@
 				}
 
 				&__meta {
-					max-width: 70rem;
 
 					@include viewport-480 {
 						@include grid(12, 1fr, 1, 0);
@@ -300,6 +361,132 @@
 
 					.gallery-video {
 						margin: 6rem 0;
+					}
+				}
+
+				.related-posts {
+					margin-top: 12rem;
+
+					&__title {
+						font-size: 40px;
+						margin-bottom: 6rem;
+						grid-column: 1 / span 8;
+
+						@include viewport-480 {
+							font-size: 26px;
+							margin-bottom: 4rem;
+						}
+					}
+				}
+
+				.ArticlesList {
+					grid-column: 1 / -1;
+					padding-bottom: 5rem;
+
+					.item {
+						font-size: $desktop-list;
+						border-top: 0.1rem solid $dark-grey;
+						transition: background-color 0.2s ease-in-out;
+
+						@include viewport-768 {
+							height: auto;
+							padding: 2rem 0;
+							font-size: $tablet-list;
+						}
+
+						@include viewport-480 {
+							font-size: $mobile-list;
+						}
+
+						&:hover {
+							background-color: $dark-dark-grey;
+						}
+
+						&__link {
+							height: 100%;
+						}
+
+						&__container {
+							@include grid(12, 1fr, 1, 0);
+
+							position: relative;
+							align-items: center;
+							height: 100%;
+							padding: 1rem 2rem;
+
+							@include viewport-480 {
+								padding: 0 1rem;
+							}
+						}
+
+						&__date {
+							grid-column: auto / span 2;
+							color: $medium-grey;
+
+							@include viewport-480 {
+								grid-column: 11 / span 2;
+							}
+						}
+
+						&__meta {
+							grid-column: 3 / span 7;
+
+							@include viewport-768 {
+								grid-column: 3 / span 6;
+							}
+
+							@include viewport-480 {
+								grid-column: 6 / span 5;
+							}
+						}
+
+						&__thumbnail {
+							position: relative;
+							grid-column: auto / span 2;
+							margin-left: 0;
+							pointer-events: none;
+
+							@include viewport-480 {
+								grid-column: auto / span 4;
+							}
+
+							img {
+								width: 50%;
+								aspect-ratio: 1 / 1;
+								object-fit: cover;
+								filter: grayscale(100%);
+								transition: 0.25s ease-in-out;
+
+								@include viewport-480 {
+									width: 100%;
+								}
+							}
+
+							video {
+								position: absolute;
+								top: 0;
+								left: 0;
+								width: 50%;
+								aspect-ratio: 1 / 1;
+								visibility: hidden;
+								object-fit: cover;
+								opacity: 0;
+								transition: 0.25s ease-in-out;
+
+								@include viewport-480 {
+									width: 100%;
+								}
+							}
+						}
+
+						&:hover img {
+							filter: grayscale(0);
+						}
+
+						&:hover video {
+							visibility: visible;
+							opacity: 1;
+						}
 					}
 				}
 			}
