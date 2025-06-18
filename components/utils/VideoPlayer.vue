@@ -9,10 +9,6 @@
 			required: true,
 			default: ''
 		},
-		downloadUrl: {
-			type: String,
-			default: ''
-		},
 		poster: {
 			type: Object,
 			required: true
@@ -20,6 +16,7 @@
 	})
 
 	const hasPlayed = shallowRef(false)
+	const showBigPlayButton = shallowRef(true)
 
 	const $main = ref(null)
 	const $video = ref(null)
@@ -45,6 +42,7 @@
 
 	function onPlayBtnClick() {
 		hasPlayed.value = true
+		showBigPlayButton.value = false
 		isPlaying.value = true
 		$video.value.play()
 		raf = window.requestAnimationFrame(onUpdate)
@@ -52,6 +50,7 @@
 
 	function onPauseBtnClick() {
 		isPlaying.value = false
+		showBigPlayButton.value = true
 		$video.value.pause()
 		window.cancelAnimationFrame(raf)
 	}
@@ -167,42 +166,53 @@
 		onPlayBtnClick()
 	}
 
-	function onVideoEnded() {
-		isPlaying.value = false
+	let isDragging = false
+
+	function onTimelineMousedown(event) {
+		isDragging = true
+		document.addEventListener('mousemove', onTimelineMousemove)
+		document.addEventListener('mouseup', onTimelineMouseup)
+		seekOnTimeline(event.clientX)
 	}
 
-	function downloadVideo() {
-		const videoUrl = props.downloadUrl || props.vimeoUrl
-		if (!videoUrl) {
-			console.error('Aucune URL de vidéo disponible')
-			return
+	function onTimelineMousemove(event) {
+		if (isDragging) {
+			seekOnTimeline(event.clientX)
 		}
+	}
 
-		fetch(videoUrl)
-			.then(response => {
-				if (!response.ok) {
-					throw new Error('Erreur réseau lors du téléchargement')
-				}
-				return response.blob()
-			})
-			.then(blob => {
-				const url = window.URL.createObjectURL(blob)
-				const a = document.createElement('a')
-				a.style.display = 'none'
-				a.href = url
-				a.download = `video-${Date.now()}.mp4`
-				document.body.appendChild(a)
-				a.click()
-				window.URL.revokeObjectURL(url)
-				document.body.removeChild(a)
-			})
-			.catch(error => {
-				console.error('Erreur lors du téléchargement:', error)
-			})
+	function onTimelineMouseup() {
+		isDragging = false
+		document.removeEventListener('mousemove', onTimelineMousemove)
+		document.removeEventListener('mouseup', onTimelineMouseup)
+	}
+
+	function onTimelineTouchstart(event) {
+		document.addEventListener('touchmove', onTimelineTouchmove)
+		document.addEventListener('touchend', onTimelineTouchend)
+		seekOnTimeline(event.touches[0].clientX)
+	}
+
+	function onTimelineTouchmove(event) {
+		seekOnTimeline(event.touches[0].clientX)
+	}
+
+	function onTimelineTouchend() {
+		document.removeEventListener('touchmove', onTimelineTouchmove)
+		document.removeEventListener('touchend', onTimelineTouchend)
+	}
+
+	function onVideoEnded() {
+		isPlaying.value = false
+		showBigPlayButton.value = true
 	}
 
 	onBeforeUnmount(() => {
 		window.cancelAnimationFrame(raf)
+		document.removeEventListener('mousemove', onTimelineMousemove)
+		document.removeEventListener('mouseup', onTimelineMouseup)
+		document.removeEventListener('touchmove', onTimelineTouchmove)
+		document.removeEventListener('touchend', onTimelineTouchend)
 	})
 </script>
 
@@ -216,16 +226,16 @@
 			:q="75"
 		/>
 		<button
-			v-show="!hasPlayed"
+			v-show="showBigPlayButton"
 			class="big-play-button"
 			type="button"
 			@click="onPlayBtnClick"
 		>
-			<svg
+		<svg
 				width="80"
 				height="80"
 				viewBox="0 0 17 16"
-				fill="none"
+				fill="white"
 				xmlns="http://www.w3.org/2000/svg"
 			>
 				<path
@@ -267,8 +277,8 @@
 							xmlns="http://www.w3.org/2000/svg"
 						>
 							<path
-								d="M3 12.5V3.5H4.35441L14 7.35125V8.71169L4.35586 12.5H3Z"
-								stroke="white"
+								d="M3 12.5V3.5L14 8L3 12.5Z"
+								fill="white"
 							></path>
 						</svg>
 					</button>
@@ -302,14 +312,14 @@
 						</svg>
 					</button>
 				</div>
-				<div class="controls__time">
+				<!-- <div class="controls__time">
 					<div class="controls__current-time">
 						{{ videoFormatedCurrentTime }}
 					</div>
 					<div class="controls__total-time">
 						{{ videoFormatedDuration }}
 					</div>
-				</div>
+				</div> -->
 			</div>
 			<div class="flex">
 				<div class="controls__mute">
@@ -422,26 +432,7 @@
 						</svg>
 					</button>
 				</div>
-				<div class="controls__download">
-					<button @click="downloadVideo" class="download-link">
-						<svg
-							width="17"
-							height="16"
-							viewBox="0 0 17 16"
-							fill="none"
-							xmlns="http://www.w3.org/2000/svg"
-						>
-							<path
-								d="M8.5 1.5V10.5M8.5 10.5L5.5 7.5M8.5 10.5L11.5 7.5"
-								stroke="white"
-							/>
-							<path
-								d="M3.5 11.5V13.5H13.5V11.5"
-								stroke="white"
-							/>
-						</svg>
-					</button>
-				</div>
+
 			</div>
 
 
@@ -477,6 +468,12 @@
 			left: 50%;
 			transform: translate(-50%, -50%);
 			z-index: 2;
+			width: 80px;
+			height: 80px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding: 0;
 		}
 
 		.flex {
@@ -494,6 +491,40 @@
 
 			&.is-hidden {
 				opacity: 0;
+			}
+		}
+
+		.video {
+			width: 100%;
+			height: 100%;
+			object-fit: contain;
+		}
+
+		&:fullscreen {
+			.video {
+				max-height: 100vh;
+				object-fit: contain;
+			}
+		}
+
+		&:-webkit-full-screen {
+			.video {
+				max-height: 100vh;
+				object-fit: contain;
+			}
+		}
+
+		&:-moz-full-screen {
+			.video {
+				max-height: 100vh;
+				object-fit: contain;
+			}
+		}
+
+		&:-ms-fullscreen {
+			.video {
+				max-height: 100vh;
+				object-fit: contain;
 			}
 		}
 
@@ -544,27 +575,7 @@
 				margin-left: 1.2rem;
 			}
 
-			&__download {
-				order: 4;
-				margin-left: 1.2rem;
 
-				.download-link {
-					display: block;
-
-					svg {
-						display: block;
-						margin: 0 auto;
-					}
-				}
-
-				@include viewport-480 {
-					order: 5;
-				}
-
-				@include viewport-320 {
-					display: none;
-				}
-			}
 
 			&__fullscreen {
 				order: 3;
