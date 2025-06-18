@@ -8,6 +8,14 @@
 	function closeNav() {
 		isNavActive.value = false
 	}
+
+	// Configuration des liens de navigation
+	const NAV_LINKS = {
+		projects: { label: 'Projects', path: '/projects' },
+		madmapper: { label: 'MadMapper', path: '/mad' },
+		about: { label: 'About', path: '/about' },
+		news: { label: 'News', path: '/news?page=1' }
+	}
 </script>
 
 <template>
@@ -15,41 +23,13 @@
 		<div :class="[isNavActive && 'NavMenu__background--active', 'NavMenu__background']" />
 		<div :class="[isNavActive && 'NavMenu__main--active', 'NavMenu__main']">
 			<ul class="nav">
-				<li class="nav__item">
+				<li v-for="linkKey in navMenu.mainNavOrder" :key="linkKey" class="nav__item">
 					<NuxtLink
 						class="main__link"
-						to="/projects"
+						:to="NAV_LINKS[linkKey].path"
 						@click="closeNav()"
 					>
-						Projects
-					</NuxtLink>
-				</li>
-				<li class="nav__item">
-					<NuxtLink
-						class="main__link"
-						to="/mad"
-						@click="closeNav()"
-					>
-						MadMapper
-					</NuxtLink>
-				</li>
-				<li class="nav__item">
-					<NuxtLink
-						class="main__link"
-						to="/about"
-						@click="closeNav()"
-					>
-						About
-					</NuxtLink>
-				</li>
-
-				<li class="nav__item">
-					<NuxtLink
-						class="main__link"
-						to="/news?page=1"
-						@click="closeNav()"
-					>
-						News
+						{{ NAV_LINKS[linkKey].label }}
 					</NuxtLink>
 				</li>
 			</ul>
@@ -116,7 +96,7 @@
 			<ul class="social-media">
 				<li class="social-media__item">
 					<a
-						:href="navMenu.instagram"
+						:href="navMenu.vimeo"
 						target="blank"
 					>
 						<img
@@ -127,11 +107,11 @@
 				</li>
 				<li class="social-media__item">
 					<a
-						:href="navMenu.vimeo"
+						:href="navMenu.instagram"
 						target="blank"
 					>
 						<img
-							src="@/assets/img/facebook-icon.svg"
+							src="@/assets/img/instagram-icon.svg"
 							alt=""
 						>
 					</a>
@@ -142,7 +122,7 @@
 						target="blank"
 					>
 						<img
-							src="@/assets/img/instagram-icon.svg"
+							src="@/assets/img/facebook-icon.svg"
 							alt=""
 						>
 					</a>
