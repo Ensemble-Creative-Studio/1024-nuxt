@@ -232,18 +232,17 @@
 			@click="onPlayBtnClick"
 		>
 		<svg
-				width="80"
-				height="80"
-				viewBox="0 0 17 16"
-				fill="white"
-				xmlns="http://www.w3.org/2000/svg"
-			>
-				<path
-					d="M3 12.5V3.5H4.35441L14 7.35125V8.71169L4.35586 12.5H3Z"
-					stroke="white"
-					stroke-width="1"
-				></path>
-			</svg>
+							width="80"
+							height="80"
+							viewBox="0 0 17 16"
+							fill="none"
+							xmlns="http://www.w3.org/2000/svg"
+						>
+							<path
+								d="M3 12.5V3.5L14 8L3 12.5Z"
+								fill="white"
+							></path>
+						</svg>
 		</button>
 		<video
 			ref="$video"

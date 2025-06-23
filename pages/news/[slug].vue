@@ -181,12 +181,6 @@
 												{{ post.title }}
 											</h3>
 										</div>
-										<div
-											v-if="post.releaseDate"
-											class="item__date"
-										>
-											{{ post.releaseDate.slice(0, 4) }}
-										</div>
 									</div>
 								</NuxtLink>
 							</li>
@@ -270,9 +264,6 @@
 				}
 
 				&__title {
-					text-decoration: underline;
-					text-decoration-thickness: from-font;
-					text-underline-offset: 0.5rem;
 					margin-bottom: 2rem;
 
 					@include viewport-480 {
@@ -419,17 +410,8 @@
 							}
 						}
 
-						&__date {
-							grid-column: auto / span 2;
-							color: $medium-grey;
-
-							@include viewport-480 {
-								grid-column: 11 / span 2;
-							}
-						}
-
 						&__meta {
-							grid-column: 3 / span 7;
+							grid-column: 3 / span 9;
 
 							@include viewport-768 {
 								grid-column: 3 / span 6;
@@ -451,14 +433,15 @@
 							}
 
 							img {
-								width: 50%;
-								aspect-ratio: 1 / 1;
+								width: 100%;
+								height: 10rem;
 								object-fit: cover;
 								filter: grayscale(100%);
 								transition: 0.25s ease-in-out;
 
 								@include viewport-480 {
 									width: 100%;
+									height: 8rem;
 								}
 							}
 
@@ -466,8 +449,8 @@
 								position: absolute;
 								top: 0;
 								left: 0;
-								width: 50%;
-								aspect-ratio: 1 / 1;
+								width: 100%;
+								height: 10rem;
 								visibility: hidden;
 								object-fit: cover;
 								opacity: 0;
@@ -475,6 +458,7 @@
 
 								@include viewport-480 {
 									width: 100%;
+									height: 8rem;
 								}
 							}
 						}

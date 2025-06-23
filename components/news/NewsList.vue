@@ -79,35 +79,43 @@
 						v-for="media in item.gallery.medias"
 						:key="media._id"
 					>
-						<SanityImage
-							:key="media._id"
-							:asset-id="media.asset._ref"
-							auto="format"
-							:q="75"
-						/>
+						<NuxtLink
+							:to="{ name: 'news-slug', params: { slug: item.slug.current } }"
+						>
+							<SanityImage
+								:key="media._id"
+								:asset-id="media.asset._ref"
+								auto="format"
+								:q="75"
+							/>
+						</NuxtLink>
 					</swiper-slide>
 				</swiper>
-				<SanityImage
-					v-else-if="item.mainImage"
-					:asset-id="item.mainImage.asset._ref"
-					auto="format"
-					:q="75"
-				/>
 				<NuxtLink
-					:key="item._id"
-					class="item__link"
+					v-else-if="item.mainImage"
 					:to="{ name: 'news-slug', params: { slug: item.slug.current } }"
 				>
-					<div class="item__meta">
+					<SanityImage
+						:asset-id="item.mainImage.asset._ref"
+						auto="format"
+						:q="75"
+					/>
+				</NuxtLink>
+				<div class="item__meta">
+					<NuxtLink
+						:key="item._id"
+						class="item__title-link"
+						:to="{ name: 'news-slug', params: { slug: item.slug.current } }"
+					>
 						<h3 class="item__title">
 							{{ item.title }}
 						</h3>
-						<p class="item__excerpt">
-							<PortableText v-if="typeof item.excerpt === 'object'" :value="item.excerpt" />
-							<template v-else>{{ item.excerpt }}</template>
-						</p>
-					</div>
-				</NuxtLink>
+					</NuxtLink>
+					<p class="item__excerpt">
+						<PortableText v-if="typeof item.excerpt === 'object'" :value="item.excerpt" />
+						<template v-else>{{ item.excerpt }}</template>
+					</p>
+				</div>
 			</div>
 		</li>
 	</ul>
@@ -170,6 +178,15 @@
 				flex: 1;
 				text-decoration-thickness: from-font;
 				text-underline-offset: 0.5rem;
+
+				@include viewport-480 {
+					grid-column: 1 / -1;
+				}
+			}
+
+			&__title-link {
+				flex: 1;
+				display: block;
 
 				@include viewport-480 {
 					grid-column: 1 / -1;
