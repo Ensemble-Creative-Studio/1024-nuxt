@@ -207,6 +207,15 @@
 					text-decoration: underline;
 					text-decoration-thickness: from-font;
 					text-underline-offset: 0.5rem;
+					display: inline;
+				}
+
+				.portable-text a {
+					display: inline;
+				}
+
+				p {
+					margin: 0;
 				}
 			}
 		}
