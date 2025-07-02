@@ -450,7 +450,7 @@
 			display: flex;
 			flex-flow: row wrap;
 			justify-content: center;
-			gap: 3rem;
+			gap: 6rem;
 
 			@include viewport-480 {
 				gap: 0px;
@@ -477,7 +477,7 @@
 
 		.content {
 			&__title {
-				grid-column: 1 / span 5;
+				grid-column: 3 / span 5;
 				margin-top: 2rem;
 				font-size: $desktop-h4;
 
@@ -488,16 +488,16 @@
 			}
 
 			&__claim {
-				grid-column: 2 / span 5;
+				grid-column: 3 / span 5;
 				margin-top: 2rem;
 				font-size: 3rem;
 
 				@include viewport-1200 {
-					grid-column: 2 / span 8;
+					grid-column: 3 / span 8;
 				}
 
 				@include viewport-768 {
-					grid-column: 1 / -1;
+					grid-column: 3 / -1;
 				}
 
 				@include viewport-480 {
@@ -507,23 +507,23 @@
 			}
 
 			&__details {
-				grid-column: 1 / -1;
+				grid-column: 3 / -1;
 				margin-top: 6rem;
 
 				@include viewport-768 {
-					grid-column: 2 / span 10;
+					grid-column: 3 / span 10;
 				}
 			}
 
 			&__description {
-				grid-column: 2 / span 5;
+				grid-column: 3 / span 8;
 
 				@include viewport-1200 {
-					grid-column: 2 / span 8;
+					grid-column: 3 / span 8;
 				}
 
 				@include viewport-480 {
-					grid-column: 2 / -1;
+					grid-column: 3 / -1;
 					font-size: $mobile-text-read;
 				}
 			}
@@ -645,7 +645,7 @@
 			}
 
 			&__header {
-				grid-column: 2/span 6;
+				grid-column: 3/span 6;
 				font-weight: bold;
 				font-size: 2rem;
 				margin-bottom: 2rem;
@@ -659,21 +659,17 @@
 				}
 
 				@include viewport-480 {
-					grid-column: 2 / -1;
+					grid-column: 3 / -1;
 				}
 			}
 
 			&__content {
-				grid-column: 2/span 6;
+				grid-column: 3/span 6;
 				// margin-top: 2rem;
 
 				@include viewport-480 {
-					grid-column: 2 / -1;
+					grid-column: 3 / -1;
 					font-size: $mobile-text-read;
-				}
-
-				p, h4 {
-					margin-bottom: 1rem;
 				}
 
 				a {
