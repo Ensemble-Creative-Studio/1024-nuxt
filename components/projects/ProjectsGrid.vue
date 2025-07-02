@@ -115,7 +115,6 @@
 				entries.forEach(entry => {
 					const item = entry.target;
 					const video = item.querySelector('video');
-					const img = item.querySelector('img');
 
 					if (entry.isIntersecting) {
 						if (video) {
@@ -123,18 +122,12 @@
 							video.style.visibility = 'visible';
 							video.style.opacity = '1';
 						}
-						if (img) {
-							img.style.filter = 'grayscale(0)';
-						}
 					} else {
 						if (video) {
 							video.pause();
 							video.currentTime = 0;
 							video.style.visibility = 'hidden';
 							video.style.opacity = '0';
-						}
-						if (img) {
-							img.style.filter = 'grayscale(100%)';
 						}
 					}
 				});
@@ -150,48 +143,12 @@
 		}
 	};
 
-	// Animer les deux dernières vidéos car elles n'iront jamais dans l'IntersectionObserver car trop basse
-	const animateLastTwoVideos = () => {
-		if (window.innerWidth <= 768) {
-			const items = Array.from($projectsGrid.value.querySelectorAll('.item'));
-			const lastTwoItems = items.slice(-2);
 
-			lastTwoItems.forEach((item, index) => {
-				item.setAttribute('data-id', `item-${index + 1}`);
-			});
-
-			const observer = new IntersectionObserver((entries) => {
-				entries.forEach(entry => {
-					const img = entry.target.querySelector('img');
-					if (entry.isIntersecting) {
-						const itemId = entry.target.getAttribute('data-id');
-						if (img) {
-							setTimeout(() => {
-								img.style.filter = 'grayscale(0)';
-							}, 300); // Délai de 0.3 secondes
-						}
-					} else {
-						if (img) {
-							img.style.filter = 'grayscale(100%)';
-						}
-					}
-				});
-			}, {
-				root: null,
-				threshold: 0.5
-			});
-
-			lastTwoItems.forEach(item => {
-				observer.observe(item);
-			});
-		}
-	};
 
 	onMounted(() => {
 		showProjects()
 		addVideoHoverListeners()
 		addVideoMobileAnimation()
-		animateLastTwoVideos()
 	})
 
 	onBeforeUnmount(() => {
@@ -291,12 +248,11 @@
 				aspect-ratio: 1 / 1;
 				pointer-events: none;
 
-				img {
+				                img {
 					width: 100%;
 					height: 100%;
 					aspect-ratio: 1 / 1;
 					object-fit: cover;
-					filter: grayscale(100%);
 					transition: 0.25s ease-in-out;
 				}
 
@@ -312,9 +268,6 @@
 				}
 			}
 
-			&:hover img {
-				filter: grayscale(0);
-			}
 
 			&:hover video {
 				visibility: visible;

@@ -436,8 +436,6 @@
 								width: 100%;
 								height: 10rem;
 								object-fit: cover;
-								filter: grayscale(100%);
-								transition: 0.25s ease-in-out;
 
 								@include viewport-480 {
 									width: 100%;
@@ -463,9 +461,6 @@
 							}
 						}
 
-						&:hover img {
-							filter: grayscale(0);
-						}
 
 						&:hover video {
 							visibility: visible;

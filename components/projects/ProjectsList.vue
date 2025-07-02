@@ -81,7 +81,6 @@
 				entries.forEach(entry => {
 					const item = entry.target;
 					const video = item.querySelector('video');
-					const img = item.querySelector('img');
 
 					if (entry.isIntersecting) {
 						if (video) {
@@ -89,18 +88,12 @@
 							video.style.visibility = 'visible';
 							video.style.opacity = '1';
 						}
-						if (img) {
-							img.style.filter = 'grayscale(0)';
-						}
 					} else {
 						if (video) {
 							video.pause();
 							video.currentTime = 0;
 							video.style.visibility = 'hidden';
 							video.style.opacity = '0';
-						}
-						if (img) {
-							img.style.filter = 'grayscale(100%)';
 						}
 					}
 				});
@@ -336,7 +329,6 @@
 					width: 50%;
 					aspect-ratio: 1 / 1;
 					object-fit: cover;
-					filter: grayscale(100%);
 					transition: 0.25s ease-in-out;
 
 					@include viewport-480 {
@@ -361,9 +353,6 @@
 				}
 			}
 
-			&:hover img {
-				filter: grayscale(0);
-			}
 
 			&:hover video {
 				visibility: visible;
