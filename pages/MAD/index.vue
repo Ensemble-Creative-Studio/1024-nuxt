@@ -543,14 +543,13 @@
 				font-size: $desktop-h4;
 
 				@include viewport-480 {
+					grid-column: 1 / -1;
 					margin-top: 1rem;
 					font-size: $mobile-h2;
 				}
 			}
 			&__claim {
 				grid-column: 2 / span 5;
-
-				// font-weight: $extra-light;
 				margin-top: 6rem;
 				font-size: 3rem;
 
@@ -563,8 +562,9 @@
 				}
 
 				@include viewport-480 {
+					grid-column: 1 / -1;
 					margin-top: 4rem;
-					font-size: $mobile-h4; // $mobile-h2 on Figma
+					font-size: $mobile-h4;
 				}
 			}
 
@@ -575,18 +575,25 @@
 				@include viewport-768 {
 					grid-column: 2 / span 10;
 				}
+
+				@include viewport-480 {
+					grid-column: 1 / -1;
+					margin-top: 4rem;
+				}
 			}
 
 			&__description {
 				grid-column: 2 / span 5;
+				margin-top: 6rem;
 
 				@include viewport-1200 {
 					grid-column: 2 / span 8;
 				}
 
 				@include viewport-480 {
-					grid-column: 2 / -1;
-					font-size: $mobile-text-read;
+					grid-column: 1 / -1;
+					margin-top: 4rem !important;
+					font-size: 16px;
 				}
 			}
 
@@ -717,7 +724,7 @@
 			@include viewport-480 {
 				padding-bottom: 0;
 				margin-top: 6rem;
-				font-size: $mobile-text-read;
+				font-size: 16px;
 			}
 
 			&__header {
@@ -732,7 +739,8 @@
 				}
 
 				@include viewport-480 {
-					grid-column: 2 / -1;
+					grid-column: 1 / -1;
+					padding-left: 2rem;
 				}
 			}
 
@@ -748,8 +756,8 @@
 				}
 
 				@include viewport-480 {
-					grid-column: 2 / span 10;
-					@include grid(12, 1fr, 1, 0);
+					grid-column: 1 / -1;
+					padding-left: 2rem;
 				}
 
 				.item {
@@ -762,6 +770,7 @@
 
 					@include viewport-480 {
 						grid-column: 1 / -1;
+						font-size: 16px;
 
 						&:not(:first-child) {
 							margin-top: 3rem;
@@ -774,6 +783,7 @@
 
 						@include viewport-480 {
 							grid-column: 1 / -1;
+							padding-left: 2rem;
 						}
 					}
 
@@ -782,6 +792,7 @@
 
 						@include viewport-480 {
 							grid-column: 1 / -1;
+							padding-left: 2rem;
 						}
 					}
 				}

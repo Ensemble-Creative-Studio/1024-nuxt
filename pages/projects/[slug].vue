@@ -482,6 +482,7 @@
 				font-size: $desktop-h4;
 
 				@include viewport-480 {
+					grid-column: 1 / -1;
 					margin-top: 1rem;
 					font-size: $mobile-h2;
 				}
@@ -501,6 +502,7 @@
 				}
 
 				@include viewport-480 {
+					grid-column: 1 / -1;
 					margin-top: 4rem;
 					font-size: $mobile-h4;
 				}
@@ -513,18 +515,25 @@
 				@include viewport-768 {
 					grid-column: 3 / span 10;
 				}
+
+				@include viewport-480 {
+					grid-column: 1 / -1;
+					margin-top: 4rem;
+				}
 			}
 
 			&__description {
 				grid-column: 3 / span 8;
+				margin-top: 6rem;
 
 				@include viewport-1200 {
 					grid-column: 3 / span 8;
 				}
 
 				@include viewport-480 {
-					grid-column: 3 / -1;
-					font-size: $mobile-text-read;
+					grid-column: 1 / -1;
+					margin-top: 4rem !important;
+					font-size: 16px;
 				}
 			}
 
@@ -641,7 +650,7 @@
 			@include viewport-480 {
 				margin-bottom: 6rem;
 				margin-top: 6rem;
-				font-size: $mobile-text-read;
+				font-size: 16px;
 			}
 
 			&__header {
@@ -650,26 +659,17 @@
 				font-size: 2rem;
 				margin-bottom: 2rem;
 
-				&--is-empty {
-					padding-bottom: 6rem;
-
-					@include viewport-480 {
-						padding-bottom: 12rem;
-					}
-				}
-
 				@include viewport-480 {
-					grid-column: 3 / -1;
+					grid-column: 1 / -1;
 				}
 			}
 
 			&__content {
 				grid-column: 3/span 6;
-				// margin-top: 2rem;
 
 				@include viewport-480 {
-					grid-column: 3 / -1;
-					font-size: $mobile-text-read;
+					grid-column: 1 / -1;
+					font-size: 16px;
 				}
 
 				a {
