@@ -256,6 +256,7 @@
 									:poster="item.posterImageUrl"
 									:vimeo-url="item.url"
 									:download-url="item.publicUrl"
+									:public-url="item.publicUrl"
 								/>
 							</div>
 						</li>

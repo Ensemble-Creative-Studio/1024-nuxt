@@ -13,6 +13,11 @@
 			type: Object,
 			required: true
 		},
+		publicUrl: {
+			type: String,
+			required: false,
+			default: ''
+		}
 	})
 
 	const hasPlayed = shallowRef(false)
@@ -123,6 +128,14 @@
 				screenfull.exit();
 				isFullscreen.value = false;
 			}
+		}
+	}
+
+	function onShareBtnClick() {
+		if (props.publicUrl) {
+			window.open(props.publicUrl, '_blank')
+		} else {
+			console.warn('No public URL available for this video')
 		}
 	}
 
@@ -432,6 +445,18 @@
 					</button>
 				</div>
 
+				<div class="controls__share">
+					<button
+						type="button"
+						@click="onShareBtnClick"
+					>
+						<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path d="M12.3029 6.08805L12.2573 2.33182L8.31237 6.85913L7.83433 6.3656L11.7793 1.83828L8.33085 1.98722L8.93969 1.2885L12.84 1.15153L12.9117 5.38933L12.3029 6.08805Z" fill="white"/>
+							<path d="M14 13.9912V7.99121H13V12.9912H3V2.99121H6V1.99121H2V13.9912H14Z" fill="white"/>
+						</svg>
+					</button>
+				</div>
+
 			</div>
 
 
@@ -582,6 +607,15 @@
 
 				@include viewport-480 {
 					order: 4;
+				}
+			}
+
+			&__share {
+				order: 4;
+				margin-left: 1.2rem;
+
+				@include viewport-480 {
+					order: 5;
 				}
 			}
 

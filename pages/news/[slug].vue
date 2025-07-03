@@ -44,9 +44,6 @@
 
 	const { data: article } = await useSanityQuery(GET_SINGLE_ARTICLE)
 
-	// Debug gallery data
-	console.log('Gallery data:', article.value?.gallery)
-
 	if (Object.keys(article.value).length === 0) {
 		router.push('/404')
 		throw createError({ statusCode: 404, statusMessage: 'Article not found' })
@@ -133,6 +130,7 @@
 									:vimeo-url="item.url"
 									:download-url="item.downloadUrl"
 									:poster-image="item.posterImage"
+									:public-url="item.publicUrl"
 								/>
 							</div>
 						</template>

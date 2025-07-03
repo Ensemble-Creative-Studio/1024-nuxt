@@ -361,6 +361,7 @@
 									:vimeo-url="item.url"
 									:download-url="item.downloadUrl"
 									:quality="isMobile ? 'sd' : 'hd'"
+									:public-url="item.publicUrl"
 								/>
 							</div>
 						</li>
