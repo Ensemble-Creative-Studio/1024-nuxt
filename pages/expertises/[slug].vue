@@ -528,7 +528,7 @@
 
 			&__title {
 				grid-column: 1 / -1;
-				font-size: 40px !important;
+				font-size: 34px !important;
 
 				@include viewport-480 {
 					font-size: 26px !important;
