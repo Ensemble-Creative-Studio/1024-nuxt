@@ -3,6 +3,7 @@
 	import { PortableText } from '@portabletext/vue';
 	import { ScrollTrigger } from 'gsap/ScrollTrigger'
 	import { ref, onMounted, onUnmounted, computed } from 'vue'
+	import { wait } from '@/utils/wait'
 
 	const isMobile = shallowRef(false)
 
@@ -35,6 +36,7 @@
 		...,
 		projects[] -> {
 			...,
+			"thumbnailVideoUrl": thumbnailVideoUrl,
 			categories[] -> {
 				title,
 				slug
@@ -138,6 +140,10 @@
 		}
 
 		currentExpertise.value = expertise.value
+
+		// Ajout de la gestion des vidéos au survol pour les projets liés
+		addVideoHoverListeners()
+		addVideoMobileAnimation()
 	})
 
 	const handleResize = () => {
@@ -160,8 +166,72 @@
 		window.removeEventListener('scroll', () => {
 			hasScrolledPastHero.value = window.scrollY > window.innerHeight * 0.5
 		})
+
+		// Nettoyage des écouteurs d'événements pour les vidéos
+		const items = document.querySelectorAll('.expertise-project-item')
+		items.forEach((item) => {
+			item.removeEventListener('mouseenter', () => {})
+			item.removeEventListener('mouseleave', () => {})
+		})
 	})
 
+	const addVideoHoverListeners = () => {
+		const items = document.querySelectorAll('.expertise-project-item')
+
+		items.forEach((item) => {
+			const video = item.querySelector('video')
+
+			item.addEventListener('mouseenter', () => {
+				if (video) {
+					video.play()
+				}
+			})
+
+			item.addEventListener('mouseleave', async () => {
+				if (video) {
+					video.pause()
+					await wait(200)
+					video.currentTime = 0
+				}
+			})
+		})
+	}
+
+	const addVideoMobileAnimation = () => {
+		if (window.innerWidth <= 768) {
+			const items = document.querySelectorAll('.expertise-project-item')
+
+			const observer = new IntersectionObserver((entries) => {
+				entries.forEach(entry => {
+					const item = entry.target
+					const video = item.querySelector('video')
+
+					if (entry.isIntersecting) {
+						if (video) {
+							video.play()
+							video.style.visibility = 'visible'
+							video.style.opacity = '1'
+						}
+					} else {
+						if (video) {
+							video.pause()
+							video.currentTime = 0
+							video.style.visibility = 'hidden'
+							video.style.opacity = '0'
+						}
+					}
+				})
+			}, {
+				root: null,
+				rootMargin: '-13% 0px -45% 0px',
+				threshold: 0.5
+			})
+
+			items.forEach(item => {
+				observer.observe(item)
+			})
+		}
+	}
 
 </script>
 
@@ -291,6 +361,16 @@
 												: project.mainImage.asset._ref
 										"
 										auto="format"
+									/>
+									<video
+										v-if="project.thumbnailVideoUrl"
+										:src="project.thumbnailVideoUrl"
+										muted
+										loop
+										playsinline
+										webkit-playsinline
+										preload="none"
+										autobuffer="true"
 									/>
 								</div>
 								<h3 class="expertise-project-title">
@@ -570,11 +650,6 @@
 			display: flex;
 			flex-direction: column;
 			text-decoration: none;
-			transition: transform 0.3s ease;
-
-			&:hover {
-				transform: translateY(-5px);
-			}
 		}
 
 		.expertise-project-thumbnail {
@@ -582,17 +657,35 @@
 			aspect-ratio: 1;
 			overflow: hidden;
 			background-color: #1a1a1a;
+			position: relative;
 
 			img {
 				width: 100%;
 				height: 100%;
 				object-fit: cover;
 			}
+
+			video {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				visibility: hidden;
+				object-fit: cover;
+				opacity: 0;
+				transition: 0.25s ease-in-out;
+			}
+		}
+
+		.expertise-project-item:hover .expertise-project-thumbnail video {
+			visibility: visible;
+			opacity: 1;
 		}
 
 		.expertise-project-title {
 			margin-top: 1rem;
-			font-size: 18px;
+			font-size: 20px;
 			color: #727272;
 			font-weight: normal;
 			line-height: 1.4;
