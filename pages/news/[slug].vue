@@ -67,6 +67,13 @@
 				</section>
 				<section class="content">
 					<div class="infos__meta">
+						<div v-if="article.mainImage" class="content__main-image">
+							<SanityImage
+								:asset-id="article.mainImage.asset._ref"
+								auto="format"
+								:q="75"
+							/>
+						</div>
 						<h1 class="infos__title">
 							{{ article.title }}
 						</h1>
@@ -283,8 +290,9 @@
 				// margin-top: 2rem;
 
 				@include viewport-480 {
-						grid-column: 2 / -1;
-						font-size: $mobile-text-read;
+						grid-column: 1 / -1;
+						font-size: 16px;
+						margin-bottom: 2rem;
 					}
 
 					p, h4 {
@@ -304,6 +312,21 @@
 
 				@include viewport-480 {
 					grid-column: 1 / -1;
+				}
+
+				&__main-image {
+					width: 100%;
+					margin-bottom: 4rem;
+
+					img {
+						width: 100%;
+						height: auto;
+						object-fit: cover;
+					}
+
+					@include viewport-480 {
+					grid-column: 1 / -1;
+				}
 				}
 
 				.VideoPlayer {
