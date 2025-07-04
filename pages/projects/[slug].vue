@@ -618,7 +618,7 @@
 					}
 
 					&--text {
-						grid-column: 2 / span 6;
+						grid-column: 3 / span 6;
 
 						a {
 							display: inline-block;
@@ -628,7 +628,7 @@
 						}
 
 						@include viewport-480 {
-							grid-column: 2 / -1;
+							grid-column: 1 / -1;
 							font-size: $mobile-text-read;
 						}
 					}
