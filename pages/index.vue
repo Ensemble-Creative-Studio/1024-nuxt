@@ -25,6 +25,7 @@
 		{
 			baseline,
 			showreel,
+			showreelLink,
 			"showreelMobile": showreelMobile,
 			expertises1024,
 			featuredProjects[] -> {
@@ -52,6 +53,7 @@
 			v-if="!isMobile"
 			:baseline="home.baseline"
 			:showreel="home.showreel"
+			:showreel-link="home.showreelLink"
 			:projects="home.featuredProjects"
 			:expertises="home.expertises1024"
 		/>
@@ -59,6 +61,7 @@
 			v-else
 			:baseline="home.baseline"
 			:showreel="home.showreel"
+			:showreel-link="home.showreelLink"
 			:showreel-mobile="home.showreelMobile"
 			:projects="home.featuredProjects"
 			:expertises="home.expertises1024"

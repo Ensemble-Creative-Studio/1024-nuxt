@@ -741,7 +741,6 @@
 
 				@include viewport-480 {
 					grid-column: 1 / -1;
-					padding-left: 2rem;
 				}
 			}
 

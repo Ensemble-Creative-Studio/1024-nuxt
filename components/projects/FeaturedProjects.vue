@@ -19,6 +19,10 @@
 			type: String,
 			required: true,
 		},
+		showreelLink: {
+			type: String,
+			default: '',
+		},
 		baseline: {
 			type: String,
 			required: true,
@@ -158,7 +162,11 @@
 	})
 
 	const handleVideoClick = () => {
-		router.push({ name: 'projects' })
+		if (props.showreelLink) {
+			window.location.href = props.showreelLink
+		} else {
+			router.push({ name: 'projects' })
+		}
 	}
 
 	const navigateToProject = (slug) => {
