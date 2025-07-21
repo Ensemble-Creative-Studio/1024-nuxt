@@ -132,16 +132,13 @@
 	const handleVideoClick = () => {
 		if (props.showreelLink) {
 			window.location.href = props.showreelLink
-		} else if (props.projects[0]) {
-			router.push({
-				name: 'projects-slug',
-				params: { slug: props.projects[0].slug.current },
-			})
+		} else {
+			router.push({ name: 'projects' })
 		}
 	}
 
 	const navigateToProject = (slug) => {
-		router.push({ path: `/project/${slug.current}` })
+		router.push({ path: `/projects/${slug.current}` })
 	}
 
 </script>
