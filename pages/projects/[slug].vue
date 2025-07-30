@@ -461,7 +461,7 @@
 		.item__inner li.vertical {
 			display: flex;
 			flex: 0 0 calc(50% - 1.5rem);
-			margin-top: 6rem;
+			// margin-top: 6rem;
 
 			@include viewport-480 {
 				flex: 0 0 50%;

@@ -524,7 +524,7 @@
 		.item__inner li.vertical {
 			display: flex;
 			flex: 0 0 50%; /* flex-grow | flex-shrink | flex-basis */
-			padding: 2rem;
+			// padding: 2rem;
 			@include viewport-480 {
 				padding: 1rem;
 			}
