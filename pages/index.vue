@@ -38,17 +38,27 @@
 		}
 	`
 	const { data: home } = await useSanityQuery(query)
+
+	// Ajout du script Mailchimp
+	useHead({
+		title: '1024',
+		meta: [
+			{
+				name: 'description',
+				content: '1024 architecture website'
+			}
+		],
+		script: [
+			{
+				id: 'mcjs',
+				innerHTML: '!function(c,h,i,m,p){m=c.createElement(h),p=c.getElementsByTagName(h)[0],m.async=1,m.src=i,p.parentNode.insertBefore(m,p)}(document,"script","https://chimpstatic.com/mcjs-connected/js/users/3fbcfd2ac029e8760f49a9909/534c5d07f3cb2c8c967ba77ed.js");'
+			}
+		]
+	})
 </script>
 
 <template>
 	<div class="index">
-		<Head>
-			<Title>1024</Title>
-			<Meta
-				name="description"
-				content="1024 architecture website"
-			/>
-		</Head>
 		<FeaturedProjects
 			v-if="!isMobile"
 			:baseline="home.baseline"
