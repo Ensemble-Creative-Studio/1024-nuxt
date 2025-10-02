@@ -101,6 +101,18 @@
 		})
 	}
 
+	function animateHeroOnScroll() {
+		const scrollY = window.scrollY
+		const windowHeight = window.innerHeight
+		const heroVideo = document.querySelector('.hero__video')
+		const heroBanner = document.querySelector('.hero__banner')
+		const heroElement = heroVideo || heroBanner
+
+		if (heroElement) {
+			heroElement.style.display = scrollY >= windowHeight ? 'none' : 'block'
+		}
+	}
+
 	onMounted(() => {
 		// Initialize video source
 		if (window.innerWidth <= 768) {
@@ -142,6 +154,7 @@
 
 		window.addEventListener('scroll', () => {
 			hasScrolledPastHero.value = window.scrollY > window.innerHeight
+			animateHeroOnScroll()
 		})
 
 		if ($heroTitle.value) {
@@ -176,6 +189,7 @@
 		window.removeEventListener('resize', handleResize)
 		window.removeEventListener('scroll', () => {
 			hasScrolledPastHero.value = window.scrollY > window.innerHeight
+			animateHeroOnScroll()
 		})
 		window.removeEventListener('resize', updateVideoSource)
 	})
@@ -237,7 +251,6 @@
 				v-else
 				class="hero__banner"
 				:asset-id="project.mainImage.asset._ref"
-				auto="format"
 				:q="75"
 			/>
 		</section>
@@ -307,9 +320,9 @@
 									}"
 								>
 									<div class="item__image">
-										<SanityImage
-											auto="format"
-											:asset-id="image.asset._ref"
+										<img
+											:src="image.assetRef.url + '?q=70&fm=webp'"
+											:alt="image.alt || ''"
 										/>
 									</div>
 								</li>
@@ -438,6 +451,7 @@
 				height: 100%;
 				height: 100vh;
 				object-fit: cover;
+				opacity: 1;
 			}
 		}
 

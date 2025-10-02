@@ -247,12 +247,20 @@
 		<svg
 							width="80"
 							height="80"
-							viewBox="0 0 17 16"
+							viewBox="0 0 80 80"
 							fill="none"
 							xmlns="http://www.w3.org/2000/svg"
 						>
+							<circle
+								cx="40"
+								cy="40"
+								r="32"
+								stroke="white"
+								stroke-width="2"
+								fill="none"
+							></circle>
 							<path
-								d="M3 12.5V3.5L14 8L3 12.5Z"
+								d="M30 28L30 52L50 40L30 28Z"
 								fill="white"
 							></path>
 						</svg>
@@ -289,7 +297,7 @@
 							xmlns="http://www.w3.org/2000/svg"
 						>
 							<path
-								d="M3 12.5V3.5L14 8L3 12.5Z"
+								d="M4 3L4 13L12 8L4 3Z"
 								fill="white"
 							></path>
 						</svg>

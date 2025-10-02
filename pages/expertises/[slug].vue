@@ -305,9 +305,9 @@
 									}"
 								>
 									<div class="expertise-item__image">
-										<SanityImage
-											auto="format"
-											:asset-id="image.asset._ref"
+										<img
+											:src="image.assetRef.url + '?q=70&fm=webp'"
+											:alt="image.alt || ''"
 										/>
 									</div>
 								</li>
