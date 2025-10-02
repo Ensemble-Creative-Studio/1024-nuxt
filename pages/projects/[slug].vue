@@ -251,6 +251,7 @@
 				v-else
 				class="hero__banner"
 				:asset-id="project.mainImage.asset._ref"
+				auto="format"
 				:q="75"
 			/>
 		</section>
@@ -320,9 +321,9 @@
 									}"
 								>
 									<div class="item__image">
-										<img
-											:src="image.assetRef.url + '?q=70&fm=webp'"
-											:alt="image.alt || ''"
+										<SanityImage
+											auto="format"
+											:asset-id="image.asset._ref"
 										/>
 									</div>
 								</li>

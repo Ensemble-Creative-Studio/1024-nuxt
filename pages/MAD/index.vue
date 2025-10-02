@@ -337,9 +337,8 @@
 									}"
 								>
 									<div class="item__image">
-										<img
-											:src="image.assetRef.url + '?q=70&fm=webp'"
-											:alt="image.alt || ''"
+										<SanityImage
+											:asset-id="image.asset._ref"
 											auto="format"
 										/>
 									</div>
