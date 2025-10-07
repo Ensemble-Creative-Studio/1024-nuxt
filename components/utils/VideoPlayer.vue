@@ -260,8 +260,12 @@
 								fill="none"
 							></circle>
 							<path
-								d="M30 28L30 52L50 40L30 28Z"
+								d="M32 28L32 52L52 40L32 28Z"
 								fill="white"
+								stroke="white"
+								stroke-width="3"
+								stroke-linejoin="round"
+								stroke-linecap="round"
 							></path>
 						</svg>
 		</button>
@@ -299,6 +303,10 @@
 							<path
 								d="M4 3L4 13L12 8L4 3Z"
 								fill="white"
+								stroke="white"
+								stroke-width="2"
+								stroke-linejoin="round"
+								stroke-linecap="round"
 							></path>
 						</svg>
 					</button>

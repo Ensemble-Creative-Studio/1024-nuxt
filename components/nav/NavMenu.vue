@@ -96,22 +96,34 @@
 			<ul class="social-media">
 				<li class="social-media__item">
 					<a
-						:href="navMenu.vimeo"
+						:href="navMenu.instagram"
 						target="blank"
 					>
 						<img
-							src="@/assets/img/vimeo-icon.svg"
+							src="@/assets/img/instagram-icon.svg"
 							alt=""
 						>
 					</a>
 				</li>
 				<li class="social-media__item">
 					<a
-						:href="navMenu.instagram"
+						:href="navMenu.linkedin"
 						target="blank"
 					>
 						<img
-							src="@/assets/img/instagram-icon.svg"
+							class="social-media__icon--linkedin"
+							src="@/assets/img/linkedin-icon.svg"
+							alt=""
+						>
+					</a>
+				</li>
+				<li class="social-media__item">
+					<a
+						:href="navMenu.vimeo"
+						target="blank"
+					>
+						<img
+							src="@/assets/img/vimeo-icon.svg"
 							alt=""
 						>
 					</a>
@@ -296,6 +308,11 @@
 					img {
 						height: 2.5rem;
 						width: 2.5rem;
+					}
+
+					.social-media__icon--linkedin {
+						height: 2.1rem;
+						width: 2.1rem;
 					}
 				}
 			}
