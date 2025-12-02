@@ -59,6 +59,15 @@
 					</a>
 				</li>
 				<li class="annex__item">
+					<NuxtLink
+						class="annex__link"
+						:to="navMenu.externalLinks.newsletter"
+                        @click="closeNav()"
+					>
+						Newsletter
+					</NuxtLink>
+				</li>
+				<li class="annex__item">
 					<a
 						class="annex__link"
 						:href="'mailto:' + navMenu.externalLinks.press"
@@ -74,24 +83,22 @@
 						Jobs / Internships
 					</a>
 				</li>
-				<li class="annex__item">
-					<NuxtLink
-						class="annex__link"
+                <li class="annex__item--small-group">
+                    <NuxtLink
+						class="annex__link--small"
 						to="/cookies"
 						@click="closeNav()"
 					>
 						Cookies
 					</NuxtLink>
-				</li>
-				<li class="annex__item">
-					<NuxtLink
-						class="annex__link"
+                    <NuxtLink
+						class="annex__link--small"
 						to="/legal"
 						@click="closeNav()"
 					>
 						Legal Notice
 					</NuxtLink>
-				</li>
+                </li>
 			</ul>
 			<ul class="social-media">
 				<li class="social-media__item">
@@ -275,17 +282,23 @@
 					&:not(:first-child) {
 						margin-top: 0.3rem;
 					}
-
-					&:nth-child(4) {
-						font-size: 1.2rem;
-						margin-top: 2rem;
-					}
-
-					&:nth-child(5) {
-						font-size: 1.2rem;
-						margin-top: 0.3rem;
-					}
 				}
+
+                &__item--small-group {
+                    margin-top: 2rem;
+                    display: flex;
+                    gap: 1rem;
+                    font-size: 1.2rem;
+                }
+
+                &__link--small {
+                    color: inherit;
+                    text-decoration: none;
+
+                    &:hover {
+                        text-decoration: underline;
+                    }
+                }
 			}
 
 			.social-media {
