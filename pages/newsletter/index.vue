@@ -15,9 +15,9 @@
         target="_blank"
       >
         <div id="mc_embed_signup_scroll">
-          <h2>
+          <p>
             Join our newsletter
-          </h2>
+		  </p>
           <div class="indicates-required">
             <span class="asterisk">*</span> required
           </div>
@@ -565,14 +565,89 @@ onMounted(() => {
 })
 </script>
 
-<style>
+<style lang="scss">
 	#mc_embed_shell {
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		min-height: 100vh;
+        background-color: #000;
 	}
-	#mc_embed_signup{background:#000000; clear:left; font:14px Helvetica,Arial,sans-serif; width: 600px;}
-	/* Add your own Mailchimp form style overrides in your site stylesheet or in this style block.
-		We recommend moving this block and the preceding CSS link to the HEAD of your HTML file. */
+	#mc_embed_signup {
+        background:#000000;
+        clear:left;
+        font:14px Helvetica,Arial,sans-serif;
+        width: 600px;
+        color: #fff;
+
+        p {
+            color: #fff;
+            font-family: $neue-haas-grotesk;
+            margin-bottom: 30px;
+			font-weight: 400;
+			font-size: 2rem;
+        }
+
+        .indicates-required {
+            display: none;
+        }
+
+        .mc-field-group {
+            margin-bottom: 24px;
+            min-height: 50px;
+
+            label {
+                display: block;
+                margin-bottom: 8px;
+                font-family: $neue-haas-grotesk;
+                font-weight: 400;
+                font-size: 12px;
+                color: #727272; /* Medium grey from variables */
+
+                .asterisk {
+                    color: #d93025;
+                }
+            }
+
+            input {
+                display: block;
+                width: 100%;
+                padding: 8px 0;
+                background-color: transparent;
+                border: none;
+                border-bottom: 1px solid #fff;
+                color: #fff;
+                font-family: $neue-haas-grotesk;
+                font-size: 1.6rem;
+                line-height: 1;
+                border-radius: 0;
+                outline: none;
+                transition: border-color 0.3s ease;
+
+                &:focus {
+                    border-bottom-color: #b8b8b8;
+                }
+            }
+        }
+
+        #mc-embedded-subscribe {
+            background-color: transparent;
+			border: 1px solid #fff;
+            color: #fff;
+            padding: 15px 40px;
+            font-family: $neue-haas-grotesk;
+            font-size: 18px;
+            font-weight: 400;
+            cursor: pointer;
+            height: 42px;
+            width: 127px;
+			padding: 0;
+			border-radius: 0;
+
+            &:hover {
+                background-color: #fff;
+                color: #000;
+            }
+        }
+    }
 </style>
